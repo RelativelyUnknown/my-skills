@@ -1,0 +1,40 @@
+# Publishes to PyPI when a version tag is pushed. Uses PyPI trusted publishing: no API token.
+# One-time setup on PyPI (project settings, Publishing): owner, repository, this workflow's
+# file name, and environment "pypi". Renaming the repository or this file breaks the match.
+name: release
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+      - name: Tag matches the package version
+        run: test "v$(uv version --short)" = "${GITHUB_REF_NAME}"
+      - run: uv build
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/<pkg>
+    permissions:
+      id-token: write  # only this job may mint the OIDC token
+    steps:
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
