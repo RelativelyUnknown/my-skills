@@ -40,8 +40,9 @@ No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cau
 | Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle` | [references/logging-and-security.md](references/logging-and-security.md) |
 | `xenon`, `radon` or a complexity lint rule reports a rank | [references/complexity-tools.md](references/complexity-tools.md) |
 | Hand-rolling a utility | [references/stdlib-first.md](references/stdlib-first.md) |
+| A measured hot path is too slow, or choosing a library for speed | [references/faster-libraries.md](references/faster-libraries.md) |
 
-Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.10 is end of life: ask first.
+Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.11 is end of life (3.10 reached it in October 2026): ask first.
 
 ## Errors
 

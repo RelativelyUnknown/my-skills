@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: serverless-slow-join
+expected_outcome: |
+  Asks for or describes evidence from the query profile, advises reverting the config changes, and targets the UDF and join plan rather than Spark configs.

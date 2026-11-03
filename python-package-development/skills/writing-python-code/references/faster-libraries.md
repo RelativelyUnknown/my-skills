@@ -1,0 +1,94 @@
+# Faster libraries
+
+The step after `stdlib-first.md`: what to use when a measured hot path is too slow. Speed figures are the maintainers' own benchmarks unless noted; your workload decides.
+
+## Contents
+
+- Rules
+- Tooling
+- Dataframes and files
+- Serialization and validation
+- HTTP and async
+- Text, parsing and regex
+- Dates and times
+- Numbers, hashing, images
+- The interpreter
+
+## Rules
+
+1. **Profile first** (see `profiling-python-code`). Name the function and the number: "`parse_rows` takes 4.1 s of 5 s". No measurement, no swap.
+2. **Keep what the project has.** If the project already uses a library for the job, use it. Recommend a replacement in the report; switch only when asked.
+3. **The replacement must earn the dependency** (rules in `writing-python-code`): maintained, widely used, license compatible, wheels for every platform the project supports.
+4. **Same behavior, then speed.** Run the existing tests on the swap. Watch for different return types (`bytes` vs `str`), error types, rounding and time-zone handling.
+5. **Report before and after** on the same input, plus any behavior difference.
+
+## Tooling
+
+These are safe defaults for new projects; existing projects keep their tools unless asked.
+
+| From | To | Evidence | Do not switch when |
+| --- | --- | --- | --- |
+| pip, pip-tools, virtualenv, pipx, pyenv, poetry | uv | Astral: 10-100x faster installs; lockfile and Python management in one tool | The organization mandates conda or poetry plugins |
+| black, isort, flake8, pyupgrade, most pylint checks | ruff (lint + format) | One Rust binary; 10-100x faster than the tools it replaces (Astral) | You rely on pylint-only checks; keep pylint for those |
+| pre-commit | prek | Same config file; about 10x faster, half the disk (maintainer); Home Assistant, Airflow and PDM switched | A hook needs a pre-commit-only feature |
+| mypy or pyright, for speed | ty (beta, 0.0.x) | Astral: 10x-60x faster than mypy and Pyright uncached | As the only gate: it is beta. Run it beside the existing checker |
+
+## Dataframes and files
+
+| From | To | Evidence | Do not switch when |
+| --- | --- | --- | --- |
+| pandas on large or analytic data | Polars (lazy `scan_*` + `collect`) or DuckDB (SQL on files and frames) | Columnar, multithreaded engines; both lead pandas on the TPC-H style benchmarks they publish | Data fits comfortably and pandas-only APIs are used throughout; the data already lives in Spark |
+| pandas 2.x | pandas 3.x | 3.0 (January 2026): PyArrow-backed `str` dtype by default, Copy-on-Write only | Code compares dtypes to `object` or relies on chained assignment; fix those first |
+| `csv` module on large files | `polars.read_csv`/`scan_csv`, `pyarrow.csv.read_csv`, DuckDB `read_csv` | Multithreaded native readers | Small files, or row-by-row streaming logic |
+| `json` lines on large files | `polars.read_ndjson`, DuckDB `read_json` | Parse straight into columns | Records need per-row Python logic anyway |
+
+## Serialization and validation
+
+| From | To | Evidence | Do not switch when |
+| --- | --- | --- | --- |
+| `json` | orjson | Rust; serializes dataclasses, datetimes, UUIDs and NumPy natively; several times faster than `json` (maintainer benchmarks) | Callers need `str` (orjson returns `bytes`); custom `JSONEncoder` subclasses everywhere |
+| `ujson` | orjson or msgspec | ujson's maintainers put it in maintenance mode and point users to orjson | |
+| pydantic models on a hot decode/encode path | msgspec `Struct` | msgspec benchmarks: decode plus validation many times faster than pydantic v2, with less memory | FastAPI models, settings, validators and coercion: keep pydantic |
+| `pickle` between processes or services | msgspec (JSON or MessagePack) | Typed, portable, not code-executing | You must round-trip arbitrary Python objects inside one trusted program |
+
+## HTTP and async
+
+| From | To | Evidence | Do not switch when |
+| --- | --- | --- | --- |
+| `requests` in async code | httpx `AsyncClient` or aiohttp | Non-blocking; connection pooling; HTTP/2 in httpx | Sync scripts: `requests` with a `Session` is fine. Note httpx's last release was 0.28.1 (December 2024) |
+| asyncio's default event loop | uvloop | Maintainer: 2-4x faster loop | Windows (unsupported); no measured loop overhead |
+| uvicorn | granian | Rust HTTP server for ASGI/WSGI; maintainer benchmarks show higher throughput | You need uvicorn-specific features; measure under your real app first |
+| a new client per request | one shared client per process | Reuses connections and TLS sessions; usually the largest HTTP win | |
+
+## Text, parsing and regex
+
+| From | To | Evidence | Do not switch when |
+| --- | --- | --- | --- |
+| fuzzywuzzy / thefuzz | RapidFuzz | C++ implementation, near drop-in API, MIT license | |
+| BeautifulSoup for parsing speed | selectolax (Lexbor) or lxml | Native parsers, CSS selectors | Malformed HTML where BeautifulSoup's leniency matters |
+| `re` on untrusted patterns or input | google-re2 (`re2`) | Linear-time matching, no catastrophic backtracking | You need backreferences or lookaround |
+| string concatenation in loops | `"".join(parts)`, `io.StringIO` | Avoids quadratic copying | |
+
+## Dates and times
+
+| From | To | Evidence | Do not switch when |
+| --- | --- | --- | --- |
+| arrow, pendulum, `datetime` + `dateutil` | whenever | Rust-backed, DST-safe types; maintainer: 10-100x faster than Pendulum and Arrow | APIs on both sides expect `datetime`; convert at the edges or keep `datetime` |
+| `strptime` for ISO 8601 | `datetime.fromisoformat` | C implementation; parses most ISO formats from 3.11 | Non-ISO formats |
+
+## Numbers, hashing, images
+
+| From | To | Evidence | Do not switch when |
+| --- | --- | --- | --- |
+| Python loops over numbers | NumPy vectorization, then numba `@njit` | Removes interpreter overhead per element | Object or string data; tiny inputs; first-call JIT time matters |
+| `hashlib.md5`/`sha*` for non-security keys or checksums | xxhash, blake3, or stdlib `zlib.crc32` | Non-cryptographic hashes are much faster | Anything security-related: use `hashlib` |
+| Pillow for bulk resizing of large images | pyvips | Streams images; low memory | Simple one-off edits. Avoid pillow-simd: it trails mainline Pillow |
+
+## The interpreter
+
+| Change | Evidence | Caveat |
+| --- | --- | --- |
+| Upgrade CPython | 3.11 averaged about 25% faster than 3.10 (What's New); later releases add smaller gains | Check every dependency ships wheels for the new version |
+| 3.15 experimental JIT (`PYTHON_JIT=1`) | What's New: from about 15% slower to over 100% faster depending on workload | Experimental; measure your own code |
+| Free-threaded build (`python3.14t`, `python3.15t`) for CPU-bound threads | Real parallel threads; 3.15 adds a stable ABI (`abi3t`) for extensions | Single-thread overhead; any extension without free-threaded wheels re-enables the GIL |
+| `multiprocessing`/`ProcessPoolExecutor` for CPU-bound work today | Sidesteps the GIL on the standard build | Pickling cost; start-up time |

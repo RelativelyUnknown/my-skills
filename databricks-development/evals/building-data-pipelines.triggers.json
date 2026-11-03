@@ -1,0 +1,26 @@
+[
+  {
+    "query": "our daily orders job duplicates rows whenever ops reruns a failed day, fix load_orders.py",
+    "should_trigger": true
+  },
+  {
+    "query": "build bronze/silver/gold for the clickstream json landing in /Volumes/main/raw/clicks",
+    "should_trigger": true
+  },
+  {
+    "query": "convert this dlt pipeline to the new pyspark pipelines api",
+    "should_trigger": true
+  },
+  {
+    "query": "implement scd type 2 for the customers dimension from the debezium cdc topic",
+    "should_trigger": true
+  },
+  {
+    "query": "what's the difference between a list and a tuple in python",
+    "should_trigger": false
+  },
+  {
+    "query": "speed up this numpy function that computes pairwise distances",
+    "should_trigger": false
+  }
+]

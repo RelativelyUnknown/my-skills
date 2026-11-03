@@ -1,0 +1,43 @@
+# resources/<name>.job.yml — a serverless job that runs the project's wheel.
+# The entry point name comes from [project.scripts] in pyproject.toml.
+resources:
+  jobs:
+    daily_orders:
+      name: daily_orders
+      max_concurrent_runs: 1
+      tags:
+        team: data-engineering
+
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"
+        timezone_id: UTC
+
+      parameters:
+        - name: run_date
+          default: "{{job.start_time.iso_date}}"
+
+      tasks:
+        - task_key: load_orders
+          environment_key: default
+          max_retries: 1          # safe only because the task is idempotent
+          python_wheel_task:
+            package_name: <pkg>
+            entry_point: load-orders
+            parameters:
+              - "--catalog"
+              - "${var.catalog}"
+              - "--schema"
+              - "${var.schema}"
+              - "--run-date"
+              - "{{job.parameters.run_date}}"
+
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "5"   # serverless environment; pin it, upgrade deliberately
+            dependencies:
+              - ../dist/*.whl
+
+      email_notifications:
+        on_failure:
+          - <team-alias@example.com>

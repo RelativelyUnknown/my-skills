@@ -2,7 +2,7 @@
 
 Part of the [skills monorepo](../README.md). Run the development commands from this folder.
 
-Six agent skills for developing Python packages, for Claude Code and GitHub Copilot. They make an AI agent write less slop: tests that can fail, errors that surface, fewer concepts, honest reports. The rules come from the *Python Engineering Rules for AI Agents* (v2).
+Eight agent skills for developing Python packages, for Claude Code and GitHub Copilot. They make an AI agent write less slop: tests that can fail, errors that surface, fewer concepts, honest reports. The rules come from the *Python Engineering Rules for AI Agents* (v2).
 
 The skills follow the open [Agent Skills](https://agentskills.io/specification) format, so one folder works in both tools. Each skill loads only when the request matches its description; reference files load only when the skill points at them.
 
@@ -16,8 +16,10 @@ The skills follow the open [Agent Skills](https://agentskills.io/specification) 
 | `designing-package-apis` | add, rename or remove a public name, extra or exception | 1.3k |
 | `releasing-python-packages` | prepare or cut a release, fix a wheel, edit publishing workflows | 1.0k |
 | `reviewing-python-changes` | review a diff, or check your own work before saying done | 1.0k |
+| `profiling-python-code` | chase slow code or high memory, or are about to swap in a faster library | 1.2k |
+| `auditing-python-dependencies` | add a dependency, answer a security alert, or audit the supply chain | 1.2k |
 
-Always-on cost is the six descriptions: about 400 tokens. Run `uv run python scripts/check_skills.py` for the current numbers.
+Always-on cost is the eight descriptions: about 550 tokens. Run `uv run python scripts/check_skills.py` for the current numbers.
 
 ## Install
 
@@ -28,10 +30,10 @@ mkdir -p .claude/skills && cp -r /path/to/skills/python-package-development/skil
 ```
 
 - `.claude/skills/` is the one project path both Claude Code and Copilot (VS Code agent mode, cloud agent, CLI) read. `.github/skills/` is Copilot only. Personal installs: `~/.claude/skills/` or `~/.copilot/skills/`.
-- **Minimal profile:** copy only `testing-python-packages` and `writing-python-code` (two descriptions, about 130 tokens). **Full profile:** all six.
+- **Minimal profile:** copy only `testing-python-packages` and `writing-python-code` (two descriptions, about 130 tokens). **Full profile:** all eight.
 - Each skill folder is self-contained, so any subset works.
 
-`writing-python-code` keeps its always-needed rules in `SKILL.md` and moves topic rules (Python versions, docstrings and comments, logging and security, complexity tools, stdlib-first) to `references/`, which load only when the task touches them. Each rule has one home: the other skills point to it instead of restating it.
+`writing-python-code` keeps its always-needed rules in `SKILL.md`. Topic rules live in `references/` and load only when the task touches them: Python versions, docstrings and comments, logging and security, complexity tools, stdlib-first and faster libraries. `faster-libraries.md` is the step after stdlib-first. It lists faster replacements (uv, ruff, Polars, DuckDB, orjson, msgspec, uvloop, granian, RapidFuzz, selectolax, whenever, re2, numba) with their evidence and when not to switch. `profiling-python-code` is the gate: no swap without a measurement. Each rule has one home: the other skills point to it instead of restating it.
 
 Skills load when the model judges them relevant. The rules that must never be missed (verify before "done", never edit a contradicting test, root cause not symptoms, do not silence tools) live in `writing-python-code` and `testing-python-packages`. If you want them unconditional, copy those bullets into your `AGENTS.md`.
 
@@ -45,15 +47,23 @@ Pass `key=value` words after the skill name to override what was detected: `/tes
 | --- | --- | --- |
 | `python` | 3.10 and up | `requires-python` lower bound, else 3.12 |
 | `runner` | `uv`, `pip`, `poetry`, `hatch`, `pdm` | detected, else `uv` |
-| `types` | `mypy`, `pyright` | detected, else `mypy` |
+| `types` | `mypy`, `pyright`, `basedpyright`, `ty`, `pyrefly` | detected, else `mypy` |
 | `layout` | `src`, `flat` | detected, else `src` |
-| `backend` | `hatchling`, `setuptools`, `poetry-core`, `pdm-backend`, `flit-core` | detected, else `hatchling` |
+| `backend` | `hatchling`, `uv_build`, `setuptools`, `poetry-core`, `pdm-backend`, `flit-core`, `maturin` | detected, else `hatchling` |
 | `rigor` (testing) | `lite`, `full`, `ultra` | `full` |
 | `report` (writing, reviewing) | `terse`, `normal`, `audit` | `normal` |
 
 `rigor=lite` keeps the test rules; `full` adds boundary mocking, strict config, coverage floor; `ultra` adds Hypothesis, mutation testing, a lowest-dependencies run and an installed-wheel test. `report=terse` is at most 10 lines; `audit` lists every shortcut, assumption and thing left alone.
 
 Complexity tools (`xenon`, `radon`) are advice in these skills, never a score to reach at the cost of readable code.
+
+## Evals
+
+New skills ship test cases in `skills/<skill>/evals/<case>/` (`prompt.md`, `case.yaml`, `graders/`), the layout `claude plugin eval` and the skill-creator skill read. Trigger checks (prompts that should and should not load each skill) are in `evals/<skill>.triggers.json`. Run each case with and without the skill on the models you use; a skill that shows no difference should be cut or rewritten. Skills benchmarks found that curated skills help on average while many individual skills change nothing (see the root README).
+
+```bash
+cd skills/profiling-python-code && claude plugin eval . --allow-tools Write,Edit,Bash
+```
 
 ## Known interactions
 

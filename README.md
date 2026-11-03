@@ -1,12 +1,15 @@
 # skills
 
-A monorepo of my agent skills. Each folder is one self-contained skillset with its own README, skills and tooling. The skills follow the open [Agent Skills](https://agentskills.io/specification) format, so they work in Claude Code and GitHub Copilot.
+A monorepo of my agent skills. Each folder is one self-contained skillset with its own README, skills and tooling. Facts in the skills were checked against current documentation in November 2026. The skills follow the open [Agent Skills](https://agentskills.io/specification) format, so they work in Claude Code and GitHub Copilot.
 
 ## Skillsets
 
 | Folder | What it is | Skills |
 | --- | --- | --- |
-| [`python-package-development/`](python-package-development/) | Rules that make an AI agent write less slop when developing Python packages, plus the scripts that validate them | `testing-python-packages`, `writing-python-code`, `setting-up-python-packages`, `designing-package-apis`, `releasing-python-packages`, `reviewing-python-changes` |
+| [`python-package-development/`](python-package-development/) | Rules that make an AI agent write less slop when developing Python packages, plus the scripts that validate them | `testing-python-packages`, `writing-python-code`, `setting-up-python-packages`, `designing-package-apis`, `releasing-python-packages`, `reviewing-python-changes`, `profiling-python-code`, `auditing-python-dependencies` |
+| [`python-web-development/`](python-web-development/) | Web APIs and services with FastAPI, Django, SQLAlchemy: validation, per-object auth, async, security, deployment | `building-python-web-services` |
+| [`databricks-development/`](databricks-development/) | Data engineering in PySpark and on Databricks; complements Databricks' official product skills | `writing-pyspark-transformations`, `building-data-pipelines`, `designing-delta-tables`, `testing-pyspark-code`, `tuning-spark-jobs`, `setting-up-databricks-projects` |
+| [`documentation/`](documentation/) | Documentation to the conventions of well-documented projects, plus a prose linter | `writing-documentation` |
 | [`powerpoint-animations/`](powerpoint-animations/) | Clean looping explainer animations rendered to MP4/GIF and put into PowerPoint | `powerpoint-animation-style`, `building-animation-scenes`, `exporting-animations-to-powerpoint` |
 
 ## Install
@@ -30,12 +33,26 @@ skills/
 ├── README.md                       this index
 ├── LICENSE
 ├── python-package-development/     skillset (own README, pyproject, tests, check script)
-│   ├── skills/<skill>/SKILL.md
+│   ├── skills/<skill>/SKILL.md     (+ references/, scripts/, assets/, evals/)
+│   ├── evals/                      trigger checks per skill
 │   ├── scripts/  tests/
 │   └── pyproject.toml  uv.lock
+├── python-web-development/         skillset (uses the shared checker)
+├── databricks-development/         skillset (own detect script, tests)
+├── documentation/                  skillset (prose linter, tests)
 └── powerpoint-animations/          skillset
     └── skills/<skill>/SKILL.md
 ```
+
+## What the research says about skills
+
+These skills follow what 2026 evaluations of agent skills and context files found:
+
+- **Curated skills help; generated ones do not.** SkillsBench ([arXiv:2602.12670](https://arxiv.org/abs/2602.12670)) measured a 16-point average pass-rate gain from human-curated skills and none from skills models wrote for themselves. Skills drafted with an AI, including these, need a person's review and evals before they are trusted.
+- **Focused beats exhaustive.** In the same benchmark, two or three focused skills per task gained the most, and exhaustive documentation-style skills lowered pass rates. Hence the 200-line body limit, one home per rule, and references that load on demand.
+- **Generic coding advice adds little.** Software engineering showed the smallest gains, and SWE-Skills-Bench ([arXiv:2603.15401](https://arxiv.org/abs/2603.15401)) found most public coding skills changed nothing, while version-mismatched guidance made results worse. The skills therefore detect the project's real tools and versions first (`detect_project.py`) and spend their words on non-obvious, current facts.
+- **Extra context costs steps.** Evaluating AGENTS.md ([arXiv:2602.11988](https://arxiv.org/abs/2602.11988)) found context files raise inference cost by about 20% while agents follow every instruction in them. Rules that are not needed for the task stay out of the always-loaded text.
+- **Measure each skill.** New skills ship eval cases and trigger checks; run them with and without the skill and drop any skill that shows no gain.
 
 ## Adding a skillset
 

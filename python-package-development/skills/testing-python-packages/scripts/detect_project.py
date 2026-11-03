@@ -17,7 +17,7 @@ except ModuleNotFoundError:
     sys.exit("error: needs Python 3.11+ (tomllib); read pyproject.toml directly instead")
 
 TOOLS = (
-    "uv", "poetry", "pdm", "hatch", "ruff", "mypy", "pyright", "pytest",
+    "uv", "poetry", "pdm", "hatch", "ruff", "mypy", "pyright", "basedpyright", "ty", "pyrefly", "pytest",
     "black", "flake8", "pylint", "isort", "nox", "tox", "xenon", "radon",
 )  # fmt: skip
 BACKENDS = {
@@ -26,6 +26,8 @@ BACKENDS = {
     "poetry.core.masonry.api": "poetry-core",
     "pdm.backend": "pdm-backend",
     "flit_core.buildapi": "flit-core",
+    "uv_build": "uv_build",
+    "maturin": "maturin",
 }
 ASYNC_PLUGINS = ("anyio", "pytest-asyncio", "trio")
 NOT_PACKAGES = frozenset({"tests", "test", "docs", "scripts", "examples", "benchmarks"})
@@ -33,6 +35,9 @@ NOT_PACKAGES = frozenset({"tests", "test", "docs", "scripts", "examples", "bench
 TYPE_CHECKERS = (
     ("mypy", "mypy", ("mypy.ini", ".mypy.ini")),
     ("pyright", "pyright", ("pyrightconfig.json",)),
+    ("basedpyright", "basedpyright", ()),
+    ("ty", "ty", ("ty.toml",)),
+    ("pyrefly", "pyrefly", ("pyrefly.toml",)),
 )
 LINTERS = (
     ("ruff", "ruff", ("ruff.toml", ".ruff.toml")),

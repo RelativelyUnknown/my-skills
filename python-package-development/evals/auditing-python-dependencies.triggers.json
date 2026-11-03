@@ -1,0 +1,26 @@
+[
+  {
+    "query": "add the pyjson-turbo-schema package and use it in config.py",
+    "should_trigger": true
+  },
+  {
+    "query": "dependabot says urllib3 has a CVE, what do we do",
+    "should_trigger": true
+  },
+  {
+    "query": "run a security audit of our dependencies before release",
+    "should_trigger": true
+  },
+  {
+    "query": "which licenses do our deps use? we're MIT",
+    "should_trigger": true
+  },
+  {
+    "query": "refactor this class into functions",
+    "should_trigger": false
+  },
+  {
+    "query": "write release notes for 1.4.0",
+    "should_trigger": false
+  }
+]

@@ -192,8 +192,14 @@ def test_pytest_import_mode_is_read_from_pytest_ini(tmp_path: Path) -> None:
             {"pyproject.toml": '[dependency-groups]\ndev = ["pyright>=1.1"]\n'},
             "pyright",
         ),
+        ({"pyproject.toml": "[tool.mypy]\n[tool.ty]\n"}, "mypy+ty"),
+        ({"pyrefly.toml": ""}, "pyrefly"),
+        ({"pyproject.toml": "[tool.basedpyright]\n"}, "basedpyright"),
     ],
-    ids=["mypy-table", "mypy-ini", "pyright-json", "pyright-table", "both", "dependency-only"],
+    ids=[
+        "mypy-table", "mypy-ini", "pyright-json", "pyright-table", "both", "dependency-only",
+        "mypy-and-ty", "pyrefly-toml", "basedpyright-table",
+    ],
 )
 def test_type_checker_is_detected_from_config_or_dependencies(
     tmp_path: Path, files: Mapping[str, str], types: str

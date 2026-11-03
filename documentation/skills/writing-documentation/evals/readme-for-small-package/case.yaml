@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: readme-for-small-package
+expected_outcome: |
+  A landing-page README: one-sentence description, one install command, a runnable example, links; no puffery; sentence-case headings.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: rerunnable-daily-load
+expected_outcome: |
+  The write is idempotent: MERGE on order_id with a deduplicated source, or replaceWhere scoped to the run date; parameterized by run date; no whole-table overwrite.

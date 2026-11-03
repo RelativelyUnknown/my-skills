@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: create-large-orders-table
+expected_outcome: |
+  A managed table with liquid clustering on the filter columns, no partitioning or ZORDER, sensible types and comments.
