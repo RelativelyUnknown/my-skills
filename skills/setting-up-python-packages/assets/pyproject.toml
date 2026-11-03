@@ -1,0 +1,60 @@
+# Template for a new library. Replace <pkg>, <description>, <owner>, <SPDX>, and the Python
+# versions (3.12 = python.target). The version number lives only here.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "<pkg>"
+version = "0.1.0"
+description = "<description>"
+readme = "README.md"
+requires-python = ">=3.12"  # lower bound only
+license = "<SPDX>"
+license-files = ["LICENSE"]
+dependencies = []
+
+# Heavy or niche dependencies go in extras: pip install "<pkg>[extra]"
+# [project.optional-dependencies]
+# extra = ["some-package>=1"]
+
+[project.urls]
+Homepage = "https://github.com/<owner>/<pkg>"
+
+[dependency-groups]
+dev = [
+  "mypy>=1.11",
+  "pytest>=9.0",
+  "pytest-randomly>=3.15",
+  "pytest-socket>=0.7",
+  "pytest-timeout>=2.3",
+  "ruff>=0.6",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/<pkg>"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+# Mechanical rules live here, not in prose. Do not select D1xx: missing-docstring rules
+# push filler docstrings.
+extend-select = [
+  "E722", "BLE", "S", "B", "PGH", "RUF100", "ERA", "T20", "FIX", "PT", "FBT",
+  "ANN401", "G", "ASYNC", "SIM", "RET", "PIE", "TRY300", "TRY400", "ARG001", "UP",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert is the test idiom
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+enable_error_code = ["ignore-without-code"]
+
+[tool.pytest.ini_options]
+strict = true  # pytest 9+: strict markers, config, xfail
+addopts = "--import-mode=importlib --disable-socket --timeout=10 --doctest-modules"
+filterwarnings = ["error"]
+testpaths = ["src", "tests"]  # src: docstring examples run as doctests
