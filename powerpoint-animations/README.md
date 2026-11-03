@@ -1,6 +1,8 @@
 # powerpoint-animations
 
-Three agent skills for making clean, looping explainer animations and putting them into PowerPoint. They follow the open [Agent Skills](https://agentskills.io/specification) format: copy the folders from `skills/` into `.claude/skills/` (Claude Code, Copilot) or `~/.claude/skills/`.
+Part of the [skills monorepo](../README.md).
+
+Three agent skills for making clean, looping explainer animations and putting them into PowerPoint. They follow the open [Agent Skills](https://agentskills.io/specification) format: copy the folders from this folder's `skills/` into `.claude/skills/` (Claude Code, Copilot) or `~/.claude/skills/`.
 
 | Skill | Loads when you... |
 | --- | --- |
