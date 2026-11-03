@@ -9,6 +9,7 @@ from check_skills import (
     check_skill,
     main,
     render_table,
+    sync_script,
 )
 
 DESCRIPTION = "Writes pytest tests. Use when adding or fixing tests."
@@ -317,3 +318,50 @@ def test_main_returns_two_when_the_skills_folder_is_missing(
     assert main([str(missing), "--canonical", str(canonical)]) == 2
 
     assert f"error: {missing} is not a directory" in capsys.readouterr().err
+
+
+def test_argument_keys_can_be_configured(tmp_path: Path, canonical: Path) -> None:
+    fields = {"name": "demo-skill", "description": DESCRIPTION, "argument-hint": "[scene=a fps=25]"}
+    skill = make_skill(tmp_path / "skills", frontmatter=fields)
+
+    assert check_skill(skill, canonical=canonical, argument_keys=frozenset({"scene", "fps"})).errors == []
+    assert check_skill(skill, canonical=canonical, argument_keys=None).errors == []
+    assert any("argument-hint key 'scene'" in e for e in errors_for(skill, canonical))
+
+
+def test_main_argument_keys_option(
+    tmp_path: Path, canonical: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    fields = {"name": "demo-skill", "description": DESCRIPTION, "argument-hint": "[scene=a]"}
+    make_skill(tmp_path / "skills", frontmatter=fields)
+    base = [str(tmp_path / "skills"), "--canonical", str(canonical)]
+
+    assert main(base) == 1
+    assert main([*base, "--argument-keys", "scene"]) == 0
+    assert main([*base, "--argument-keys", ""]) == 0
+    capsys.readouterr()
+
+
+def test_sync_script_copies_only_where_needed(tmp_path: Path, canonical: Path) -> None:
+    skills = tmp_path / "skills"
+    stale = make_skill(skills, "stale-skill", files={"scripts/detect_project.py": "# old\n"})
+    current = make_skill(skills, "current-skill")
+    unused = make_skill(skills, "unused-skill", body="# Demo\n")
+    (unused / "scripts" / "detect_project.py").unlink()
+    (unused / "scripts").rmdir()
+
+    written = sync_script(skills, canonical=canonical)
+
+    assert written == [stale / "scripts" / "detect_project.py"]
+    assert (stale / "scripts" / "detect_project.py").read_text() == CANONICAL
+    assert (current / "scripts" / "detect_project.py").read_text() == CANONICAL
+    assert not (unused / "scripts").exists()
+
+
+def test_main_sync_fixes_a_missing_copy(tmp_path: Path, canonical: Path) -> None:
+    skill = make_skill(tmp_path / "skills")
+    (skill / "scripts" / "detect_project.py").unlink()
+    base = [str(tmp_path / "skills"), "--canonical", str(canonical)]
+
+    assert main(base) == 1
+    assert main([*base, "--sync"]) == 0

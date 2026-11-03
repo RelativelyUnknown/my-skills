@@ -31,13 +31,17 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cause. If an ignore is truly needed, name the code (`# type: ignore[arg-type]`) and say why in a comment. Never disable a lint rule or loosen linter, type-checker or pytest config to make an error go away.
 
-## Complexity tools are advice
+## Read when relevant
 
-Output from `xenon`, `radon cc` or a complexity lint rule points at code that may be hard to follow. Read it, then decide.
+| Doing | Read |
+| --- | --- |
+| Using a feature that might be newer than `python.target` | [references/python-versions.md](references/python-versions.md) |
+| Writing or changing a docstring or comment | [references/docs-and-comments.md](references/docs-and-comments.md) |
+| Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle` | [references/logging-and-security.md](references/logging-and-security.md) |
+| `xenon`, `radon` or a complexity lint rule reports a rank | [references/complexity-tools.md](references/complexity-tools.md) |
+| Hand-rolling a utility | [references/stdlib-first.md](references/stdlib-first.md) |
 
-- Simplify when you can say what is hard to follow and a clearer shape exists (early returns, a lookup table, a function that hides real logic).
-- Do not contort logic, or split a function into fragments with vague names, to reach an A. A flat run of cases or a parser table that ranks C and reads straight through stays as it is; say so in the report.
-- The rank is never a reason to add `# noqa`, to raise a threshold, or to make a test pass differently. If the project's CI gates on it and the gate fails, report the failure and the readable options instead of gaming it.
+Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.10 is end of life: ask first.
 
 ## Errors
 
@@ -66,36 +70,13 @@ Order: the standard library, a dependency the project already has, a widely used
 - Read `pyproject.toml` first. Before hand-rolling a utility, name the stdlib or library function you considered and why it does not fit.
 - Use a library's features fully (`raise_for_status()`, pydantic validation). Never regex-parse structured formats: dates, URLs, HTML, JSON, CSV, versions.
 - Add a dependency only if it is widely used and maintained and the stdlib or a few lines cannot do the job. Flag every new dependency in the report.
-- Common jobs and what not to hand-roll: [references/stdlib-first.md](references/stdlib-first.md).
-
-## Python version
-
-Use features available at `python.target` and nothing newer. No `sys.version_info` branches, compatibility imports or backports unless a dependency requires them. Do not add `from __future__ import annotations` just for `|` unions. A target below 3.10 is end of life: ask first.
-
-| Needs | Minimum | Older form |
-| --- | --- | --- |
-| `X \| None`, `match`, `zip(strict=True)`, `dataclass(slots=True, kw_only=True)` | 3.10 | |
-| `tomllib`, `datetime.UTC`, `typing.Self`, `StrEnum`, `ExceptionGroup`, `e.add_note()`, `asyncio.TaskGroup`, `asyncio.timeout`, `datetime.fromisoformat` parsing a trailing `Z` | 3.11 | `timezone.utc`; `fromisoformat(s.replace("Z", "+00:00"))` |
-| `def f[T]`, `class C[T]`, `type X = ...`, `@typing.override`, `itertools.batched` | 3.12 | `TypeVar`; no `@override`; `while batch := list(islice(it, n))` |
+- Common jobs and what not to hand-roll: see the table above.
 
 ## Types, names, structure
 
 - Structured data is a dataclass, `TypedDict` or the model class the project already uses, not a `dict[str, Any]` passed around. No `Any`: write the precise type, or `object` for a truly opaque value. `Optional` return only if the function can return `None`. No tuples of three or more values as a return type. No `x = x or 30` (`or` also replaces `0` and `""`).
 - Names say what a thing is, in the codebase's vocabulary: `users`, not `user_list`. No vague names (`data`, `result`, `info`, `temp`, `obj`, `helper`, `manager`, `handler`), no `new_`/`old_`/`v2`/`final`/`fixed`/`robust`. Booleans read as predicates (`is_expired`). One word per concept: not `fetch`, `get` and `load` for the same thing.
 - Core logic takes values and returns values; I/O and state stay at the edges. No module-level mutable state, singletons or global clients; pass dependencies in. Early returns over nesting. `with` for resources. Sets for membership checks in loops; batch queries and HTTP calls. Async code never calls blocking I/O, and a function that never awaits is not `async`.
-
-## Docstrings and comments
-
-Write for a reader a year from now who never saw this conversation.
-
-- Say what a function does, returns and raises, in positive terms ("Returns a new list", not "Doesn't modify the input"). Do not restate the signature or types. Private and self-explanatory functions get no docstring. A module docstring is one line of purpose, or none.
-- No conversation residue: "as discussed", "per requirements", "we decided", "intentionally", "now uses", "no longer", "previously", "changed from", "fixed". History and rationale go in the commit message.
-- Comments explain a non-obvious why; they never narrate the next line. A rule the code must keep is enforced by structure or a test, not a docstring. No references to internal docs, tickets or sections.
-
-## Logging and security
-
-- Log or raise, never both. `logger = logging.getLogger(__name__)` per module; lazy formatting: `logger.info("loaded %s rows", n)`. Never log secrets, tokens or full request bodies.
-- No secrets in code, tests or fixtures; read them from the environment. Parameterized SQL only. No `shell=True` with interpolated values. No `eval`, `exec`, `pickle` or `yaml.load` on untrusted data.
 
 ## Report (`report=`, default `normal`)
 

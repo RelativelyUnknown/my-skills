@@ -43,7 +43,7 @@ skills/
 2. Keep tooling inside the skillset folder, so it can be used or removed on its own.
 3. Add a row to the table above.
 
-Python skillsets can reuse the checker: `cd python-package-development && uv run python scripts/check_skills.py ../<skillset>/skills`.
+Any skillset can reuse the checker (frontmatter, token budgets, links): `cd python-package-development && uv run python scripts/check_skills.py ../<skillset>/skills`. If its skills use `argument-hint`, pass the allowed keys with `--argument-keys a,b`, or an empty value to accept any.
 
 ## License
 

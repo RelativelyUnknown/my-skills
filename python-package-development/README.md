@@ -11,7 +11,7 @@ The skills follow the open [Agent Skills](https://agentskills.io/specification) 
 | Skill | Loads when you... | Body (est. tokens) |
 | --- | --- | --- |
 | `testing-python-packages` | add or fix tests, chase a flaky test, reproduce a bug, configure pytest | 1.2k |
-| `writing-python-code` | write, change or debug Python source; also holds the end-of-task report | 2.7k |
+| `writing-python-code` | write, change or debug Python source; also holds the end-of-task report | 2.2k |
 | `setting-up-python-packages` | create a package or change build, lint, type, dependency or CI config | 1.1k |
 | `designing-package-apis` | add, rename or remove a public name, extra or exception | 1.3k |
 | `releasing-python-packages` | prepare or cut a release, fix a wheel, edit publishing workflows | 1.0k |
@@ -30,6 +30,8 @@ mkdir -p .claude/skills && cp -r /path/to/skills/python-package-development/skil
 - `.claude/skills/` is the one project path both Claude Code and Copilot (VS Code agent mode, cloud agent, CLI) read. `.github/skills/` is Copilot only. Personal installs: `~/.claude/skills/` or `~/.copilot/skills/`.
 - **Minimal profile:** copy only `testing-python-packages` and `writing-python-code` (two descriptions, about 130 tokens). **Full profile:** all six.
 - Each skill folder is self-contained, so any subset works.
+
+`writing-python-code` keeps its always-needed rules in `SKILL.md` and moves topic rules (Python versions, docstrings and comments, logging and security, complexity tools, stdlib-first) to `references/`, which load only when the task touches them. Each rule has one home: the other skills point to it instead of restating it.
 
 Skills load when the model judges them relevant. The rules that must never be missed (verify before "done", never edit a contradicting test, root cause not symptoms, do not silence tools) live in `writing-python-code` and `testing-python-packages`. If you want them unconditional, copy those bullets into your `AGENTS.md`.
 
@@ -57,7 +59,7 @@ Complexity tools (`xenon`, `radon`) are advice in these skills, never a score to
 
 - A hook that blocks all edits under `tests/` and `conftest.py` also blocks adding new tests. Allow new test files, or set the hook's override for test-writing sessions.
 - Each skill's `argument-hint` line is outside the open spec (Claude Code and VS Code Copilot use it for autocomplete). Delete that line before uploading a skill to claude.ai or the Skills API, which reject unknown keys.
-- `scripts/detect_project.py` is copied into every skill so each folder stands alone. `check_skills.py` fails if a copy differs from the canonical file and prints the `cp` command.
+- `scripts/detect_project.py` is copied into every skill so each folder stands alone. `check_skills.py` fails if a copy differs from the canonical file; `check_skills.py --sync` rewrites the copies.
 
 ## Try it in your tool
 
@@ -72,9 +74,10 @@ uv sync
 uv run pytest                        # tests for the scripts
 uv run ruff check scripts tests && uv run mypy scripts tests
 uv run python scripts/check_skills.py   # spec + budget check for skills/
+uv run python scripts/check_skills.py --argument-keys scene,fps ../other/skills   # other skillsets; empty value accepts any key
 ```
 
-After changing `scripts/detect_project.py`, copy it into each skill: `for d in skills/*/scripts; do cp scripts/detect_project.py $d/; done`.
+After changing `scripts/detect_project.py`, run `uv run python scripts/check_skills.py --sync` to copy it into each skill that uses it.
 
 ## License
 

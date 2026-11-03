@@ -43,7 +43,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 - Built-ins for plain misuse: `ValueError` for a bad value, `TypeError` for a wrong type.
 - A package with a public API defines one root exception, `PkgError`, that its own errors inherit from; go no deeper. Wrap a library exception only to add information the caller needs, with `raise ... from e`; otherwise let it propagate.
-- Messages name the bad value, the valid choices and the fix.
+- Messages follow the error-message rule in `writing-python-code`: bad value, valid choices, fix.
 
 ## Optional dependencies
 
@@ -54,7 +54,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 ## Typing, logging, docs
 
 - Ship `py.typed`, annotate every public function completely, and run the type checker on the package in CI.
-- Library code uses `logging.getLogger(__name__)` and never configures handlers or calls `basicConfig`. The top-level `__init__.py` adds a `NullHandler` to the package logger, and nowhere else.
+- Library code uses `logging.getLogger(__name__)` (see `writing-python-code`, `references/logging-and-security.md`) and never configures handlers or calls `basicConfig`. The top-level `__init__.py` adds a `NullHandler` to the package logger, and nowhere else.
 - The README has one install command and one example that runs as written; a test executes that block. Docstring examples are doctests.
 
 ## Changing a public name
