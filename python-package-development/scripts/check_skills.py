@@ -2,6 +2,7 @@
 
 import argparse
 import re
+import shutil
 import string
 import sys
 from collections.abc import Mapping, Sequence
@@ -74,18 +75,20 @@ def _description_errors(description: object) -> list[str]:
     return errors
 
 
-def _argument_hint_errors(hint: object) -> list[str]:
+def _argument_hint_errors(hint: object, allowed: frozenset[str] | None) -> list[str]:
     if not isinstance(hint, str):
         return ["argument-hint must be a quoted string like \"[python=3.12 runner=uv]\""]
     keys = [token.partition("=")[0] for token in hint.strip("[] ").split()]
+    if allowed is None:
+        return []
     return [
-        f"argument-hint key '{key}' is not one of {sorted(ARGUMENT_KEYS)}"
-        for key in keys
-        if key not in ARGUMENT_KEYS
+        f"argument-hint key '{key}' is not one of {sorted(allowed)}" for key in keys if key not in allowed
     ]
 
 
-def _frontmatter_errors(fields: Mapping[str, object], folder: str) -> list[str]:
+def _frontmatter_errors(
+    fields: Mapping[str, object], folder: str, argument_keys: frozenset[str] | None
+) -> list[str]:
     errors = [
         f"unknown frontmatter key '{key}'" for key in fields if key not in SPEC_KEYS | EXTRA_KEYS
     ]
@@ -96,7 +99,7 @@ def _frontmatter_errors(fields: Mapping[str, object], folder: str) -> list[str]:
         errors.append("name is missing")
     errors.extend(_description_errors(fields.get("description")))
     if "argument-hint" in fields:
-        errors.extend(_argument_hint_errors(fields["argument-hint"]))
+        errors.extend(_argument_hint_errors(fields["argument-hint"], argument_keys))
     return errors
 
 
@@ -152,7 +155,9 @@ def _script_errors(skill: Path, body: str, canonical: Path) -> list[str]:
     return []
 
 
-def check_skill(skill: Path, *, canonical: Path) -> SkillReport:
+def check_skill(
+    skill: Path, *, canonical: Path, argument_keys: frozenset[str] | None = ARGUMENT_KEYS
+) -> SkillReport:
     skill_md = skill / "SKILL.md"
     if not skill_md.is_file():
         return SkillReport(skill.name, [f"{skill.name}: SKILL.md is missing"], 0, 0, 0)
@@ -170,7 +175,7 @@ def check_skill(skill: Path, *, canonical: Path) -> SkillReport:
     if not isinstance(fields, dict):
         return SkillReport(skill.name, [f"{skill.name}: frontmatter must be a mapping"], 0, 0, 0)
 
-    messages = _frontmatter_errors(fields, skill.name)
+    messages = _frontmatter_errors(fields, skill.name, argument_keys)
     body_lines = len(body.splitlines())
     if body_lines > BODY_LINE_BUDGET:
         messages.append(f"{body_lines} body lines, over the budget of {BODY_LINE_BUDGET}")
@@ -189,9 +194,33 @@ def check_skill(skill: Path, *, canonical: Path) -> SkillReport:
     )
 
 
-def check_all(skills_root: Path, *, canonical: Path) -> list[SkillReport]:
-    folders = sorted(p for p in skills_root.iterdir() if p.is_dir() and not p.name.startswith("."))
-    return [check_skill(folder, canonical=canonical) for folder in folders]
+def _skill_folders(skills_root: Path) -> list[Path]:
+    return sorted(p for p in skills_root.iterdir() if p.is_dir() and not p.name.startswith("."))
+
+
+def check_all(
+    skills_root: Path, *, canonical: Path, argument_keys: frozenset[str] | None = ARGUMENT_KEYS
+) -> list[SkillReport]:
+    return [
+        check_skill(folder, canonical=canonical, argument_keys=argument_keys)
+        for folder in _skill_folders(skills_root)
+    ]
+
+
+def sync_script(skills_root: Path, *, canonical: Path) -> list[Path]:
+    """Copy the canonical script into every skill whose body mentions it; return the files written."""
+    written = []
+    for folder in _skill_folders(skills_root):
+        skill_md = folder / "SKILL.md"
+        if not skill_md.is_file() or SCRIPT not in skill_md.read_text():
+            continue
+        copy = folder / "scripts" / SCRIPT
+        if copy.is_file() and copy.read_bytes() == canonical.read_bytes():
+            continue
+        copy.parent.mkdir(exist_ok=True)
+        shutil.copyfile(canonical, copy)
+        written.append(copy)
+    return written
 
 
 def render_table(reports: Sequence[SkillReport]) -> str:
@@ -208,11 +237,23 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("skills_dir", nargs="?", type=Path, default=Path("skills"))
     parser.add_argument("--canonical", type=Path, default=Path(__file__).parent / SCRIPT)
+    parser.add_argument(
+        "--argument-keys",
+        help="comma-separated keys allowed in argument-hint (default: this repo's Python set; "
+        "an empty value accepts any key)",
+    )
+    parser.add_argument("--sync", action="store_true", help=f"copy the canonical {SCRIPT} into each skill first")
     args = parser.parse_args(argv)
     if not args.skills_dir.is_dir():
         sys.stderr.write(f"error: {args.skills_dir} is not a directory\n")
         return 2
-    reports = check_all(args.skills_dir, canonical=args.canonical)
+    if args.sync:
+        for path in sync_script(args.skills_dir, canonical=args.canonical):
+            sys.stdout.write(f"synced {path}\n")
+    keys: frozenset[str] | None = ARGUMENT_KEYS
+    if args.argument_keys is not None:
+        keys = frozenset(k for k in args.argument_keys.split(",") if k) or None
+    reports = check_all(args.skills_dir, canonical=args.canonical, argument_keys=keys)
     sys.stdout.write(render_table(reports))
     errors = [error for report in reports for error in report.errors]
     for error in errors:

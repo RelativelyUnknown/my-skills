@@ -18,12 +18,12 @@ Find what is wrong with the diff, and say nothing else. A clean diff gets a shor
 ## What to look for, in this order
 
 1. **Correctness.** A variable unassigned on a path (a `try` that can fail before the assignment), swallowed errors, wrong boundary, a mutable default, a result that differs from the docstring. Reproduce it when you can and quote the failing input.
-2. **Silenced or weakened checks.** `type: ignore`, `noqa`, `cast`, `Any`, blind `except`, a new skip or xfail, loosened lint, type or pytest config, an assertion reduced to `is not None`, a deleted test, expected values copied from the code's own output.
-3. **Unneeded concepts.** Apply the deletion test to every new function, class, constant and exception: if inlining leaves every call site as short and clear, it should not exist. Also: a wrapper around one call, a factory or registry with one implementation, a `utils.py`, a parameter nobody passes, an exception that renames a library error.
-4. **Docs and comments.** Conversation residue ("as discussed", "now uses", "previously", "per requirements"), a docstring that is wrong for the code, restated signatures, negatives that should be behavior.
+2. **Silenced or weakened checks.** Anything `writing-python-code` forbids silencing, plus the never-miss test rules of `testing-python-packages`: a new skip or xfail, loosened lint, type or pytest config, a weakened assertion, a deleted test, expected values copied from the code's own output.
+3. **Unneeded concepts.** Apply the Minimalism rules of `writing-python-code` (the deletion test, wrappers, one-implementation abstractions, `utils.py`, unused parameters) to every new function, class, constant and exception, plus an exception that only renames a library error.
+4. **Docs and comments.** Check against the docstring and comment rules in `writing-python-code` (`references/docs-and-comments.md`): conversation residue, restated signatures, negatives that should be behavior. Also a docstring that is wrong for the code.
 5. **Public API.** New, renamed or removed names; a changed return type; positional booleans; a missing deprecation warning; a version bump that does not match the change; `__all__` and the changelog not updated.
 6. **Dependencies and files.** A second library for a job one already does, a new dependency in the base install, scratch or summary files, unrelated reformatting, hand-edited generated files.
-7. **Security.** `shell=True` with interpolation, SQL built with f-strings, secrets in code or fixtures, `eval`, `pickle`, `yaml.load`.
+7. **Security.** Anything `writing-python-code` (`references/logging-and-security.md`) prohibits, for example `shell=True` with interpolation, f-string SQL, secrets in code or fixtures.
 
 ## What not to report
 

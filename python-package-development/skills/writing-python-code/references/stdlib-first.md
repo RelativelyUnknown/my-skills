@@ -1,6 +1,6 @@
 # Use what exists
 
-Examples, not a boundary. If many Python developers have hit a problem, a standard solution exists; find it before writing your own. Entries marked 3.11+ or 3.12+ follow the version table in `SKILL.md`.
+Examples, not a boundary. If many Python developers have hit a problem, a standard solution exists; find it before writing your own. Entries marked 3.11+ or 3.12+ follow the table in `python-versions.md`.
 
 | Job | Use | Not |
 | --- | --- | --- |

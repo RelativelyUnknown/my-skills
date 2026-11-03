@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node (animation tooling)
+node_modules/
+package-lock.json
