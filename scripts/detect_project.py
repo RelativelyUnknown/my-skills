@@ -18,7 +18,7 @@ except ModuleNotFoundError:
 
 TOOLS = (
     "uv", "poetry", "pdm", "hatch", "ruff", "mypy", "pyright", "pytest",
-    "black", "flake8", "pylint", "isort", "nox", "tox",
+    "black", "flake8", "pylint", "isort", "nox", "tox", "xenon", "radon",
 )  # fmt: skip
 BACKENDS = {
     "hatchling.build": "hatchling",

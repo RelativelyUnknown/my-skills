@@ -275,6 +275,17 @@ def test_main_prints_facts_for_the_given_directory(
     assert "tools.available=mypy\n" in out
 
 
+def test_main_reports_complexity_tools_found_in_the_venv(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    write_files(tmp_path, {".venv/bin/xenon": "", ".venv/bin/radon": ""})
+    monkeypatch.setattr("detect_project.shutil.which", lambda _name: None)
+
+    assert main([str(tmp_path)]) == 0
+
+    assert "tools.available=radon,xenon\n" in capsys.readouterr().out
+
+
 def test_main_reports_invalid_toml_on_one_line(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
