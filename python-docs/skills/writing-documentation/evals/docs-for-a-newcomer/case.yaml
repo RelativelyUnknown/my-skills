@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: docs-for-a-newcomer
+expected_outcome: |
+  A README with install and a runnable example, plus docstrings that say what `book` and `bank` are, that `lag` counts days and `tol` is an absolute amount, what is returned, and the inclusive bounds.
+context:
+  scaffold_script: fixture.sh

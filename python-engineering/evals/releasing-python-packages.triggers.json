@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Cut release 1.2.0 and publish it to PyPI",
+    "should_trigger": true
+  },
+  {
+    "query": "Prepare release 0.4.0 but do not publish anything",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up trusted publishing from GitHub Actions when I push a version tag",
+    "should_trigger": true
+  },
+  {
+    "query": "After pip install, the package raises FileNotFoundError for schema.json though it works in the repo",
+    "should_trigger": true
+  },
+  {
+    "query": "What should go in the changelog entry for 2.0.0?",
+    "should_trigger": true
+  },
+  {
+    "query": "Add the pyjwt package as a dependency and check it is safe",
+    "should_trigger": false
+  },
+  {
+    "query": "Review my PR diff on branch fix-auth",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a test for the divide-by-zero case",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a function that retries an HTTP call three times",
+    "should_trigger": false
+  }
+]

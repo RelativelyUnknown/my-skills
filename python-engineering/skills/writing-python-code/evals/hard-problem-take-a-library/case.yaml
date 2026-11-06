@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: hard-problem-take-a-library
+expected_outcome: |
+  Guard against stdlib dogma: free-form date parsing is hard to get right, so a maintained library (dateparser, python-dateutil) is added to the dependencies and flagged in the report, instead of a regex parser.
+context:
+  scaffold_script: fixture.sh

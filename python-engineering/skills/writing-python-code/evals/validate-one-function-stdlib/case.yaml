@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: validate-one-function-stdlib
+expected_outcome: |
+  Plain `if ... raise ValueError(...)` checks in the function (no new dependency, no model class), messages that name the bad value, and tests with `pytest.raises`.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: one-settings-object
+expected_outcome: |
+  Replaces the singleton request with a frozen dataclass built at the program edge (no `_instance`, `__new__` or metaclass), reads the environment in one module only, keeps the tests green and explains the decision.
+context:
+  scaffold_script: fixture.sh

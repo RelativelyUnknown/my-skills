@@ -222,3 +222,6 @@ __marimo__/
 # Node (animation tooling)
 node_modules/
 package-lock.json
+
+# Eval results (written by `claude plugin eval`)
+**/evals/results/

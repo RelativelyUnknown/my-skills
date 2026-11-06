@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Set up a new Python library called geomkit with linting and type checking",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a GitHub Actions workflow that runs the project's checks on pull requests",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert this repo from setup.py and requirements.txt to pyproject.toml",
+    "should_trigger": true
+  },
+  {
+    "query": "Add mypy strict to the project and to CI",
+    "should_trigger": true
+  },
+  {
+    "query": "I want one command that runs lint, types and tests",
+    "should_trigger": true
+  },
+  {
+    "query": "Rename the public function parse_config to load_config",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a test for the empty-input case",
+    "should_trigger": false
+  },
+  {
+    "query": "Review my PR diff on branch fix-auth",
+    "should_trigger": false
+  },
+  {
+    "query": "This job is too slow on 200k rows, make it faster",
+    "should_trigger": false
+  }
+]

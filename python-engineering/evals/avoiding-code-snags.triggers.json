@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Clean up the code smells in utils.py",
+    "should_trigger": true
+  },
+  {
+    "query": "What are the worst snags in this module? List them worst first",
+    "should_trigger": true
+  },
+  {
+    "query": "List the pet peeves a reviewer would have with src/reports/ingest.py",
+    "should_trigger": true
+  },
+  {
+    "query": "Review src/api/client.py from the point of view of someone who uses it as a library",
+    "should_trigger": true
+  },
+  {
+    "query": "Tidy this file: remove the leftover prints and the commented-out code, keep the behaviour",
+    "should_trigger": true
+  },
+  {
+    "query": "Review my PR diff on branch fix-auth",
+    "should_trigger": false
+  },
+  {
+    "query": "Use the strategy pattern to remove this if/elif chain",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a test for the divide-by-zero case",
+    "should_trigger": false
+  },
+  {
+    "query": "Prepare release 0.4.0",
+    "should_trigger": false
+  }
+]

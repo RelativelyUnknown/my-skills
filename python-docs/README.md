@@ -55,7 +55,7 @@ Projects that already use [Vale](https://vale.sh/) keep it; the skill runs both.
 
 ## Evals
 
-`skills/writing-documentation/evals/` holds two cases (a README from scratch, numpydoc docstrings) and `evals/writing-documentation.triggers.json` holds trigger checks.
+`skills/writing-documentation/evals/` holds three cases (a README from scratch, numpydoc docstrings, and a README plus docstrings for a reader who has never seen the code) and `evals/writing-documentation.triggers.json` holds trigger checks.
 
 ## Develop
 

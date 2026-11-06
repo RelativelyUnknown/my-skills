@@ -61,11 +61,22 @@ Complexity tools (`xenon`, `radon`) are advice in these skills, never a score to
 
 ## Evals
 
-New skills ship test cases in `skills/<skill>/evals/<case>/` (`prompt.md`, `case.yaml`, `graders/`), the layout `claude plugin eval` and the skill-creator skill read. Trigger checks (prompts that should and should not load each skill) are in `evals/<skill>.triggers.json`. Run each case with and without the skill on the models you use; a skill that shows no difference should be cut or rewritten. Skills benchmarks found that curated skills help on average while many individual skills change nothing (see the root README).
+Test cases are in `skills/<skill>/evals/<case>/` (`prompt.md`, `case.yaml`, `graders/`, and `fixture.sh` where the case needs files), the layout `claude plugin eval` reads. There are twenty-two cases: two that came with the profiling and dependency skills; sixteen converted from earlier scenarios (fifteen where a run without the skill missed something in my first tests, and one guard, `do-not-over-engineer-orders`, that checks a skill does not push too far); and four baseline cases for the package-versus-stdlib rule and candidate snags (`validate-one-function-stdlib`, `validate-with-existing-pydantic`, `hard-problem-take-a-library`, `review-new-snag-candidates`). Some cases may show no difference between the arms; that is a result to act on, not a pass. Trigger checks (prompts that should and should not load each skill) are in `evals/<skill>.triggers.json`.
+
+Each case runs three times with the skill and three without; the difference is what the skill contributes. A skill with no difference should be cut or rewritten.
 
 ```bash
-cd skills/profiling-python-code && claude plugin eval . --allow-tools Write,Edit,Bash
+# from this folder; one skill, or add --case <name> for one case
+claude plugin eval skills/avoiding-code-snags --scaffold \
+  --allow-tools Write Edit "Bash(pytest *)" "Bash(git *)" \
+  --judge-model sonnet --max-cost-usd 10
 ```
+
+- `--scaffold` runs each case's `fixture.sh` (plain bash that writes the fixture files and a git history); read it first, it runs as you.
+- Cases that run tests call whatever `pytest` is on your `PATH`. Granting `Bash` needs an OS sandbox (on Linux, `bubblewrap` and `socat`); without one the run refuses.
+- `find-faster-json-library` also needs `--allow-tools "WebFetch(domain:pypi.org)" "WebFetch(domain:api.deps.dev)"` and the other package-health hosts it names.
+- A `tool_used: Skill` grader in every case shows whether the skill fired on a plain request. It is an indicator and is not scored.
+- Results go to `evals/results/` (ignored by git). Every run is a real model call on your account.
 
 ## Known interactions
 
@@ -77,7 +88,7 @@ cd skills/profiling-python-code && claude plugin eval . --allow-tools Write,Edit
 
 Claude Code: ask `add a regression test for the bug in <file>` and check that the agent writes the failing test before the fix. Then `/testing-python-packages rigor=lite fix the flaky test in tests/test_x.py`.
 
-Copilot (VS Code agent mode or cloud agent): run `/skills` to confirm the six skills are listed, then ask the same two prompts. Copilot does not guarantee that it picks a skill, so test both the slash command and the plain request. This repo was not tested in Copilot.
+Copilot (VS Code agent mode or cloud agent): run `/skills` to confirm the ten skills are listed, then ask the same two prompts. Copilot does not guarantee that it picks a skill, so test both the slash command and the plain request. This repo was not tested in Copilot.
 
 ## Develop
 

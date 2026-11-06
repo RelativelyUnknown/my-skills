@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: bug-fix-starts-red
+expected_outcome: |
+  Writes a failing test for the bug first, sees it fail, fixes the rounding (16.99), runs the whole suite, and weakens no existing assertion.
+context:
+  scaffold_script: fixture.sh
