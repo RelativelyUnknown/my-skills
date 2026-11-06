@@ -6,7 +6,7 @@ argument-hint: "[style=google docstrings=numpy]"
 
 # Writing documentation
 
-Documentation lets a reader do or understand something without asking the author. Every sentence either moves the reader toward that or goes. This skill keeps the core of *writing-clearly-and-concisely*: Strunk's composition rules and no AI patterns. It adds the conventions of well-documented projects: Diátaxis, the Google and Microsoft developer style guides, the Python devguide style guide, PEP 257 and numpydoc.
+Documentation lets a reader do or understand something without asking the author. Every sentence either moves the reader toward that or goes.
 
 ## Start
 
@@ -41,7 +41,7 @@ Documentation lets a reader do or understand something without asking the author
 
 - **Be specific.** Numbers, versions, units, exact error messages, defaults. "Retries 3 times with exponential backoff starting at 1 s" beats "retries automatically".
 - **Timeless.** No "currently", "now", "new", "recently", "soon", or promises about future features. History belongs in the changelog; plans belong in the issue tracker.
-- **No minimizers, puffery or filler.** Not "simply", "just", "easy", "obviously"; not "powerful", "seamless", "robust", "blazing fast"; not "in order to", "note that", "it is important to note". A speed claim comes with a benchmark or is cut.
+- **No minimizers, puffery or filler** ("simply", "just", "easy", "powerful", "seamless", "blazing fast", "in order to", "note that"); `lint_prose.py` flags the word lists. A speed claim comes with a benchmark or is cut.
 - **Affirmative and calm.** Say what works and how to do it. Reserve warnings for data loss, security and crashes, and state the consequence: "Deletes the table and its history; this cannot be undone." Collect security considerations in their own section and link to it.
 - **Global readers.** No idioms, jokes or Latin abbreviations (write "for example", "that is"). Expand an acronym on first use unless it is better known than its expansion (HTML, URL, API).
 - **Inclusive and accessible.** "allowlist/denylist", "primary/replica"; "they" for an unknown person. Alt text that states what an image shows; never rely on color alone.
