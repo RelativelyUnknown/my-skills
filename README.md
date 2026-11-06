@@ -9,6 +9,7 @@ A monorepo of my agent skills. Each folder is one self-contained skillset with i
 | [`python-package-development/`](python-package-development/) | Rules that make an AI agent write less slop when developing Python packages, plus the scripts that validate them | `testing-python-packages`, `writing-python-code`, `setting-up-python-packages`, `designing-package-apis`, `releasing-python-packages`, `reviewing-python-changes`, `profiling-python-code`, `auditing-python-dependencies`, `avoiding-code-snags`, `choosing-python-design-patterns` |
 | [`python-web-development/`](python-web-development/) | Web APIs and services with FastAPI, Django, SQLAlchemy: validation, per-object auth, async, security, deployment | `building-python-web-services` |
 | [`documentation/`](documentation/) | Documentation to the conventions of well-documented projects, plus a prose linter | `writing-documentation` |
+| [`third-party/`](third-party/) | Unmodified copies of other publishers' Python coding-practice and writing skills (MIT), each with its licence, source commit and review notes | `wshobson-python` (16 skills), `humanizer`, `writing-clearly-and-concisely` |
 | [`powerpoint-animations/`](powerpoint-animations/) | Clean looping explainer animations rendered to MP4/GIF and put into PowerPoint | `powerpoint-animation-style`, `building-animation-scenes`, `exporting-animations-to-powerpoint` |
 
 ## Install
@@ -25,7 +26,7 @@ mkdir -p ~/.claude/skills && cp -r powerpoint-animations/skills/powerpoint-anima
 
 `.claude/skills/` is read by both Claude Code and Copilot. Every skill folder is self-contained, so any subset works. Skillset-specific requirements and arguments are in each skillset's README.
 
-Skills from other publishers (writing and code quality) are not copied here. [RECOMMENDED-SKILLS.md](RECOMMENDED-SKILLS.md) lists the ones worth installing, with licences, install commands and how to judge a skill before trusting it.
+Skills from other publishers are vendored, unmodified and with their licences, in [`third-party/`](third-party/); nothing there is installed by default.
 
 ## Layout
 
@@ -40,6 +41,7 @@ skills/
 │   └── pyproject.toml  uv.lock
 ├── python-web-development/         skillset (uses the shared checker)
 ├── documentation/                  skillset (prose linter, tests)
+├── third-party/                    vendored skills (own licences, SOURCE.md each)
 └── powerpoint-animations/          skillset
     └── skills/<skill>/SKILL.md
 ```
