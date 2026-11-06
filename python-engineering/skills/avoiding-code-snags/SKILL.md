@@ -1,6 +1,6 @@
 ---
 name: avoiding-code-snags
-description: "Catalogue of Python code snags, the small things that make a reviewer wince, ranked blocker, wince or nit, each with its fix and the lint rule that catches it, including what a caller sees in a hover tooltip. Use when cleaning up a file, reviewing code for smells or AI slop, or checking your own diff before saying done."
+description: "Catalogue of Python code snags, ranked blocker, wince or nit, each with its fix and the lint rule that catches it, including what a caller sees in a hover tooltip. Use when asked to review a Python file or module for problems, list what is wrong worst first, clean up a file, or check your own diff before saying done."
 argument-hint: "[python=3.12 report=normal]"
 ---
 
@@ -43,6 +43,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 | Naive time (blocker) | `datetime.utcnow()`, `datetime.now()` | `datetime.now(UTC)` | DTZ003, DTZ005 |
 | Log and re-raise (wince) | `logger.error(e)` then `raise` | log once at the boundary, or raise | grep |
 | Clobbering default (wince) | `timeout = timeout or 30` replaces `0` | `if timeout is None` | grep |
+| Masked missing data (wince) | `payload.get("name", "")` or `getattr(obj, "x", None)` for a field that must exist | `payload["name"]`, so a missing field fails where it happens | review |
 | Module-level mutable state (wince) | `_CACHE = {}` | pass it in, or `functools.cache` | grep |
 | Untyped bag (wince) | `dict[str, Any]` passed around, a bare `-> dict` | dataclass or `TypedDict` | ANN401 |
 | Positional boolean (wince) | `run(path, True, False)` | keyword-only | FBT001, FBT002 |
