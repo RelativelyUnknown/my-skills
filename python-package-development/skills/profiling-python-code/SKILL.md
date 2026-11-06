@@ -40,7 +40,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 1. **Do less work**: a better algorithm or data structure (a `set` for membership, a dict index instead of a nested loop), no repeated work (hoist out of loops, `functools.cache` for pure repeated calls).
 2. **Batch I/O**: one query instead of N, bulk inserts, a shared HTTP client, concurrency for I/O waits (`asyncio.TaskGroup`, `ThreadPoolExecutor`).
 3. **Move loops out of Python**: NumPy operations, built-ins (`sum`, `sorted`, `str.join`), comprehensions over manual appends.
-4. **A faster library** for the measured hot path: `writing-python-code` (`references/faster-libraries.md`).
+4. **A faster library** for the measured hot path. Choose from [references/faster-libraries.md](references/faster-libraries.md); when the job is not listed or the entry does not fit this project, follow [references/finding-replacement-packages.md](references/finding-replacement-packages.md) (when it is worth doing, how to find candidates online, how to judge them). Recommend; switch only when asked.
 5. **Parallelism** for CPU-bound work: `ProcessPoolExecutor`, or the free-threaded build when every dependency supports it.
 6. **Micro-optimizations** last, only on lines the profile names, and only when the gain is measurable.
 

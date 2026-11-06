@@ -1,6 +1,6 @@
 # Faster libraries
 
-The step after `stdlib-first.md`: what to use when a measured hot path is too slow. Speed figures are the maintainers' own benchmarks unless noted; your workload decides.
+The step after the standard library (`writing-python-code`, `references/stdlib-first.md`): what to use when a measured hot path is too slow. If a job is not listed or an entry does not fit the project, follow `finding-replacement-packages.md`. Speed figures are the maintainers' own benchmarks unless noted; your workload decides.
 
 ## Contents
 
@@ -17,7 +17,7 @@ The step after `stdlib-first.md`: what to use when a measured hot path is too sl
 
 1. **Profile first** (see `profiling-python-code`). Name the function and the number: "`parse_rows` takes 4.1 s of 5 s". No measurement, no swap.
 2. **Keep what the project has.** If the project already uses a library for the job, use it. Recommend a replacement in the report; switch only when asked.
-3. **The replacement must earn the dependency** (rules in `writing-python-code`): maintained, widely used, license compatible, wheels for every platform the project supports.
+3. **The replacement must earn the dependency** (rules in `writing-python-code`): maintained, widely used, license compatible, wheels for every platform the project supports. How to check each is in `finding-replacement-packages.md`.
 4. **Same behavior, then speed.** Run the existing tests on the swap. Watch for different return types (`bytes` vs `str`), error types, rounding and time-zone handling.
 5. **Report before and after** on the same input, plus any behavior difference.
 
