@@ -52,7 +52,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 - Import it inside the function that needs it, not at module top. If the import fails, raise `ImportError` chained with `from e`, with a message that names the extra: `pip install "pkg[parquet]"`. Name the extra in the function's docstring.
 - Tests for such a function use `pytest.importorskip("pyarrow")` or run with the extra installed in CI; the error path is tested by hiding the module with `monkeypatch.setitem(sys.modules, "pyarrow", None)`.
 
-## Typing, logging, docs
+## Typing and logging
 
 - Ship `py.typed`, annotate every public function completely, and run the type checker on the package in CI.
 - Library code uses `logging.getLogger(__name__)` (see `writing-python-code`, `references/logging-and-security.md`) and never configures handlers or calls `basicConfig`. The top-level `__init__.py` adds a `NullHandler` to the package logger, and nowhere else.
