@@ -4,4 +4,4 @@ focus: last_message
 weight: 1
 ---
 
-PASS if the final message lists what was left alone and why (the deliberate choices), and states the test result with the command. FAIL if it claims everything was fixed without mentioning what was kept.
+PASS if the final message has a section naming what was left alone (the deliberate `except FileNotFoundError`, the justified `type: ignore`, the `_split_fields` helper, or similar) and why. FAIL if it claims everything was changed or never mentions what was kept.
