@@ -40,7 +40,7 @@ No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cau
 | Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle` | [references/logging-and-security.md](references/logging-and-security.md) |
 | `xenon`, `radon` or a complexity lint rule reports a rank | [references/complexity-tools.md](references/complexity-tools.md) |
 | Hand-rolling a utility | [references/stdlib-first.md](references/stdlib-first.md) |
-| A measured hot path is too slow, or choosing a library for speed | [references/faster-libraries.md](references/faster-libraries.md) |
+| A measured hot path is too slow, or choosing a library for speed | the `profiling-python-code` skill: profile first, then its `references/faster-libraries.md` and `references/finding-replacement-packages.md` |
 
 Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.11 is end of life (3.10 reached it in October 2026): ask first.
 
@@ -60,7 +60,7 @@ Every function, class, constant and exception is something a reader must look up
 
 - A function must hide real logic or enforce a rule that has to stay consistent. Deletion test: if inlining it leaves every call site as short and clear, delete it. No one-line wrappers around expressions, stdlib calls or library methods (`def quote(s): return f'"{s}"'`).
 - A method that never reads `self` is a function; a class with `__init__` and one method is a function. No wrapper classes that only forward; no ABCs, Protocols, factories or registries with one implementation; no parameters, options or hooks "for flexibility"; no `**kwargs` unless forwarding.
-- Defaults go in the signature or the dataclass field, never in a `DEFAULTS` dict. A shared immutable value may be a module constant (`DEFAULT_TIMEOUT = 30`); a value used once stays inline. Mutable defaults are never allowed: use `None` and build the object in the body.
+- Defaults are literals in the signature or the dataclass field (`timeout: float = 30`), so hovering over a function in an editor shows the value. No `DEFAULT_*` constant and no `DEFAULTS` dict standing in for a default, and "easy to change later" is no reason: a caller can pass the value and a developer edits one line. A constant is for a value the body uses; a value used once stays inline. Mutable defaults are never allowed: use `None` and build the object in the body.
 - No `utils.py` or `helpers.py`; put code where it is used. No variable assigned only to be returned on the next line. No single-use type alias, base class or Enum "for consistency".
 - Shorter only when also clearer: no nested comprehensions beyond one level, no walrus chains, no single-letter names outside tight loops.
 

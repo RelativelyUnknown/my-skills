@@ -1,6 +1,6 @@
 ---
 name: avoiding-code-snags
-description: "Catalogue of Python code snags, the small things that make a reviewer wince, ranked blocker, wince or nit, each with its fix and the lint rule that catches it. Use when cleaning up a file, reviewing code for smells or AI slop, or checking your own diff before saying done."
+description: "Catalogue of Python code snags, the small things that make a reviewer wince, ranked blocker, wince or nit, each with its fix and the lint rule that catches it, including what a caller sees in a hover tooltip. Use when cleaning up a file, reviewing code for smells or AI slop, or checking your own diff before saying done."
 argument-hint: "[python=3.12 report=normal]"
 ---
 
@@ -14,7 +14,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 ## Severity
 
-- **Blocker:** wrong or hidden behavior. Swallowed errors, mutable defaults, naive time, `assert` as validation, secrets in code, injection, a load that duplicates rows when re-run.
+- **Blocker:** wrong or hidden behavior. Swallowed errors, mutable defaults, naive time, `assert` as validation, secrets in code, injection, a network call with no timeout, a call in a default argument.
 - **Wince:** misleads or burdens the reader. Everything marked wince below.
 - **Nit:** tidy-up the linter already knows (unused imports, `== None`, `== True`, `len(x) == 0`, commented-out code, wildcard imports). Fix them in a cleanup; never list them in a review.
 
@@ -29,6 +29,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 - `# type: ignore[code]` or `# noqa: CODE` with a reason in the comment.
 - A helper that hides real logic (parsing, validation, a rule that must stay consistent).
 - A class with state that persists across calls or an invariant its methods protect.
+- A literal default in the signature, a `Literal[...]` option, and a constant that the body uses (`MAX_BODY_BYTES`).
 - `print` in a command-line entry point whose job is to print.
 - `Any` or `object` at a true boundary (network JSON) that is narrowed at once.
 
@@ -43,7 +44,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 | Log and re-raise (wince) | `logger.error(e)` then `raise` | log once at the boundary, or raise | grep |
 | Clobbering default (wince) | `timeout = timeout or 30` replaces `0` | `if timeout is None` | grep |
 | Module-level mutable state (wince) | `_CACHE = {}` | pass it in, or `functools.cache` | grep |
-| Untyped bag (wince) | `dict[str, Any]` passed around | dataclass or `TypedDict` | ANN401 |
+| Untyped bag (wince) | `dict[str, Any]` passed around, a bare `-> dict` | dataclass or `TypedDict` | ANN401 |
 | Positional boolean (wince) | `run(path, True, False)` | keyword-only | FBT001, FBT002 |
 | Tuple of 3+ returned (wince) | `return a, b, c` | a named structure | grep |
 | Stateless class (wince) | `class FooManager` with an empty `__init__` and one method | a function | grep |
@@ -58,4 +59,24 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 | Leftover debugging (wince) | `print(...)` in library code, `TODO` litter | delete, or use `logging` | T201, FIX |
 | Defensive code for the impossible (wince) | a guard no caller can trigger | delete | review |
 | Duplicate of an existing helper (wince) | wrote a new one without searching | use the existing one | `rg` |
+| No timeout (blocker) | `urlopen(url)`, `requests.get(url)`; a `timeout` parameter that is never passed on | pass an explicit timeout | S113 |
+| `open()` without encoding (wince) | `open(path)` reads in the machine's locale | `open(path, encoding="utf-8")` | PLW1514 |
+| Import-time side effects (wince) | `json.load(open(...))` or `os.environ[...]` at module level | do it in a function at the program edge | grep |
+| Generic exception (wince) | `raise Exception("bad status")`, or re-raising a new error without `from e` | a specific built-in or `PkgError`; `raise ... from e` | TRY002, B904 |
+| Unexplained number (nit) | `items[:37]` with no name or reason | name it if it carries meaning, or comment why; never to hide a signature default | review |
 | Test that cannot fail (wince) | `assert result is not None`, only the mock was called | see `testing-python-packages` | PT |
+
+## What the caller sees
+
+Hover tooltips and signature help show the signature, not the body, so these snags cost every caller, not only the maintainer.
+
+| Snag | Looks like | Fix | Catch |
+| --- | --- | --- | --- |
+| Constant as default (wince) | `def f(timeout=DEFAULT_TIMEOUT)`: hover shows a name, not the value | `timeout: float = 30` | grep |
+| `None` hiding the real default (wince) | `retries=None`, then `retries = retries or 3` | the real default in the signature | grep |
+| Call in a default (blocker) | `def stamp(now=datetime.now())` runs once, at import | `None` and build it in the body, or a required argument | B008 |
+| Hidden parameters (wince) | `def request(url, **kwargs)` | name them; `Unpack[TypedDict]` for many options | grep |
+| Wrapper without `functools.wraps` (wince) | hover shows `(*args, **kwargs)` and the docstring is lost | `@functools.wraps(func)`, or `ParamSpec` | grep |
+| Option as a free string (wince) | `mode="strict"` | `Literal["strict", "lenient"]`, so hover lists the choices | review |
+| Builtin as a parameter name (wince) | `def get(id, type)` | `item_id`, `kind` | A002 |
+| Wide positional signature (wince) | six or more positional parameters | keyword-only after `*`, or a dataclass | PLR0913 |

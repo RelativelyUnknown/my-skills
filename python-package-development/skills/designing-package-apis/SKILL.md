@@ -30,6 +30,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 - Accept the widest type the function needs (`Iterable` if it loops once, `Sequence` if it indexes, `Mapping` if it only reads); return the concrete type callers need.
 - No positional booleans. A keyword-only flag that tunes a detail (`overwrite=False`) is fine; a flag that changes what the function does means two functions (`write_csv`, `write_json`).
 - `Literal["csv", "json"]` for a small closed set of strings; an Enum only when the set is large or shared.
+- Signatures are read in an editor's hover tooltip, so keep them readable: literal defaults (`timeout: float = 30`, never `timeout=DEFAULT_TIMEOUT`, and never `None` that secretly means 30); named parameters instead of a `**kwargs` pass-through (`Unpack[TypedDict]` when there are many options); `functools.wraps` or `ParamSpec` on decorators so the original signature survives; no parameter named after a builtin (`id`, `type`, `format`, `input`).
 - Put units in names (`timeout_seconds`) or let the type carry them (`timedelta`, `Path`). One concept, one name across the package.
 - Return a value or raise; return `None` only when absence is a normal answer. No `(ok, value)` pairs or status strings. Use the stdlib's verbs: `load`/`dump`, `parse`/`format`, `get` with a default. Large or lazy results are an iterator named as a noun (`rows()`).
 
