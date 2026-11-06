@@ -2,7 +2,7 @@
 
 Part of the [skills monorepo](../README.md). Run the development commands from this folder.
 
-Eight agent skills for developing Python packages, for Claude Code and GitHub Copilot. They make an AI agent write less slop: tests that can fail, errors that surface, fewer concepts, honest reports. The rules come from the *Python Engineering Rules for AI Agents* (v2).
+Ten agent skills for developing Python packages and writing Python code, for Claude Code and GitHub Copilot. They make an AI agent write less slop: tests that can fail, errors that surface, fewer concepts, honest reports. The rules come from the *Python Engineering Rules for AI Agents* (v2).
 
 The skills follow the open [Agent Skills](https://agentskills.io/specification) format, so one folder works in both tools. Each skill loads only when the request matches its description; reference files load only when the skill points at them.
 
@@ -18,8 +18,10 @@ The skills follow the open [Agent Skills](https://agentskills.io/specification) 
 | `reviewing-python-changes` | review a diff, or check your own work before saying done | 1.0k |
 | `profiling-python-code` | chase slow code or high memory, or are about to swap in a faster library | 1.2k |
 | `auditing-python-dependencies` | add a dependency, answer a security alert, or audit the supply chain | 1.2k |
+| `avoiding-code-snags` | clean up a file, review code for smells or AI slop, or check your own diff before saying done | 1.2k |
+| `choosing-python-design-patterns` | are asked for a design pattern, a refactor that adds classes or layers, or an extension point | 1.1k |
 
-Always-on cost is the eight descriptions: about 550 tokens. Run `uv run python scripts/check_skills.py` for the current numbers.
+Always-on cost is the ten descriptions: about 700 tokens. Run `uv run python scripts/check_skills.py` for the current numbers.
 
 ## Install
 
@@ -30,7 +32,7 @@ mkdir -p .claude/skills && cp -r /path/to/skills/python-package-development/skil
 ```
 
 - `.claude/skills/` is the one project path both Claude Code and Copilot (VS Code agent mode, cloud agent, CLI) read. `.github/skills/` is Copilot only. Personal installs: `~/.claude/skills/` or `~/.copilot/skills/`.
-- **Minimal profile:** copy only `testing-python-packages` and `writing-python-code` (two descriptions, about 130 tokens). **Full profile:** all eight.
+- **Minimal profile:** copy only `testing-python-packages` and `writing-python-code` (two descriptions, about 130 tokens). **Full profile:** all ten.
 - Each skill folder is self-contained, so any subset works.
 
 `writing-python-code` keeps its always-needed rules in `SKILL.md`. Topic rules live in `references/` and load only when the task touches them: Python versions, docstrings and comments, logging and security, complexity tools, stdlib-first and faster libraries. `faster-libraries.md` is the step after stdlib-first. It lists faster replacements (uv, ruff, Polars, DuckDB, orjson, msgspec, uvloop, granian, RapidFuzz, selectolax, whenever, re2, numba) with their evidence and when not to switch. `profiling-python-code` is the gate: no swap without a measurement. Each rule has one home: the other skills point to it instead of restating it.
