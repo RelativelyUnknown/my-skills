@@ -2,7 +2,7 @@
 
 Part of the [skills monorepo](../README.md). Run the development commands from this folder.
 
-Ten agent skills for developing Python packages and writing Python code, for Claude Code and GitHub Copilot. They make an AI agent write less slop: tests that can fail, errors that surface, fewer concepts, honest reports. The rules come from the *Python Engineering Rules for AI Agents* (v2).
+Eleven agent skills for developing Python packages and writing Python code, for Claude Code and GitHub Copilot. They make an AI agent write less slop: tests that can fail, errors that surface, fewer concepts, honest reports. The rules come from the *Python Engineering Rules for AI Agents* (v2).
 
 The skills follow the open [Agent Skills](https://agentskills.io/specification) format, so one folder works in both tools. Each skill loads only when the request matches its description; reference files load only when the skill points at them.
 
@@ -11,17 +11,18 @@ The skills follow the open [Agent Skills](https://agentskills.io/specification) 
 | Skill | Loads when you... | Body (est. tokens) |
 | --- | --- | --- |
 | `testing-python-packages` | add or fix tests, chase a flaky test, reproduce a bug, configure pytest | 1.2k |
-| `writing-python-code` | write, change or debug Python source; also holds the end-of-task report | 2.2k |
+| `writing-python-code` | write, change or debug Python source; also holds the end-of-task report | 2.3k |
 | `setting-up-python-packages` | create a package or change build, lint, type, dependency or CI config | 1.1k |
 | `designing-package-apis` | add, rename or remove a public name, extra or exception | 1.3k |
 | `releasing-python-packages` | prepare or cut a release, fix a wheel, edit publishing workflows | 1.0k |
 | `reviewing-python-changes` | review a diff, or check your own work before saying done | 1.0k |
-| `profiling-python-code` | chase slow code or high memory, or are about to swap in a faster library | 1.2k |
-| `auditing-python-dependencies` | add a dependency, answer a security alert, or audit the supply chain | 1.2k |
-| `avoiding-code-snags` | clean up a file, review code for smells or AI slop, or check your own diff before saying done | 1.2k |
+| `profiling-python-code` | chase slow code or high memory, or are about to swap in a faster library | 1.1k |
+| `auditing-python-dependencies` | add a dependency, answer a security alert, or audit the supply chain | 1.1k |
+| `avoiding-code-snags` | review a file or module for problems, clean up a file, or check your own diff before saying done | 1.8k |
 | `choosing-python-design-patterns` | are asked for a design pattern, a refactor that adds classes or layers, or an extension point | 1.1k |
+| `writing-python-scripts-and-clis` | are asked for a script, a command-line tool or a one-off utility | 0.4k |
 
-Always-on cost is the ten descriptions: about 700 tokens. Run `uv run python scripts/check_skills.py` for the current numbers.
+Always-on cost is the eleven descriptions: about 800 tokens. Run `uv run python scripts/check_skills.py` for the current numbers.
 
 ## Install
 
@@ -32,10 +33,10 @@ mkdir -p .claude/skills && cp -r /path/to/skills/python-engineering/skills/* .cl
 ```
 
 - `.claude/skills/` is the one project path both Claude Code and Copilot (VS Code agent mode, cloud agent, CLI) read. `.github/skills/` is Copilot only. Personal installs: `~/.claude/skills/` or `~/.copilot/skills/`.
-- **Minimal profile:** copy only `testing-python-packages` and `writing-python-code` (two descriptions, about 130 tokens). **Full profile:** all ten.
+- **Minimal profile:** copy only `testing-python-packages` and `writing-python-code` (two descriptions, about 130 tokens). **Full profile:** all eleven.
 - Each skill folder is self-contained, so any subset works.
 
-`writing-python-code` keeps its always-needed rules in `SKILL.md`. Topic rules live in `references/` and load only when the task touches them: Python versions, docstrings and comments, logging and security, complexity tools, stdlib-first and faster libraries. `profiling-python-code` owns the faster-libraries material: the gate (no swap without a measurement), `references/faster-libraries.md` (curated replacements with their evidence and when not to switch) and `references/finding-replacement-packages.md` (when a swap is worth it, how to find candidates online, and how to judge them from PyPI, deps.dev and OpenSSF Scorecard data). Each rule has one home: the other skills point to it instead of restating it.
+`writing-python-code` keeps its always-needed rules in `SKILL.md`. Topic rules live in `references/` and load only when the task touches them: Python versions, docstrings and comments, logging and security, complexity tools, standard library or package, and faster libraries. `profiling-python-code` owns the faster-libraries material: the gate (no swap without a measurement), `references/faster-libraries.md` (curated replacements with their evidence and when not to switch) and `references/finding-replacement-packages.md` (when a swap is worth it, how to find candidates online, and how to judge them from PyPI, deps.dev and OpenSSF Scorecard data). Each rule has one home: the other skills point to it instead of restating it.
 
 Skills load when the model judges them relevant. The rules that must never be missed (verify before "done", never edit a contradicting test, root cause not symptoms, do not silence tools) live in `writing-python-code` and `testing-python-packages`. If you want them unconditional, copy those bullets into your `AGENTS.md`.
 
@@ -88,7 +89,7 @@ claude plugin eval skills/avoiding-code-snags --scaffold \
 
 Claude Code: ask `add a regression test for the bug in <file>` and check that the agent writes the failing test before the fix. Then `/testing-python-packages rigor=lite fix the flaky test in tests/test_x.py`.
 
-Copilot (VS Code agent mode or cloud agent): run `/skills` to confirm the ten skills are listed, then ask the same two prompts. Copilot does not guarantee that it picks a skill, so test both the slash command and the plain request. This repo was not tested in Copilot.
+Copilot (VS Code agent mode or cloud agent): run `/skills` to confirm the eleven skills are listed, then ask the same two prompts. Copilot does not guarantee that it picks a skill, so test both the slash command and the plain request. This repo was not tested in Copilot.
 
 ## Develop
 

@@ -6,7 +6,7 @@ A monorepo of my agent skills. The Python ones are about good coding practices: 
 
 | Folder | What it is | Skills |
 | --- | --- | --- |
-| [`python-engineering/`](python-engineering/) | Rules that make an AI agent write less slop when developing Python packages, plus the scripts that validate them | `testing-python-packages`, `writing-python-code`, `setting-up-python-packages`, `designing-package-apis`, `releasing-python-packages`, `reviewing-python-changes`, `profiling-python-code`, `auditing-python-dependencies`, `avoiding-code-snags`, `choosing-python-design-patterns` |
+| [`python-engineering/`](python-engineering/) | Rules that make an AI agent write less slop when developing Python packages, plus the scripts that validate them | `testing-python-packages`, `writing-python-code`, `setting-up-python-packages`, `designing-package-apis`, `releasing-python-packages`, `reviewing-python-changes`, `profiling-python-code`, `auditing-python-dependencies`, `avoiding-code-snags`, `choosing-python-design-patterns`, `writing-python-scripts-and-clis` |
 | [`python-web/`](python-web/) | Web APIs and services with FastAPI, Django, SQLAlchemy: validation, per-object auth, async, security, deployment | `building-python-web-services` |
 | [`python-docs/`](python-docs/) | Documentation to the conventions of well-documented projects, plus a prose linter | `writing-documentation` |
 | [`third-party/`](third-party/) | Unmodified copies of other publishers' Python coding-practice and writing skills (MIT), each with its licence, source commit and review notes | `wshobson-python` (16 skills), `humanizer`, `writing-clearly-and-concisely` |
