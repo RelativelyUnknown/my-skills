@@ -341,7 +341,7 @@ wheels = [
 ]
 
 [[package]]
-name = "python-package-development"
+name = "python-engineering"
 version = "0.1.0"
 source = { virtual = "." }
 

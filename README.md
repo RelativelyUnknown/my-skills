@@ -1,14 +1,14 @@
 # skills
 
-A monorepo of my agent skills. Each folder is one self-contained skillset with its own README, skills and tooling. Facts in the skills were checked against current documentation in November 2026. The skills follow the open [Agent Skills](https://agentskills.io/specification) format, so they work in Claude Code and GitHub Copilot.
+A monorepo of my agent skills. The Python ones are about good coding practices: tests that can fail, small honest code, readable APIs and docs. Each folder is one self-contained skillset with its own README, skills and tooling. Facts in the skills were checked against current documentation in November 2026. The skills follow the open [Agent Skills](https://agentskills.io/specification) format, so they work in Claude Code and GitHub Copilot.
 
 ## Skillsets
 
 | Folder | What it is | Skills |
 | --- | --- | --- |
-| [`python-package-development/`](python-package-development/) | Rules that make an AI agent write less slop when developing Python packages, plus the scripts that validate them | `testing-python-packages`, `writing-python-code`, `setting-up-python-packages`, `designing-package-apis`, `releasing-python-packages`, `reviewing-python-changes`, `profiling-python-code`, `auditing-python-dependencies`, `avoiding-code-snags`, `choosing-python-design-patterns` |
-| [`python-web-development/`](python-web-development/) | Web APIs and services with FastAPI, Django, SQLAlchemy: validation, per-object auth, async, security, deployment | `building-python-web-services` |
-| [`documentation/`](documentation/) | Documentation to the conventions of well-documented projects, plus a prose linter | `writing-documentation` |
+| [`python-engineering/`](python-engineering/) | Rules that make an AI agent write less slop when developing Python packages, plus the scripts that validate them | `testing-python-packages`, `writing-python-code`, `setting-up-python-packages`, `designing-package-apis`, `releasing-python-packages`, `reviewing-python-changes`, `profiling-python-code`, `auditing-python-dependencies`, `avoiding-code-snags`, `choosing-python-design-patterns` |
+| [`python-web/`](python-web/) | Web APIs and services with FastAPI, Django, SQLAlchemy: validation, per-object auth, async, security, deployment | `building-python-web-services` |
+| [`python-docs/`](python-docs/) | Documentation to the conventions of well-documented projects, plus a prose linter | `writing-documentation` |
 | [`third-party/`](third-party/) | Unmodified copies of other publishers' Python coding-practice and writing skills (MIT), each with its licence, source commit and review notes | `wshobson-python` (16 skills), `humanizer`, `writing-clearly-and-concisely` |
 | [`powerpoint-animations/`](powerpoint-animations/) | Clean looping explainer animations rendered to MP4/GIF and put into PowerPoint | `powerpoint-animation-style`, `building-animation-scenes`, `exporting-animations-to-powerpoint` |
 
@@ -18,7 +18,7 @@ Skills live in `<skillset>/skills/<skill-name>/`. Copy the ones you want into a 
 
 ```bash
 # one skillset into a project
-mkdir -p .claude/skills && cp -r python-package-development/skills/* .claude/skills/
+mkdir -p .claude/skills && cp -r python-engineering/skills/* .claude/skills/
 
 # one skill, for all your projects
 mkdir -p ~/.claude/skills && cp -r powerpoint-animations/skills/powerpoint-animation-style ~/.claude/skills/
@@ -34,13 +34,13 @@ Skills from other publishers are vendored, unmodified and with their licences, i
 skills/
 ├── README.md                       this index
 ├── LICENSE
-├── python-package-development/     skillset (own README, pyproject, tests, check script)
+├── python-engineering/             skillset (own README, pyproject, tests, check script)
 │   ├── skills/<skill>/SKILL.md     (+ references/, scripts/, assets/, evals/)
 │   ├── evals/                      trigger checks per skill
 │   ├── scripts/  tests/
 │   └── pyproject.toml  uv.lock
-├── python-web-development/         skillset (uses the shared checker)
-├── documentation/                  skillset (prose linter, tests)
+├── python-web/                     skillset (uses the shared checker)
+├── python-docs/                    skillset (prose linter, tests)
 ├── third-party/                    vendored skills (own licences, SOURCE.md each)
 └── powerpoint-animations/          skillset
     └── skills/<skill>/SKILL.md
@@ -62,7 +62,7 @@ These skills follow what 2026 evaluations of agent skills and context files foun
 2. Keep tooling inside the skillset folder, so it can be used or removed on its own.
 3. Add a row to the table above.
 
-Any skillset can reuse the checker (frontmatter, token budgets, links): `cd python-package-development && uv run python scripts/check_skills.py ../<skillset>/skills`. If its skills use `argument-hint`, pass the allowed keys with `--argument-keys a,b`, or an empty value to accept any.
+Any skillset can reuse the checker (frontmatter, token budgets, links): `cd python-engineering && uv run python scripts/check_skills.py ../<skillset>/skills`. If its skills use `argument-hint`, pass the allowed keys with `--argument-keys a,b`, or an empty value to accept any.
 
 ## License
 

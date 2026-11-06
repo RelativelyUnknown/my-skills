@@ -1,8 +1,8 @@
-# python-web-development
+# python-web
 
 Part of the [skills monorepo](../README.md).
 
-One agent skill, `building-python-web-services`, for Python web APIs and services: FastAPI first (the stack in [Mallard](https://github.com/RelativelyUnknown/Mallard)'s server), Django, Litestar and Flask where a project already uses them. It builds on the [python-package-development](../python-package-development/) skills and points to them by name (`writing-python-code`, `testing-python-packages`, `designing-package-apis`); install those too.
+One agent skill, `building-python-web-services`, for Python web APIs and services: FastAPI first (the stack in [Mallard](https://github.com/RelativelyUnknown/Mallard)'s server), Django, Litestar and Flask where a project already uses them. It builds on the [python-engineering](../python-engineering/) skills and points to them by name (`writing-python-code`, `testing-python-packages`, `designing-package-apis`); install those too.
 
 ## Skill
 
@@ -30,18 +30,18 @@ Faster drop-ins for web code (orjson, msgspec, uvloop, granian) are in `writing-
 
 ```bash
 mkdir -p .claude/skills
-cp -r /path/to/skills/python-web-development/skills/* .claude/skills/
-cp -r /path/to/skills/python-package-development/skills/{writing-python-code,testing-python-packages} .claude/skills/
+cp -r /path/to/skills/python-web/skills/* .claude/skills/
+cp -r /path/to/skills/python-engineering/skills/{writing-python-code,testing-python-packages} .claude/skills/
 ```
 
-The skill runs the shared `scripts/detect_project.py` from python-package-development (a copy ships in the skill folder) and accepts the same `python=` and `runner=` arguments.
+The skill runs the shared `scripts/detect_project.py` from python-engineering (a copy ships in the skill folder) and accepts the same `python=` and `runner=` arguments.
 
 ## Develop
 
-This skillset has no tooling of its own. Check it with the python-package-development checker:
+This skillset has no tooling of its own. Check it with the python-engineering checker:
 
 ```bash
-cd ../python-package-development && uv run python scripts/check_skills.py ../python-web-development/skills
+cd ../python-engineering && uv run python scripts/check_skills.py ../python-web/skills
 ```
 
 Add `--sync` after changing the canonical `detect_project.py`.

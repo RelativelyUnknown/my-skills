@@ -1,4 +1,4 @@
-# documentation
+# python-docs
 
 Part of the [skills monorepo](../README.md). Run the development commands from this folder.
 
@@ -31,12 +31,12 @@ Two choices differ from the original skill:
 
 References: `diataxis.md`, `style-guide.md`, `docstrings.md`, `readme-and-changelog.md`, `code-examples.md`, `ai-patterns.md`, `composition.md`.
 
-Docstring *content* rules (no conversation residue, no restated signatures) stay in `writing-python-code` in [python-package-development](../python-package-development/); this skill covers format and everything outside code. Install both for Python projects.
+Docstring *content* rules (no conversation residue, no restated signatures) stay in `writing-python-code` in [python-engineering](../python-engineering/); this skill covers format and everything outside code. Install both for Python projects.
 
 ## Install
 
 ```bash
-mkdir -p .claude/skills && cp -r /path/to/skills/documentation/skills/writing-documentation .claude/skills/
+mkdir -p .claude/skills && cp -r /path/to/skills/python-docs/skills/writing-documentation .claude/skills/
 ```
 
 Arguments: `style=` (`google`, `microsoft`) and `docstrings=` (`numpy`, `google`, `sphinx`) override what the skill detects in the project.
@@ -64,7 +64,7 @@ uv sync
 uv run pytest
 uv run ruff check scripts tests && uv run mypy scripts tests
 cp scripts/lint_prose.py skills/writing-documentation/scripts/   # after changing the script; a test checks the copy
-cd ../python-package-development && uv run python scripts/check_skills.py --argument-keys style,docstrings ../documentation/skills
+cd ../python-engineering && uv run python scripts/check_skills.py --argument-keys style,docstrings ../python-docs/skills
 ```
 
 ## License

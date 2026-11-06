@@ -1,5 +1,5 @@
 [project]
-name = "documentation"
+name = "python-docs"
 version = "0.1.0"
 description = "Agent skill for writing software documentation, plus the prose linter it runs."
 readme = "README.md"

@@ -1,7 +1,7 @@
 [project]
-name = "python-package-development"
+name = "python-engineering"
 version = "0.1.0"
-description = "Agent skills for Python package development, plus the scripts that validate them."
+description = "Agent skills for good Python coding practices, plus the scripts that validate them."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"

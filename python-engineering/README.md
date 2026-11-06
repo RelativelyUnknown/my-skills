@@ -1,4 +1,4 @@
-# python-package-development
+# python-engineering
 
 Part of the [skills monorepo](../README.md). Run the development commands from this folder.
 
@@ -28,7 +28,7 @@ Always-on cost is the ten descriptions: about 700 tokens. Run `uv run python scr
 Copy the folders you want from this folder's `skills/` into your project:
 
 ```bash
-mkdir -p .claude/skills && cp -r /path/to/skills/python-package-development/skills/* .claude/skills/
+mkdir -p .claude/skills && cp -r /path/to/skills/python-engineering/skills/* .claude/skills/
 ```
 
 - `.claude/skills/` is the one project path both Claude Code and Copilot (VS Code agent mode, cloud agent, CLI) read. `.github/skills/` is Copilot only. Personal installs: `~/.claude/skills/` or `~/.copilot/skills/`.
