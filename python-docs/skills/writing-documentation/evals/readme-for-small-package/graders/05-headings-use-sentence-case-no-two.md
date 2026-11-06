@@ -1,12 +1,9 @@
 ---
-type: regex
-target:
+type: llm
+focus:
   source: file
   path: "README.md"
-pattern: "^#{2,}\\s+[A-Z][a-z]+\\s+[A-Z][a-z]+"
-flags: m
-match: not_contains
 weight: 1
 ---
 
-Headings use sentence case (no two capitalised words in a row after the title)
+PASS if every heading after the title uses sentence case (only the first word and proper nouns capitalised). FAIL if any heading is in title case.
