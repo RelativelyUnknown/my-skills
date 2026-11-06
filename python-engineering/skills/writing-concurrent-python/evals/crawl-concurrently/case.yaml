@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: crawl-concurrently
+expected_outcome: |
+  Capped concurrency (10), a real per-call bound or an honest statement that a blocked thread cannot be cancelled, failures collected per URL, no fire-and-forget tasks, no manual Thread bookkeeping.
+context:
+  scaffold_script: fixture.sh
