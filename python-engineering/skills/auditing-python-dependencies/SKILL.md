@@ -23,7 +23,7 @@ Agents suggest package names that do not exist, and attackers register those nam
 3. Its license is compatible with the project's license.
 4. It ships wheels for every Python version and platform the project supports, or builds from a pure-Python sdist.
 5. No unresolved advisories (search the name on osv.dev or the repository's security tab).
-6. It earns its place: the rules in `writing-python-code` (standard library first, nothing for a few lines of code).
+6. It earns its place under the rules in `writing-python-code` (`references/stdlib-or-package.md`): not for a few lines of code, and not a second tool for a job the project already covers.
 
 State the result of each check in the report. If any fails, propose an alternative or ask.
 

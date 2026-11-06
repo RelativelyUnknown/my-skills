@@ -1,6 +1,6 @@
 # Faster libraries
 
-The step after the standard library (`writing-python-code`, `references/stdlib-first.md`): what to use when a measured hot path is too slow. If a job is not listed or an entry does not fit the project, follow `finding-replacement-packages.md`. Speed figures are the maintainers' own benchmarks unless noted; your workload decides.
+The step after the standard library (`writing-python-code`, `references/stdlib-or-package.md`): what to use when a measured hot path is too slow. If a job is not listed or an entry does not fit the project, follow `finding-replacement-packages.md`. Speed figures are the maintainers' own benchmarks unless noted; your workload decides.
 
 ## Contents
 

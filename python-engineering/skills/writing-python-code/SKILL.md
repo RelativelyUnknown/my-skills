@@ -25,7 +25,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 - **Stop and report** instead of working around a problem when a test contradicts the spec or task; the task cannot be done properly with the code and dependencies available; the fix needs a new dependency, a public API change or a deleted file; or you catch yourself justifying test-specific behavior with a reason like "backward compatibility". Ask first when requirements are ambiguous and a wrong guess is expensive.
 - Smallest diff that solves the problem properly. No unrelated refactors, renames or reformatting; mention what you noticed. No summary, changelog or demo files nobody asked for; delete scratch files. Do not edit CI, lint or pytest config unless that is the task.
 - Do not commit, push or run destructive commands (`git reset --hard`, `rm -rf`, force-push, dropping tables) unless asked. Never skip hooks with `--no-verify`. Deleting data or files, dropping columns, changing a public API or irreversible migrations need approval first.
-- Tests: see the `testing-python-packages` skill. Never edit an existing test to get green.
+- Tests: see the `testing-python-packages` skill.
 
 ## Do not silence the tools
 
@@ -39,7 +39,7 @@ No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cau
 | Writing or changing a docstring or comment | [references/docs-and-comments.md](references/docs-and-comments.md) |
 | Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle` | [references/logging-and-security.md](references/logging-and-security.md) |
 | `xenon`, `radon` or a complexity lint rule reports a rank | [references/complexity-tools.md](references/complexity-tools.md) |
-| Hand-rolling a utility | [references/stdlib-first.md](references/stdlib-first.md) |
+| Hand-rolling a utility, or choosing between the standard library and a package | [references/stdlib-or-package.md](references/stdlib-or-package.md) |
 | A measured hot path is too slow, or choosing a library for speed | the `profiling-python-code` skill: profile first, then its `references/faster-libraries.md` and `references/finding-replacement-packages.md` |
 
 Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.11 is end of life (3.10 reached it in October 2026): ask first.
@@ -66,12 +66,11 @@ Every function, class, constant and exception is something a reader must look up
 
 ## Use what exists
 
-Order: the standard library, a dependency the project already has, a widely used community library, then your own code.
+Order: the project's own idiom, the standard library, a widely used package, then your own code. Match what the project already uses for validation, HTTP, CLI and config; do not add a second mechanism.
 
-- Read `pyproject.toml` first. Before hand-rolling a utility, name the stdlib or library function you considered and why it does not fit.
-- Use a library's features fully (`raise_for_status()`, pydantic validation). Never regex-parse structured formats: dates, URLs, HTML, JSON, CSV, versions.
-- Add a dependency only if it is widely used and maintained and the stdlib or a few lines cannot do the job. Flag every new dependency in the report.
-- Common jobs and what not to hand-roll: see the table above.
+- Read `pyproject.toml` first. Before hand-rolling a utility or adding a package, apply [references/stdlib-or-package.md](references/stdlib-or-package.md): a package for a few lines is as wrong as a regex parser for dates.
+- Never regex-parse structured formats: dates, URLs, HTML, JSON, CSV, versions.
+- Flag every new dependency in the report, with the reason.
 
 ## Types, names, structure
 
