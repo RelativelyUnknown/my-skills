@@ -6,7 +6,6 @@ The step after `stdlib-first.md`: what to use when a measured hot path is too sl
 
 - Rules
 - Tooling
-- Dataframes and files
 - Serialization and validation
 - HTTP and async
 - Text, parsing and regex
@@ -32,15 +31,6 @@ These are safe defaults for new projects; existing projects keep their tools unl
 | black, isort, flake8, pyupgrade, most pylint checks | ruff (lint + format) | One Rust binary; 10-100x faster than the tools it replaces (Astral) | You rely on pylint-only checks; keep pylint for those |
 | pre-commit | prek | Same config file; about 10x faster, half the disk (maintainer); Home Assistant, Airflow and PDM switched | A hook needs a pre-commit-only feature |
 | mypy or pyright, for speed | ty (beta, 0.0.x) | Astral: 10x-60x faster than mypy and Pyright uncached | As the only gate: it is beta. Run it beside the existing checker |
-
-## Dataframes and files
-
-| From | To | Evidence | Do not switch when |
-| --- | --- | --- | --- |
-| pandas on large or analytic data | Polars (lazy `scan_*` + `collect`) or DuckDB (SQL on files and frames) | Columnar, multithreaded engines; both lead pandas on the TPC-H style benchmarks they publish | Data fits comfortably and pandas-only APIs are used throughout; the data already lives in Spark |
-| pandas 2.x | pandas 3.x | 3.0 (January 2026): PyArrow-backed `str` dtype by default, Copy-on-Write only | Code compares dtypes to `object` or relies on chained assignment; fix those first |
-| `csv` module on large files | `polars.read_csv`/`scan_csv`, `pyarrow.csv.read_csv`, DuckDB `read_csv` | Multithreaded native readers | Small files, or row-by-row streaming logic |
-| `json` lines on large files | `polars.read_ndjson`, DuckDB `read_json` | Parse straight into columns | Records need per-row Python logic anyway |
 
 ## Serialization and validation
 

@@ -59,5 +59,3 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 | Defensive code for the impossible (wince) | a guard no caller can trigger | delete | review |
 | Duplicate of an existing helper (wince) | wrote a new one without searching | use the existing one | `rg` |
 | Test that cannot fail (wince) | `assert result is not None`, only the mock was called | see `testing-python-packages` | PT |
-
-Spark, pandas and SQL code: read [references/data-snags.md](references/data-snags.md).

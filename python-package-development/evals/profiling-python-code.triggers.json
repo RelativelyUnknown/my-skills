@@ -18,9 +18,5 @@
   {
     "query": "add type hints to src/pkg/io.py",
     "should_trigger": false
-  },
-  {
-    "query": "my spark job is slow on databricks",
-    "should_trigger": false
   }
 ]

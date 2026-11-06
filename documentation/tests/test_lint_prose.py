@@ -63,8 +63,8 @@ def test_ignore_marker_skips_the_line() -> None:
         ("Getting Started With the CLI", True),
         ("Configure Logging", True),
         ("Getting started with the CLI", False),
-        ("Install Databricks Connect", False),
-        ("Using Delta Lake with Unity Catalog", False),
+        ("Install Docker Compose", False),
+        ("Using GitHub Actions with PyPI", False),
     ],
     ids=["title-case", "two-words", "sentence-case", "product-name", "product-names-sentence-case"],
 )

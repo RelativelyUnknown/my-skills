@@ -66,7 +66,7 @@ Defaults distilled from the Google developer documentation style guide, the Micr
 
 - One space after a full stop. No exclamation marks.
 - Em dashes sparingly; prefer commas, colons or separate sentences.
-- Capitalize product and feature names exactly as their owners do (Python, PyPI, GitHub, Databricks, Unity Catalog, macOS). Generic terms stay lowercase (the command line, the server).
+- Capitalize product and feature names exactly as their owners do (Python, PyPI, GitHub, macOS). Generic terms stay lowercase (the command line, the server).
 - Write "Python", "Unicode", "POSIX" capitalized; "reST" with a lowercase r; "free-threaded" rather than "no-GIL" (Python devguide).
 
 ## Numbers, dates and units

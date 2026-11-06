@@ -32,8 +32,8 @@ uv add httpx
 
 ## Placeholders
 
-- Mark them consistently: `<WORKSPACE_URL>`, `<YOUR_TOKEN>`. Do not use `xxx`, `your-token-here` and `<token>` in one docs set.
-- Explain each placeholder right after the block: "Replace `<WORKSPACE_URL>` with your workspace URL, for example `https://adb-1234.5.azuredatabricks.net`."
+- Mark them consistently: `<API_URL>`, `<YOUR_TOKEN>`. Do not use `xxx`, `your-token-here` and `<token>` in one docs set.
+- Explain each placeholder right after the block: "Replace `<API_URL>` with your server's URL, for example `https://api.example.com`."
 
 ## Annotating examples
 

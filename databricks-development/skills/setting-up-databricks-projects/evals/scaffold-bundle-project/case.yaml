@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: scaffold-bundle-project
-expected_outcome: |
-  A bundle with dev (development mode) and prod (production mode, service principal) targets, catalog/schema variables, a wheel task on serverless, and Spark kept out of runtime dependencies.
