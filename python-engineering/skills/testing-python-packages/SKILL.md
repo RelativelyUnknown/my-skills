@@ -27,7 +27,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 6. Flaky means find the cause. No sleeps, reruns or retry decorators until the cause is known. Do not look up expected outputs in git history or other branches.
 7. Before reporting done, run the full suite (targeted runs are fine while iterating).
 
-**Redesign exception.** Only when the task explicitly asks for a redesign: change the design first, run the tests, then classify each failure. Asserts the old internal shape: rewrite it. Asserts behavior the spec requires: fix the code. Asserts something the spec never required: ask, or remove it and say why. No skips may remain; the end state is green; report every test changed or removed.
+**Redesign exception.** Only when the task explicitly asks for a redesign, read [references/redesign.md](references/redesign.md) first; otherwise rule 1 holds.
 
 ## Writing tests (`rigor=lite` and up)
 

@@ -45,9 +45,5 @@ Packages are organized by component; dependencies point one way. Look at the tre
 - Mechanical rules live in tool config, not in prose: the ruff list in the template covers bare and blind `except`, mutable defaults, positional booleans, `Any`, leftover `print`, f-strings in logging, blocking calls in async code and more. Do not select ruff's `D1xx` rules; they push filler docstrings.
 - `strict = true` in `[tool.pytest.ini_options]` needs pytest 9; on older pytest use `--strict-markers` and `xfail_strict = true`.
 - `make complexity` runs `xenon` as advice only and is not part of `check`. Read its ranks as hints; do not contort code to reach an A, and do not add it as a CI gate unless asked.
-- Run `vulture` occasionally to find dead code.
-- Type checker: keep the detected one. Pyrefly (stable since 1.0) and ty (still a 0.0.x beta) are much faster than mypy and pyright; add one beside the existing checker only when asked, and never make a beta checker the only gate.
-- Build backend: the template uses hatchling. `uv init` (uv 0.12+) generates `uv_build`, which suits pure-Python packages; keep it when present and give it an upper bound (`uv_build>=0.13,<0.14`) that you raise each uv minor release. Rust extensions use maturin.
-- Hooks: when `.pre-commit-config.yaml` exists, `prek` runs the same file faster. Suggest it; do not switch unasked.
-- Packages with C or Rust extensions can add a free-threaded job (`3.15t`) to CI; pure-Python packages need nothing extra.
-- Hook scripts that block edits to tests and `pyproject.toml` also block adding new tests; set `ALLOW_TEST_EDITS=1` for sessions that write tests.
+
+Choosing a type checker or build backend, hooks, free-threaded CI jobs, dead-code checks: read [references/tooling-notes.md](references/tooling-notes.md).

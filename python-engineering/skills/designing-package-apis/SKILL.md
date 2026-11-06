@@ -56,7 +56,6 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 - Ship `py.typed`, annotate every public function completely, and run the type checker on the package in CI.
 - Library code uses `logging.getLogger(__name__)` (see `writing-python-code`, `references/logging-and-security.md`) and never configures handlers or calls `basicConfig`. The top-level `__init__.py` adds a `NullHandler` to the package logger, and nowhere else.
-- The README has one install command and one example that runs as written; a test executes that block. Docstring examples are doctests.
 
 ## Changing a public name
 

@@ -49,9 +49,8 @@ Use [assets/release.yml](assets/release.yml). It builds in one job and publishes
 ## Compatibility and deprecation
 
 - Declare `requires-python` (lower bound, no upper bound) and test in CI on `python.target` and the newest release.
-- Deprecate before removing: emit a `DeprecationWarning` that names the replacement, and keep the old name working for at least one minor release. See `designing-package-apis`.
-- Optional features ship as extras; the base install stays small.
+- Deprecation and extras are `designing-package-apis` rules: deprecate for at least one minor release before removing, and keep the base install small.
 
 ## Fixing a broken wheel
 
-Reproduce first: build, list the wheel contents, install it in a clean environment, run the failing call from outside the repository. Typical cause: a file outside the package directory read through `__file__`. Fix by moving the file into the package and loading it with `importlib.resources.files("<pkg>")`, then rebuild and repeat the check. Do not paper over it by adding paths to `sys.path` or by testing only an editable install.
+Reproduce with step 6 first. Typical cause: a file outside the package directory read through `__file__`. Move it into the package, load it with `importlib.resources.files("<pkg>")`, rebuild and repeat the check. Do not add paths to `sys.path` or test only an editable install.
