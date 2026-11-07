@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: clean-up-ingest-module
+expected_outcome: |
+  Fixes the wrong, misleading and noisy code with a small diff, keeps the three deliberate choices, creates no new source files, and keeps the tests passing.
+context:
+  scaffold_script: fixture.sh

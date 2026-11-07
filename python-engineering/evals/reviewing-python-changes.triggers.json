@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Review my PR diff on branch fix-auth",
+    "should_trigger": true
+  },
+  {
+    "query": "Review the changes on feature against main before I merge",
+    "should_trigger": true
+  },
+  {
+    "query": "Before you say you are done, review your own diff",
+    "should_trigger": true
+  },
+  {
+    "query": "Look over this pull request and tell me what is wrong with it",
+    "should_trigger": true
+  },
+  {
+    "query": "Is this change safe to merge? git diff main...topic",
+    "should_trigger": true
+  },
+  {
+    "query": "Clean up the code smells in utils.py",
+    "should_trigger": false
+  },
+  {
+    "query": "Use the strategy pattern to remove this if/elif chain",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a function that retries an HTTP call three times",
+    "should_trigger": false
+  },
+  {
+    "query": "Cut release 1.2.0 and publish it to PyPI",
+    "should_trigger": false
+  }
+]

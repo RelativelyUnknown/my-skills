@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Write a function that retries an HTTP call three times",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a --verbose flag to the CLI",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix the KeyError when a profile has no email",
+    "should_trigger": true
+  },
+  {
+    "query": "Refactor parse_config to be simpler without changing behaviour",
+    "should_trigger": true
+  },
+  {
+    "query": "Create a small module that loads a CSV and totals the amounts",
+    "should_trigger": true
+  },
+  {
+    "query": "Explain how Python decorators work",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a SQL query for the top 10 customers by revenue",
+    "should_trigger": false
+  },
+  {
+    "query": "Cut release 1.2.0 and publish it to PyPI",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a README for the package",
+    "should_trigger": false
+  }
+]

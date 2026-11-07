@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: dev-tool-and-script-dependency
+expected_outcome: |
+  ruff goes in the dev dependency group; the one-off script declares `rich` in PEP 723 inline metadata instead of the project dependencies.
+context:
+  scaffold_script: fixture.sh

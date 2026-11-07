@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: optional-parquet-dependency
+expected_outcome: |
+  pyarrow is an optional extra, not a base dependency; it is imported inside the function, a missing install raises ImportError chained with a message naming the extra; `__all__` is updated; the suite stays green without pyarrow installed.
+context:
+  scaffold_script: fixture.sh

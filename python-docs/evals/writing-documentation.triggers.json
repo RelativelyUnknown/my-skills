@@ -1,0 +1,26 @@
+[
+  {
+    "query": "write a README for this package, it currently has none",
+    "should_trigger": true
+  },
+  {
+    "query": "add numpy-style docstrings to the public functions in stats.py",
+    "should_trigger": true
+  },
+  {
+    "query": "our docs/getting-started.md mixes a tutorial with a full config reference, restructure it",
+    "should_trigger": true
+  },
+  {
+    "query": "write the changelog entry for 2.0, we removed Client.download",
+    "should_trigger": true
+  },
+  {
+    "query": "fix the failing test in tests/test_parser.py",
+    "should_trigger": false
+  },
+  {
+    "query": "write a commit message for this diff",
+    "should_trigger": false
+  }
+]

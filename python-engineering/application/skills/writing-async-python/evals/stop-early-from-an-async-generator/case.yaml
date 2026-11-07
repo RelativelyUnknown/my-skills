@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: stop-early-from-an-async-generator
+expected_outcome: |
+  Consumes an async generator and stops early while guaranteeing its cleanup runs now (aclosing or an explicit aclose), with a test that checks it.
+context:
+  scaffold_script: fixture.sh

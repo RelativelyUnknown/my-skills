@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: load-settings-house-rules
+expected_outcome: |
+  Reads TOML with `tomllib`, requires `region`, rejects a bad region with a message naming the value and the choices, uses literal defaults and no `Any`, catches no blanket exceptions, adds tests.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: stop-calling-a-failing-dependency
+expected_outcome: |
+  A circuit breaker with closed, open and probe states and an injectable clock, plus a test that moves the clock instead of sleeping.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: speed-up-matcher
+expected_outcome: |
+  Measures a baseline, changes the membership test to a set, re-measures, and reports before/after numbers without adding dependencies.

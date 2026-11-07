@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: stream-command-output-with-limit
+expected_outcome: |
+  Reads a command's output line by line with a deadline; on timeout the child is killed and reaped.
+context:
+  scaffold_script: fixture.sh
