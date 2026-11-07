@@ -277,6 +277,14 @@ def test_check_all_reads_every_skill_folder_and_ignores_files(
     assert [r.name for r in reports] == ["first-skill", "second-skill"]
 
 
+def test_token_estimate_uses_the_measured_chars_per_token(tmp_path: Path, canonical: Path) -> None:
+    # 2.8 chars per token: measured with the claude CLI's usage over 13 real skill bodies.
+    body = "x" * 280
+    skill = make_skill(tmp_path / "skills", "sized-skill", body=body)
+
+    assert check_skill(skill, canonical=canonical).body_tokens == 100
+
+
 def test_table_lists_each_skill_and_the_always_on_total(tmp_path: Path, canonical: Path) -> None:
     skills = tmp_path / "skills"
     make_skill(skills, "first-skill")

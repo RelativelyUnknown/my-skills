@@ -20,6 +20,7 @@ DESCRIPTION_SPEC_MAX = 1024
 DESCRIPTION_BUDGET = 350
 BODY_LINE_BUDGET = 200
 REFERENCE_CONTENTS_LINES = 100
+CHARS_PER_TOKEN = 2.8  # measured with the claude CLI's usage over 13 real skill bodies (range 2.6 to 3.0)
 SCRIPT = "detect_project.py"
 LINK = re.compile(r"\]\(([^)\s]+)\)")
 NAME_CHARS = frozenset(string.ascii_lowercase + string.digits + "-")
@@ -190,7 +191,7 @@ def check_skill(
         errors=[f"{skill.name}: {message}" for message in messages],
         description_chars=len(description) if isinstance(description, str) else 0,
         body_lines=body_lines,
-        body_tokens=len(body) // 4,
+        body_tokens=round(len(body) / CHARS_PER_TOKEN),
     )
 
 
@@ -229,7 +230,7 @@ def render_table(reports: Sequence[SkillReport]) -> str:
         f"{r.name:<34}{r.description_chars:>18}{r.body_lines:>12}{r.body_tokens:>13}" for r in reports
     )
     total = sum(r.description_chars for r in reports)
-    rows.append(f"total: description chars {total} -> always-on description tokens {total // 4}")
+    rows.append(f"total: description chars {total} -> always-on description tokens {round(total / CHARS_PER_TOKEN)}")
     return "\n".join(rows) + "\n"
 
 
