@@ -3,6 +3,9 @@ name: profiling-python-code
 description: "Finds where Python code spends time or memory before optimizing: sampling and tracing profilers, memory profilers, reliable benchmarks, before/after numbers. Use when code is slow, uses too much memory, a speedup is requested, or before swapping in a faster library."
 compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv report=normal]"
+license: MIT
+metadata:
+  adapted-from: "references/after-the-profile.md: wshobson/agents python-performance-optimization (MIT, Seth Hobson); see SOURCE.md"
 ---
 
 # Profiling Python code
@@ -48,6 +51,8 @@ Never trade correctness for speed: run the full test suite after each change. Ke
 - Rerun the same command the same way and compare medians. A change within the run-to-run spread is no change.
 - For small functions, use `pyperf` (`python -m pyperf timeit ...`; `python -m pyperf system tune` reduces noise) or `timeit`, never a single `time.time()` difference.
 - Guard a win that matters with a benchmark test (`pytest-benchmark`, or `pytest-memray` with a memory limit) only when the project already runs benchmarks or asks for one.
+
+Once the profile names a hot spot, try the fixes in order of leverage: [after-the-profile.md](references/after-the-profile.md).
 
 ## Report
 
