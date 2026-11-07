@@ -53,7 +53,7 @@ BUNDLES: Mapping[str, tuple[str, ...]] = {
     "core": (
         "writing-python-code", "avoiding-code-snags", "choosing-python-design-patterns",
         "testing-python-packages", "reviewing-python-changes", "profiling-python-code",
-        "writing-python-scripts-and-clis", "auditing-python-dependencies",
+        "writing-python-scripts-and-clis", "auditing-python-dependencies", "managing-python-resources",
     ),
     "library": ("designing-package-apis", "setting-up-python-packages", "releasing-python-packages"),
     "application": ("building-python-web-services",),
