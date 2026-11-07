@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: request-id-on-every-log-line
+expected_outcome: |
+  A ContextVar holds the request id, a logging Filter (or record factory) adds it to every record, so lines from helpers and to_thread carry it; logging is configured in one function, not at import.
+context:
+  scaffold_script: fixture.sh
