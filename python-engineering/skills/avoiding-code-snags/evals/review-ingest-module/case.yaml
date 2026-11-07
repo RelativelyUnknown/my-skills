@@ -1,6 +1,0 @@
-schema_version: "1.1"
-name: review-ingest-module
-expected_outcome: |
-  Finds at least 16 of the 18 planted snags, ranks mutable default / swallowed exception / naive time above style nits, and does not flag the three deliberate decoys.
-context:
-  scaffold_script: fixture.sh

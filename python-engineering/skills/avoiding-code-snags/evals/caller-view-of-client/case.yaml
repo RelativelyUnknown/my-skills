@@ -1,6 +1,0 @@
-schema_version: "1.1"
-name: caller-view-of-client
-expected_outcome: |
-  Finds at least 12 of the 14 caller-facing snags (constant as default, `None` hiding a default, call in a default, `**kwargs`, wrapper without `wraps`, free-string option, builtin-shadowing parameters, wide positional signature, bare dict, ignored timeout, `open()` without encoding, import-time side effects, generic exception, magic number) and flags none of the three deliberate decoys.
-context:
-  scaffold_script: fixture.sh

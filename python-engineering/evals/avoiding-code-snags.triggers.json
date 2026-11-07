@@ -1,38 +1,38 @@
 [
   {
-    "query": "Clean up the code smells in utils.py",
+    "query": "Write a function that retries an HTTP call three times",
     "should_trigger": true
   },
   {
-    "query": "What are the worst snags in this module? List them worst first",
+    "query": "Add a --verbose flag to the CLI",
     "should_trigger": true
   },
   {
-    "query": "List the pet peeves a reviewer would have with src/reports/ingest.py",
+    "query": "Fix the KeyError when a profile has no email",
     "should_trigger": true
   },
   {
-    "query": "Review src/api/client.py from the point of view of someone who uses it as a library",
+    "query": "Refactor parse_config to be simpler without changing behaviour",
     "should_trigger": true
   },
   {
-    "query": "Tidy this file: remove the leftover prints and the commented-out code, keep the behaviour",
+    "query": "Create a small module that loads a CSV and totals the amounts",
     "should_trigger": true
   },
   {
-    "query": "Review my PR diff on branch fix-auth",
+    "query": "Explain how Python decorators work",
     "should_trigger": false
   },
   {
-    "query": "Use the strategy pattern to remove this if/elif chain",
+    "query": "Write a SQL query for the top 10 customers by revenue",
     "should_trigger": false
   },
   {
-    "query": "Add a test for the divide-by-zero case",
+    "query": "Cut release 1.2.0 and publish it to PyPI",
     "should_trigger": false
   },
   {
-    "query": "Prepare release 0.4.0",
+    "query": "Write a README for the package",
     "should_trigger": false
   }
 ]
