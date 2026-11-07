@@ -18,7 +18,7 @@ The skills follow the open [Agent Skills](https://agentskills.io/specification) 
 | `reviewing-python-changes` | review a diff, or check your own work before saying done | 1.0k |
 | `profiling-python-code` | chase slow code or high memory, or are about to swap in a faster library | 1.1k |
 | `auditing-python-dependencies` | add a dependency, answer a security alert, or audit the supply chain | 1.1k |
-| `avoiding-code-snags` | review a file or module for problems, clean up a file, or check your own diff before saying done | 1.8k |
+| `avoiding-code-snags` | review a file or module for problems, clean up a file, or check your own diff before saying done | 2.1k |
 | `choosing-python-design-patterns` | are asked for a design pattern, a refactor that adds classes or layers, or an extension point | 1.1k |
 | `writing-python-scripts-and-clis` | are asked for a script, a command-line tool or a one-off utility | 0.4k |
 
@@ -62,7 +62,7 @@ Complexity tools (`xenon`, `radon`) are advice in these skills, never a score to
 
 ## Evals
 
-Test cases are in `skills/<skill>/evals/<case>/` (`prompt.md`, `case.yaml`, `graders/`, and `fixture.sh` where the case needs files), the layout `claude plugin eval` reads. There are twenty-three cases: two that came with the profiling and dependency skills; sixteen converted from earlier scenarios (fifteen where a run without the skill missed something in my first tests, and one guard, `do-not-over-engineer-orders`, that checks a skill does not push too far); four baseline cases for the package-versus-stdlib rule and candidate snags (`validate-one-function-stdlib`, `validate-with-existing-pydantic`, `hard-problem-take-a-library`, `review-new-snag-candidates`); and `dedupe-lines-script` for the scripts skill. Some cases may show no difference between the arms; that is a result to act on, not a pass. Trigger checks (prompts that should and should not load each skill) are in `evals/<skill>.triggers.json`.
+Test cases are in `skills/<skill>/evals/<case>/` (`prompt.md`, `case.yaml`, `graders/`, and `fixture.sh` where the case needs files), the layout `claude plugin eval` reads. There are twenty-four cases: two that came with the profiling and dependency skills; sixteen converted from earlier scenarios (fifteen where a run without the skill missed something in my first tests, and one guard, `do-not-over-engineer-orders`, that checks a skill does not push too far); four baseline cases for the package-versus-stdlib rule and candidate snags (`validate-one-function-stdlib`, `validate-with-existing-pydantic`, `hard-problem-take-a-library`, `review-new-snag-candidates`); `review-subtle-snags` (19 subtler snags in resource, control-flow, async, cache and retry code, with three correct-code decoys); and `dedupe-lines-script` for the scripts skill. Some cases may show no difference between the arms; that is a result to act on, not a pass. Trigger checks (prompts that should and should not load each skill) are in `evals/<skill>.triggers.json`.
 
 Each case runs three times with the skill and three without; the difference is what the skill contributes. A skill with no difference should be cut or rewritten.
 

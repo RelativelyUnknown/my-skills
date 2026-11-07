@@ -62,10 +62,15 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 | Duplicate of an existing helper (wince) | wrote a new one without searching | use the existing one | `rg` |
 | No timeout (blocker) | `urlopen(url)`, `requests.get(url)`; a `timeout` parameter that is never passed on | pass an explicit timeout | S113 |
 | `open()` without encoding (wince) | `open(path)` reads in the machine's locale | `open(path, encoding="utf-8")` | PLW1514 |
-| Import-time side effects (wince) | `json.load(open(...))` or `os.environ[...]` at module level | do it in a function at the program edge | grep |
+| Import-time side effects (wince) | `os.environ[...]`, `logging.basicConfig()`, a connection or background work at module level | do it in a function at the program edge | grep |
 | Generic exception (wince) | `raise Exception("bad status")`, or re-raising a new error without `from e` | a specific built-in or `PkgError`; `raise ... from e` | TRY002, B904 |
 | Unexplained number (nit) | `items[:37]` with no name or reason | name it if it carries meaning, or comment why; never to hide a signature default | review |
 | Test that cannot fail (wince) | `assert result is not None`, only the mock was called | see `testing-python-packages` | PT |
+| Resource not reliably closed (wince) | `f.close()` that an early `return` skips; a reader returned from inside its `with` | `with`, and consume iterators while it is open (sqlite3's `with` does not close) | SIM115 |
+| `try` block too broad (wince) | one `try` around many steps, catching `KeyError` | wrap only the line expected to raise; use `else` | review |
+| Detached task (blocker when work or errors are lost) | `asyncio.create_task(job())`, result dropped | `TaskGroup`, or keep the task and collect its exception | RUF006 |
+| New client per call (wince) | `httpx.AsyncClient()` created per request | one per application lifespan | review |
+| Session shared by concurrent tasks (blocker) | one `AsyncSession` passed to `gather()` tasks | one session per task | review |
 
 ## What the caller sees
 
@@ -81,3 +86,10 @@ Hover tooltips and signature help show the signature, not the body, so these sna
 | Option as a free string (wince) | `mode="strict"` | `Literal["strict", "lenient"]`, so hover lists the choices | review |
 | Builtin as a parameter name (wince) | `def get(id, type)` | `item_id`, `kind` | A002 |
 | Wide positional signature (wince) | six or more positional parameters | keyword-only after `*`, or a dataclass | PLR0913 |
+
+## Read when relevant
+
+| Reviewing | Read |
+| --- | --- |
+| Untrusted input, files or connections, subprocesses, retries, tests, package structure | [references/snags-reliability.md](references/snags-reliability.md) |
+| Async code, caches, request handlers, background work, API documentation | [references/snags-services.md](references/snags-services.md) |
