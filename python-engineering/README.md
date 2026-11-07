@@ -18,7 +18,7 @@ The skills follow the open [Agent Skills](https://agentskills.io/specification) 
 | `reviewing-python-changes` | review a diff, or check your own work before saying done | 1.4k |
 | `profiling-python-code` | chase slow code or high memory, or are about to swap in a faster library | 1.6k |
 | `auditing-python-dependencies` | add a dependency, answer a security alert, or audit the supply chain | 1.5k |
-| `avoiding-code-snags` | write or change Python code: a short list of watch-outs to follow as you go | 2.8k |
+| `avoiding-code-snags` | write or change Python code: a short list of watch-outs to follow as you go | 1.5k |
 | `choosing-python-design-patterns` | are asked for a design pattern, a refactor that adds classes or layers, or an extension point | 1.6k |
 | `writing-python-scripts-and-clis` | are asked for a script, a command-line tool or a one-off utility | 0.5k |
 
