@@ -12,16 +12,18 @@ The composition principles of Strunk's *The Elements of Style* (1918, public dom
 
 ## The rules that matter most
 
-- Use the active voice: "The scheduler retries the task", not "The task is retried by the scheduler"
-- Put statements in positive form: "Returns a copy", not "Does not modify the original"
-- Use definite, specific, concrete language: "Times out after 30 s", not "may take a while"
-- Omit needless words: "To", not "in order to"; "because", not "due to the fact that"
-- Keep related words together: Put the condition next to the action it limits
-- Place emphatic words at the end: "If the table exists, the write fails" ends on the outcome
-- Express coordinate ideas in similar form: List items and table cells share a grammatical shape
-- One paragraph per topic: A new idea starts a new paragraph
-- Begin with a topic sentence: The first sentence states the paragraph's point
-- Keep to one tense: Present tense for behavior throughout
+| Rule | In docs |
+| --- | --- |
+| Use the active voice | "The scheduler retries the task", not "The task is retried by the scheduler" |
+| Put statements in positive form | "Returns a copy", not "Does not modify the original" |
+| Use definite, specific, concrete language | "Times out after 30 s", not "may take a while" |
+| Omit needless words | "To", not "in order to"; "because", not "due to the fact that" |
+| Keep related words together | Put the condition next to the action it limits |
+| Place emphatic words at the end | "If the table exists, the write fails" ends on the outcome |
+| Express coordinate ideas in similar form | List items and table cells share a grammatical shape |
+| One paragraph per topic | A new idea starts a new paragraph |
+| Begin with a topic sentence | The first sentence states the paragraph's point |
+| Keep to one tense | Present tense for behavior throughout |
 
 ## Paragraphs
 

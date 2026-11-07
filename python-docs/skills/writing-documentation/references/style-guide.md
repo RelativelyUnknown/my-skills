@@ -17,23 +17,25 @@ Defaults distilled from the Google developer documentation style guide, the Micr
 ## Words to replace
 
 <!-- lint-prose: off -->
-- utilize, leverage, make use of → use
-- in order to → to
-- is able to, has the ability to → can
-- due to the fact that → because
-- prior to, subsequent to → before, after
-- in the event that → if
-- a number of → some, or the number
-- e.g., i.e., etc., via, vs. → for example, that is, and so on, through/by, versus
-- please (in instructions) → (delete)
-- simply, just, easily, obviously, of course → (delete)
-- we (meaning the product or the authors) → the name of the product, or rephrase
-- will (for behavior) → present tense
-- click on → click, or select
-- whitelist, blacklist, master/slave → allowlist, denylist, primary/replica
-- sanity check → quick check, confirmation
-- dummy value → placeholder, sample value
-- abort (for a user action) → cancel, stop
+| Instead of | Write |
+| --- | --- |
+| utilize, leverage, make use of | use |
+| in order to | to |
+| is able to, has the ability to | can |
+| due to the fact that | because |
+| prior to, subsequent to | before, after |
+| in the event that | if |
+| a number of | some, or the number |
+| e.g., i.e., etc., via, vs. | for example, that is, and so on, through/by, versus |
+| please (in instructions) | (delete) |
+| simply, just, easily, obviously, of course | (delete) |
+| we (meaning the product or the authors) | the name of the product, or rephrase |
+| will (for behavior) | present tense |
+| click on | click, or select |
+| whitelist, blacklist, master/slave | allowlist, denylist, primary/replica |
+| sanity check | quick check, confirmation |
+| dummy value | placeholder, sample value |
+| abort (for a user action) | cancel, stop |
 <!-- lint-prose: on -->
 
 ## Grammar and voice

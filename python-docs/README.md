@@ -20,14 +20,14 @@ It starts from softaworks' [writing-clearly-and-concisely](https://github.com/so
 
 Two choices differ from the original skill:
 
-- **Shorter.** The original loads Strunk's full text (up to 4,500 tokens per section). This skill keeps the rules in about 2,500 tokens and moves detail into seven reference files that load only when needed. In SkillsBench (arXiv:2602.12670), focused skills raised pass rates by about 17 to 19 points while exhaustive, documentation-style skills lowered them by about 3.
+- **Shorter.** The original loads Strunk's full text (up to 4,500 tokens per section). This skill keeps the rules in about 2,600 tokens and moves detail into seven reference files that load only when needed. In SkillsBench (arXiv:2602.12670), focused skills raised pass rates by about 17 to 19 points while exhaustive, documentation-style skills lowered them by about 3.
 - **Checked by a script.** `lint_prose.py` enforces the word-level rules instead of leaving them to the model's memory. It covers puffery, AI vocabulary, minimizers, filler, Latin abbreviations, time-relative words, conversation residue, directional references, vague link text, title-case headings, long sentences and em-dash density.
 
 ## Skill
 
 | Skill | Loads when you... | Body (est. tokens) |
 | --- | --- | --- |
-| `writing-documentation` | write or review docs, a README, docstrings, a tutorial, a guide or release notes | 2.5k |
+| `writing-documentation` | write or review docs, a README, docstrings, a tutorial, a guide or release notes | 2.6k |
 
 References: `diataxis.md`, `style-guide.md`, `docstrings.md`, `readme-and-changelog.md`, `code-examples.md`, `ai-patterns.md`, `composition.md`.
 

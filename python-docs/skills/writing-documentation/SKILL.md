@@ -12,12 +12,14 @@ Documentation lets a reader do or understand something without asking the author
 
 1. **Name the reader and their need.** One page serves one need:
 
-- learn by doing, as a beginner → Tutorial: One guided path to a working result, every step shown. Leave out: Choices, alternatives, theory
-- reach a goal they already have → How-to guide: Steps toward that goal, starting from a stated precondition. Leave out: Teaching basics, full option lists
-- look something up while working → Reference: Complete, accurate, consistently structured facts (API, CLI, config). Leave out: Instructions, opinions, narrative
-- understand why or how it works → Explanation: Context, design reasons, trade-offs, alternatives. Leave out: Step-by-step instructions
+| The reader wants to | Page type | It contains | It leaves out |
+| --- | --- | --- | --- |
+| learn by doing, as a beginner | Tutorial | One guided path to a working result, every step shown | Choices, alternatives, theory |
+| reach a goal they already have | How-to guide | Steps toward that goal, starting from a stated precondition | Teaching basics, full option lists |
+| look something up while working | Reference | Complete, accurate, consistently structured facts (API, CLI, config) | Instructions, opinions, narrative |
+| understand why or how it works | Explanation | Context, design reasons, trade-offs, alternatives | Step-by-step instructions |
 
-   If a page needs two types, write two pages and link them. Details and templates: [diataxis.md](references/diataxis.md).
+   If a page needs two types, write two pages and link them. Details and templates: [references/diataxis.md](references/diataxis.md).
 
 2. **Follow the project's conventions over the defaults below.** Check the docs tool: `mkdocs.yml` means MkDocs, `docs/conf.py` means Sphinx. Check the docstring style (`[tool.ruff.lint.pydocstyle] convention`, or read five existing docstrings). Check for a style guide or `.vale.ini`, the changelog format and the English variety. Arguments (`style=`, `docstrings=`) override what you find. Report differences as suggestions; do not convert existing docs unasked.
 
@@ -51,11 +53,11 @@ Documentation lets a reader do or understand something without asking the author
 - Show one concept per example, then the output when the reader needs it to confirm success.
 - Shell commands are copy-pasteable: no `$` prompt mixed into the copied text, one command per line, output in a separate block. Placeholders look like `<YOUR_WORKSPACE_URL>` and are explained right after the block. Never a real token, password or internal hostname.
 
-More in [code-examples.md](references/code-examples.md).
+More in [references/code-examples.md](references/code-examples.md).
 
 ## Docstrings
 
-What a docstring says (behavior, returns, raises; no conversation residue; no restated signature) is set by `writing-python-code` (`references/docs-and-comments.md`). How it is formatted follows the project's convention; for new code read [docstrings.md](references/docstrings.md). Short version: the summary line is one sentence ending in a period, imperative mood ("Return the ...") under PEP 257 and numpydoc; Google style projects may use "Returns the ..."; never mix the two in one project.
+What a docstring says (behavior, returns, raises; no conversation residue; no restated signature) is set by `writing-python-code` (`references/docs-and-comments.md`). How it is formatted follows the project's convention; for new code read [references/docstrings.md](references/docstrings.md). Short version: the summary line is one sentence ending in a period, imperative mood ("Return the ...") under PEP 257 and numpydoc; Google style projects may use "Returns the ..."; never mix the two in one project.
 
 ## Workflow
 
@@ -67,10 +69,12 @@ What a docstring says (behavior, returns, raises; no conversation residue; no re
 
 ## Read when relevant
 
-- Planning a page or a whole docs set, or splitting a mixed page: [diataxis.md](references/diataxis.md)
-- Word choice, punctuation, numbers, dates, UI text, procedures: [style-guide.md](references/style-guide.md)
-- Writing docstrings or API reference: [docstrings.md](references/docstrings.md)
-- Writing a README, changelog, release notes or CONTRIBUTING: [readme-and-changelog.md](references/readme-and-changelog.md)
-- Writing or reviewing code samples: [code-examples.md](references/code-examples.md)
-- Reviewing a draft (yours or generated) for AI writing patterns: [ai-patterns.md](references/ai-patterns.md)
-- Tightening prose sentence by sentence: [composition.md](references/composition.md)
+| Doing | Read |
+| --- | --- |
+| Planning a page or a whole docs set, or splitting a mixed page | [references/diataxis.md](references/diataxis.md) |
+| Word choice, punctuation, numbers, dates, UI text, procedures | [references/style-guide.md](references/style-guide.md) |
+| Writing docstrings or API reference | [references/docstrings.md](references/docstrings.md) |
+| Writing a README, changelog, release notes or CONTRIBUTING | [references/readme-and-changelog.md](references/readme-and-changelog.md) |
+| Writing or reviewing code samples | [references/code-examples.md](references/code-examples.md) |
+| Reviewing a draft (yours or generated) for AI writing patterns | [references/ai-patterns.md](references/ai-patterns.md) |
+| Tightening prose sentence by sentence | [references/composition.md](references/composition.md) |
