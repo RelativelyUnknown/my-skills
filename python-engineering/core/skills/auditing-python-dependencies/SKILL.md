@@ -58,7 +58,7 @@ Never run `uv lock --upgrade` (everything) to fix one advisory without asking; i
 - Commit `uv.lock`; CI installs with `uv sync --locked` so it uses exactly the audited set.
 - Run the audit in CI on a schedule (weekly) as well as on pull requests that change the lock file.
 - Automated updates (Dependabot or Renovate) with a waiting period before adopting new releases (Dependabot `cooldown`, Renovate `minimumReleaseAge`) reduce exposure to compromised fresh releases.
-- Pin GitHub Actions to release tags (or commit SHAs for high-assurance repos), and give workflows the least `permissions` they need. Publishing uses trusted publishing, never a stored token (`releasing-python-packages`).
+- Pin GitHub Actions to release tags (or commit SHAs for high-assurance repos), and give workflows the least `permissions` they need. Publishing uses trusted publishing, never a stored token (the library bundle's release skill covers it, if installed).
 - Licenses of the installed set: `uvx pip-licenses` inside the project environment; flag anything incompatible with the project's license.
 - Code-level security rules (ruff `S` rules, or bandit if the project uses it) are separate from dependency audits; run both.
 

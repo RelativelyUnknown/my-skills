@@ -27,7 +27,7 @@ Read when the code takes untrusted input, uses files, connections or subprocesse
 
 - Circular imports: break the cycle, move shared contracts to a lower module, or merge modules that are one responsibility.
 - A keyword boolean that switches a function between very different behaviours: two functions, or a named mode type.
-- Optional-dependency imports, root-logger configuration, private import paths and checkout-only packaging belong to `designing-package-apis` and `releasing-python-packages`.
+- Optional-dependency imports, root-logger configuration, private import paths and checkout-only packaging belong to the library bundle, if installed.
 
 ## Tests
 

@@ -6,8 +6,11 @@ import pytest
 from check_skills import (
     ARGUMENT_KEYS,
     FACTS,
+    SHARED,
     check_all,
+    check_family,
     check_skill,
+    find_bundles,
     main,
     render_table,
 )
@@ -372,3 +375,166 @@ def test_main_argument_keys_option(
     assert main([*base, "--argument-keys", "scene"]) == 0
     assert main([*base, "--argument-keys", ""]) == 0
     capsys.readouterr()
+
+
+# ---- bundles: <family>/<bundle>/skills/<skill> ----------------------------------------------
+
+STUB_SCRIPT = 'BUNDLES = {"core": ("base-skill",), "library": ("lib-skill",), "extra": ()}\n'
+
+
+def make_family(
+    root: Path,
+    layout: Mapping[str, list[str]],
+    *,
+    bodies: Mapping[str, str] | None = None,
+) -> Path:
+    """layout maps bundle -> skill names; the shared bundle always holds the facts skill."""
+    full = {SHARED: [FACTS], **layout}
+    for bundle, names in full.items():
+        for name in names:
+            extra = {"scripts/detect_project.py": STUB_SCRIPT} if name == FACTS else None
+            make_skill(
+                root / bundle / "skills",
+                name,
+                body=(bodies or {}).get(name, f"# {name}\n\n{RUN}\n"),
+                files=extra,
+            )
+    return root
+
+
+BUNDLE_MAP = {"core": ("base-skill",), "library": ("lib-skill",), "extra": ()}
+
+
+def family_errors(root: Path, bundles: Mapping[str, tuple[str, ...]] | None = None) -> list[str]:
+    reports, family = check_family(root, bundles=BUNDLE_MAP if bundles is None else bundles)
+    return [*(e for r in reports for e in r.errors), *family]
+
+
+def test_find_bundles_maps_each_folder_that_holds_skills(tmp_path: Path) -> None:
+    make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+    (tmp_path / "fam" / "scripts").mkdir()
+
+    found = find_bundles(tmp_path / "fam")
+
+    assert sorted(found) == ["core", "library", SHARED]
+    assert found["core"] == tmp_path / "fam" / "core" / "skills"
+
+
+def test_valid_family_has_no_errors(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+
+    assert family_errors(root) == []
+
+
+def test_reports_carry_their_bundle(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+
+    reports, _ = check_family(root, bundles=BUNDLE_MAP)
+
+    assert {(r.bundle, r.name) for r in reports} == {
+        (SHARED, FACTS), ("core", "base-skill"), ("library", "lib-skill"),
+    }
+
+
+def test_core_skill_must_not_name_a_skill_of_another_bundle(tmp_path: Path) -> None:
+    root = make_family(
+        tmp_path / "fam",
+        {"core": ["base-skill"], "library": ["lib-skill"]},
+        bodies={"base-skill": f"# Base\n\n{RUN}\nSee lib-skill for packaging.\n"},
+    )
+
+    errors = family_errors(root)
+
+    assert any("base-skill" in e and "lib-skill" in e and "library bundle" in e for e in errors)
+
+
+def test_a_reference_file_counts_too(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+    (root / "core" / "skills" / "base-skill" / "references").mkdir()
+    (root / "core" / "skills" / "base-skill" / "references" / "a.md").write_text("Use `lib-skill`.\n")
+
+    assert any("lib-skill" in e for e in family_errors(root))
+
+
+def test_core_and_shared_and_own_bundle_may_be_named(tmp_path: Path) -> None:
+    root = make_family(
+        tmp_path / "fam",
+        {"core": ["base-skill"], "library": ["lib-skill", "lib-two"]},
+        bodies={"lib-skill": f"# Lib\n\n{RUN}\nSee base-skill, {FACTS} and lib-two.\n"},
+    )
+
+    assert family_errors(root, {**BUNDLE_MAP, "library": ("lib-skill", "lib-two")}) == []
+
+
+def test_a_longer_name_that_contains_a_skill_name_is_not_a_mention(tmp_path: Path) -> None:
+    root = make_family(
+        tmp_path / "fam",
+        {"core": ["base-skill"], "library": ["lib-skill"]},
+        bodies={"base-skill": f"# Base\n\n{RUN}\nSee not-lib-skill-at-all.\n"},
+    )
+
+    assert family_errors(root) == []
+
+
+def test_duplicate_skill_names_across_bundles_are_an_error(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill", "base-skill"]})
+
+    assert any("base-skill" in e and "more than one bundle" in e for e in family_errors(root))
+
+
+def test_layout_must_match_the_bundle_map(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill", "stray-skill"]})
+
+    errors = family_errors(root)
+
+    assert any("stray-skill" in e and "library" in e and "not in the bundle map" in e for e in errors)
+
+
+def test_a_mapped_skill_that_is_missing_is_an_error(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"]})
+
+    assert any("lib-skill" in e and "library" in e and "missing" in e for e in family_errors(root))
+
+
+def test_a_planned_bundle_with_no_skills_needs_no_folder(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+
+    assert not (root / "extra").exists()
+    assert family_errors(root) == []
+
+
+def test_a_bundle_folder_that_is_not_in_the_map_is_an_error(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"], "other": ["x-skill"]})
+
+    assert any("other" in e and "bundle map" in e for e in family_errors(root))
+
+
+def test_family_needs_the_facts_skill_in_the_shared_bundle(tmp_path: Path) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+    for path in sorted((root / SHARED).rglob("*"), reverse=True):
+        path.unlink() if path.is_file() else path.rmdir()
+    (root / SHARED).rmdir()
+
+    assert any(FACTS in e and SHARED in e for e in family_errors(root))
+
+
+def test_main_checks_a_family_root_and_prints_bundle_names(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+
+    assert main([str(root)]) == 0
+
+    out = capsys.readouterr().out
+    assert "core/base-skill" in out
+    assert f"{SHARED}/{FACTS}" in out
+
+
+def test_main_reports_family_errors_and_exits_one(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"]})
+
+    assert main([str(root)]) == 1
+
+    assert "lib-skill" in capsys.readouterr().err

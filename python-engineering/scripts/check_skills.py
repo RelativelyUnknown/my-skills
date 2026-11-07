@@ -1,11 +1,13 @@
 """Check skills against the Agent Skills spec and this repo's token budgets."""
 
 import argparse
+import importlib.util
 import re
 import string
 import sys
+from collections import defaultdict
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import yaml
@@ -23,6 +25,8 @@ REFERENCE_CONTENTS_LINES = 100
 CHARS_PER_TOKEN = 2.8  # measured with the claude CLI's usage over 13 real skill bodies (range 2.6 to 3.0)
 SCRIPT = "detect_project.py"
 FACTS = "python-project-facts"  # the one skill that owns the script every other skill runs
+SHARED = "shared"  # the bundle folder that holds the facts skill; installed with every other bundle
+CORE = "core"  # skills every kind of Python work may name
 LINK = re.compile(r"\]\(([^)\s]+)\)")
 NAME_CHARS = frozenset(string.ascii_lowercase + string.digits + "-")
 
@@ -34,6 +38,7 @@ class SkillReport:
     description_chars: int
     body_lines: int
     body_tokens: int
+    bundle: str = ""
 
 
 def _split_frontmatter(text: str) -> tuple[str, str] | None:
@@ -214,10 +219,110 @@ def check_all(
     return [check_skill(folder, argument_keys=argument_keys) for folder in _skill_folders(skills_root)]
 
 
+def find_bundles(root: Path) -> dict[str, Path]:
+    """Bundle name -> its skills folder, for a family root laid out as <bundle>/skills/<skill>."""
+    return {
+        folder.name: folder / "skills"
+        for folder in sorted(root.iterdir())
+        if folder.is_dir() and not folder.name.startswith(".") and (folder / "skills").is_dir()
+    }
+
+
+def is_family(root: Path) -> bool:
+    return bool(find_bundles(root)) and not any((c / "SKILL.md").is_file() for c in root.iterdir() if c.is_dir())
+
+
+def _skill_text(skill: Path) -> str:
+    return "\n".join(path.read_text() for path in sorted(skill.rglob("*.md")) if "evals" not in path.parts)
+
+
+def _mentions(text: str, name: str) -> bool:
+    return re.search(rf"(?<![\w-]){re.escape(name)}(?![\w-])", text) is not None
+
+
+def _layout_errors(found: Mapping[str, Sequence[str]], bundles: Mapping[str, tuple[str, ...]]) -> list[str]:
+    errors = []
+    for bundle, names in found.items():
+        if bundle == SHARED:
+            continue
+        if bundle not in bundles:
+            errors.append(f"bundle folder '{bundle}' is not in the bundle map of {FACTS}")
+            continue
+        errors.extend(
+            f"{bundle}/{name} is not in the bundle map for {bundle}" for name in names if name not in bundles[bundle]
+        )
+    for bundle, expected in bundles.items():
+        have = found.get(bundle, ())
+        errors.extend(f"{bundle}/{name} is in the bundle map but missing" for name in expected if name not in have)
+    return errors
+
+
+def _family_errors(
+    found: Mapping[str, Sequence[str]], texts: Mapping[tuple[str, str], str], bundles: Mapping[str, tuple[str, ...]] | None
+) -> list[str]:
+    errors: list[str] = []
+    owners: dict[str, list[str]] = defaultdict(list)
+    for bundle, names in found.items():
+        for name in names:
+            owners[name].append(bundle)
+    if FACTS not in found.get(SHARED, ()):
+        errors.append(f"{SHARED}/{FACTS} is missing; every other skill depends on it")
+    errors.extend(
+        f"{name} is in more than one bundle ({', '.join(where)})" for name, where in owners.items() if len(where) > 1
+    )
+    for (bundle, skill), text in texts.items():
+        allowed = {bundle, CORE, SHARED}
+        errors.extend(
+            f"{skill}: names {other}, a skill of the {where[0]} bundle; "
+            f"say 'the {where[0]} bundle, if installed' instead"
+            for other, where in owners.items()
+            if other != skill and not allowed.intersection(where) and _mentions(text, other)
+        )
+    if bundles is not None:
+        errors.extend(_layout_errors(found, bundles))
+    return errors
+
+
+def load_bundle_map(root: Path) -> Mapping[str, tuple[str, ...]] | None:
+    """The BUNDLES map that the facts skill's script carries, or None when it cannot be loaded."""
+    script = root / SHARED / "skills" / FACTS / "scripts" / SCRIPT
+    if not script.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location("_bundle_map_source", script)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    bundles = getattr(module, "BUNDLES", None)
+    return bundles if isinstance(bundles, dict) else None
+
+
+def check_family(
+    root: Path,
+    *,
+    argument_keys: frozenset[str] | None = ARGUMENT_KEYS,
+    bundles: Mapping[str, tuple[str, ...]] | None = None,
+) -> tuple[list[SkillReport], list[str]]:
+    """Check every skill of every bundle, then the rules that span bundles."""
+    reports: list[SkillReport] = []
+    found: dict[str, list[str]] = {}
+    texts: dict[tuple[str, str], str] = {}
+    for bundle, skills_root in find_bundles(root).items():
+        found[bundle] = []
+        for folder in _skill_folders(skills_root):
+            reports.append(replace(check_skill(folder, argument_keys=argument_keys), bundle=bundle))
+            found[bundle].append(folder.name)
+            texts[(bundle, folder.name)] = _skill_text(folder)
+    return reports, _family_errors(found, texts, bundles)
+
+
 def render_table(reports: Sequence[SkillReport]) -> str:
-    rows = [f"{'skill':<34}{'description chars':>18}{'body lines':>12}{'body tokens':>13}"]
+    labels = [f"{r.bundle}/{r.name}" if r.bundle else r.name for r in reports]
+    width = max([34, *(len(label) + 2 for label in labels)])
+    rows = [f"{'skill':<{width}}{'description chars':>18}{'body lines':>12}{'body tokens':>13}"]
     rows.extend(
-        f"{r.name:<34}{r.description_chars:>18}{r.body_lines:>12}{r.body_tokens:>13}" for r in reports
+        f"{label:<{width}}{r.description_chars:>18}{r.body_lines:>12}{r.body_tokens:>13}"
+        for label, r in zip(labels, reports, strict=True)
     )
     total = sum(r.description_chars for r in reports)
     rows.append(f"total: description chars {total} -> always-on description tokens {round(total / CHARS_PER_TOKEN)}")
@@ -226,7 +331,10 @@ def render_table(reports: Sequence[SkillReport]) -> str:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("skills_dir", nargs="?", type=Path, default=Path("skills"))
+    parser.add_argument(
+        "skills_dir", nargs="?", type=Path, default=Path("skills"),
+        help="a folder of skills, or a family root laid out as <bundle>/skills/<skill>",
+    )
     parser.add_argument(
         "--argument-keys",
         help="comma-separated keys allowed in argument-hint (default: this repo's Python set; "
@@ -239,9 +347,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     keys: frozenset[str] | None = ARGUMENT_KEYS
     if args.argument_keys is not None:
         keys = frozenset(k for k in args.argument_keys.split(",") if k) or None
-    reports = check_all(args.skills_dir, argument_keys=keys)
+    family_errors: list[str] = []
+    if is_family(args.skills_dir):
+        reports, family_errors = check_family(
+            args.skills_dir, argument_keys=keys, bundles=load_bundle_map(args.skills_dir)
+        )
+    else:
+        reports = check_all(args.skills_dir, argument_keys=keys)
     sys.stdout.write(render_table(reports))
-    errors = [error for report in reports for error in report.errors]
+    errors = [*(error for report in reports for error in report.errors), *family_errors]
     for error in errors:
         sys.stderr.write(f"error: {error}\n")
     return 1 if errors else 0

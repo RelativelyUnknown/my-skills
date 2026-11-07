@@ -31,7 +31,7 @@ Two choices differ from the original skill:
 
 References: `diataxis.md`, `style-guide.md`, `docstrings.md`, `readme-and-changelog.md`, `code-examples.md`, `ai-patterns.md`, `composition.md`.
 
-Docstring *content* rules (no conversation residue, no restated signatures) stay in `writing-python-code` in [python-engineering](../python-engineering/); this skill covers format and everything outside code. Install both for Python projects.
+Docstring *content* rules (no conversation residue, no restated signatures) stay in `writing-python-code` in the core bundle of [python-engineering](../python-engineering/); this skill covers format and everything outside code. Install both for Python projects.
 
 ## Install
 

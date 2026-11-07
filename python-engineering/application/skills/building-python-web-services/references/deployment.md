@@ -55,7 +55,7 @@ CMD ["fastapi", "run", "/app/src/<pkg>/main.py", "--port", "8000"]
 - Structured (JSON) logs to stdout with level, message, logger, request ID, and route; configure once at startup (stdlib `logging` with a JSON formatter, or structlog).
 - Generate or accept a request ID per request (middleware) and include it in every log line and error response.
 - Never log tokens, passwords, full request bodies or personal data; log IDs.
-- Library code still uses `logging.getLogger(__name__)` without configuring handlers (`designing-package-apis`).
+- Library code still uses `logging.getLogger(__name__)` without configuring handlers (the library bundle covers library logging, if installed).
 
 ## Metrics and tracing
 
