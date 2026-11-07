@@ -19,6 +19,7 @@ The rest of this repository is MIT (see `LICENSE`).
 | `python-background-jobs` | `python-engineering/application/skills/running-background-jobs` |
 | `python-observability` | `python-engineering/application/skills/adding-observability` |
 | `python-configuration` | `python-engineering/application/skills/configuring-python-applications` |
+| `python-resilience` | `python-engineering/application/skills/making-calls-resilient` |
 
 ## blader/humanizer
 
