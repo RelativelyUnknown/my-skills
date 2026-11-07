@@ -14,6 +14,7 @@ The rest of this repository is MIT (see `LICENSE`).
 | --- | --- |
 | `python-resource-management` | `python-engineering/core/skills/managing-python-resources` |
 | `python-type-safety` | `python-engineering/core/skills/typing-python-code` |
+| `uv-package-manager` | `python-engineering/core/skills/using-uv` |
 
 ## blader/humanizer
 
