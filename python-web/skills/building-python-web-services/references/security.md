@@ -13,18 +13,16 @@ Mapped to the OWASP API Security Top 10 (2023). Run through the relevant rows wh
 
 ## OWASP API Top 10 checks
 
-| Risk | Check in the code |
-| --- | --- |
-| API1 Broken object level authorization | Every lookup by ID filters by owner or tenant, or checks permission on the loaded object, in the handler or service |
-| API2 Broken authentication | Login and token endpoints are rate limited; tokens are validated fully (below); no auth logic hand-rolled when the framework or a maintained library provides it |
-| API3 Broken object property level authorization | Input models list only fields the caller may set (no `is_admin` in a profile update); output models list only fields the caller may see |
-| API4 Unrestricted resource consumption | Page size caps, request body size limits, timeouts on outbound calls, rate limits on expensive endpoints |
-| API5 Broken function level authorization | Admin routes require an admin role check, not only authentication; routes are deny-by-default |
-| API6 Sensitive business flows | Purchases, sign-ups and resets have abuse controls (rate limits, idempotency keys, CAPTCHA where needed) |
-| API7 Server-side request forgery | User-supplied URLs are validated against an allowlist; internal addresses are blocked (see Outbound requests) |
-| API8 Security misconfiguration | Debug off, docs endpoints private when the API is, security headers set, CORS explicit, error responses without stack traces |
-| API9 Improper inventory management | Old API versions and test endpoints are removed or protected; OpenAPI spec matches what is deployed |
-| API10 Unsafe consumption of APIs | Responses from third-party APIs are validated with models and timeouts like user input |
+- API1 Broken object level authorization: Every lookup by ID filters by owner or tenant, or checks permission on the loaded object, in the handler or service
+- API2 Broken authentication: Login and token endpoints are rate limited; tokens are validated fully (below); no auth logic hand-rolled when the framework or a maintained library provides it
+- API3 Broken object property level authorization: Input models list only fields the caller may set (no `is_admin` in a profile update); output models list only fields the caller may see
+- API4 Unrestricted resource consumption: Page size caps, request body size limits, timeouts on outbound calls, rate limits on expensive endpoints
+- API5 Broken function level authorization: Admin routes require an admin role check, not only authentication; routes are deny-by-default
+- API6 Sensitive business flows: Purchases, sign-ups and resets have abuse controls (rate limits, idempotency keys, CAPTCHA where needed)
+- API7 Server-side request forgery: User-supplied URLs are validated against an allowlist; internal addresses are blocked (see Outbound requests)
+- API8 Security misconfiguration: Debug off, docs endpoints private when the API is, security headers set, CORS explicit, error responses without stack traces
+- API9 Improper inventory management: Old API versions and test endpoints are removed or protected; OpenAPI spec matches what is deployed
+- API10 Unsafe consumption of APIs: Responses from third-party APIs are validated with models and timeouts like user input
 
 ## Passwords
 

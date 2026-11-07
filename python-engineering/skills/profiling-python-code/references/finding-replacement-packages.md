@@ -35,15 +35,13 @@ Shortlist at most two and judge those. Do not collect ten.
 
 Read-only requests. PyPI asks callers to send a unique `User-Agent` and to avoid bursts of requests.
 
-| Question | Source | What to read |
-| --- | --- | --- |
-| Python versions, licence, links | `https://pypi.org/pypi/<name>/json` | `info.requires_python`, `info.license_expression`, `info.classifiers`, `info.project_urls`. Skip `releases` and `downloads`: deprecated, and `downloads` is always -1 |
-| Release cadence, deprecation | `https://api.deps.dev/v3/systems/pypi/packages/<name>` | each version's `publishedAt`, `isDefault`, `isDeprecated` |
-| Repository health | `https://api.deps.dev/v3/projects/github.com%2F<owner>%2F<repo>` | stars, forks, open issues, licence, `scorecard` |
-| Security practices | `https://api.securityscorecards.dev/projects/github.com/<owner>/<repo>` | overall score and the checks, such as `Maintained`, `Security-Policy`, `Signed-Releases` |
-| Popularity | `https://pypistats.org/api/packages/<name>/recent` | `last_week`, `last_month` |
-| Advisories | osv.dev (search the name, ecosystem PyPI), or the audit tool in `auditing-python-dependencies` | any unfixed high-severity advisory |
-| Wheels | the "Download files" tab on the PyPI page | the project's platforms and Python versions |
+- Python versions, licence, links → `https://pypi.org/pypi/<name>/json`: `info.requires_python`, `info.license_expression`, `info.classifiers`, `info.project_urls`. Skip `releases` and `downloads`: deprecated, and `downloads` is always -1
+- Release cadence, deprecation → `https://api.deps.dev/v3/systems/pypi/packages/<name>`: each version's `publishedAt`, `isDefault`, `isDeprecated`
+- Repository health → `https://api.deps.dev/v3/projects/github.com%2F<owner>%2F<repo>`: stars, forks, open issues, licence, `scorecard`
+- Security practices → `https://api.securityscorecards.dev/projects/github.com/<owner>/<repo>`: overall score and the checks, such as `Maintained`, `Security-Policy`, `Signed-Releases`
+- Popularity → `https://pypistats.org/api/packages/<name>/recent`: `last_week`, `last_month`
+- Advisories → osv.dev (search the name, ecosystem PyPI), or the audit tool in `auditing-python-dependencies`: any unfixed high-severity advisory
+- Wheels → the "Download files" tab on the PyPI page: the project's platforms and Python versions
 
 Example: `curl -s -A "my-project" https://pypi.org/pypi/orjson/json | python3 -c "import json,sys; i=json.load(sys.stdin)['info']; print(i['requires_python'], i['license_expression'])"`
 

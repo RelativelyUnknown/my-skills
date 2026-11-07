@@ -11,12 +11,10 @@
 
 ## Servers and workers
 
-| Situation | Run |
-| --- | --- |
-| Container platform (Kubernetes, ECS, Cloud Run) | One server process per container (`fastapi run`, which needs `fastapi[standard]`, or `uvicorn <pkg>.main:app --host 0.0.0.0 --port 8000`); scale by replicas |
-| A single VM | `uvicorn ... --workers N`, or gunicorn with the `uvicorn-worker` package's worker class; N from load tests, starting near the CPU count |
-| Higher throughput needed and measured | granian (`granian --interface asgi <pkg>.main:app`), after a load test against the real app |
-| Django without async views | gunicorn (WSGI) |
+- Container platform (Kubernetes, ECS, Cloud Run): One server process per container (`fastapi run`, which needs `fastapi[standard]`, or `uvicorn <pkg>.main:app --host 0.0.0.0 --port 8000`); scale by replicas
+- A single VM: `uvicorn ... --workers N`, or gunicorn with the `uvicorn-worker` package's worker class; N from load tests, starting near the CPU count
+- Higher throughput needed and measured: granian (`granian --interface asgi <pkg>.main:app`), after a load test against the real app
+- Django without async views: gunicorn (WSGI)
 
 - Behind a reverse proxy or load balancer: enable proxy headers (`--proxy-headers --forwarded-allow-ips=<proxy IPs>`) so client IPs and schemes are correct; never trust forwarded headers from everyone.
 - The `uvicorn.workers.UvicornWorker` class inside uvicorn is deprecated; use the separate `uvicorn-worker` package.

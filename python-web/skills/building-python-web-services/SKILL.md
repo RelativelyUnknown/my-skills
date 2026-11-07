@@ -28,13 +28,11 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 ## Framework notes
 
-| Project uses | Read |
-| --- | --- |
-| FastAPI (or Litestar, Starlette) | [references/fastapi.md](references/fastapi.md) |
-| Django (with Django Ninja or DRF) | [references/django.md](references/django.md) |
-| SQLAlchemy, SQLModel or Alembic | [references/persistence.md](references/persistence.md) |
-| Any auth, upload, CORS, rate-limit or outbound-URL change | [references/security.md](references/security.md) |
-| Dockerfiles, servers, workers, health checks, logging, tracing | [references/deployment.md](references/deployment.md) |
+- FastAPI (or Litestar, Starlette): [fastapi.md](references/fastapi.md)
+- Django (with Django Ninja or DRF): [django.md](references/django.md)
+- SQLAlchemy, SQLModel or Alembic: [persistence.md](references/persistence.md)
+- Any auth, upload, CORS, rate-limit or outbound-URL change: [security.md](references/security.md)
+- Dockerfiles, servers, workers, health checks, logging, tracing: [deployment.md](references/deployment.md)
 
 New project with no framework chosen: FastAPI for a typed JSON API; Django when the service needs an admin, auth, templates and an ORM out of the box. Flask only to match an existing codebase. State the choice in the report.
 

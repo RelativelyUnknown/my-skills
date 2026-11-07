@@ -27,7 +27,7 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 6. Flaky means find the cause. No sleeps, reruns or retry decorators until the cause is known. Do not look up expected outputs in git history or other branches.
 7. Before reporting done, run the full suite (targeted runs are fine while iterating).
 
-**Redesign exception.** Only when the task explicitly asks for a redesign, read [references/redesign.md](references/redesign.md) first; otherwise rule 1 holds.
+**Redesign exception.** Only when the task explicitly asks for a redesign, read [redesign.md](references/redesign.md) first; otherwise rule 1 holds.
 
 ## Writing tests (`rigor=lite` and up)
 
@@ -41,11 +41,9 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 ## Rigor levels (`rigor=`, default `full`)
 
-| Level | Do |
-| --- | --- |
-| `lite` | The rules above. Nothing else is required. |
-| `full` | Everything in "Full" below, and read [references/mocking-and-fixtures.md](references/mocking-and-fixtures.md). |
-| `ultra` | `full`, plus read [references/hypothesis-and-mutation.md](references/hypothesis-and-mutation.md) and apply it. |
+- `lite`: The rules above. Nothing else is required.
+- `full`: Everything in "Full" below, and read [mocking-and-fixtures.md](references/mocking-and-fixtures.md).
+- `ultra`: `full`, plus read [hypothesis-and-mutation.md](references/hypothesis-and-mutation.md) and apply it.
 
 ## Full
 

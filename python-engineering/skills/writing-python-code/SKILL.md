@@ -33,14 +33,12 @@ No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cau
 
 ## Read when relevant
 
-| Doing | Read |
-| --- | --- |
-| Using a feature that might be newer than `python.target` | [references/python-versions.md](references/python-versions.md) |
-| Writing or changing a docstring or comment | [references/docs-and-comments.md](references/docs-and-comments.md) |
-| Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle` | [references/logging-and-security.md](references/logging-and-security.md) |
-| `xenon`, `radon` or a complexity lint rule reports a rank | [references/complexity-tools.md](references/complexity-tools.md) |
-| Hand-rolling a utility, or choosing between the standard library and a package | [references/stdlib-or-package.md](references/stdlib-or-package.md) |
-| A measured hot path is too slow, or choosing a library for speed | the `profiling-python-code` skill: profile first, then its `references/faster-libraries.md` and `references/finding-replacement-packages.md` |
+- Using a feature that might be newer than `python.target`: [python-versions.md](references/python-versions.md)
+- Writing or changing a docstring or comment: [docs-and-comments.md](references/docs-and-comments.md)
+- Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle`: [logging-and-security.md](references/logging-and-security.md)
+- `xenon`, `radon` or a complexity lint rule reports a rank: [complexity-tools.md](references/complexity-tools.md)
+- Hand-rolling a utility, or choosing between the standard library and a package: [stdlib-or-package.md](references/stdlib-or-package.md)
+- A measured hot path is too slow, or choosing a library for speed: the `profiling-python-code` skill: profile first, then its `references/faster-libraries.md` and `references/finding-replacement-packages.md`
 
 Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.11 is end of life (3.10 reached it in October 2026): ask first.
 
@@ -68,7 +66,7 @@ Every function, class, constant and exception is something a reader must look up
 
 Order: the project's own idiom, the standard library, a widely used package, then your own code. Match what the project already uses for validation, HTTP, CLI and config; do not add a second mechanism.
 
-- Read `pyproject.toml` first. Before hand-rolling a utility or adding a package, apply [references/stdlib-or-package.md](references/stdlib-or-package.md): a package for a few lines is as wrong as a regex parser for dates.
+- Read `pyproject.toml` first. Before hand-rolling a utility or adding a package, apply [stdlib-or-package.md](references/stdlib-or-package.md): a package for a few lines is as wrong as a regex parser for dates.
 - Never regex-parse structured formats: dates, URLs, HTML, JSON, CSV, versions.
 - Flag every new dependency in the report, with the reason.
 
@@ -82,8 +80,6 @@ Order: the project's own idiom, the standard library, a widely used package, the
 
 Plain and factual. No "production-ready", "robust" or "comprehensive", no celebration, no emojis. Show the exact command and its real output; separate what you verified from what should work.
 
-| Value | Contents |
-| --- | --- |
-| `terse` | Verdict, commands run with pass/fail counts, deviations. At most 10 lines. A new dependency, a changed or removed test, or a stopped task always counts as a deviation. |
-| `normal` | What changed and why, commands with real output, verified vs unverified, every new dependency, every test changed or removed with the reason. |
-| `audit` | `normal`, plus every shortcut, assumption, skipped check and known limitation (or "none"), everything noticed and left alone, and any rule conflict and which rule won. |
+- `terse`: Verdict, commands run with pass/fail counts, deviations. At most 10 lines. A new dependency, a changed or removed test, or a stopped task always counts as a deviation.
+- `normal`: What changed and why, commands with real output, verified vs unverified, every new dependency, every test changed or removed with the reason.
+- `audit`: `normal`, plus every shortcut, assumption, skipped check and known limitation (or "none"), everything noticed and left alone, and any rule conflict and which rule won.

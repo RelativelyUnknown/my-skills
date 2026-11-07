@@ -49,10 +49,8 @@ Language models drift toward the statistical middle: safe, inflated, generic phr
 
 ## Rewrites
 
-| Generated | Rewritten |
-| --- | --- |
-| "This powerful library seamlessly integrates with your existing workflow, empowering developers to unlock new possibilities." | "The library reads and writes Parquet files that pandas, Polars and DuckDB can open." |
-| "It's important to note that the cache may potentially become stale." | "The cache is not invalidated when the source file changes. Call `cache.clear()` after editing it." |
-| "In this section, we'll delve into configuration options." | (delete; the heading says it) |
-| "**Fast:** Optimized for performance." | "Loads a 1 GB file in 2 s on an M2 laptop ([benchmark](https://example.com/benchmarks))." or delete |
-| "Whether you're a beginner or an expert, this guide has you covered." | (delete) |
+- "This powerful library seamlessly integrates with your existing workflow, empowering developers to unlock new possibilities." → "The library reads and writes Parquet files that pandas, Polars and DuckDB can open."
+- "It's important to note that the cache may potentially become stale." → "The cache is not invalidated when the source file changes. Call `cache.clear()` after editing it."
+- "In this section, we'll delve into configuration options." → (delete; the heading says it)
+- "**Fast:** Optimized for performance." → "Loads a 1 GB file in 2 s on an M2 laptop ([benchmark](https://example.com/benchmarks))." or delete
+- "Whether you're a beginner or an expert, this guide has you covered." → (delete)

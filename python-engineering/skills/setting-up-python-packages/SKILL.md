@@ -17,10 +17,10 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 ## New package checklist
 
-1. `pyproject.toml` is the only config file: no `setup.py`, `setup.cfg` or `requirements*.txt`. Start from [assets/pyproject.toml](assets/pyproject.toml); replace the `<placeholders>` and set the Python versions from `python.target`. `requires-python` has a lower bound only.
+1. `pyproject.toml` is the only config file: no `setup.py`, `setup.cfg` or `requirements*.txt`. Start from [pyproject.toml](assets/pyproject.toml); replace the `<placeholders>` and set the Python versions from `python.target`. `requires-python` has a lower bound only.
 2. `src/<pkg>/__init__.py` with `__all__`, an empty `src/<pkg>/py.typed`, and `tests/` mirroring the package (see `testing-python-packages`).
-3. One command runs lint, type check and tests, locally and in CI: copy [assets/Makefile](assets/Makefile) (`make check`), or the equivalent for the project's runner.
-4. CI: copy [assets/ci.yml](assets/ci.yml). It tests `python.target` and the newest release, installs from the lock file, runs only `make check`, grants `contents: read`, and uses no secrets. Pin each action to its latest release tag (`git ls-remote --tags https://github.com/<owner>/<action>`).
+3. One command runs lint, type check and tests, locally and in CI: copy [Makefile](assets/Makefile) (`make check`), or the equivalent for the project's runner.
+4. CI: copy [ci.yml](assets/ci.yml). It tests `python.target` and the newest release, installs from the lock file, runs only `make check`, grants `contents: read`, and uses no secrets. Pin each action to its latest release tag (`git ls-remote --tags https://github.com/<owner>/<action>`).
 5. Dev tools are pinned by the lock file (`uv sync --locked`). Keep runtime dependencies minimal; heavy or niche ones go in extras.
 6. The test suite runs with no network, no secrets and no running services.
 7. `.gitignore` covers `.venv/`, `__pycache__/`, `dist/`, `.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`.
@@ -46,4 +46,4 @@ Packages are organized by component; dependencies point one way. Look at the tre
 - `strict = true` in `[tool.pytest.ini_options]` needs pytest 9; on older pytest use `--strict-markers` and `xfail_strict = true`.
 - `make complexity` runs `xenon` as advice only and is not part of `check`. Read its ranks as hints; do not contort code to reach an A, and do not add it as a CI gate unless asked.
 
-Choosing a type checker or build backend, hooks, free-threaded CI jobs, dead-code checks: read [references/tooling-notes.md](references/tooling-notes.md).
+Choosing a type checker or build backend, hooks, free-threaded CI jobs, dead-code checks: read [tooling-notes.md](references/tooling-notes.md).

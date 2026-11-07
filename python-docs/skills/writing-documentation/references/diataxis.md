@@ -2,10 +2,8 @@
 
 Diátaxis (diataxis.fr, Daniele Procida) sorts documentation by what the reader is doing. Two questions place any page: is the reader acting or thinking, and are they learning or working?
 
-| | Acting | Thinking |
-| --- | --- | --- |
-| **Learning** (study) | Tutorial | Explanation |
-| **Working** (applying skill) | How-to guide | Reference |
+- **Learning** (study): acting: Tutorial; thinking: Explanation
+- **Working** (applying skill): acting: How-to guide; thinking: Reference
 
 NumPy, Gunicorn and Canonical's documentation are organized this way, and Django's docs use the same split. Most bad pages mix two quadrants: a tutorial that stops to list every option, a reference page full of advice.
 
@@ -78,15 +76,13 @@ Discussion that builds understanding.
 
 ## Placing pages that do not fit
 
-| Page | Treat as |
-| --- | --- |
-| README | A landing page: one paragraph of explanation, the install command, one how-to-sized example, links to the rest |
-| Quickstart | A short tutorial |
-| FAQ | Usually how-to or explanation entries; move each answer to its proper page and link from the FAQ |
-| Troubleshooting | How-to guides keyed by symptom: the exact error, the cause, the fix |
-| Changelog, release notes | Reference (a record), written for users |
-| API docstrings | Reference |
-| Architecture or design doc | Explanation |
+- README: A landing page: one paragraph of explanation, the install command, one how-to-sized example, links to the rest
+- Quickstart: A short tutorial
+- FAQ: Usually how-to or explanation entries; move each answer to its proper page and link from the FAQ
+- Troubleshooting: How-to guides keyed by symptom: the exact error, the cause, the fix
+- Changelog, release notes: Reference (a record), written for users
+- API docstrings: Reference
+- Architecture or design doc: Explanation
 
 ## Splitting a mixed page
 

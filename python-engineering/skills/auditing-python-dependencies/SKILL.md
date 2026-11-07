@@ -45,12 +45,10 @@ Audit what ships: dependencies plus extras. Audit dev groups separately; a findi
 
 ## Triage each finding
 
-| Question | Then |
-| --- | --- |
-| Is a fixed version available? | Upgrade only that package: `uv lock --upgrade-package <name>`, then `uv sync --locked` and the full test suite |
-| Does the fix need a new major version or a raised lower bound in `pyproject.toml`? | Propose it with the changelog's breaking changes; get approval |
-| No fix yet, but the vulnerable code path is unused? | Document why, with the advisory ID and a review date; ignore it only with approval (`pip-audit --ignore-vuln <ID>`) |
-| No fix and the path is used? | Report it as blocking; suggest a replacement or a mitigation |
+- Is a fixed version available?: Upgrade only that package: `uv lock --upgrade-package <name>`, then `uv sync --locked` and the full test suite
+- Does the fix need a new major version or a raised lower bound in `pyproject.toml`?: Propose it with the changelog's breaking changes; get approval
+- No fix yet, but the vulnerable code path is unused?: Document why, with the advisory ID and a review date; ignore it only with approval (`pip-audit --ignore-vuln <ID>`)
+- No fix and the path is used?: Report it as blocking; suggest a replacement or a mitigation
 
 Never run `uv lock --upgrade` (everything) to fix one advisory without asking; it changes far more than the fix. Never downgrade to make a scanner quiet.
 

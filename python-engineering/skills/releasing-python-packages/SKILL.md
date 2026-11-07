@@ -38,7 +38,7 @@ cd /tmp && /tmp/wheel-env/bin/python -c "import <pkg>; print(<pkg>.__file__)"   
 
 ## Publish automatically (trusted publishing)
 
-Use [assets/release.yml](assets/release.yml). It builds in one job and publishes from another, so only the publish job holds `id-token: write`. There is no API token to leak or rotate.
+Use [release.yml](assets/release.yml). It builds in one job and publishes from another, so only the publish job holds `id-token: write`. There is no API token to leak or rotate.
 
 - A person must register the trusted publisher on PyPI first (owner, repository, workflow file name, environment `pypi`); say so, do not try to do it. Until then the first upload fails.
 - Renaming the repository or the workflow file breaks the match. PyPI does not accept a reusable workflow as the trusted workflow. A pending publisher expires after inactivity and does not reserve the package name.

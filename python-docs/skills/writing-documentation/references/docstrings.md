@@ -14,12 +14,10 @@ Formats from PEP 257, the numpydoc standard and the Google Python Style Guide. C
 
 ## Choosing a format
 
-| Project | Use |
-| --- | --- |
-| Already has docstrings | Their format, even if you prefer another |
-| Scientific, data or numerical library (NumPy, pandas, SciPy, scikit-learn style) | numpydoc |
-| Application or general library, short docstrings | Google style |
-| Sphinx project with existing field lists | reST fields (`:param x:`, `:returns:`, `:raises ValueError:`) |
+- Already has docstrings: Their format, even if you prefer another
+- Scientific, data or numerical library (NumPy, pandas, SciPy, scikit-learn style): numpydoc
+- Application or general library, short docstrings: Google style
+- Sphinx project with existing field lists: reST fields (`:param x:`, `:returns:`, `:raises ValueError:`)
 
 Never mix formats in one package. Type hints carry types; do not repeat a type in the docstring unless the convention requires it (numpydoc lists types; with full annotations, a short form like `x : int` is still expected by numpydoc's validator).
 

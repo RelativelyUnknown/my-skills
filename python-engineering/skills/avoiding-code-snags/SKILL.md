@@ -35,61 +35,57 @@ Run `python3 <this skill's folder>/scripts/detect_project.py` from the project r
 
 ## Snags
 
-| Snag | Looks like | Fix | Catch |
-| --- | --- | --- | --- |
-| Swallowed error (blocker) | `except Exception: pass`, or a default returned from `except` | catch the named error, or let it propagate | S110, BLE001 |
-| Assert as validation (blocker) | `assert isinstance(d, dict)` | `if not ...: raise ValueError(...)`; asserts vanish under `python -O` | S101 |
-| Mutable default (blocker) | `def f(rows=[])` | `None`, build in the body | B006 |
-| Naive time (blocker) | `datetime.utcnow()`, `datetime.now()` | `datetime.now(UTC)` | DTZ003, DTZ005 |
-| Log and re-raise (wince) | `logger.error(e)` then `raise` | log once at the boundary, or raise | grep |
-| Clobbering default (wince) | `timeout = timeout or 30` replaces `0` | `if timeout is None` | grep |
-| Masked missing data (wince) | `payload.get("name", "")` or `getattr(obj, "x", None)` for a field that must exist | `payload["name"]`, so a missing field fails where it happens | review |
-| Module-level mutable state (wince) | `_CACHE = {}` | pass it in, or `functools.cache` | grep |
-| Untyped bag (wince) | `dict[str, Any]` passed around, a bare `-> dict` | dataclass or `TypedDict` | ANN401 |
-| Positional boolean (wince) | `run(path, True, False)` | keyword-only | FBT001, FBT002 |
-| Tuple of 3+ returned (wince) | `return a, b, c` | a named structure | grep |
-| Stateless class (wince) | `class FooManager` with an empty `__init__` and one method | a function | grep |
-| One-line wrapper (wince) | `def quote(s): return f'"{s}"'` | inline it | grep |
-| One-implementation ABC, factory or registry (wince) | | the function or class itself | grep |
-| `utils.py`, `helpers.py`, `common.py` (wince) | | put the code where it is used | name |
-| Vague or versioned name (wince) | `data`, `result`, `new_`, `v2`, `final`, `Handler` | name what it is | name |
-| Narrating docstring or comment (wince) | "This module ingests reports", `# Step 1: open the file` | say what is not obvious, or delete | grep |
-| Restated signature (wince) | `:param x: the x (int)` | omit | review |
-| Conversation residue (wince) | "as discussed", "now uses", "previously" | move to the commit message | grep |
-| Inflated claim (wince) | "robust", "comprehensive", "production-ready" | state the fact | grep |
-| Leftover debugging (wince) | `print(...)` in library code, `TODO` litter | delete, or use `logging` | T201, FIX |
-| Defensive code for the impossible (wince) | a guard no caller can trigger | delete | review |
-| Duplicate of an existing helper (wince) | wrote a new one without searching | use the existing one | `rg` |
-| No timeout (blocker) | `urlopen(url)`, `requests.get(url)`; a `timeout` parameter that is never passed on | pass an explicit timeout | S113 |
-| `open()` without encoding (wince) | `open(path)` reads in the machine's locale | `open(path, encoding="utf-8")` | PLW1514 |
-| Import-time side effects (wince) | `os.environ[...]`, `logging.basicConfig()`, a connection or background work at module level | do it in a function at the program edge | grep |
-| Generic exception (wince) | `raise Exception("bad status")`, or re-raising a new error without `from e` | a specific built-in or `PkgError`; `raise ... from e` | TRY002, B904 |
-| Unexplained number (nit) | `items[:37]` with no name or reason | name it if it carries meaning, or comment why; never to hide a signature default | review |
-| Test that cannot fail (wince) | `assert result is not None`, only the mock was called | see `testing-python-packages` | PT |
-| Resource not reliably closed (wince) | `f.close()` that an early `return` skips; a reader returned from inside its `with` | `with`, and consume iterators while it is open (sqlite3's `with` does not close) | SIM115 |
-| `try` block too broad (wince) | one `try` around many steps, catching `KeyError` | wrap only the line expected to raise; use `else` | review |
-| Detached task (blocker when work or errors are lost) | `asyncio.create_task(job())`, result dropped | `TaskGroup`, or keep the task and collect its exception | RUF006 |
-| New client per call (wince) | `httpx.AsyncClient()` created per request | one per application lifespan | review |
-| Session shared by concurrent tasks (blocker) | one `AsyncSession` passed to `gather()` tasks | one session per task | review |
+Format: snag (severity): what it looks like → fix (lint rule, when one exists).
+
+- Swallowed error (blocker): `except Exception: pass`, or a default returned from `except` → catch the named error, or let it propagate (S110, BLE001)
+- Assert as validation (blocker): `assert isinstance(d, dict)` → `if not ...: raise ValueError(...)`; asserts vanish under `python -O` (S101)
+- Mutable default (blocker): `def f(rows=[])` → `None`, build in the body (B006)
+- Naive time (blocker): `datetime.utcnow()`, `datetime.now()` → `datetime.now(UTC)` (DTZ003, DTZ005)
+- Log and re-raise (wince): `logger.error(e)` then `raise` → log once at the boundary, or raise
+- Clobbering default (wince): `timeout = timeout or 30` replaces `0` → `if timeout is None`
+- Masked missing data (wince): `payload.get("name", "")` or `getattr(obj, "x", None)` for a field that must exist → `payload["name"]`, so a missing field fails where it happens
+- Module-level mutable state (wince): `_CACHE = {}` → pass it in, or `functools.cache`
+- Untyped bag (wince): `dict[str, Any]` passed around, a bare `-> dict` → dataclass or `TypedDict` (ANN401)
+- Positional boolean (wince): `run(path, True, False)` → keyword-only (FBT001, FBT002)
+- Tuple of 3+ returned (wince): `return a, b, c` → a named structure
+- Stateless class (wince): `class FooManager` with an empty `__init__` and one method → a function
+- One-line wrapper (wince): `def quote(s): return f'"{s}"'` → inline it
+- One-implementation ABC, factory or registry (wince):  → the function or class itself
+- `utils.py`, `helpers.py`, `common.py` (wince):  → put the code where it is used
+- Vague or versioned name (wince): `data`, `result`, `new_`, `v2`, `final`, `Handler` → name what it is
+- Narrating docstring or comment (wince): "This module ingests reports", `# Step 1: open the file` → say what is not obvious, or delete
+- Restated signature (wince): `:param x: the x (int)` → omit
+- Conversation residue (wince): "as discussed", "now uses", "previously" → move to the commit message
+- Inflated claim (wince): "robust", "comprehensive", "production-ready" → state the fact
+- Leftover debugging (wince): `print(...)` in library code, `TODO` litter → delete, or use `logging` (T201, FIX)
+- Defensive code for the impossible (wince): a guard no caller can trigger → delete
+- Duplicate of an existing helper (wince): wrote a new one without searching → use the existing one (`rg`)
+- No timeout (blocker): `urlopen(url)`, `requests.get(url)`; a `timeout` parameter that is never passed on → pass an explicit timeout (S113)
+- `open()` without encoding (wince): `open(path)` reads in the machine's locale → `open(path, encoding="utf-8")` (PLW1514)
+- Import-time side effects (wince): `os.environ[...]`, `logging.basicConfig()`, a connection or background work at module level → do it in a function at the program edge
+- Generic exception (wince): `raise Exception("bad status")`, or re-raising a new error without `from e` → a specific built-in or `PkgError`; `raise ... from e` (TRY002, B904)
+- Unexplained number (nit): `items[:37]` with no name or reason → name it if it carries meaning, or comment why; never to hide a signature default
+- Test that cannot fail (wince): `assert result is not None`, only the mock was called → see `testing-python-packages` (PT)
+- Resource not reliably closed (wince): `f.close()` that an early `return` skips; a reader returned from inside its `with` → `with`, and consume iterators while it is open (sqlite3's `with` does not close) (SIM115)
+- `try` block too broad (wince): one `try` around many steps, catching `KeyError` → wrap only the line expected to raise; use `else`
+- Detached task (blocker when work or errors are lost): `asyncio.create_task(job())`, result dropped → `TaskGroup`, or keep the task and collect its exception (RUF006)
+- New client per call (wince): `httpx.AsyncClient()` created per request → one per application lifespan
+- Session shared by concurrent tasks (blocker): one `AsyncSession` passed to `gather()` tasks → one session per task
 
 ## What the caller sees
 
 Hover tooltips and signature help show the signature, not the body, so these snags cost every caller, not only the maintainer.
 
-| Snag | Looks like | Fix | Catch |
-| --- | --- | --- | --- |
-| Constant as default (wince) | `def f(timeout=DEFAULT_TIMEOUT)`: hover shows a name, not the value | `timeout: float = 30` | grep |
-| `None` hiding the real default (wince) | `retries=None`, then `retries = retries or 3` | the real default in the signature | grep |
-| Call in a default (blocker) | `def stamp(now=datetime.now())` runs once, at import | `None` and build it in the body, or a required argument | B008 |
-| Hidden parameters (wince) | `def request(url, **kwargs)` | name them; `Unpack[TypedDict]` for many options | grep |
-| Wrapper without `functools.wraps` (wince) | hover shows `(*args, **kwargs)` and the docstring is lost | `@functools.wraps(func)`, or `ParamSpec` | grep |
-| Option as a free string (wince) | `mode="strict"` | `Literal["strict", "lenient"]`, so hover lists the choices | review |
-| Builtin as a parameter name (wince) | `def get(id, type)` | `item_id`, `kind` | A002 |
-| Wide positional signature (wince) | six or more positional parameters | keyword-only after `*`, or a dataclass | PLR0913 |
+- Constant as default (wince): `def f(timeout=DEFAULT_TIMEOUT)`: hover shows a name, not the value → `timeout: float = 30`
+- `None` hiding the real default (wince): `retries=None`, then `retries = retries or 3` → the real default in the signature
+- Call in a default (blocker): `def stamp(now=datetime.now())` runs once, at import → `None` and build it in the body, or a required argument (B008)
+- Hidden parameters (wince): `def request(url, **kwargs)` → name them; `Unpack[TypedDict]` for many options
+- Wrapper without `functools.wraps` (wince): hover shows `(*args, **kwargs)` and the docstring is lost → `@functools.wraps(func)`, or `ParamSpec`
+- Option as a free string (wince): `mode="strict"` → `Literal["strict", "lenient"]`, so hover lists the choices
+- Builtin as a parameter name (wince): `def get(id, type)` → `item_id`, `kind` (A002)
+- Wide positional signature (wince): six or more positional parameters → keyword-only after `*`, or a dataclass (PLR0913)
 
 ## Read when relevant
 
-| Reviewing | Read |
-| --- | --- |
-| Untrusted input, files or connections, subprocesses, retries, tests, package structure | [references/snags-reliability.md](references/snags-reliability.md) |
-| Async code, caches, request handlers, background work, API documentation | [references/snags-services.md](references/snags-services.md) |
+- Untrusted input, files or connections, subprocesses, retries, tests, package structure: [snags-reliability.md](references/snags-reliability.md)
+- Async code, caches, request handlers, background work, API documentation: [snags-services.md](references/snags-services.md)

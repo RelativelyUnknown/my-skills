@@ -14,31 +14,27 @@ Examples and a rule, not a boundary. A package for a few lines is as wrong as a 
 
 ## Validation ladder
 
-| Situation | Use |
-| --- | --- |
-| One function, one to three arguments | `if not ...: raise ValueError(f"unknown region {region!r}; expected one of {sorted(REGIONS)}")` in the function |
-| A few related records you construct yourself | a frozen dataclass with `__post_init__` checks |
-| Untrusted nested JSON, many models, coercion, error lists, schema output | pydantic, or the validator the project already uses |
-| A config file | `tomllib` and a dataclass |
-| Command-line arguments | argparse `type=` and `choices=` |
+- One function, one to three arguments: `if not ...: raise ValueError(f"unknown region {region!r}; expected one of {sorted(REGIONS)}")` in the function
+- A few related records you construct yourself: a frozen dataclass with `__post_init__` checks
+- Untrusted nested JSON, many models, coercion, error lists, schema output: pydantic, or the validator the project already uses
+- A config file: `tomllib` and a dataclass
+- Command-line arguments: argparse `type=` and `choices=`
 
 ## Common jobs
 
-| Job | Standard library | Use a package when |
-| --- | --- | --- |
-| HTTP | `urllib.request` for one GET in a script, with `timeout=` | retries, pooling, async, HTTP/2: httpx or requests, with `raise_for_status()` |
-| HTTP retries | a loop with a cap, backoff and a named exception | several call sites, or jitter: `tenacity`, `urllib3.util.Retry` via `HTTPAdapter`, httpx `HTTPTransport(retries=...)` for connection errors |
-| URLs | `urllib.parse`, or the client's `params=` | never string concatenation |
-| Dates and times | `datetime.fromisoformat` (3.11+ parses `Z`), `strptime` for known formats, `zoneinfo` | free-form text or recurrence: `dateparser`, `python-dateutil` |
-| Paths and files | `pathlib`, `tempfile`, `shutil` | |
-| Subprocesses | `subprocess.run(..., check=True, timeout=...)`, `shlex` | |
-| CLI | `argparse` | many subcommands, completion, or the project already uses click or typer |
-| Data formats | `json`, `csv`, `html.parser`, `packaging.version`, `tomllib` | YAML, untrusted XML (`defusedxml`), scraping HTML (`beautifulsoup4`); never `line.split(",")` |
-| Collections | `Counter`, `defaultdict`, `itertools`, `itertools.batched` (3.12+; older: an `islice` loop) | |
-| Caching | `functools.cache` | expiry, size limits or sharing across processes: `cachetools` or an external cache |
-| Concurrency | `concurrent.futures`; `asyncio.TaskGroup`, `asyncio.timeout` (3.11+) | |
-| Tokens and IDs | `secrets`, `uuid`; never `random` for anything security-related | |
-| Passwords, encryption | nothing; never write your own | `argon2-cffi`, `bcrypt`, `cryptography` |
-| Test doubles | `tmp_path`, `monkeypatch`, `unittest.mock` | dev dependencies are cheap: `time-machine`, `responses`, `respx` |
+- HTTP: `urllib.request` for one GET in a script, with `timeout=`. Package when: retries, pooling, async, HTTP/2: httpx or requests, with `raise_for_status()`
+- HTTP retries: a loop with a cap, backoff and a named exception. Package when: several call sites, or jitter: `tenacity`, `urllib3.util.Retry` via `HTTPAdapter`, httpx `HTTPTransport(retries=...)` for connection errors
+- URLs: `urllib.parse`, or the client's `params=`. Package when: never string concatenation
+- Dates and times: `datetime.fromisoformat` (3.11+ parses `Z`), `strptime` for known formats, `zoneinfo`. Package when: free-form text or recurrence: `dateparser`, `python-dateutil`
+- Paths and files: `pathlib`, `tempfile`, `shutil`
+- Subprocesses: `subprocess.run(..., check=True, timeout=...)`, `shlex`
+- CLI: `argparse`. Package when: many subcommands, completion, or the project already uses click or typer
+- Data formats: `json`, `csv`, `html.parser`, `packaging.version`, `tomllib`. Package when: YAML, untrusted XML (`defusedxml`), scraping HTML (`beautifulsoup4`); never `line.split(",")`
+- Collections: `Counter`, `defaultdict`, `itertools`, `itertools.batched` (3.12+; older: an `islice` loop)
+- Caching: `functools.cache`. Package when: expiry, size limits or sharing across processes: `cachetools` or an external cache
+- Concurrency: `concurrent.futures`; `asyncio.TaskGroup`, `asyncio.timeout` (3.11+)
+- Tokens and IDs: `secrets`, `uuid`; never `random` for anything security-related
+- Passwords, encryption: never write your own; use `argon2-cffi`, `bcrypt` or `cryptography`
+- Test doubles: `tmp_path`, `monkeypatch`, `unittest.mock`. Package when: dev dependencies are cheap: `time-machine`, `responses`, `respx`
 
-Quoting for a shell, JSON or CSV uses `shlex.quote`, `json.dumps` or `csv`, never hand-rolled escaping. Entries marked 3.11+ or 3.12+ follow the table in `python-versions.md`.
+Quoting for a shell, JSON or CSV uses `shlex.quote`, `json.dumps` or `csv`, never hand-rolled escaping. Entries marked 3.11+ or 3.12+ follow `python-versions.md`.
