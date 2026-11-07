@@ -24,6 +24,7 @@ The rest of this repository is MIT (see `LICENSE`).
 | `python-design-patterns` | `python-engineering/core/skills/choosing-python-design-patterns/references/principles.md` |
 | `python-testing-patterns` | one section of `python-engineering/core/skills/testing-python-packages/references/mocking-and-fixtures.md`; the rest was already covered (see its `SOURCE.md`) |
 | `python-performance-optimization` | `python-engineering/core/skills/profiling-python-code/references/after-the-profile.md`; the profiler tutorial was not copied (see its `SOURCE.md`) |
+| `python-packaging`, `python-project-structure` | `python-engineering/library/skills/setting-up-python-packages/references/versions-and-entry-points.md`; the rest was already covered (see its `SOURCE.md`) |
 | `python-code-style` | pointer only; nothing copied (see `python-engineering/core/skills/writing-python-code/SOURCE.md`) |
 
 ## blader/humanizer

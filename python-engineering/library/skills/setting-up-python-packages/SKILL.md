@@ -3,6 +3,9 @@ name: setting-up-python-packages
 description: "Scaffolds or audits a Python package: src layout, pyproject.toml, uv, ruff, mypy, pytest config, py.typed, one check command, CI workflow. Use when creating a new package, or editing build, lint, type-check, dependency or CI configuration."
 compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv types=mypy layout=src backend=hatchling]"
+license: MIT
+metadata:
+  adapted-from: "references/versions-and-entry-points.md: wshobson/agents python-packaging and python-project-structure (MIT, Seth Hobson); see SOURCE.md"
 ---
 
 # Setting up Python packages
@@ -48,3 +51,4 @@ Packages are organized by component; dependencies point one way. Look at the tre
 - `make complexity` runs `xenon` as advice only and is not part of `check`. Read its ranks as hints; do not contort code to reach an A, and do not add it as a CI gate unless asked.
 
 Choosing a type checker or build backend, hooks, free-threaded CI jobs, dead-code checks: read [tooling-notes.md](references/tooling-notes.md).
+Where the version lives, console-script entry points, and picking a backend: [versions-and-entry-points.md](references/versions-and-entry-points.md).
