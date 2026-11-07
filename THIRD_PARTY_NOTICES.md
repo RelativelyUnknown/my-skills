@@ -13,6 +13,7 @@ The rest of this repository is MIT (see `LICENSE`).
 | Upstream skill | Adapted into |
 | --- | --- |
 | `python-resource-management` | `python-engineering/core/skills/managing-python-resources` |
+| `python-type-safety` | `python-engineering/core/skills/typing-python-code` |
 
 ## blader/humanizer
 
