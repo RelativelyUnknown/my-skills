@@ -1,6 +1,6 @@
 ---
 name: writing-documentation
-description: "Writes and edits software documentation the way well-documented projects do: Diátaxis page types, Google and Microsoft developer style, PEP 257 and numpydoc or Google docstrings, READMEs, changelogs, tested examples, no AI filler. Use when writing or reviewing docs, a README, docstrings, a tutorial, a guide or release notes."
+description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to guide, CONTRIBUTING file, changelog or release notes for software. Applies Diátaxis page types, Google and Microsoft developer style, PEP 257 and numpydoc, runnable examples and a prose linter; avoids AI filler."
 argument-hint: "[style=google docstrings=numpy]"
 ---
 
