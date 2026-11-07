@@ -28,6 +28,10 @@ FACTS = "python-project-facts"  # the one skill that owns the script every other
 SHARED = "shared"  # the bundle folder that holds the facts skill; installed with every other bundle
 CORE = "core"  # skills every kind of Python work may name
 LINK = re.compile(r"\]\(([^)\s]+)\)")
+NOTICES = "THIRD_PARTY_NOTICES.md"  # lists every upstream a skill was folded in from
+LICENCE_FILE = re.compile(r"^(LICENSE|LICENCE)([.-].*)?$", re.IGNORECASE)
+UPSTREAM = re.compile(r"^[-*]?\s*Upstream:\s*(\S+)", re.MULTILINE)
+COMMIT = re.compile(r"^[-*]?\s*Commit:\s*`?[0-9a-f]{7,40}\b", re.MULTILINE)
 NAME_CHARS = frozenset(string.ascii_lowercase + string.digits + "-")
 
 
@@ -137,7 +141,7 @@ def _link_errors(skill: Path, body: str) -> list[str]:
 def _reference_errors(skill: Path) -> list[str]:
     errors: list[str] = []
     for path in sorted(skill.rglob("*.md")):
-        if path.name == "SKILL.md":
+        if path.name in ("SKILL.md", "SOURCE.md") or LICENCE_FILE.match(path.name):
             continue
         rel = path.relative_to(skill).as_posix()
         text = path.read_text()
@@ -172,6 +176,56 @@ def _dependency_errors(skill: Path, fields: Mapping[str, object], body: str) -> 
     return errors
 
 
+def _provenance_errors(skill: Path, fields: Mapping[str, object]) -> list[str]:
+    """A skill adapted from someone else's carries their licence, a SOURCE.md and a license field."""
+    source = skill / "SOURCE.md"
+    if not source.is_file():
+        return []
+    text = source.read_text()
+    errors = []
+    if not any(LICENCE_FILE.match(path.name) for path in skill.iterdir() if path.is_file()):
+        errors.append("SOURCE.md is present but the upstream licence file is not; keep it next to SOURCE.md")
+    if not UPSTREAM.search(text):
+        errors.append("SOURCE.md must name the upstream URL on a '- Upstream: <url>' line")
+    if not COMMIT.search(text):
+        errors.append("SOURCE.md must name the pinned commit on a '- Commit: <sha>' line")
+    if not fields.get("license"):
+        errors.append("license is missing; a skill with a SOURCE.md declares its licence")
+    return errors
+
+
+def find_notices(start: Path, limit: int = 4) -> Path | None:
+    """The nearest THIRD_PARTY_NOTICES.md at or above start, looking up at most `limit` levels."""
+    folder = start.resolve()
+    for _ in range(limit + 1):
+        if (folder / NOTICES).is_file():
+            return folder / NOTICES
+        if folder.parent == folder:
+            break
+        folder = folder.parent
+    return None
+
+
+def _notices_errors(skills: Mapping[str, Path], notices: Path | None) -> list[str]:
+    """Every upstream named in a SOURCE.md must be listed in the repository's notices."""
+    upstreams = {
+        name: UPSTREAM.findall((folder / "SOURCE.md").read_text())
+        for name, folder in skills.items()
+        if (folder / "SOURCE.md").is_file()
+    }
+    if not upstreams:
+        return []
+    if notices is None:
+        return [f"{', '.join(upstreams)} have a SOURCE.md but no {NOTICES} was found above this folder"]
+    listed = notices.read_text()
+    return [
+        f"{name}: upstream {url} is not listed in {NOTICES}"
+        for name, urls in upstreams.items()
+        for url in urls
+        if url not in listed
+    ]
+
+
 def check_skill(skill: Path, *, argument_keys: frozenset[str] | None = ARGUMENT_KEYS) -> SkillReport:
     skill_md = skill / "SKILL.md"
     if not skill_md.is_file():
@@ -199,6 +253,7 @@ def check_skill(skill: Path, *, argument_keys: frozenset[str] | None = ARGUMENT_
     if any(f"{folder}\\" in text for folder in ("scripts", "references", "assets")):
         messages.append("backslash path found; use forward slashes")
     messages.extend(_dependency_errors(skill, fields, body))
+    messages.extend(_provenance_errors(skill, fields))
     description = fields.get("description")
     return SkillReport(
         name=skill.name,
@@ -233,7 +288,11 @@ def is_family(root: Path) -> bool:
 
 
 def _skill_text(skill: Path) -> str:
-    return "\n".join(path.read_text() for path in sorted(skill.rglob("*.md")) if "evals" not in path.parts)
+    return "\n".join(
+        path.read_text()
+        for path in sorted(skill.rglob("*.md"))
+        if "evals" not in path.parts and path.name != "SOURCE.md" and not LICENCE_FILE.match(path.name)
+    )
 
 
 def _mentions(text: str, name: str) -> bool:
@@ -302,18 +361,21 @@ def check_family(
     *,
     argument_keys: frozenset[str] | None = ARGUMENT_KEYS,
     bundles: Mapping[str, tuple[str, ...]] | None = None,
+    notices: Path | None = None,
 ) -> tuple[list[SkillReport], list[str]]:
     """Check every skill of every bundle, then the rules that span bundles."""
     reports: list[SkillReport] = []
     found: dict[str, list[str]] = {}
     texts: dict[tuple[str, str], str] = {}
+    folders: dict[str, Path] = {}
     for bundle, skills_root in find_bundles(root).items():
         found[bundle] = []
         for folder in _skill_folders(skills_root):
             reports.append(replace(check_skill(folder, argument_keys=argument_keys), bundle=bundle))
             found[bundle].append(folder.name)
             texts[(bundle, folder.name)] = _skill_text(folder)
-    return reports, _family_errors(found, texts, bundles)
+            folders[folder.name] = folder
+    return reports, [*_family_errors(found, texts, bundles), *_notices_errors(folders, notices)]
 
 
 def render_table(reports: Sequence[SkillReport]) -> str:
@@ -340,6 +402,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="comma-separated keys allowed in argument-hint (default: this repo's Python set; "
         "an empty value accepts any key)",
     )
+    parser.add_argument("--notices", type=Path, help=f"the {NOTICES} file (default: the nearest one above the skills)")
     args = parser.parse_args(argv)
     if not args.skills_dir.is_dir():
         sys.stderr.write(f"error: {args.skills_dir} is not a directory\n")
@@ -347,13 +410,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     keys: frozenset[str] | None = ARGUMENT_KEYS
     if args.argument_keys is not None:
         keys = frozenset(k for k in args.argument_keys.split(",") if k) or None
+    notices = args.notices or find_notices(args.skills_dir)
     family_errors: list[str] = []
     if is_family(args.skills_dir):
         reports, family_errors = check_family(
-            args.skills_dir, argument_keys=keys, bundles=load_bundle_map(args.skills_dir)
+            args.skills_dir, argument_keys=keys, bundles=load_bundle_map(args.skills_dir), notices=notices
         )
     else:
         reports = check_all(args.skills_dir, argument_keys=keys)
+        family_errors = _notices_errors({f.name: f for f in _skill_folders(args.skills_dir)}, notices)
     sys.stdout.write(render_table(reports))
     errors = [*(error for report in reports for error in report.errors), *family_errors]
     for error in errors:

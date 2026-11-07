@@ -11,6 +11,7 @@ from check_skills import (
     check_family,
     check_skill,
     find_bundles,
+    find_notices,
     main,
     render_table,
 )
@@ -538,3 +539,108 @@ def test_main_reports_family_errors_and_exits_one(
     assert main([str(root)]) == 1
 
     assert "lib-skill" in capsys.readouterr().err
+
+
+# ---- folded-in skills: licence, source and notices ------------------------------------------
+
+SOURCE = (
+    "# Source\n\n- Upstream: https://github.com/example/agents\n"
+    "- Commit: 4bde3168b43c0655c4d00ea2726e631719908a6d\n- Changed: shortened, rules deduplicated.\n"
+)
+MIT_FIELDS = {"name": "folded-skill", "description": DESCRIPTION, "compatibility": COMPAT, "license": "MIT"}
+
+
+def make_folded(root: Path, *, extra: Mapping[str, str] | None = None, fields: Mapping[str, object] | None = None) -> Path:
+    files = {"SOURCE.md": SOURCE, "LICENSE": "MIT License\nCopyright (c) Example\n", **(extra or {})}
+    return make_skill(root, "folded-skill", frontmatter=MIT_FIELDS if fields is None else fields, files=files)
+
+
+def test_folded_skill_with_licence_source_and_license_field_is_clean(tmp_path: Path) -> None:
+    assert errors_for(make_folded(tmp_path / "skills")) == []
+
+
+def test_source_md_without_a_licence_file_is_an_error(tmp_path: Path) -> None:
+    skill = make_folded(tmp_path / "skills")
+    (skill / "LICENSE").unlink()
+
+    assert any("SOURCE.md" in e and "licence file" in e for e in errors_for(skill))
+
+
+@pytest.mark.parametrize("licence", ["LICENSE.wshobson", "LICENSE-MIT", "LICENCE", "LICENSE.md"])
+def test_licence_file_name_variants_are_accepted(tmp_path: Path, licence: str) -> None:
+    skill = make_folded(tmp_path / "skills")
+    (skill / "LICENSE").rename(skill / licence)
+
+    assert errors_for(skill) == []
+
+
+def test_source_md_must_name_an_upstream_url(tmp_path: Path) -> None:
+    skill = make_folded(tmp_path / "skills", extra={"SOURCE.md": "- Commit: 4bde3168b43c0655c4d00ea2726e631719908a6d\n"})
+
+    assert any("Upstream" in e for e in errors_for(skill))
+
+
+def test_source_md_must_name_a_commit(tmp_path: Path) -> None:
+    skill = make_folded(tmp_path / "skills", extra={"SOURCE.md": "- Upstream: https://github.com/example/agents\n"})
+
+    assert any("Commit" in e for e in errors_for(skill))
+
+
+def test_folded_skill_must_declare_its_license(tmp_path: Path) -> None:
+    fields = {"name": "folded-skill", "description": DESCRIPTION, "compatibility": COMPAT}
+
+    assert any("license" in e for e in errors_for(make_folded(tmp_path / "skills", fields=fields)))
+
+
+def test_skill_without_source_md_needs_no_licence(tmp_path: Path) -> None:
+    assert errors_for(make_skill(tmp_path / "skills")) == []
+
+
+def make_notices_family(tmp_path: Path, notices: str | None) -> Path:
+    root = make_family(tmp_path / "fam", {"core": ["base-skill"], "library": ["lib-skill"]})
+    folded = make_folded(root / "core" / "skills")
+    assert folded.name == "folded-skill"
+    if notices is not None:
+        (tmp_path / "THIRD_PARTY_NOTICES.md").write_text(notices)
+    return root
+
+
+def test_find_notices_looks_upward(tmp_path: Path) -> None:
+    (tmp_path / "THIRD_PARTY_NOTICES.md").write_text("x")
+    deep = tmp_path / "a" / "b"
+    deep.mkdir(parents=True)
+
+    assert find_notices(deep) == tmp_path / "THIRD_PARTY_NOTICES.md"
+    assert find_notices(tmp_path / "a") == tmp_path / "THIRD_PARTY_NOTICES.md"
+
+
+def test_find_notices_returns_none_when_absent(tmp_path: Path) -> None:
+    deep = tmp_path / "a"
+    deep.mkdir()
+
+    assert find_notices(deep, limit=1) is None
+
+
+def test_every_upstream_must_be_in_the_notices(tmp_path: Path) -> None:
+    root = make_notices_family(tmp_path, "Nothing relevant here.\n")
+
+    reports, errors = check_family(root, bundles=None, notices=find_notices(root))
+
+    assert any("https://github.com/example/agents" in e and "THIRD_PARTY_NOTICES" in e for e in errors)
+    assert all(not r.errors for r in reports)
+
+
+def test_notices_that_list_the_upstream_are_clean(tmp_path: Path) -> None:
+    root = make_notices_family(tmp_path, "- https://github.com/example/agents (MIT, Example)\n")
+
+    _, errors = check_family(root, bundles=None, notices=find_notices(root))
+
+    assert errors == []
+
+
+def test_missing_notices_file_is_an_error_when_a_skill_has_a_source(tmp_path: Path) -> None:
+    root = make_notices_family(tmp_path, None)
+
+    _, errors = check_family(root, bundles=None, notices=None)
+
+    assert any("THIRD_PARTY_NOTICES.md" in e for e in errors)
