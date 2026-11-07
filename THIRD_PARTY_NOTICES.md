@@ -18,6 +18,7 @@ The rest of this repository is MIT (see `LICENSE`).
 | `async-python-patterns` | `python-engineering/application/skills/writing-async-python` |
 | `python-background-jobs` | `python-engineering/application/skills/running-background-jobs` |
 | `python-observability` | `python-engineering/application/skills/adding-observability` |
+| `python-configuration` | `python-engineering/application/skills/configuring-python-applications` |
 
 ## blader/humanizer
 

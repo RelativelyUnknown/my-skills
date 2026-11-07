@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: settings-loaded-at-startup
+expected_outcome: |
+  A frozen config object built by a loader called from the entry point (no instance created at import), explicit boolean parsing, the secret hidden from repr, all problems reported together, tests using monkeypatch or a mapping.
+context:
+  scaffold_script: fixture.sh
