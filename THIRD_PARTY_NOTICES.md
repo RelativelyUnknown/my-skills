@@ -22,6 +22,7 @@ The rest of this repository is MIT (see `LICENSE`).
 | `python-resilience` | `python-engineering/application/skills/making-calls-resilient` |
 | `python-error-handling` | `python-engineering/core/skills/writing-python-code/references/errors-and-validation.md` |
 | `python-design-patterns` | `python-engineering/core/skills/choosing-python-design-patterns/references/principles.md` |
+| `python-testing-patterns` | one section of `python-engineering/core/skills/testing-python-packages/references/mocking-and-fixtures.md`; the rest was already covered (see its `SOURCE.md`) |
 | `python-code-style` | pointer only; nothing copied (see `python-engineering/core/skills/writing-python-code/SOURCE.md`) |
 
 ## blader/humanizer

@@ -1,5 +1,13 @@
 # Mocking, fixtures and controlling time
 
+## Contents
+
+- Mocking
+- Time, randomness, environment
+- Fixtures
+- Retries and failure sequences
+- Async
+
 ## Mocking
 
 A boundary is code you do not own or cannot run in a test: network, clock, randomness, third-party services, the process environment. Everything else runs for real.
@@ -51,6 +59,52 @@ def make_user():
 - No `autouse=True` fixture that changes behavior the test does not mention. Autouse is acceptable for isolation only (for example, clearing an environment variable).
 - Parametrize inputs, not setup: if every case needs different setup, they are different tests.
 - A fixture that returns a value the test never uses should be `@pytest.mark.usefixtures("name")`.
+
+## Retries and failure sequences
+
+Script a dependency's failures with `side_effect` as a list: each call returns or raises the next item. Test the three outcomes that matter, and inject the sleep so the test is instant. Run as written under pytest (7 November 2026).
+
+```python
+from unittest.mock import Mock
+
+import pytest
+
+
+def fetch(client, *, attempts=3, sleep=lambda seconds: None):
+    for attempt in range(1, attempts + 1):
+        try:
+            return client.request()
+        except ConnectionError:
+            if attempt == attempts:
+                raise
+            sleep(0.1 * attempt)
+
+
+def test_succeeds_after_transient_errors():
+    client = Mock()
+    client.request.side_effect = [ConnectionError, ConnectionError, {"status": "ok"}]
+
+    assert fetch(client) == {"status": "ok"}
+    assert client.request.call_count == 3
+
+
+def test_gives_up_after_the_last_attempt():
+    client = Mock()
+    client.request.side_effect = ConnectionError
+
+    with pytest.raises(ConnectionError):
+        fetch(client)
+    assert client.request.call_count == 3
+
+
+def test_does_not_retry_a_permanent_error():
+    client = Mock()
+    client.request.side_effect = ValueError("bad input")
+
+    with pytest.raises(ValueError):
+        fetch(client)
+    assert client.request.call_count == 1
+```
 
 ## Async
 

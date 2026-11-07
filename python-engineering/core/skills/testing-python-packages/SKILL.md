@@ -3,6 +3,9 @@ name: testing-python-packages
 description: "Writes, fixes and reviews pytest tests for Python packages: layout, parametrize, fixtures, mocking, coverage, flaky tests, regression tests for bugs. Use when adding or changing tests, fixing a failing or flaky test, reproducing a bug, or configuring pytest."
 compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv layout=src rigor=full]"
+license: MIT
+metadata:
+  adapted-from: "references/mocking-and-fixtures.md, retries section: wshobson/agents python-testing-patterns (MIT, Seth Hobson); see SOURCE.md"
 ---
 
 # Testing Python packages
