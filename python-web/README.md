@@ -8,7 +8,7 @@ One agent skill, `building-python-web-services`, for Python web APIs and service
 
 | Skill | Loads when you... | Body (est. tokens) |
 | --- | --- | --- |
-| `building-python-web-services` | add endpoints, wire a database or auth, or deploy a Python web service | 1.1k |
+| `building-python-web-services` | add endpoints, wire a database or auth, or deploy a Python web service | 1.6k |
 
 The body holds eight rules that apply to every change (boundary validation, explicit response models, per-object authorization, settings from the environment, no blocking calls in `async def`, shared clients, stable errors, four tests per endpoint). Detail lives in five references that load only when the task touches them:
 
