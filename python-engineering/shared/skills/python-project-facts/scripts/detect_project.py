@@ -57,7 +57,7 @@ BUNDLES: Mapping[str, tuple[str, ...]] = {
         "typing-python-code", "using-uv",
     ),
     "library": ("designing-package-apis", "setting-up-python-packages", "releasing-python-packages"),
-    "application": ("building-python-web-services", "writing-async-python"),
+    "application": ("building-python-web-services", "writing-async-python", "running-background-jobs"),
     "native-extension": (),
     "data-engineering": (),
     "machine-learning": (),

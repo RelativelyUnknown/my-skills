@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: welcome-email-exactly-once
+expected_outcome: |
+  Claims the send atomically (an UPDATE guarded by IS NULL checked via rowcount, or a unique key) so two deliveries send one email; with a test that delivers twice.
+context:
+  scaffold_script: fixture.sh

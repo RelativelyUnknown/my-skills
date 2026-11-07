@@ -16,6 +16,7 @@ The rest of this repository is MIT (see `LICENSE`).
 | `python-type-safety` | `python-engineering/core/skills/typing-python-code` |
 | `uv-package-manager` | `python-engineering/core/skills/using-uv` |
 | `async-python-patterns` | `python-engineering/application/skills/writing-async-python` |
+| `python-background-jobs` | `python-engineering/application/skills/running-background-jobs` |
 
 ## blader/humanizer
 
