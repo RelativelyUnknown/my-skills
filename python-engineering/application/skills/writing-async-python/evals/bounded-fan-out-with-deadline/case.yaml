@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: bounded-fan-out-with-deadline
+expected_outcome: |
+  Concurrent calls capped by a Semaphore (or workers), results in input order, one deadline for the batch with asyncio.timeout, run inside a TaskGroup; with tests.
+context:
+  scaffold_script: fixture.sh
