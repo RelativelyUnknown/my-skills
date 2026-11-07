@@ -3,6 +3,9 @@ name: choosing-python-design-patterns
 description: "Decides whether a design pattern fits and gives its Python form: callables for strategy, factory and command, injected or module-level values instead of singletons, Protocol instead of an ABC, entry points for plugins. Use when asked for a design pattern, a refactor that adds classes or layers, or an extension point."
 compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12]"
+license: MIT
+metadata:
+  adapted-from: "references/principles.md: wshobson/agents python-design-patterns (MIT, Seth Hobson); see SOURCE.md"
 ---
 
 # Choosing Python design patterns
@@ -82,3 +85,5 @@ When existing signatures or tests must not change, call `Settings.from_env()` wh
 
 - More classes than variants means flatten it.
 - The new code should not be much longer than what it replaced. Say in one line which pattern you chose or declined, and why.
+
+Why the table says what it says (rule of three, composition over inheritance, passing collaborators in, size by responsibility): [principles.md](references/principles.md).
