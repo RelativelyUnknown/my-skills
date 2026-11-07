@@ -1,6 +1,7 @@
 ---
 name: setting-up-python-packages
 description: "Scaffolds or audits a Python package: src layout, pyproject.toml, uv, ruff, mypy, pytest config, py.typed, one check command, CI workflow. Use when creating a new package, or editing build, lint, type-check, dependency or CI configuration."
+compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv types=mypy layout=src backend=hatchling]"
 ---
 
@@ -8,7 +9,7 @@ argument-hint: "[python=3.12 runner=uv types=mypy layout=src backend=hatchling]"
 
 ## Start
 
-Run `python3 <this skill's folder>/scripts/detect_project.py` from the project root. It prints the project's facts (`python.target`, `runner`, `layout`, `backend`, `lint`, `types`, `ci`, `tools.missing`, ...); `# default` means nothing was found.
+Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root. If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. It prints the project's facts (`python.target`, `runner`, `layout`, `backend`, `lint`, `types`, `ci`, `tools.missing`, ...); `# default` means nothing was found.
 
 - Arguments (`key=value` after the skill name) override detected facts: argument, then detected, then default.
 - **Existing project: keep its tools.** Poetry, black, flake8, pyright, setuptools stay. Do the task with them, report what differs from the defaults below as a suggestion, and migrate only if asked. Do not edit CI, lint or pytest config beyond what the task needs.

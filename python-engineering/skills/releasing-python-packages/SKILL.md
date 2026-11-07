@@ -1,6 +1,7 @@
 ---
 name: releasing-python-packages
 description: "Builds, verifies and publishes a Python package to PyPI: single-source version, changelog, wheel smoke test, trusted publishing, CI matrix, deprecation policy. Use when preparing or cutting a release, fixing what a built wheel contains, or editing release or publishing workflows."
+compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv backend=hatchling]"
 ---
 
@@ -8,7 +9,7 @@ argument-hint: "[python=3.12 runner=uv backend=hatchling]"
 
 ## Start
 
-Run `python3 <this skill's folder>/scripts/detect_project.py` from the project root (`python.target`, `runner`, `backend`, `ci`, `tools.missing`; `# default` means nothing was found). Arguments (`key=value` after the skill name) override detected facts. The commands below use `uv`; with another `runner`, use its equivalents and keep the same steps. Report `tools.missing`; never install a tool silently.
+Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`python.target`, `runner`, `backend`, `ci`, `tools.missing`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Arguments (`key=value` after the skill name) override detected facts. The commands below use `uv`; with another `runner`, use its equivalents and keep the same steps. Report `tools.missing`; never install a tool silently.
 
 ## Never without being asked
 

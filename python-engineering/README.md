@@ -42,7 +42,7 @@ Skills load when the model judges them relevant. The rules that must never be mi
 
 ## Arguments and project detection
 
-Every skill starts by running `scripts/detect_project.py` (Python 3.11+, standard library only). It prints about 14 lines: the Python target from `requires-python`, the runner (uv, poetry, pdm, hatch, pip), layout, build backend, pytest import mode, type checker, linters, async plugin, CI system, and which declared tools are not installed. Anything it cannot find prints `# default`. Skills use the project's existing tools and never install anything silently.
+Every skill starts by running `detect_project.py` from the `python-project-facts` skill (Python 3.11+, standard library only; install that skill next to the others). It prints about 18 lines: the Python target from `requires-python`, the runner (uv, poetry, pdm, hatch, pip), layout, build backend, pytest import mode, type checker, linters, async plugin, CI system, and which declared tools are not installed. Anything it cannot find prints `# default`. Skills use the project's existing tools and never install anything silently.
 
 Pass `key=value` words after the skill name to override what was detected: `/testing-python-packages python=3.10 rigor=ultra`. The same words in a plain request also work. Order: argument, then detected, then default.
 
@@ -83,7 +83,7 @@ claude plugin eval skills/avoiding-code-snags --scaffold \
 
 - A hook that blocks all edits under `tests/` and `conftest.py` also blocks adding new tests. Allow new test files, or set the hook's override for test-writing sessions.
 - Each skill's `argument-hint` line is outside the open spec (Claude Code and VS Code Copilot use it for autocomplete). Delete that line before uploading a skill to claude.ai or the Skills API, which reject unknown keys.
-- `scripts/detect_project.py` is copied into every skill so each folder stands alone. `check_skills.py` fails if a copy differs from the canonical file; `check_skills.py --sync` rewrites the copies.
+- `detect_project.py` lives in one place, `skills/python-project-facts/scripts/`, and the other skills run it from there (their `compatibility` field says so). If that skill is not installed they tell you once and continue with defaults. `check_skills.py` fails a skill that carries its own copy.
 
 ## Try it in your tool
 
@@ -100,8 +100,6 @@ uv run ruff check scripts tests && uv run mypy scripts tests
 uv run python scripts/check_skills.py   # spec + budget check for skills/
 uv run python scripts/check_skills.py --argument-keys scene,fps ../other/skills   # other skillsets; empty value accepts any key
 ```
-
-After changing `scripts/detect_project.py`, run `uv run python scripts/check_skills.py --sync` to copy it into each skill that uses it.
 
 ## License
 

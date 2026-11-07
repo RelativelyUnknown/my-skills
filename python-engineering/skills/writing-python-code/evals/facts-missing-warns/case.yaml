@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: facts-missing-warns
+expected_outcome: |
+  Run with the python-project-facts skill NOT installed (point the eval at the writing-python-code folder alone): the work is still done, and the user is told once that project facts are being assumed. Not meaningful when the whole skills folder is the plugin.
+context:
+  scaffold_script: fixture.sh

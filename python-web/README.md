@@ -31,10 +31,10 @@ Faster drop-ins for web code (orjson, msgspec, uvloop, granian) are in `writing-
 ```bash
 mkdir -p .claude/skills
 cp -r /path/to/skills/python-web/skills/* .claude/skills/
-cp -r /path/to/skills/python-engineering/skills/{writing-python-code,testing-python-packages} .claude/skills/
+cp -r /path/to/skills/python-engineering/skills/{python-project-facts,writing-python-code,testing-python-packages} .claude/skills/
 ```
 
-The skill runs the shared `scripts/detect_project.py` from python-engineering (a copy ships in the skill folder) and accepts the same `python=` and `runner=` arguments.
+The skill runs `detect_project.py` from the `python-project-facts` skill (install it next to this one; without it the skill warns once and uses defaults) and accepts the same `python=` and `runner=` arguments.
 
 ## Develop
 
@@ -43,8 +43,6 @@ This skillset has no tooling of its own. Check it with the python-engineering ch
 ```bash
 cd ../python-engineering && uv run python scripts/check_skills.py ../python-web/skills
 ```
-
-Add `--sync` after changing the canonical `detect_project.py`.
 
 ## License
 

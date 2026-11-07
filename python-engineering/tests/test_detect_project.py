@@ -2,7 +2,7 @@ from collections.abc import Mapping
 from pathlib import Path
 
 import pytest
-from detect_project import Fact, detect, main, render
+from detect_project import BUNDLES, KIND_BUNDLES, Fact, detect, main, render
 
 HATCH_PYPROJECT = """\
 [build-system]
@@ -312,3 +312,162 @@ def test_main_rejects_a_directory_that_does_not_exist(
     assert main([str(missing)]) == 2
 
     assert f"error: {missing} is not a directory" in capsys.readouterr().err
+
+
+# ---------------------------------------------------------------------------- kind and bundles
+NO_BACKEND = """\
+[project]
+name = "x"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [{deps}]
+"""
+
+
+def with_deps(*names: str) -> str:
+    return NO_BACKEND.format(deps=", ".join(f'"{name}"' for name in names))
+
+
+def backend(name: str) -> str:
+    return f'[build-system]\nrequires = ["{name}"]\nbuild-backend = "{name}"\n\n' + with_deps()
+
+
+@pytest.mark.parametrize(
+    ("files", "kind", "source_part"),
+    [
+        ({"pyproject.toml": HATCH_PYPROJECT}, "library", "build backend"),
+        ({"pyproject.toml": with_deps()}, "application", "without a build backend"),
+        ({"pyproject.toml": with_deps("fastapi", "uvicorn")}, "application", "fastapi"),
+        ({"manage.py": "", "pyproject.toml": HATCH_PYPROJECT}, "application", "manage.py"),
+        ({"pyproject.toml": with_deps("mcp")}, "mcp-server", "mcp"),
+        ({"pyproject.toml": with_deps("fastmcp")}, "mcp-server", "fastmcp"),
+        ({"pyproject.toml": with_deps("anthropic")}, "llm-app", "anthropic"),
+        ({"pyproject.toml": with_deps("torch")}, "ml", "torch"),
+        ({"pyproject.toml": with_deps("scikit-learn")}, "ml", "scikit-learn"),
+        ({"pyproject.toml": with_deps("apache-airflow")}, "data-pipeline", "apache-airflow"),
+        ({"pyproject.toml": with_deps("dagster")}, "data-pipeline", "dagster"),
+        ({"pyproject.toml": with_deps("playwright")}, "scraper", "playwright"),
+        ({"pyproject.toml": with_deps("scrapy")}, "scraper", "scrapy"),
+        ({"pyproject.toml": HATCH_PYPROJECT + '\n[project.scripts]\nx = "x:main"\n'}, "library", "build backend"),
+        ({"analysis.ipynb": "{}"}, "notebook", "analysis.ipynb"),
+        ({"pyproject.toml": with_deps("jupyterlab")}, "notebook", "jupyterlab"),
+        ({"tool.py": "print(1)\n"}, "script", "tool.py"),
+        ({"run.py": "# /// script\n# dependencies = []\n# ///\nprint(1)\n"}, "script", "PEP 723"),
+        ({}, "unknown", ""),
+    ],
+)
+def test_kind_is_the_first_matching_signal(
+    tmp_path: Path, files: dict[str, str], kind: str, source_part: str
+) -> None:
+    facts = detect_in(tmp_path, files)
+
+    assert facts["kind"].value == kind
+    assert source_part in facts["kind"].source
+
+
+@pytest.mark.parametrize(
+    "files",
+    [
+        {"pyproject.toml": backend("maturin")},
+        {"pyproject.toml": HATCH_PYPROJECT, "Cargo.toml": '[dependencies]\npyo3 = "0.30"\n'},
+        {"pyproject.toml": HATCH_PYPROJECT, "src/x/fast.pyx": ""},
+        {"pyproject.toml": HATCH_PYPROJECT, "CMakeLists.txt": "find_package(nanobind CONFIG REQUIRED)\n"},
+        {"pyproject.toml": HATCH_PYPROJECT, "CMakeLists.txt": "find_package(pybind11 CONFIG REQUIRED)\n"},
+        {"pyproject.toml": HATCH_PYPROJECT, "meson.build": "py.extension_module('x', 'x.c')\n"},
+        {"pyproject.toml": HATCH_PYPROJECT, "setup.py": "setup(ext_modules=[Extension('x', ['x.c'])])\n"},
+    ],
+)
+def test_native_extension_signals_win_over_library(tmp_path: Path, files: dict[str, str]) -> None:
+    facts = detect_in(tmp_path, files)
+
+    assert facts["kind"].value == "extension"
+
+
+def test_cli_needs_scripts_and_a_cli_library(tmp_path: Path) -> None:
+    pyproject = HATCH_PYPROJECT + 'dependencies = ["typer"]\n\n[project.scripts]\nx = "x:main"\n'
+    facts = detect_in(tmp_path, {"pyproject.toml": pyproject})
+
+    assert facts["kind"].value == "cli"
+    assert "typer" in facts["kind"].source
+
+
+def test_hidden_and_build_directories_are_not_searched_for_extensions(tmp_path: Path) -> None:
+    facts = detect_in(
+        tmp_path,
+        {"pyproject.toml": HATCH_PYPROJECT, ".venv/lib/pkg/fast.pyx": "", "node_modules/p/fast.pyx": ""},
+    )
+
+    assert facts["kind"].value == "library"
+
+
+def test_a_project_can_be_several_kinds_and_bundles_are_the_union(tmp_path: Path) -> None:
+    facts = detect_in(tmp_path, {"pyproject.toml": with_deps("fastapi", "torch")})
+
+    assert facts["kind"].value == "application"
+    assert facts["kinds"].value == "application,ml"
+    assert facts["bundles"].value == "core,application,machine-learning"
+
+
+@pytest.mark.parametrize(
+    ("files", "bundles"),
+    [
+        ({"tool.py": ""}, "core"),
+        ({"pyproject.toml": HATCH_PYPROJECT}, "core,library"),
+        ({"pyproject.toml": backend("maturin")}, "core,native-extension,library"),
+        ({}, "core"),
+    ],
+)
+def test_bundles_always_start_with_core(tmp_path: Path, files: dict[str, str], bundles: str) -> None:
+    assert detect_in(tmp_path, files)["bundles"].value == bundles
+
+
+def test_every_kind_maps_to_bundles_that_exist() -> None:
+    known = set(BUNDLES)
+    for kind, bundles in KIND_BUNDLES.items():
+        assert set(bundles) <= known, kind
+
+
+def test_missing_skills_are_listed_per_bundle(tmp_path: Path) -> None:
+    write_files(tmp_path, {"pyproject.toml": HATCH_PYPROJECT})
+    installed = set(BUNDLES["core"]) | set(BUNDLES["library"][:-1])
+
+    facts = detect(tmp_path, available=frozenset(), interpreter="3.13.1", installed=installed)
+
+    assert facts["bundles.missing"].value == f"library[{BUNDLES['library'][-1]}]"
+
+
+def test_nothing_is_missing_when_every_recommended_skill_is_installed(tmp_path: Path) -> None:
+    write_files(tmp_path, {"pyproject.toml": HATCH_PYPROJECT})
+    installed = set(BUNDLES["core"]) | set(BUNDLES["library"])
+
+    facts = detect(tmp_path, available=frozenset(), interpreter="3.13.1", installed=installed)
+
+    assert facts["bundles.missing"].value == "none"
+
+
+def test_missing_skills_are_unknown_when_not_run_from_a_skills_folder(tmp_path: Path) -> None:
+    facts = detect_in(tmp_path, {"pyproject.toml": HATCH_PYPROJECT})
+
+    assert facts["bundles.missing"] == Fact("unknown", "not run from an installed skill")
+
+
+def test_kind_argument_overrides_detection(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    write_files(tmp_path, {"pyproject.toml": HATCH_PYPROJECT})
+
+    assert main(["kind=ml", str(tmp_path)]) == 0
+
+    out = capsys.readouterr().out
+    assert "kind=ml  # kind= argument\n" in out
+    assert "bundles=core,machine-learning\n" in out
+
+
+def test_unknown_kind_argument_is_rejected(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    assert main(["kind=banana", str(tmp_path)]) == 2
+
+    err = capsys.readouterr().err
+    assert err.startswith("error: kind=banana is not one of")
+    assert "library" in err

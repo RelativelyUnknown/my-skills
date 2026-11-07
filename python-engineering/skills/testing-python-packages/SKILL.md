@@ -1,6 +1,7 @@
 ---
 name: testing-python-packages
 description: "Writes, fixes and reviews pytest tests for Python packages: layout, parametrize, fixtures, mocking, coverage, flaky tests, regression tests for bugs. Use when adding or changing tests, fixing a failing or flaky test, reproducing a bug, or configuring pytest."
+compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv layout=src rigor=full]"
 ---
 
@@ -10,7 +11,7 @@ Tests are the spec. They change only when the spec changes, and every test must 
 
 ## Start
 
-Run `python3 <this skill's folder>/scripts/detect_project.py` from the project root. It prints the project's facts (`python.target`, `runner`, `layout`, `test.import_mode`, `async`, `tools.missing`, ...); a `# default` comment means nothing was found.
+Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root. If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. It prints the project's facts (`python.target`, `runner`, `layout`, `test.import_mode`, `async`, `tools.missing`, ...); a `# default` comment means nothing was found.
 
 - Arguments (`key=value` after the skill name) override detected facts: argument, then detected, then default.
 - Prefix commands with the detected `runner` (`uv run pytest`, `poetry run pytest`, `python -m pytest`).

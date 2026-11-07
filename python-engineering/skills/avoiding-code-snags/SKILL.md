@@ -1,6 +1,7 @@
 ---
 name: avoiding-code-snags
 description: "Watch-outs to follow while writing or editing Python: signatures, error handling, time, files and network, structure, comments, tests. Short rules for habits that look fine but are wrong, noisy or misleading. Use whenever you write or change Python code, before you finish each function."
+compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12]"
 ---
 
@@ -8,7 +9,7 @@ argument-hint: "[python=3.12]"
 
 A snag is a habit that looks fine and makes the next reader stop: the code runs, but it is wrong, noisy or misleading. Check these while you write, so nothing needs cleaning up afterwards. `writing-python-code` has the reasons; this is the list to glance at before you finish each function.
 
-Run `python3 <this skill's folder>/scripts/detect_project.py` once and use only what `python.target` supports.
+Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once and use only what `python.target` supports. If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults.
 
 ## Signatures
 

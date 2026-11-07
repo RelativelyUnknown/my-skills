@@ -42,7 +42,7 @@ enable_error_code = ["ignore-without-code"]
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers --import-mode=importlib --disable-socket --timeout=10"
-pythonpath = ["scripts"]
+pythonpath = ["scripts", "skills/python-project-facts/scripts"]
 testpaths = ["tests"]
 xfail_strict = true
 filterwarnings = ["error"]

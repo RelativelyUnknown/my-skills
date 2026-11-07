@@ -1,6 +1,7 @@
 ---
 name: profiling-python-code
 description: "Finds where Python code spends time or memory before optimizing: sampling and tracing profilers, memory profilers, reliable benchmarks, before/after numbers. Use when code is slow, uses too much memory, a speedup is requested, or before swapping in a faster library."
+compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv report=normal]"
 ---
 
@@ -10,7 +11,7 @@ Optimizing without a profile is guessing. Find the one place that dominates, fix
 
 ## Start
 
-Run `python3 <this skill's folder>/scripts/detect_project.py` from the project root (`python.target`, `runner`, `tools.missing`; `# default` means nothing was found). Arguments (`key=value` after the skill name) override detected facts. Use profilers already in the dev group; propose adding one in the report rather than installing it silently. `uvx <tool>` runs a profiler without adding it to the project.
+Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`python.target`, `runner`, `tools.missing`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Arguments (`key=value` after the skill name) override detected facts. Use profilers already in the dev group; propose adding one in the report rather than installing it silently. `uvx <tool>` runs a profiler without adding it to the project.
 
 ## 1. Reproduce and baseline
 

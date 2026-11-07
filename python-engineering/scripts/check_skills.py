@@ -2,7 +2,6 @@
 
 import argparse
 import re
-import shutil
 import string
 import sys
 from collections.abc import Mapping, Sequence
@@ -13,15 +12,17 @@ import yaml
 
 SPEC_KEYS = frozenset({"name", "description", "license", "compatibility", "metadata", "allowed-tools"})
 EXTRA_KEYS = frozenset({"argument-hint"})  # Claude Code and VS Code Copilot; outside the open spec
-ARGUMENT_KEYS = frozenset({"python", "runner", "types", "layout", "backend", "rigor", "report"})
+ARGUMENT_KEYS = frozenset({"python", "runner", "types", "layout", "backend", "rigor", "report", "kind"})
 RESERVED_WORDS = ("claude", "anthropic")
 NAME_MAX = 64
 DESCRIPTION_SPEC_MAX = 1024
 DESCRIPTION_BUDGET = 350
+COMPATIBILITY_SPEC_MAX = 500
 BODY_LINE_BUDGET = 200
 REFERENCE_CONTENTS_LINES = 100
 CHARS_PER_TOKEN = 2.8  # measured with the claude CLI's usage over 13 real skill bodies (range 2.6 to 3.0)
 SCRIPT = "detect_project.py"
+FACTS = "python-project-facts"  # the one skill that owns the script every other skill runs
 LINK = re.compile(r"\]\(([^)\s]+)\)")
 NAME_CHARS = frozenset(string.ascii_lowercase + string.digits + "-")
 
@@ -99,6 +100,11 @@ def _frontmatter_errors(
     else:
         errors.append("name is missing")
     errors.extend(_description_errors(fields.get("description")))
+    compatibility = fields.get("compatibility")
+    if isinstance(compatibility, str) and len(compatibility) > COMPATIBILITY_SPEC_MAX:
+        errors.append(
+            f"compatibility is {len(compatibility)} characters, over the spec limit of {COMPATIBILITY_SPEC_MAX}"
+        )
     if "argument-hint" in fields:
         errors.extend(_argument_hint_errors(fields["argument-hint"], argument_keys))
     return errors
@@ -144,21 +150,24 @@ def _reference_errors(skill: Path) -> list[str]:
     return errors
 
 
-def _script_errors(skill: Path, body: str, canonical: Path) -> list[str]:
-    if SCRIPT not in body:
-        return []
-    copy = skill / "scripts" / SCRIPT
-    command = f"cp {canonical} {copy}"
-    if not copy.is_file():
-        return [f"scripts/{SCRIPT} is missing; run: {command}"]
-    if copy.read_bytes() != canonical.read_bytes():
-        return [f"scripts/{SCRIPT} differs from the canonical script; run: {command}"]
-    return []
+def _dependency_errors(skill: Path, fields: Mapping[str, object], body: str) -> list[str]:
+    """Skills share one detection script, owned by the facts skill; they depend on it, never copy it."""
+    script = skill / "scripts" / SCRIPT
+    if skill.name == FACTS:
+        return [] if script.is_file() else [f"scripts/{SCRIPT} is missing; this skill owns it"]
+    errors = []
+    shared = f"{FACTS}/scripts/{SCRIPT}"
+    if script.exists():
+        errors.append(f"scripts/{SCRIPT} is a private copy; run {shared} instead")
+    runs_script = SCRIPT in body
+    if runs_script and shared not in body:
+        errors.append(f"{SCRIPT} must be run through the {FACTS} skill ({shared})")
+    if (runs_script or FACTS in body) and FACTS not in str(fields.get("compatibility", "")):
+        errors.append(f"uses {FACTS} but its compatibility field does not say so")
+    return errors
 
 
-def check_skill(
-    skill: Path, *, canonical: Path, argument_keys: frozenset[str] | None = ARGUMENT_KEYS
-) -> SkillReport:
+def check_skill(skill: Path, *, argument_keys: frozenset[str] | None = ARGUMENT_KEYS) -> SkillReport:
     skill_md = skill / "SKILL.md"
     if not skill_md.is_file():
         return SkillReport(skill.name, [f"{skill.name}: SKILL.md is missing"], 0, 0, 0)
@@ -184,7 +193,7 @@ def check_skill(
     messages.extend(_reference_errors(skill))
     if any(f"{folder}\\" in text for folder in ("scripts", "references", "assets")):
         messages.append("backslash path found; use forward slashes")
-    messages.extend(_script_errors(skill, body, canonical))
+    messages.extend(_dependency_errors(skill, fields, body))
     description = fields.get("description")
     return SkillReport(
         name=skill.name,
@@ -200,28 +209,9 @@ def _skill_folders(skills_root: Path) -> list[Path]:
 
 
 def check_all(
-    skills_root: Path, *, canonical: Path, argument_keys: frozenset[str] | None = ARGUMENT_KEYS
+    skills_root: Path, *, argument_keys: frozenset[str] | None = ARGUMENT_KEYS
 ) -> list[SkillReport]:
-    return [
-        check_skill(folder, canonical=canonical, argument_keys=argument_keys)
-        for folder in _skill_folders(skills_root)
-    ]
-
-
-def sync_script(skills_root: Path, *, canonical: Path) -> list[Path]:
-    """Copy the canonical script into every skill whose body mentions it; return the files written."""
-    written = []
-    for folder in _skill_folders(skills_root):
-        skill_md = folder / "SKILL.md"
-        if not skill_md.is_file() or SCRIPT not in skill_md.read_text():
-            continue
-        copy = folder / "scripts" / SCRIPT
-        if copy.is_file() and copy.read_bytes() == canonical.read_bytes():
-            continue
-        copy.parent.mkdir(exist_ok=True)
-        shutil.copyfile(canonical, copy)
-        written.append(copy)
-    return written
+    return [check_skill(folder, argument_keys=argument_keys) for folder in _skill_folders(skills_root)]
 
 
 def render_table(reports: Sequence[SkillReport]) -> str:
@@ -237,24 +227,19 @@ def render_table(reports: Sequence[SkillReport]) -> str:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("skills_dir", nargs="?", type=Path, default=Path("skills"))
-    parser.add_argument("--canonical", type=Path, default=Path(__file__).parent / SCRIPT)
     parser.add_argument(
         "--argument-keys",
         help="comma-separated keys allowed in argument-hint (default: this repo's Python set; "
         "an empty value accepts any key)",
     )
-    parser.add_argument("--sync", action="store_true", help=f"copy the canonical {SCRIPT} into each skill first")
     args = parser.parse_args(argv)
     if not args.skills_dir.is_dir():
         sys.stderr.write(f"error: {args.skills_dir} is not a directory\n")
         return 2
-    if args.sync:
-        for path in sync_script(args.skills_dir, canonical=args.canonical):
-            sys.stdout.write(f"synced {path}\n")
     keys: frozenset[str] | None = ARGUMENT_KEYS
     if args.argument_keys is not None:
         keys = frozenset(k for k in args.argument_keys.split(",") if k) or None
-    reports = check_all(args.skills_dir, canonical=args.canonical, argument_keys=keys)
+    reports = check_all(args.skills_dir, argument_keys=keys)
     sys.stdout.write(render_table(reports))
     errors = [error for report in reports for error in report.errors]
     for error in errors:

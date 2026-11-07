@@ -1,6 +1,7 @@
 ---
 name: writing-python-code
 description: "Rules for writing and changing Python source: error handling, minimalism, standard library first, typing, naming, docstrings, logging, security, complexity advice, and the end-of-task report. Use when writing, modifying, refactoring or debugging Python code."
+compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv types=mypy report=normal]"
 ---
 
@@ -10,7 +11,7 @@ Aim for the fewest concepts a reader must learn, not the fewest characters. Writ
 
 ## Start
 
-Run `python3 <this skill's folder>/scripts/detect_project.py` from the project root. It prints the project's facts (`python.target`, `runner`, `types`, `lint`, `tools.missing`, ...); `# default` means nothing was found.
+Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root. If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. It prints the project's facts (`python.target`, `runner`, `types`, `lint`, `tools.missing`, ...); `# default` means nothing was found.
 
 - Arguments (`key=value` after the skill name) override detected facts: argument, then detected, then default.
 - Prefix commands with the detected `runner`. Keep the project's existing tools (poetry, black, pyright, ...); never add a second tool for the same job.
