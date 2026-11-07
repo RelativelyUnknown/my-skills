@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: import-rows-some-fail
+expected_outcome: |
+  Every row is attempted; failures are collected with the identity of the row and reported together at the end (an ExceptionGroup, or a result listing them); nothing is swallowed; tests cover a mixed batch.
+context:
+  scaffold_script: fixture.sh

@@ -3,6 +3,9 @@ name: writing-python-code
 description: "Rules for writing and changing Python source: error handling, minimalism, standard library first, typing, naming, docstrings, logging, security, complexity advice, and the end-of-task report. Use when writing, modifying, refactoring or debugging Python code."
 compatibility: "Needs the python-project-facts skill installed in the same folder."
 argument-hint: "[python=3.12 runner=uv types=mypy report=normal]"
+license: MIT
+metadata:
+  adapted-from: "references/errors-and-validation.md: wshobson/agents python-error-handling and python-code-style (MIT, Seth Hobson); see SOURCE.md"
 ---
 
 # Writing Python code
@@ -39,6 +42,7 @@ No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cau
 - Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle`: [logging-and-security.md](references/logging-and-security.md)
 - `xenon`, `radon` or a complexity lint rule reports a rank: [complexity-tools.md](references/complexity-tools.md)
 - Hand-rolling a utility, or choosing between the standard library and a package: [stdlib-or-package.md](references/stdlib-or-package.md)
+- Parsing input at an edge, keeping an exception's cause, or a batch where some items fail: [errors-and-validation.md](references/errors-and-validation.md)
 - A measured hot path is too slow, or choosing a library for speed: the `profiling-python-code` skill: profile first, then its `references/faster-libraries.md` and `references/finding-replacement-packages.md`
 
 Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.11 is end of life (3.10 reached it in October 2026): ask first.
