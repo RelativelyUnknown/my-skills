@@ -1,8 +1,6 @@
 ---
 name: configuring-python-applications
-description: "Configuration loaded once at the entry point: precedence, explicit parsing, every error reported at startup, secrets kept out of repr and logs, .env for development only, pydantic-settings when the project uses pydantic. Use when adding settings, environment variables, a config file or secrets, or when a missing variable fails at the wrong time."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12]"
+description: "Use when adding settings, environment variables, a config file or secrets, or when a missing variable fails at the wrong time. Load config once at the entry point, parse explicitly, report every error at startup, keep secrets out of logs, .env for development only."
 license: MIT
 metadata:
   adapted-from: "wshobson/agents python-configuration (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Configuring Python applications
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults. Match the project: a dataclass with `os.environ` and `tomllib` (3.11+) is enough for a handful of settings; use `pydantic-settings` when the project already uses pydantic. Checked on Python 3.13 with pydantic-settings 2.15.0 on 7 November 2026.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Match the project: a dataclass with `os.environ` and `tomllib` (3.11+) is enough for a handful of settings; use `pydantic-settings` when the project already uses pydantic. Checked on Python 3.13 with pydantic-settings 2.15.0 on 7 November 2026.
 
 ## Rules
 

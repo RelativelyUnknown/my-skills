@@ -1,8 +1,6 @@
 ---
 name: reviewing-python-changes
 description: "Reviews a Python diff for bugs, unneeded abstractions, silenced checks, weakened tests, conversation residue in docs and comments, public API breaks and new dependencies. Use when asked to review a diff, branch or pull request, or before reporting your own work as done."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 report=normal]"
 ---
 
 # Reviewing Python changes
@@ -11,9 +9,9 @@ Find what is wrong with the diff, and say nothing else. A clean diff gets a shor
 
 ## Start
 
-1. Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`python.target`, `runner`, `types`, `lint`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Arguments (`key=value` after the skill name) override detected facts.
+1. Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there.
 2. Read the whole diff (`git diff <base>...<head>`), then the full changed files and the callers of any changed signature.
-3. Run `bash <this skill's folder>/scripts/check_new_suppressions.sh <base>...<head>`. It lists added skips, xfails, `type: ignore`, `noqa` and blind `except`; each hit needs a stated reason or is a finding.
+3. List added suppressions: `git diff <base>...<head> -U0 -- '*.py' | grep -nE '^\+[^+].*(pytest\.mark\.(skip|xfail)|type: ignore|noqa|except Exception|except:)'`. Each hit needs a stated reason or is a finding.
 4. Run the project's check command only in a way that writes nothing into the work tree (for example `pytest -p no:cacheprovider`) and does not modify files. Do not modify the code under review.
 
 ## What to look for, in this order

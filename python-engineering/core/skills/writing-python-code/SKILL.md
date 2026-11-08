@@ -1,8 +1,6 @@
 ---
 name: writing-python-code
 description: "Rules for writing and changing Python source: error handling, minimalism, standard library first, typing, naming, docstrings, logging, security, complexity advice, and the end-of-task report. Use when writing, modifying, refactoring or debugging Python code."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 runner=uv types=mypy report=normal]"
 license: MIT
 metadata:
   adapted-from: "references/errors-and-validation.md: wshobson/agents python-error-handling and python-code-style (MIT, Seth Hobson); see SOURCE.md"
@@ -14,11 +12,10 @@ Aim for the fewest concepts a reader must learn, not the fewest characters. Writ
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root. If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. It prints the project's facts (`python.target`, `runner`, `types`, `lint`, `tools.missing`, ...); `# default` means nothing was found.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there.
 
-- Arguments (`key=value` after the skill name) override detected facts: argument, then detected, then default.
-- Prefix commands with the detected `runner`. Keep the project's existing tools (poetry, black, pyright, ...); never add a second tool for the same job.
-- Report `tools.missing`; never install a tool or dependency silently.
+- Prefix commands with the project's `runner`. Keep the project's existing tools (poetry, black, pyright, ...); never add a second tool for the same job.
+- Never install a tool or dependency silently.
 
 ## Done and stopping
 
@@ -37,7 +34,7 @@ No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cau
 
 ## Read when relevant
 
-- Using a feature that might be newer than `python.target`: [python-versions.md](references/python-versions.md)
+- Using a feature that might be newer than the Python target: [python-versions.md](references/python-versions.md)
 - Writing or changing a docstring or comment: [docs-and-comments.md](references/docs-and-comments.md)
 - Adding logging, reading secrets, touching SQL, subprocesses, `eval` or `pickle`: [logging-and-security.md](references/logging-and-security.md)
 - `xenon`, `radon` or a complexity lint rule reports a rank: [complexity-tools.md](references/complexity-tools.md)
@@ -45,7 +42,7 @@ No `# type: ignore`, `# noqa`, `cast()` or `Any` to quiet a checker; fix the cau
 - Parsing input at an edge, keeping an exception's cause, or a batch where some items fail: [errors-and-validation.md](references/errors-and-validation.md)
 - A measured hot path is too slow, or choosing a library for speed: the `profiling-python-code` skill: profile first, then its `references/faster-libraries.md` and `references/finding-replacement-packages.md`
 
-Use features available at `python.target` and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.11 is end of life (3.10 reached it in October 2026): ask first.
+Use features available at the Python target and nothing newer; no `sys.version_info` branches or backports unless a dependency requires them. A target below 3.11 is end of life (3.10 reached it in October 2026): ask first.
 
 ## Errors
 

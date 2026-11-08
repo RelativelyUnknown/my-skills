@@ -1,8 +1,6 @@
 ---
 name: running-background-jobs
-description: "Background work that survives restarts and duplicates: when to use a queue, enqueue after commit, idempotent tasks, retries with backoff, leases and visibility timeouts, dead-letter jobs, status endpoints, and testing tasks. Use when adding a task queue or worker, a job that outlives a request, scheduled work, or retries for flaky jobs."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12]"
+description: "Use when adding a task queue or worker, a job that outlives a request, scheduled work, or retries for flaky jobs. Idempotent tasks, enqueue after commit, retries with backoff, leases and visibility timeouts, dead-letter jobs, status endpoints, tests."
 license: MIT
 metadata:
   adapted-from: "wshobson/agents python-background-jobs (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Running background jobs
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults. Use the queue the project already has (Celery, RQ, Dramatiq, Arq, Taskiq, a cloud queue); do not add a second one, and do not add Celery for one job.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Use the queue the project already has (Celery, RQ, Dramatiq, Arq, Taskiq, a cloud queue); do not add a second one, and do not add Celery for one job.
 
 ## Choose
 

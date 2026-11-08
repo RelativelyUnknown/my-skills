@@ -1,8 +1,6 @@
 ---
 name: writing-async-python
-description: "Structured asyncio: TaskGroup versus gather, deadlines with asyncio.timeout, bounded fan-out with Semaphore and Queue, blocking calls via to_thread, async generators, debug mode, and testing coroutines. Use when writing or fixing asyncio code, adding concurrency, or when a coroutine hangs, leaks or blocks the event loop."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12]"
+description: "Use when writing or fixing asyncio code, adding concurrency, or when a coroutine hangs, leaks or blocks the event loop. TaskGroup versus gather, asyncio.timeout deadlines, bounded fan-out, to_thread, async generators, debug mode, testing."
 license: MIT
 metadata:
   adapted-from: "wshobson/agents async-python-patterns (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Writing async Python
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once; `python.target` decides whether `TaskGroup` and `asyncio.timeout` (3.11+) are available and `async` names the project's test plugin. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults. Behaviour below was run on Python 3.13.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. The Python target decides whether `TaskGroup` and `asyncio.timeout` (3.11+) exist; the test plugin the project uses (`pytest-asyncio`, `anyio`) is part of its defaults. Behaviour below was run on Python 3.13.
 
 ## When async
 

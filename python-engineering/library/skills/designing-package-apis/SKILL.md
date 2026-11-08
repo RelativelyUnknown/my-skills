@@ -1,8 +1,6 @@
 ---
 name: designing-package-apis
 description: "Designs the public surface of a Python library: exports, __all__, signatures, exceptions, optional dependencies, logging, typing, deprecation. Use when adding, renaming, changing or removing a public function, class, exception or extra, or when a user-facing error or import path changes."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 types=mypy]"
 ---
 
 # Designing package APIs
@@ -11,7 +9,7 @@ A public name is a promise. Make the common call short, the wrong call hard to w
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`python.target`, `types`, `layout`, `tools.missing`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Arguments (`key=value` after the skill name) override detected facts. Use idioms available at `python.target`. Changing a public API (rename, removal, changed return type) needs the user's approval; adding is safe.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Use idioms available at the Python target. Changing a public API (rename, removal, changed return type) needs the user's approval; adding is safe.
 
 ## Before merging a new public name
 

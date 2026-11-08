@@ -1,6 +1,6 @@
 # AI writing patterns in documentation
 
-Language models drift toward the statistical middle: safe, inflated, generic phrasing that reads as filler. This file lists the patterns that matter most in technical documentation. It condenses Wikipedia's "Signs of AI writing" editor guide, as packaged in softaworks' *writing-clearly-and-concisely*, and adapts it to docs. `scripts/lint_prose.py` catches the word-level ones; the structural ones need a read.
+Language models drift toward the statistical middle: safe, inflated, generic phrasing that reads as filler. This file lists the patterns that matter most in technical documentation. It condenses Wikipedia's "Signs of AI writing" editor guide, as packaged in softaworks' *writing-clearly-and-concisely*, and adapts it to docs. the filler grep in `SKILL.md` catches the word-level ones; the structural ones need a read.
 
 ## Contents
 
@@ -12,12 +12,10 @@ Language models drift toward the statistical middle: safe, inflated, generic phr
 
 ## Word level
 
-<!-- lint-prose: off -->
 - **Puffery**: powerful, robust, seamless, cutting-edge, comprehensive, pivotal, crucial, game-changing, blazing fast.
 - **AI vocabulary**: delve, leverage, utilize, foster, realm, tapestry, multifaceted, embark, elevate, unlock, empower, streamline, harness, holistic, landscape, ever-evolving.
 - **Hedging stacks**: "may potentially", "can help to", "generally tends to".
 - **Empty -ing tails**: "..., ensuring reliability", "..., highlighting its flexibility", "..., making it ideal for".
-<!-- lint-prose: on -->
 
 ## Sentence level
 

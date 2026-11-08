@@ -1,8 +1,6 @@
 ---
 name: choosing-python-design-patterns
-description: "Decides whether a design pattern fits and gives its Python form: callables for strategy, factory and command, injected or module-level values instead of singletons, Protocol instead of an ABC, entry points for plugins. Use when asked for a design pattern, a refactor that adds classes or layers, or an extension point."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12]"
+description: "Use when asked for a design pattern, a refactor that adds classes or layers, or an extension point. Decides whether it fits and gives the Python form: callables, injected values instead of singletons, Protocol instead of an ABC, entry points."
 license: MIT
 metadata:
   adapted-from: "references/principles.md: wshobson/agents python-design-patterns (MIT, Seth Hobson); see SOURCE.md"
@@ -14,7 +12,7 @@ A pattern answers a problem you have today. Python already contains most of them
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`python.target`, `types`, `tools.missing`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Arguments (`key=value` after the skill name) override detected facts. Use idioms available at `python.target`.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Use idioms available at the Python target.
 
 ## Decide first, even when the request names a pattern
 

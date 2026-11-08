@@ -1,8 +1,6 @@
 ---
 name: setting-up-python-packages
 description: "Scaffolds or audits a Python package: src layout, pyproject.toml, uv, ruff, mypy, pytest config, py.typed, one check command, CI workflow. Use when creating a new package, or editing build, lint, type-check, dependency or CI configuration."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 runner=uv types=mypy layout=src backend=hatchling]"
 license: MIT
 metadata:
   adapted-from: "references/versions-and-entry-points.md: wshobson/agents python-packaging and python-project-structure (MIT, Seth Hobson); see SOURCE.md"
@@ -12,19 +10,18 @@ metadata:
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root. If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. It prints the project's facts (`python.target`, `runner`, `layout`, `backend`, `lint`, `types`, `ci`, `tools.missing`, ...); `# default` means nothing was found.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there.
 
-- Arguments (`key=value` after the skill name) override detected facts: argument, then detected, then default.
 - **Existing project: keep its tools.** Poetry, black, flake8, pyright, setuptools stay. Do the task with them, report what differs from the defaults below as a suggestion, and migrate only if asked. Do not edit CI, lint or pytest config beyond what the task needs.
 - **New project: use the defaults** (uv, hatchling, ruff, mypy strict, pytest, `src` layout) from the templates in `assets/`.
-- Report `tools.missing`; never install a tool or dependency silently.
+- Never install a tool or dependency silently.
 
 ## New package checklist
 
-1. `pyproject.toml` is the only config file: no `setup.py`, `setup.cfg` or `requirements*.txt`. Start from [pyproject.toml](assets/pyproject.toml); replace the `<placeholders>` and set the Python versions from `python.target`. `requires-python` has a lower bound only.
+1. `pyproject.toml` is the only config file: no `setup.py`, `setup.cfg` or `requirements*.txt`. Start from [pyproject.toml](assets/pyproject.toml); replace the `<placeholders>` and set the Python versions from the Python target. `requires-python` has a lower bound only.
 2. `src/<pkg>/__init__.py` with `__all__`, an empty `src/<pkg>/py.typed`, and `tests/` mirroring the package (see `testing-python-packages`).
 3. One command runs lint, type check and tests, locally and in CI: copy [Makefile](assets/Makefile) (`make check`), or the equivalent for the project's runner.
-4. CI: copy [ci.yml](assets/ci.yml). It tests `python.target` and the newest release, installs from the lock file, runs only `make check`, grants `contents: read`, and uses no secrets. Pin each action to its latest release tag (`git ls-remote --tags https://github.com/<owner>/<action>`).
+4. CI: copy [ci.yml](assets/ci.yml). It tests the Python target and the newest release, installs from the lock file, runs only `make check`, grants `contents: read`, and uses no secrets. Pin each action to its latest release tag (`git ls-remote --tags https://github.com/<owner>/<action>`).
 5. Dev tools are pinned by the lock file (`uv sync --locked`). Keep runtime dependencies minimal; heavy or niche ones go in extras.
 6. The test suite runs with no network, no secrets and no running services.
 7. `.gitignore` covers `.venv/`, `__pycache__/`, `dist/`, `.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`.

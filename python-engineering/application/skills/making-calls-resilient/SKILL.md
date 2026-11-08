@@ -1,8 +1,6 @@
 ---
 name: making-calls-resilient
-description: "Calls to other services that degrade gracefully: timeouts on every call, retries with full jitter and Retry-After, one retry layer, circuit breakers, bulkheads, fallbacks, tenacity defaults, tests that never sleep. Use when adding retries, timeouts or a circuit breaker, calling an unreliable API, or when failures cascade."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12]"
+description: "Use when adding retries, timeouts or a circuit breaker, calling an unreliable API, or when failures cascade. Timeouts on every call, retries with full jitter and Retry-After, one retry layer, breakers, bulkheads, fallbacks, tests that never sleep."
 license: MIT
 metadata:
   adapted-from: "wshobson/agents python-resilience (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Making calls resilient
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults. Use the retry library the project already has (tenacity, backoff, a client's own retry setting); do not add one for a single call. Checked on Python 3.13 with tenacity 9.2.1, httpx 0.28.1 and requests 2.34.2 on 7 November 2026.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Use the retry library the project already has (tenacity, backoff, a client's own retry setting); do not add one for a single call. Checked on Python 3.13 with tenacity 9.2.1, httpx 0.28.1 and requests 2.34.2 on 7 November 2026.
 
 ## Rules
 

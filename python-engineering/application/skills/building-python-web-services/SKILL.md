@@ -1,8 +1,6 @@
 ---
 name: building-python-web-services
-description: "Builds and reviews Python web APIs and services with FastAPI, Django, Litestar or Flask: typed request and response models, dependencies, settings, SQLAlchemy and migrations, auth, CORS, background work, tests and ASGI deployment. Use when adding endpoints, wiring a database or auth, or deploying a Python web service."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 runner=uv]"
+description: "Use when adding endpoints, wiring a database or auth, or deploying a Python web service. FastAPI, Django, Litestar or Flask: typed models, dependencies, settings, SQLAlchemy and migrations, auth, CORS, background work, tests, ASGI deployment."
 ---
 
 # Building Python web services
@@ -11,7 +9,7 @@ A web service is a public API with a database behind it: validate everything com
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`python.target`, `runner`, `async`, `tools.missing`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Then read `pyproject.toml` for the framework, ORM, server and auth libraries in use.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Then read `pyproject.toml` for the framework, ORM, server and auth libraries in use.
 
 - Use the framework, ORM, server and auth library the project has. Never add a second framework or ORM; never migrate frameworks unless asked.
 - Running migrations against a shared database, changing auth or CORS settings, and deleting endpoints need approval.

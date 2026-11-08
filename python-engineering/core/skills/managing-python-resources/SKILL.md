@@ -1,8 +1,6 @@
 ---
 name: managing-python-resources
 description: "Release files, connections, locks, subprocesses, temp files and streams on every path: context managers, ExitStack, async cleanup, generators that hold a resource, leak detection. Use when opening or pooling a resource, writing a context manager, running a subprocess or streaming a response."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12]"
 license: MIT
 metadata:
   adapted-from: "wshobson/agents python-resource-management (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Managing Python resources
 
-A resource has one owner, and the owner releases it on every path: return, exception, cancellation. Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once; use only what `python.target` supports. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults.
+A resource has one owner, and the owner releases it on every path: return, exception, cancellation. Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Use only what the Python target supports.
 
 ## Rules
 

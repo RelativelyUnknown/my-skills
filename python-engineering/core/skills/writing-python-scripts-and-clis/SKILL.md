@@ -1,12 +1,11 @@
 ---
 name: writing-python-scripts-and-clis
 description: "Writes single-file Python scripts and small command-line tools: main(argv) returning an exit code, argparse, stderr for errors, --dry-run, atomic writes, PEP 723 inline dependencies for uv run. Use when asked for a script, a CLI, or a one-off tool."
-argument-hint: "[python=3.12]"
 ---
 
 # Writing Python scripts and CLIs
 
-A script is code someone will run again. Make it safe to rerun and honest about failure. Use features available at `python.target`.
+A script is code someone will run again. Make it safe to rerun and honest about failure. Use features available at the Python target.
 
 ## Shape
 

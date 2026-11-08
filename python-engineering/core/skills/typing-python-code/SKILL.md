@@ -1,8 +1,6 @@
 ---
 name: typing-python-code
-description: "Type hints a checker can enforce: modern syntax by Python version, narrowing, TypedDict, Literal and exhaustive match, TypeIs, ParamSpec decorators, Protocol, override, and adopting strict mode in an existing codebase. Use when adding or fixing annotations, configuring mypy or pyright, or when a type checker reports errors."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 types=mypy]"
+description: "Use when adding or fixing type hints, configuring mypy or pyright, or when a type checker reports errors. Modern syntax by Python version, narrowing, TypedDict, Literal and exhaustive match, TypeIs, ParamSpec, Protocol, override, strict mode."
 license: MIT
 metadata:
   adapted-from: "wshobson/agents python-type-safety (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Typing Python code
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once. Use `python.target` for the syntax below and `types` for the checker; never add a second checker. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults. Run the checker after every change and fix the types instead of silencing it.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Use the Python target for the syntax below and `types` for the checker; never add a second checker. Run the checker after every change and fix the types instead of silencing it.
 
 ## Rules
 

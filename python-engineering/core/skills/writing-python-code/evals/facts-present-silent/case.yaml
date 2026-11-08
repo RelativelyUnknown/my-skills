@@ -1,6 +1,0 @@
-schema_version: "1.1"
-name: facts-present-silent
-expected_outcome: |
-  Run with the whole skills folder installed (python-project-facts included): the shared script is run and the user is not told that project facts are missing.
-context:
-  scaffold_script: fixture.sh

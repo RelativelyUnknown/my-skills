@@ -12,7 +12,7 @@ Read when a measured hot path needs a faster or better library and `faster-libra
 
 Check each against the detected facts and `pyproject.toml`:
 
-- `requires_python` includes `python.target` and the newest Python the project tests on.
+- `requires_python` includes the Python target and the newest Python the project tests on.
 - Wheels exist for every platform and Python version the project ships to. A missing wheel means a compiler in CI.
 - The licence is compatible with the project's (`license_expression`).
 - Its own dependencies are few and light, and the install size is acceptable.

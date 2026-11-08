@@ -1,8 +1,6 @@
 ---
 name: adding-observability
-description: "Logs, metrics and traces for Python services: one logging config at the entry point, request ids through contextvars, log levels, bounded metric labels, rate-error-duration metrics, OpenTelemetry API versus SDK, error spans. Use when adding logging, metrics, tracing or health signals, or when production failures cannot be traced."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12]"
+description: "Use when adding logging, metrics, tracing or health signals, or when production failures cannot be traced. One logging config at the entry point, request ids via contextvars, bounded metric labels, OpenTelemetry API versus SDK, error spans."
 license: MIT
 metadata:
   adapted-from: "wshobson/agents python-observability (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Adding observability
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults. Use the stack the project already has (stdlib `logging`, structlog, Prometheus, an OpenTelemetry collector); add a library only when asked. Checked on Python 3.13 with prometheus-client 0.26.0 and OpenTelemetry 1.45.2 on 7 November 2026.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Use the stack the project already has (stdlib `logging`, structlog, Prometheus, an OpenTelemetry collector); add a library only when asked. Checked on Python 3.13 with prometheus-client 0.26.0 and OpenTelemetry 1.45.2 on 7 November 2026.
 
 ## Logs
 

@@ -1,8 +1,6 @@
 ---
 name: using-uv
-description: "Use uv correctly: project, script, tool and pip-compatible modes, lock discipline (--locked versus --frozen), dependency groups, Python pins, workspaces, CI and Docker layering. Use when the runner is uv, or when adding dependencies, locking, syncing, running scripts or tools, or writing a Dockerfile or CI job that installs with uv."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 runner=uv]"
+description: "Use when the runner is uv, or when adding dependencies, locking, syncing, running scripts or tools, or writing a Dockerfile or CI job with uv. Project, script, tool and pip modes, --locked versus --frozen, groups, pins, workspaces, image layering."
 license: MIT
 metadata:
   adapted-from: "wshobson/agents uv-package-manager (MIT, Seth Hobson); see SOURCE.md"
@@ -10,7 +8,7 @@ metadata:
 
 # Using uv
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` once. This skill applies when `runner=uv`; do not move a poetry, pdm or pip project to uv unasked. If the facts skill is not installed, tell the user once that project facts are assumed and use defaults. Commands below were run with uv 0.11.32 on 7 November 2026; uv changes quickly, so `uv help <command>` wins over this page.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. This skill applies when `runner=uv`; do not move a poetry, pdm or pip project to uv unasked. Commands below were run with uv 0.11.32 on 7 November 2026; uv changes quickly, so `uv help <command>` wins over this page.
 
 ## Pick the mode
 

@@ -1,8 +1,6 @@
 ---
 name: testing-python-packages
 description: "Writes, fixes and reviews pytest tests for Python packages: layout, parametrize, fixtures, mocking, coverage, flaky tests, regression tests for bugs. Use when adding or changing tests, fixing a failing or flaky test, reproducing a bug, or configuring pytest."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 runner=uv layout=src rigor=full]"
 license: MIT
 metadata:
   adapted-from: "references/mocking-and-fixtures.md, retries section: wshobson/agents python-testing-patterns (MIT, Seth Hobson); see SOURCE.md"
@@ -14,12 +12,11 @@ Tests are the spec. They change only when the spec changes, and every test must 
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root. If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. It prints the project's facts (`python.target`, `runner`, `layout`, `test.import_mode`, `async`, `tools.missing`, ...); a `# default` comment means nothing was found.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there.
 
-- Arguments (`key=value` after the skill name) override detected facts: argument, then detected, then default.
-- Prefix commands with the detected `runner` (`uv run pytest`, `poetry run pytest`, `python -m pytest`).
-- Report `tools.missing`; never install a tool or dependency silently.
-- Use idioms available at `python.target` and no newer.
+- Prefix commands with the project's `runner` (`uv run pytest`, `poetry run pytest`, `python -m pytest`).
+- Never install a tool or dependency silently.
+- Use idioms available at the Python target and no newer.
 
 ## Never-miss rules (every rigor level)
 

@@ -1,8 +1,6 @@
 ---
 name: auditing-python-dependencies
-description: "Vets and audits Python dependencies: checks a package is real and maintained before adding it, scans the lock file for known vulnerabilities with uv audit or pip-audit, triages and fixes findings, checks licenses and update policy. Use when adding a dependency, answering a security alert, or auditing a project's supply chain."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[runner=uv report=normal]"
+description: "Use when adding a dependency, answering a security alert, or auditing a project's supply chain. Checks a package is real and maintained, scans the lock file with uv audit or pip-audit, triages findings, checks licences and update policy."
 ---
 
 # Auditing Python dependencies
@@ -11,7 +9,7 @@ Every dependency is code you run without reading. Add few, verify each, and fix 
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`runner`, `python.target`, `tools.missing`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Arguments (`key=value` after the skill name) override detected facts. Commands below use uv; with another runner, export its lock to a requirements file and run the same checks.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. Commands below use uv; with another runner, export its lock to a requirements file and run the same checks.
 
 Never change the lock file, upgrade, downgrade or remove a package as a side effect of an audit. Show the findings and the proposed change; act when asked.
 

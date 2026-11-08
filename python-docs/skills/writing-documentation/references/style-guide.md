@@ -16,7 +16,6 @@ Defaults distilled from the Google developer documentation style guide, the Micr
 
 ## Words to replace
 
-<!-- lint-prose: off -->
 | Instead of | Write |
 | --- | --- |
 | utilize, leverage, make use of | use |
@@ -36,7 +35,6 @@ Defaults distilled from the Google developer documentation style guide, the Micr
 | sanity check | quick check, confirmation |
 | dummy value | placeholder, sample value |
 | abort (for a user action) | cancel, stop |
-<!-- lint-prose: on -->
 
 ## Grammar and voice
 

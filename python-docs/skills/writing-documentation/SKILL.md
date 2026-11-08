@@ -1,7 +1,6 @@
 ---
 name: writing-documentation
-description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to guide, CONTRIBUTING file, changelog or release notes for software. Applies Diátaxis page types, Google and Microsoft developer style, PEP 257 and numpydoc, runnable examples and a prose linter; avoids AI filler."
-argument-hint: "[style=google docstrings=numpy]"
+description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to guide, CONTRIBUTING file, changelog or release notes for software. Applies Diátaxis page types, Google and Microsoft developer style, PEP 257 and numpydoc, runnable examples; avoids AI filler."
 ---
 
 # Writing documentation
@@ -21,7 +20,7 @@ Documentation lets a reader do or understand something without asking the author
 
    If a page needs two types, write two pages and link them. Details and templates: [references/diataxis.md](references/diataxis.md).
 
-2. **Follow the project's conventions over the defaults below.** Check the docs tool: `mkdocs.yml` means MkDocs, `docs/conf.py` means Sphinx. Check the docstring style (`[tool.ruff.lint.pydocstyle] convention`, or read five existing docstrings). Check for a style guide or `.vale.ini`, the changelog format and the English variety. Arguments (`style=`, `docstrings=`) override what you find. Report differences as suggestions; do not convert existing docs unasked.
+2. **Follow the project's conventions over the defaults below.** Check the docs tool: `mkdocs.yml` means MkDocs, `docs/conf.py` means Sphinx. Check the docstring style (`[tool.ruff.lint.pydocstyle] convention`, or read five existing docstrings). Check for a style guide or `.vale.ini`, the changelog format and the English variety. The project's defaults (`style`, `docstrings`) are recorded in AGENTS.md; ask once if neither the defaults nor the existing docs settle it. Report differences as suggestions; do not convert existing docs unasked.
 
 3. **Read the code and run it before describing it.** Documentation that states intended behavior instead of actual behavior is a bug. If the code and the existing docs disagree, report it rather than picking one silently.
 
@@ -41,7 +40,7 @@ Documentation lets a reader do or understand something without asking the author
 
 - **Be specific.** Numbers, versions, units, exact error messages, defaults. "Retries 3 times with exponential backoff starting at 1 s" beats "retries automatically".
 - **Timeless.** No "currently", "now", "new", "recently", "soon", or promises about future features. History belongs in the changelog; plans belong in the issue tracker.
-- **No minimizers, puffery or filler** ("simply", "just", "easy", "powerful", "seamless", "blazing fast", "in order to", "note that"); `lint_prose.py` flags the word lists. A speed claim comes with a benchmark or is cut.
+- **No minimizers, puffery or filler** ("simply", "just", "easy", "powerful", "seamless", "blazing fast", "in order to", "note that"); grep finds the common ones (see the workflow). A speed claim comes with a benchmark or is cut.
 - **Affirmative and calm.** Say what works and how to do it. Reserve warnings for data loss, security and crashes, and state the consequence: "Deletes the table and its history; this cannot be undone." Collect security considerations in their own section and link to it.
 - **Global readers.** No idioms, jokes or Latin abbreviations (write "for example", "that is"). Expand an acronym on first use unless it is better known than its expansion (HTML, URL, API).
 - **Inclusive and accessible.** "allowlist/denylist", "primary/replica"; "they" for an unknown person. Alt text that states what an image shows; never rely on color alone.
@@ -63,9 +62,9 @@ What a docstring says (behavior, returns, raises; no conversation residue; no re
 
 1. Outline with headings only; check each heading against the page type.
 2. Draft. Write the example first, run it, then write the prose around it.
-3. Lint: `python3 <this skill's folder>/scripts/lint_prose.py <files>` (add `--future` for reference pages). Fix each finding or keep it with a reason; a quoted word or a technical term ("trivial" in a math sense) can stay. If the project has `.vale.ini`, run `vale` with it too.
+3. Grep for filler: `grep -rniwE "seamless(ly)?|robust|powerful|comprehensive|delve|leverag(e|es|ed|ing)|utili[sz]e|holistic|simply|just|easily|obviously|basically|actually|in order to|note that|currently|recently|soon|as discussed|feel free to" <files>`. Fix each hit or keep it with a reason; a quoted word or a technical term ("trivial" in a math sense) can stay. In reference pages also grep `will` for future tense. If the project has `.vale.ini`, run `vale` with it too.
 4. Edit pass. Delete sentences that restate the heading, summarize the page, announce what comes next, or praise the software. Check that every step is an action, every claim is specific, every link works.
-5. Report what you changed, which examples you ran and how, and which linter findings you kept and why.
+5. Report what you changed, which examples you ran and how, and which grep hits you kept and why.
 
 ## Read when relevant
 

@@ -42,10 +42,8 @@ The composition principles of Strunk's *The Elements of Style* (1918, public dom
 ## Words
 
 - Prefer the short, common word: use, start, end, help, show, need, about.
-<!-- lint-prose: off -->
 - Cut intensifiers and qualifiers: very, really, quite, rather, somewhat, fairly, basically, actually.
 - Replace phrases with words: "the question as to whether" becomes "whether"; "there is no doubt but that" becomes "doubtless", or cut it; "he is a man who" becomes "he".
-<!-- lint-prose: on -->
 - Turn hidden verbs back into verbs: "perform an installation of" becomes "install"; "make a decision" becomes "decide"; "provide support for" becomes "support".
 - Commonly misused words in technical text:
   - "comprise": the whole comprises the parts.
@@ -60,4 +58,4 @@ The composition principles of Strunk's *The Elements of Style* (1918, public dom
 2. For each paragraph: delete the sentence that adds least. Repeat until deleting hurts.
 3. For each sentence: find the actor and the action; make the actor the subject and the action the verb.
 4. For each word: replace long words with short ones, and delete the ones that carry nothing.
-5. Read it aloud, or run `scripts/lint_prose.py`, and fix what trips you.
+5. Read it aloud, or run the filler grep from `SKILL.md`, and fix what trips you.

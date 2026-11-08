@@ -1,15 +1,13 @@
 ---
 name: releasing-python-packages
 description: "Builds, verifies and publishes a Python package to PyPI: single-source version, changelog, wheel smoke test, trusted publishing, CI matrix, deprecation policy. Use when preparing or cutting a release, fixing what a built wheel contains, or editing release or publishing workflows."
-compatibility: "Needs the python-project-facts skill installed in the same folder."
-argument-hint: "[python=3.12 runner=uv backend=hatchling]"
 ---
 
 # Releasing Python packages
 
 ## Start
 
-Run `python3 <this skill's folder>/../python-project-facts/scripts/detect_project.py` from the project root (`python.target`, `runner`, `backend`, `ci`, `tools.missing`; `# default` means nothing was found). If the `python-project-facts` skill is not installed, tell the user once that project facts are being assumed, and continue with defaults. Arguments (`key=value` after the skill name) override detected facts. The commands below use `uv`; with another `runner`, use its equivalents and keep the same steps. Report `tools.missing`; never install a tool silently.
+Defaults: read the `## Python defaults` section of AGENTS.md; infer what is missing from the repo; ask only what is still unknown, once; save the answers there. The commands below use `uv`; with another `runner`, use its equivalents and keep the same steps.
 
 ## Never without being asked
 
@@ -49,7 +47,7 @@ Use [release.yml](assets/release.yml). It builds in one job and publishes from a
 
 ## Compatibility and deprecation
 
-- Declare `requires-python` (lower bound, no upper bound) and test in CI on `python.target` and the newest release.
+- Declare `requires-python` (lower bound, no upper bound) and test in CI on the Python target and the newest release.
 - Deprecation and extras are `designing-package-apis` rules: deprecate for at least one minor release before removing, and keep the base install small.
 
 ## Fixing a broken wheel
