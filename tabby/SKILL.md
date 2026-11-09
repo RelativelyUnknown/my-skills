@@ -10,7 +10,7 @@ Project memory is the `## Tabby` section of AGENTS.md. Claude Code reads CLAUDE.
 
 ## Modules
 
-Each is a folder here; its `index.md` is the entry point. Paths inside a module are relative to that folder.
+Each is a folder in this skill's folder; open its `index.md` with Read first. File paths in a module's `index.md` start with the module name, for example `engineering/references/...`, relative to this skill's folder.
 
 | Module | Read when |
 | --- | --- |

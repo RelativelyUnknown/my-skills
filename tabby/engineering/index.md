@@ -14,7 +14,7 @@ Defaults: the `## Python defaults` section of AGENTS.md: `kind`, `python`, `runn
 
 ## Read before you write
 
-Read every file matching the task before writing code. Open them with Read at this folder plus the path; do not search. Paths start at `references/fields/software-engineering/`. Always: `all/code/snags.md`, `all/workflow/shipping.md`. Then:
+Read every file matching the task before writing code. The paths below start at `engineering/references/fields/software-engineering/` inside the tabby skill folder: `all/code/snags.md` is `engineering/references/fields/software-engineering/all/code/snags.md`. Open each with Read; do not search. Always: `all/code/snags.md`, `all/workflow/shipping.md`. Then:
 
 - new function, class, option, constant, wrapper, name: `all/code/minimalism.md`
 - hand-rolled utility, new package, optional dependency (extra, lazy import): `all/code/stdlib-first.md`, `all/dependencies/dependencies.md`, `library/shared/api-design.md`
@@ -30,6 +30,6 @@ Read every file matching the task before writing code. Open them with Read at th
 - scope, when to stop: `all/workflow/planning.md`; a bug: `all/workflow/debugging.md`
 - a library others install: `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C or Cython behind a Python API: `library/native/index.md`
 - a service: `application/apis/http/services.md`, `application/apis/shared/security.md`, `application/shared/async.md`, `service-snags.md`, `observability.md`, `configuration.md`, `resilience.md`; workers: `application/workers/background-jobs.md`
-- pattern, layers, extension point, settings object: `../software-architecture/design-patterns.md`
+- pattern, layers, extension point, settings object: `engineering/references/fields/software-architecture/design-patterns.md`
 
-Other project kinds: `references/which-type.md`, then each `kind` path's `index.md`.
+Other project kinds: `engineering/references/which-type.md`, then each `kind` path's `index.md` (kind paths start at `engineering/references/fields/`).

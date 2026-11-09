@@ -62,7 +62,8 @@ commands: one canonical check command, e.g. `nox -e local` or `make check`
   - library with Rust, C or Cython behind a Python API: `software-engineering/library/native`
   - HTTP service: `software-engineering/application/apis/http`
   - queue worker or scheduler: `software-engineering/application/workers`
-  - anything else: `software-engineering/all` `docs:` lists the page types to keep current (see `documentation/references/index.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
+  - anything else: `software-engineering/all`
+- `docs:` lists the page types to keep current (see `documentation/references/index.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
 - Add `design` to `modules:` only when the user wants diagrams or explainers.
 - Keep `## Python defaults` as it is; Tabby does not replace it.
 - No user to ask (CI, or the user says they cannot answer now)? Do not ask and do not stop: write the section from the repo, mark every unknown `(assumed)`, and tell the user which entries need confirming.

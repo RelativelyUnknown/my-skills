@@ -2,7 +2,7 @@
 
 Documentation lets a reader do or understand something without asking the author. Every sentence either moves the reader toward that or goes.
 
-Read this first for any documentation task, then the page-type leaf in [index.md](index.md).
+Read this first for any documentation task, then the page-type leaf listed in `documentation/references/index.md` (leaf paths start at `documentation/references/`).
 
 ## Never miss
 
