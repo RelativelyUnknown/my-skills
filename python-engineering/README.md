@@ -52,6 +52,7 @@ claude plugin eval python-engineering --scaffold --allow-tools Write Edit --judg
 A leaf is written only where the model fails a case without it. These cases were run with and without the skill and the bare model passed, so no leaf exists for them:
 
 - `native-gil-checksum`, `native-pyclass-by-value`, `native-free-threaded` (a Rust extension on PyO3 0.30.1: release the GIL with `detach`, extract a `#[pyclass]` by value after the 0.30 change, declare `gil_used = false`): 0.96, 1.0 and 1.0 without the skill. PyO3's changelog confirms the renames and removals these cases depend on (`allow_threads` to `detach` in 0.26, `from_py_object` opt-in from 0.27, the blanket `FromPyObject` for `Clone` pyclasses removed in 0.30). Still untested: wheel builds and CI for extensions, C-API reference counting, abi3 and stubs.
+- `ml-leaky-validation` (a scikit-learn script with scaling fit on all rows, a shuffled split of weekly data and a store mean computed over all rows) and `de-rerunnable-load` (a nightly load that duplicates rows on re-run): 1.0 and 1.0 without the skill, three runs each. With the skill the leakage case scored 0.77 because my pipeline regex missed a different, valid fix; that is a grader miss, not a model failure.
 
 ## Known interactions
 

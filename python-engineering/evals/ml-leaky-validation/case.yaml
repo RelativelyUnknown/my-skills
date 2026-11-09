@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: ml-leaky-validation
+expected_outcome: |
+  The training script no longer leaks: preprocessing is fit on the training part only (a Pipeline or fit on X_train), the split respects time order instead of shuffling weekly demand rows, and rows of one store do not appear on both sides of the split.
+context:
+  scaffold_script: fixture.sh

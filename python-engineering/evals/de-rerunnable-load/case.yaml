@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: de-rerunnable-load
+expected_outcome: |
+  The nightly load can be re-run for the same day without duplicating rows (an upsert or a delete-and-insert of the day's partition inside one transaction), the day comes from an argument and not from the clock, and a start and end date allow a backfill.
+context:
+  scaffold_script: fixture.sh
