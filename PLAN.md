@@ -145,7 +145,7 @@ Folder: `python-engineering/references/fields/software-engineering/library/nativ
 | `rust.md` | PyO3 rules that matter at the boundary: no panics across it, error mapping to Python exceptions, GIL and `detach`, `from_py_object` opt-in, free-threading, ownership across the boundary, lint and `unsafe` rules | BeautifulRust, PyO3 changelog (already verified in the handover) |
 | `c.md` | CPython C style (PEP 7), reference counting (new vs borrowed references), error indicator discipline, GIL, stable ABI limits, buffer protocol, multi-phase init, sanitizers (ASan, UBSan), fuzzing | Amara `python-c`, pganssle/pablogsal rules (section 4a), official CPython docs and PEP 7 |
 | `cpp.md` (only if a baseline fails) | nanobind or pybind11 boundary, RAII, ownership, `const` by default, CMake target layout | ECC digest of the C++ Core Guidelines, official docs |
-| `build-and-ci.md` | maturin or scikit-build-core, wheels with cibuildwheel, abi3 vs per-version, free-threaded job, sdist, `Cargo.lock` and vendoring, release checks | Official docs |
+| `ci-wheels.md` | maturin or scikit-build-core, wheels with cibuildwheel, abi3 vs per-version, free-threaded job, sdist, `Cargo.lock` and vendoring, release checks | Official docs |
 | `style.md` | One page: what formatter and linter each language uses and the commands (rustfmt, clippy, clang-format, clang-tidy, ruff), and that project config wins | Official docs |
 
 `which-type.md` gains one row: a `[project]` with `Cargo.toml`, `setup.py` ext modules or `CMakeLists.txt` points to `library/native`.

@@ -1,6 +1,6 @@
 ---
 name: python-engineering
-description: "Rules for every Python code change: errors, minimalism, standard library first, typing, tests, dependencies and uv, CI, packaging, performance, reporting. Use whenever you write, modify, debug, test, speed up, package or release Python; load before editing any .py or pyproject.toml file."
+description: "Rules for every Python code change: errors, minimalism, stdlib first, typing, tests, dependencies, uv, CI, packaging, performance, docs, Rust and C extensions. Use whenever you write, change, debug, test, speed up, package or release Python; load before editing any .py or pyproject.toml file."
 license: MIT
 ---
 
@@ -40,5 +40,9 @@ Read every file matching the task before writing code. Open them with Read at th
 - queues, schedulers: `application/workers/background-jobs.md`
 - logs, metrics, traces, health: `application/shared/observability.md`; settings, env, secrets: `configuration.md`; timeouts, retries: `resilience.md`
 - pattern, layers, extension point, settings object: `../software-architecture/design-patterns.md`
+- Rust, C or C++ behind a Python API, PyO3, maturin, cibuildwheel: `library/native/index.md`, then `architecture.md` and the leaf for the language
+- README, docstring, API reference, tutorial, how-to, changelog, ADR, runbook, troubleshooting, CONTRIBUTING: `../documentation/workflow.md`, then `../documentation/index.md`
+- diagram or explainer animation: the `python-design` skill; a review or audit: the `python-review` skill
+- starting a project or no `## Tabby` section in AGENTS.md: the `tabby` skill
 
 Other project kinds: `references/which-type.md`, then each `kind` path's `index.md`. A path with no folder: say no specialist guidance exists.
