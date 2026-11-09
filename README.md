@@ -118,13 +118,13 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/scoreboard-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/scoreboard-light.png">
-    <img src="assets/scoreboard-light.png" width="800" alt="The same agent with and without Tabby over 51 cases: mean score 0.77 without and 0.80 with; 18 cases better, 17 worse, 16 unchanged; cost per run $0.0075 without and $0.0112 with, 9.2 turns against 15.5.">
+    <img src="assets/scoreboard-light.png" width="800" alt="The same agent with and without Tabby over 51 cases: mean score 0.78 without and 0.86 with; 19 cases better, 7 worse, 25 unchanged; cost per run $0.0075 without and $0.0103 with, 9.2 turns against 15.0.">
   </picture>
 </p>
 
-The same agent, the same 51 cases, 3 runs each, with and without Tabby, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders). Measured on commit `b92a610`. The router loaded in 97 of 114 runs.
+The same agent, the same 51 cases, 3 runs each, with and without Tabby, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders). Measured on commit `8a2b55f`. The router loaded in 99 of 114 runs.
 
-It helps most when the right move is not obvious: a payment-method refactor scored 0.97 with Tabby and 0.39 without; free-form date parsing (take a library, do not write a regex) 0.57 and 0.13; a security audit 0.98 and 0.75; numpydoc docstrings 1.00 and 0.67. It costs more per run than the bare agent, because it reads before it writes, and in 17 of the 51 cases it scored lower.
+It helps most when the right move is not obvious: joining an existing Rust-backed library and saving project memory scored 1.00 with Tabby and 0.11 without; free-form date parsing (take a library, do not write a regex) 0.76 and 0.13; a payment-method refactor 1.00 and 0.39; literal defaults and checked network calls 1.00 and 0.56; an optional dependency kept out of the base install 0.74 and 0.39. It costs about 38% more per run than the bare agent, because it reads before it writes, and in 7 of the 51 cases it scored lower (for example a streaming subprocess task, 0.71 against 1.00).
 
 **Limits:** one model, three runs, one judge, no shell in the eval sandbox. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
 
