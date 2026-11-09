@@ -48,6 +48,8 @@ PyO3 changes between minors. Pin the minor and read its changelog on upgrade (th
 - `#[pyclass(frozen)]` for immutable shared state; put mutable state behind a `Mutex`. Do not wrap `Rc`, `Arc` or `RefCell` types in the public signature.
 - Declare free-threaded support (`#[pymodule(gil_used = false)]`) only after checking that no shared state is unsynchronised, and test on a free-threaded build.
 
+See also [senior-engineering.md](../../architecture/senior-engineering.md) for the shape of a well-confined `unsafe` boundary.
+
 ## Unsafe and C libraries
 
 - `unsafe` only for FFI or a measured need. Every block gets `// SAFETY:` stating why the invariants hold; every `unsafe fn` gets a `# Safety` doc section. Keep it in the smallest module and expose a safe API. Run Miri over it.

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: confine-unsafe-accessor
+expected_outcome: |
+  Given a Rust struct with a safe, bounds-checked get() and a request to add a fast unchecked path for a hot loop, the agent adds a narrowly scoped unsafe fn with a documented # Safety precondition and a // SAFETY: comment at the call site, not a broad unsafe impl or a safe-looking function that skips the check silently.
+context:
+  scaffold_script: fixture.sh

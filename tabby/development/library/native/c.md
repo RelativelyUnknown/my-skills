@@ -24,6 +24,8 @@ Prefer something else first ([architecture.md](architecture.md)): Rust, Cython, 
 - Guard version-specific code with `PY_VERSION_HEX`. The old `Py_UNICODE` APIs are gone since 3.12.
 - Stable ABI: define `Py_LIMITED_API`, use only limited-API calls, and build an `abi3` wheel.
 
+See also [senior-engineering.md](../../architecture/senior-engineering.md) for how large C and Rust codebases confine unsafe memory access.
+
 ## Testing
 
 - Build with ASan and UBSan (`-fsanitize=address,undefined`) and run the suite; a Python debug build (`--with-pydebug`) or `python -X dev` with `PYTHONMALLOC=debug` catches refcount and allocator misuse.
