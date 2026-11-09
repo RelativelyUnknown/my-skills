@@ -2,3 +2,5 @@ schema_version: "1.1"
 name: add-owned-resource-endpoint
 expected_outcome: |
   The endpoint filters by owner, returns a response model without internal fields, uses Annotated dependencies, and tests the other-user case.
+context:
+  scaffold_script: fixture.sh
