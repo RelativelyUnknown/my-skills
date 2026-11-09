@@ -6,10 +6,10 @@ Written 2026-11-09 from the directive and a read of the third-party sources. Not
 
 | # | Question | Recommendation |
 | --- | --- | --- |
-| D1 | Claude-first changes the memory file. Claude Code reads `CLAUDE.md`, not `AGENTS.md`. | Write project memory to `CLAUDE.md`. If `AGENTS.md` exists, keep it as the single source and have `CLAUDE.md` contain `@AGENTS.md`. Tell the agent to use its question tool (`AskUserQuestion` on Claude). |
+| D1 | **Decided: AGENTS.md first.** Claude Code reads `CLAUDE.md`, not `AGENTS.md`. | All project memory (`## Python defaults`, `## Project`) lives in `AGENTS.md`. Skills read and write only `AGENTS.md`. If the repo has no `CLAUDE.md`, suggest one line, `@AGENTS.md`, so Claude Code loads it; never copy the content. Tell the agent to use its question tool (`AskUserQuestion` on Claude). |
 | D2 | "Fold documentation into python-engineering" reverses the three-skill split. | Fold `documentation/references/written/` into `python-engineering/references/fields/documentation/`. Keep the animation and diagram material as its own skill (directive item 3). Measure: the 5 docs cases must score at least as well as now (0.91 on `three-pages`). |
 | D3 | Branch. The session says `ccr-5a44ac80-g3qmqp`; the handover says PR #4 lives on `claude/design-patterns-and-code-snags`. | Work on `ccr-5a44ac80-g3qmqp` as instructed, unless you say to move. |
-| D4 | Official C/Rust/CPython guidelines are not in the third-party list (no C source at all). | Fetch the official ones: PEP 7, CPython devguide, Python/C API refcount and stable-ABI pages, PyO3 guide, maturin, scikit-build-core, cibuildwheel, Rust API Guidelines. Needs network hosts allowed. Idea-only, rewritten. |
+| D4 | Your original list has no C or C++ source. | Use the community skills found in section 4a plus the official docs. Fetch the official ones: PEP 7, CPython devguide, Python/C API refcount and stable-ABI pages, PyO3 guide, maturin, scikit-build-core, cibuildwheel, Rust API Guidelines. Needs network hosts allowed. Idea-only, rewritten. |
 | D5 | Probing native work needs `cargo`, `maturin`, a C compiler and sanitizers. | Check what is installed first; ask before installing anything. |
 
 ## 1. Target layout
@@ -21,7 +21,7 @@ python-design/           animation + diagrams, split out of documentation
 ```
 
 - Frontmatter stays `name` and `description` (plus `license`). Descriptions at most 300 characters.
-- Project memory lives in two editable sections of one file: `## Python defaults` (exists) and `## Project` (new, section 3).
+- Project memory lives in two editable sections of one file (`AGENTS.md`): `## Python defaults` (exists) and `## Project` (new, section 3).
 - No new scripts, no test infrastructure for markdown. Checks are `grep` one-liners in the README.
 - Debloat before adding: the front door goes from about 980 to at most 600 tokens; the 8 oversize leaves are cut to 4,200 characters.
 
@@ -83,6 +83,22 @@ revisit: when a goal changes or a growth item arrives
 
 **Using it.** `growth` drives structure: each item maps to a seam to build now and a thing not to build yet (for example "may move a hot path to Rust later": keep a typed Python reference implementation and a thin import seam; do not create a Cargo workspace yet). The rule is the existing "no speculative generality", with the user's own stated growth as the only exception. At the start of any later task, the agent reads `## Project`; if the task contradicts `goals` or `out-of-scope`, it asks before proceeding. Old answers are meant to go stale: say so in the section header and tell the agent to ask whether they still fit when a task conflicts.
 
+## 4a. C and C++ sources found online (2026-11-09)
+
+There is no C/C++ equivalent of BeautifulRust. These came closest. All are read as data; ideas are rewritten, no text copied, and the licence notice goes in `THIRD_PARTY_NOTICES.md`.
+
+| Source | Licence | What it is | Take |
+| --- | --- | --- | --- |
+| OoriData/Amara `.claude/skills/python-c` | Apache-2.0 | Python plus native: when to go native, which interface (ctypes, cffi, Cython, nanobind, raw C-API, PyO3), always ship a visible pure-Python fallback, C-API hygiene 3.12-3.14, free-threading, wheels | Best fit. Basis for `native/architecture.md` and `native/c.md` |
+| pganssle/dotfiles `consensus-cpp-and-native`, `pablogsal-cpp-and-ml` | Apache-2.0 | CPython C review: fallible-call table, borrowed references across calls, `tp_clear` vs `tp_dealloc`, GC tracking on error paths, single `goto exit` cleanup, PEP 7 | Basis for the C refcount review checklist. They are written as personas of named people; take the rules, not the persona |
+| VincentChuWaiChow/vanguard-frontier-agentic `python-native-extension-interop` | Apache-2.0 | Static review of C-API, Cython, PyO3: ownership, buffer protocol release, exception translation, abi3, GIL release | Severity-ordered rules; evidence labels (confirmed, inference, assumption) |
+| affaan-m/ECC `cpp-coding-standards` | MIT | Digest of the C++ Core Guidelines (RAII, const by default, ownership, `enum class`) | `native/cpp.md`, only if a baseline fails |
+| ericrisco/rsc-harness `cpp`; Jeffallan/claude-skills `cpp-pro` | MIT | General modern C++ and CMake | Skim only; overlaps ECC |
+| Panoptic-Huginn/mimir-agent-kit `c-pro` | Apache-2.0 | C23, CERT C, MISRA, real-time robotics | Too specialised; take only the sanitizer and `-Wall -Wextra -Werror` gate and checked arithmetic (`ckd_add`) |
+| questdb/py-questdb-client `review-pr` | Apache-2.0 | 140 KB project review skill | Not read in full; mine for the Rust/Cython/C review steps if B2 fails |
+
+Official sources still to fetch and summarise: PEP 7, CPython devguide, Python/C API reference-count and stable-ABI pages, C++ Core Guidelines, PyO3 guide, maturin, scikit-build-core, cibuildwheel.
+
 ## 4. Multi-language libraries (Python with Rust or C)
 
 Folder: `python-engineering/references/fields/software-engineering/library/native/` (separate from `library/shared`).
@@ -91,7 +107,8 @@ Folder: `python-engineering/references/fields/software-engineering/library/nativ
 | --- | --- | --- |
 | `index.md`, `architecture.md` | When native is justified (profile first, existing `faster-libraries.md`). Layouts: pure core crate or C library with no Python dependency, thin binding layer, Python package with typed public API and `.pyi` stubs, pure-Python reference implementation for differential tests. Workspace and `src/` layouts, what stays public | BeautifulRust (core plus `-sys`), our own `layout.md`, official PyO3 and maturin docs |
 | `rust.md` | PyO3 rules that matter at the boundary: no panics across it, error mapping to Python exceptions, GIL and `detach`, `from_py_object` opt-in, free-threading, ownership across the boundary, lint and `unsafe` rules | BeautifulRust, PyO3 changelog (already verified in the handover) |
-| `c.md` | CPython C style (PEP 7), reference counting (new vs borrowed references), error indicator discipline, GIL, stable ABI limits, buffer protocol, module init, sanitizers (ASan, UBSan), fuzzing | Official CPython docs and PEP 7; CERT-style rules summarised in our own words |
+| `c.md` | CPython C style (PEP 7), reference counting (new vs borrowed references), error indicator discipline, GIL, stable ABI limits, buffer protocol, multi-phase init, sanitizers (ASan, UBSan), fuzzing | Amara `python-c`, pganssle/pablogsal rules (section 4a), official CPython docs and PEP 7 |
+| `cpp.md` (only if a baseline fails) | nanobind or pybind11 boundary, RAII, ownership, `const` by default, CMake target layout | ECC digest of the C++ Core Guidelines, official docs |
 | `build-and-ci.md` | maturin or scikit-build-core, wheels with cibuildwheel, abi3 vs per-version, free-threaded job, sdist, `Cargo.lock` and vendoring, release checks | Official docs |
 | `style.md` | One page: what formatter and linter each language uses and the commands (rustfmt, clippy, clang-format, clang-tidy, ruff), and that project config wins | Official docs |
 
