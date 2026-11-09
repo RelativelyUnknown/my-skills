@@ -47,6 +47,12 @@ claude plugin eval python-engineering --scaffold --allow-tools Write Edit --judg
 - A `tool_used: Skill` grader shows whether the skill fired on a plain request.
 - `evals/python-engineering.triggers.json` lists prompts that should and should not load the skill.
 
+## Probed and not built
+
+A leaf is written only where the model fails a case without it. These cases were run with and without the skill and the bare model passed, so no leaf exists for them:
+
+- `native-gil-checksum`, `native-pyclass-by-value`, `native-free-threaded` (a Rust extension on PyO3 0.30.1: release the GIL with `detach`, extract a `#[pyclass]` by value after the 0.30 change, declare `gil_used = false`): 0.96, 1.0 and 1.0 without the skill. PyO3's changelog confirms the renames and removals these cases depend on (`allow_threads` to `detach` in 0.26, `from_py_object` opt-in from 0.27, the blanket `FromPyObject` for `Clone` pyclasses removed in 0.30). Still untested: wheel builds and CI for extensions, C-API reference counting, abi3 and stubs.
+
 ## Known interactions
 
 - A hook that blocks all edits under `tests/` and `conftest.py` also blocks adding new tests. Allow new test files for test-writing sessions.

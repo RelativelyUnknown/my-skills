@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: native-gil-checksum
+expected_outcome: |
+  A new Rust function exposed through PyO3 0.30 that releases the interpreter lock with the current `py.detach` call (not the removed `allow_threads`), does not panic on bad input (no unwrap or expect), is registered in the module, has an entry in the `.pyi` stub, and has a Python test.
+context:
+  scaffold_script: fixture.sh
