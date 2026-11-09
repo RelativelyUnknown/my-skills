@@ -1,6 +1,6 @@
 ---
 name: tabby
-description: "Rules for every Python code change: errors, minimalism, stdlib first, typing, tests, dependencies, CI, packaging, performance, docs, reviews. Use whenever you write, change, debug, test, review, package or document Python, or start or join a project; load before editing any .py or pyproject.toml."
+description: "Rules for every Python code change: errors, minimalism, stdlib first, typing, tests, dependencies, CI, docs. Use whenever you write, change, debug, test, package or document Python, review a diff or branch, audit a project's security, or start or join a project; load before editing any .py file."
 license: MIT
 ---
 

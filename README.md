@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="assets/tabby-logo.png" width="360" alt="Tabby: an orange tabby cat batting at a laptop keyboard, drawn in crayon">
-</p>
-
-<p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/tabby-title-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/tabby-title-light.png">
-    <img src="assets/tabby-title-light.png" width="300" alt="Tabby">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.png">
+    <img src="assets/hero-light.png" width="880" alt="Tabby: an orange tabby cat batting at a laptop keyboard, drawn in crayon, next to the title Tabby">
   </picture>
 </p>
 
 <p align="center">
-  <strong>Skills that make an AI agent build, review and explain a project properly.<br>Opinionated. Token-lean. Python first, with Rust and C as first-class partners.</strong>
+  <em>Cats walk across keyboards. This one has opinions.</em>
+</p>
+
+<p align="center">
+  <strong>Skills that make an AI agent build, review and explain a project properly.<br>One folder. Python first, with Rust and C as first-class partners.</strong>
 </p>
 
 <p align="center">
@@ -23,42 +23,66 @@
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
-## What Tabby is
+You know the cat. It sits on the warm laptop, bats at the keys, and something gets typed. Fast, confident, not quite what you meant.
 
-An agent that writes code with no guidance writes plausible code. Tabby gives it the habits of a careful senior engineer for the whole life of a project, not just the typing part:
+Tabby sits on your agent's keyboard instead. It reads the project first, asks three short questions, remembers the answers, and then makes the agent do the careful things a senior engineer would: find the cause before the fix, use the standard library, keep the diff small, and never edit a test to get it green.
 
-- **Build:** small honest diffs, standard library first, real errors, typed APIs, tests that can fail.
-- **Review:** a self-review before "done", and a security audit that separates confirmed bugs from look-alikes.
-- **Explain:** documentation by what the reader needs (tutorial, how-to, reference, explanation), plus ADRs, runbooks, troubleshooting tables, diagrams and short explainer animations.
+Everything is markdown. No runtime, no daemon, no generated code. The agent reads a short front door, then only the few files its task needs.
 
-Everything is markdown. There is no runtime, no daemon and no generated code. The agent reads a short front door, then only the few files its task needs.
+## How it works
 
-## The router
+<p align="center">
+  <img src="assets/how-it-works.png" width="880" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: engineering, review, documentation or design.">
+</p>
 
-A project is not a prompt, so Tabby does not load everything. The front door sends the agent to the files that match the task. Each file is one idea, written once.
+One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide.
 
-The `tabby` skill runs when a project starts, when the agent joins an existing one, or when `AGENTS.md` has no `## Tabby` section.
+## Three questions, then it remembers
+
+<p align="center">
+  <img src="assets/interview.png" width="880" alt="Tabby asks three questions: who uses it and how, what is likely to change next year, and what is off limits. It saves the answers as a Tabby section in AGENTS.md with purpose, goals, growth, out of scope, kind, modules and the check command.">
+</p>
+
+When a project starts, when the agent joins one, or when `AGENTS.md` has no `## Tabby` section:
 
 1. It reads the repo first (pyproject, CI, native build files, docs) and does not ask what it can see.
-2. It asks three questions in one round: what the project is and who uses it, what is likely to change, and what is off limits. More questions only if an answer changes what it would build.
+2. It asks at most three questions in one round, each with a recommended answer. Questions the request already answers are skipped.
 3. It restates the answers in six lines and waits for a clear yes.
-4. It saves a short `## Tabby` section to `AGENTS.md`: purpose, goals, growth, out of scope, constraints, the canonical check command, and the skills and reference folder that apply.
-5. Later work loads only those. A growth item you named, such as a Rust hot path, gets a cheap seam now (a typed Python function with a reference implementation) and no Cargo workspace until you ask. If a task conflicts with the saved answers, the agent asks whether they still fit.
+4. It saves the `## Tabby` section to `AGENTS.md`. Edit any line later; a task that conflicts with it makes the agent ask first.
 
-Without a `## Tabby` section the router still loads `engineering/index.md`, which lists which file to read for each kind of task (a new function, a dependency, an error path, a CI job, a release).
-
-<p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
+Your expected growth shapes the code. Say a hot path may move to Rust and the agent keeps that function behind one typed Python seam with a reference implementation, and builds no Cargo workspace until you ask. If nobody can answer (CI, or you are away), the agent writes the section from the repo, marks every unknown `(assumed)` and tells you what to confirm.
 
 ## What is in the box
 
-One folder, [`tabby/`](tabby/), is the only skill your agent registers, so only its short description sits in context. Four modules live inside it, and the router loads the ones a task needs.
-
 | Module | What it does |
 | --- | --- |
-| [`tabby/engineering/`](tabby/engineering/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns, and Rust or C behind a Python API (layouts, PyO3, the C API, wheels and CI) |
-| [`tabby/review/`](tabby/review/) | Self-review of a change, a security audit with a confirmed / needs-validation split, and a checklist for the Python and native boundary |
-| [`tabby/documentation/`](tabby/documentation/) | Documentation by reader need: tutorial, how-to, reference, explanation, docstrings, README, changelog, ADRs, runbooks, troubleshooting |
+| [`tabby/engineering/`](tabby/engineering/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns. Rust or C behind a Python API: layouts, PyO3, the C API, wheels and CI |
+| [`tabby/review/`](tabby/review/) | Self-review of a change, a security audit that separates confirmed bugs from look-alikes, and a checklist for the Python and native boundary |
+| [`tabby/documentation/`](tabby/documentation/) | Documentation by what the reader needs: tutorial, how-to, reference, explanation, docstrings, README, changelog, ADRs, runbooks, troubleshooting |
 | [`tabby/design/`](tabby/design/) | Minimalist diagrams and explainer animations (SVG, MP4, WebM, GIF) |
+
+## The rules it never lets slide
+
+- Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal.
+- Never edit, delete, skip or loosen an existing test to get green.
+- Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom.
+- Do not silence tools (`# type: ignore`, `# noqa`, `Any`, looser config); fix the cause.
+- Smallest diff that solves it properly. No new dependency, public API change, commit or push unasked.
+- Replies, comments and docs are short: what is not obvious, no filler.
+
+<p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
+
+## Numbers
+
+Measured with `claude plugin eval` on Haiku 5.5: 51 cases, 3 runs each, regex and LLM-judge graders, the skill active in every run.
+
+| | |
+| --- | --- |
+| Mean score over the 42 engineering cases | 0.82 |
+| Runs in which the router loaded | 98 of 114 (86%) |
+| Cost of the full 51-case run | about $1.60 |
+
+The cases cover errors, dependencies, typing, services, workers, native extensions, documentation pages, security audits and the project interview. Each case is a small fixture repo, a prompt and a set of graders, in [`tabby/evals/`](tabby/evals/). **Limits:** one model, three runs, one judge, no shell in the eval sandbox, and no comparison against the bare model on this layout. Tabby has not been run in GitHub Copilot.
 
 ## Install
 
@@ -71,37 +95,19 @@ mkdir -p .claude/skills && cp -r tabby .claude/skills/
 mkdir -p .github/skills && cp -r tabby .github/skills/
 ```
 
-Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` folders and `AGENTS.md` can use them.
+Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` folders and `AGENTS.md` can use it. Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
 
-## Project defaults live in AGENTS.md
+## FAQ
 
-Skills take no arguments. They read two sections of `AGENTS.md`: `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). They infer what is missing from the repo, ask only what is still unknown (once, with the agent's question tool if it has one), and save the answers there. Edit or delete a line to be asked again.
+**Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
-```markdown
-## Tabby
-reviewed: 2026-11-09
-purpose: a retry library for HTTP clients
-users: backend developers
-goals: stable API, no runtime dependencies
-growth: a Rust hot path for backoff maths
-out-of-scope: async support
-kind: software-engineering/library/native
-modules: engineering, review, documentation
-docs: README, reference, how-to, changelog
-commands: nox -e local
+**Do I have to answer questions?** No. Without anyone to ask it fills the section from the repo and marks what it guessed.
 
-## Python defaults
-python: 3.12
-runner: uv
-types: mypy
-layout: src
-rigor: full
-report: normal
-```
+**Does it work for Rust and C?** Yes, as extensions behind a Python API: when to go native, project layouts, PyO3 and the C API, wheels, CI, and a review checklist for the boundary. Standalone Rust or C projects are out of scope.
 
-Claude Code reads `CLAUDE.md`, not `AGENTS.md`; if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
+**What about TypeScript?** Not yet.
 
-<p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
+**What does it cost in context?** One short description is always loaded. The router and a module index load when a task needs them, then only the reference files that task names.
 
 ## Planned
 
@@ -113,4 +119,4 @@ Tabby takes ideas, rewritten in its own words, from [ponytail](https://github.co
 
 ## Credits and licence
 
-MIT. The Tabby title is set in "Pizza is my FAVORITE Font" by Kimberly Geswein (freeware; commercial use requires a donation, see [fontspace](https://www.fontspace.com/pizza-is-my-favorite-font-f11293)). Only the rendered image is in this repository, not the font file.
+MIT. The Tabby title is set in "Pizza is my FAVORITE Font" by Kimberly Geswein (freeware; commercial use requires a donation, see [fontspace](https://www.fontspace.com/pizza-is-my-favorite-font-f11293)). Only the rendered image is in this repository, not the font file. Pictures are drawn in the Patrick Hand typeface (SIL Open Font License).
