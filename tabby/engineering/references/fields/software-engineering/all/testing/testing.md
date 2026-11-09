@@ -16,7 +16,7 @@ Tests are the spec. They change only when the spec changes, and every test must 
 
 ## Writing tests (every `rigor` level)
 
-- `tests/` mirrors the package: `src/pkg/billing/invoice.py` pairs with `tests/billing/test_invoice.py`. With the `src` layout, test the importable (installed) package, not the source tree.
+- Put a new test where the project's tests already live and match their naming: existing `tests/test_orders.py` or a flat `tests/` means the new test goes there, not in a new subfolder. With no convention, mirror the package: `src/pkg/billing/invoice.py` pairs with `tests/billing/test_invoice.py`. With the `src` layout, test the importable (installed) package, not the source tree.
 - One behavior per test; the name states it: `test_expired_token_raises_auth_error`.
 - No `if`, `for` or `try` in a test. Use `pytest.mark.parametrize` with `ids`.
 - Go through the public API. Cover empty input, `None`, boundaries, invalid input; check errors with `pytest.raises(Err, match="...")`.

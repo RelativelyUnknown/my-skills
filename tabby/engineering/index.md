@@ -29,6 +29,7 @@ Read every file matching the task before writing code. The paths below start at 
 - uv, locking, CI job, Dockerfile: `all/dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
 - scope, when to stop: `all/workflow/planning.md`; a bug: `all/workflow/debugging.md`
 - a library others install: `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C or Cython behind a Python API: `library/native/index.md`
+- retries, timeouts, backoff, circuit breakers: `application/shared/resilience.md`
 - a service: `application/apis/http/services.md`, `application/apis/shared/security.md`, `application/shared/async.md`, `service-snags.md`, `observability.md`, `configuration.md`, `resilience.md`; workers: `application/workers/background-jobs.md`
 - pattern, layers, extension point, settings object: `engineering/references/fields/software-architecture/design-patterns.md`
 
