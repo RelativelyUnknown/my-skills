@@ -1,13 +1,29 @@
 # review
 
-Part of the [skills repository](../../README.md). Reviews a Python diff, branch or pull request, audits a project's security, or checks your own change before you report it done. A clean diff or a clean audit gets a short "no findings".
+A module of [Tabby](../SKILL.md) for reviewing a Python diff, branch or pull request, auditing a project's security, and checking your own change before you report it done. A clean diff or a clean audit gets a short "no findings".
 
-`index.md` points to `references/changes/self-review.md` for reviews and to `references/security-audit/` (`process.md`, `reporting.md`) for audits. The review reads the rule leaves in `python-engineering/references/`, so install both skills. The audit approach (name the boundary, trace input to sink, try to disprove, confirmed / needs-validation / rejected, severity only for confirmed, a fix with a regression test) is adapted in spirit from the Cloudflare security-audit skill (MIT, Cloudflare, Inc.) and written for Python; see [`../THIRD_PARTY_NOTICES.md`](../../THIRD_PARTY_NOTICES.md).
+**Entry point:** [`index.md`](index.md), about 110 tokens.
+
+## Layout
+
+```
+index.md
+references/
+  changes/self-review.md              silenced checks, weakened tests, needless abstractions, API breaks, new dependencies
+  security-audit/process.md           name the boundary, trace input to sink, try to disprove each candidate
+  security-audit/reporting.md         confirmed / needs-validation / rejected; severity only for confirmed; a fix with a regression test
+  native-boundary.md                  per-function table and checklist for the Python to Rust or C boundary
+```
+
+The self-review checks against the rule files in [`../engineering/`](../engineering/), so the two modules ship together. The audit approach is adapted in spirit from the Cloudflare security-audit skill (MIT, Cloudflare, Inc.) and written for Python; see [`../../THIRD_PARTY_NOTICES.md`](../../THIRD_PARTY_NOTICES.md).
 
 ## Evals
 
-- `evals/clean-diff-no-noise`: a clean diff gets no invented findings.
-- `evals/seeded-audit`: a small service with three real vulnerabilities (SQL injection, path traversal, SSRF) and three look-alikes (an allowlisted `ORDER BY`, an allowlisted template name, a constant `subprocess` list with an md5 cache key). Three runs per arm: 1.00 with the skill (fired and read both audit leaves every time), 0.84 without. The bare model already finds the real bugs and rejects the look-alikes; what the leaves add is the report structure (confirmed against needs-validation, a regression test per fix). That gain is on checks derived from the same convention, so it shows the leaves are followed, not that audits get better.
+In [`../evals/`](../evals/):
 
+- `clean-diff-no-noise`: a clean diff gets no invented findings.
+- `seeded-audit`: a small service with three real vulnerabilities (SQL injection, path traversal, SSRF) and three look-alikes (an allowlisted `ORDER BY`, an allowlisted template name, a constant `subprocess` list with an md5 cache key).
+
+## Licence
 
 MIT.
