@@ -22,24 +22,25 @@ Keys: `kind`, `python`, `runner`, `types`, `layout`, `rigor` (lite, full, ultra)
 
 ## Read before you write
 
-The files below are in this skill's folder, not the project. Open them with Read at the full path (this folder + the path); do not search for them. Paths start at `references/fields/software-engineering/all/`.
+Read every file that matches the task before you write code. The files are in this skill's folder, not the project: open them with Read at the full path (this folder + the path); do not search for them. Paths start at `references/fields/software-engineering/`.
 
-Every code change: `code/snags.md`, `workflow/shipping.md`. Then what the task touches:
+Every code change: `all/code/snags.md`, `all/workflow/shipping.md`. Then what the task touches:
 
-- new function, class, option, constant, wrapper, naming: `code/minimalism.md`
-- hand-rolling a utility, adding a package: `code/stdlib-first.md`, `dependencies/dependencies.md`
-- raising, catching, batches that partly fail: `code/errors.md`; parsing input: `code/validation.md`
-- annotations or checker errors: `code/typing.md`
-- files, connections, locks, subprocesses, streams: `code/resources.md`
-- a feature newer than the Python target: `code/python-versions.md`
-- docstring or comment: `code/comments.md`
-- logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`
-- script or CLI: `code/scripts.md`
-- tests: `testing/testing.md`
-- slow or memory-heavy code, faster library: `performance/index.md`
-- uv, locking, CI job, Dockerfile: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
-- planning, scope, when to stop: `workflow/planning.md`; a bug: `workflow/debugging.md`
+- new function, class, option, constant, wrapper, naming: `all/code/minimalism.md`
+- hand-rolling a utility, adding a package: `all/code/stdlib-first.md`, `all/dependencies/dependencies.md`
+- raising, catching, batches that partly fail: `all/code/errors.md`; parsing input: `all/code/validation.md`
+- annotations or checker errors: `all/code/typing.md`
+- files, connections, locks, subprocesses, streams: `all/code/resources.md`
+- a feature newer than the Python target: `all/code/python-versions.md`
+- docstring or comment: `all/code/comments.md`
+- logging, secrets, SQL, `eval`, `pickle`: `all/code/logging.md`, `all/code/security-basics.md`
+- script or CLI: `all/code/scripts.md`
+- tests: `all/testing/testing.md`
+- slow or memory-heavy code, faster library: `all/performance/index.md`
+- uv, locking, CI job, Dockerfile: `all/dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
+- planning, scope, when to stop: `all/workflow/planning.md`; a bug: `all/workflow/debugging.md`
+- a library others install: public name, signature, exception, extra: `library/shared/api-design.md`; new package, pyproject, layout, CI: `library/shared/package-setup.md`, `layout.md`; version, release: `library/shared/versioning.md`, `release.md`
+- async code, request handlers, caches, background work: `application/shared/service-snags.md`
+- a pattern, new layers, an extension point, a settings object: `../software-architecture/design-patterns.md`
 
-## Project kind
-
-For a library others install, read `references/fields/software-engineering/library/shared/index.md`; for async, request handlers or caches, `.../application/shared/index.md`; for patterns, layers or extension points, `references/fields/software-architecture/index.md`. Other kinds: `references/which-type.md`, then the `index.md` of each path in `kind`. A path with no folder: say no specialist guidance exists.
+Other project kinds: `references/which-type.md`, then the `index.md` of each path in `kind`. A path with no folder: say no specialist guidance exists.
