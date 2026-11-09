@@ -8,4 +8,4 @@ match: not_contains
 weight: 2
 ---
 
-Misleading-code snags are gone: wildcard import, `== None`, `== True`, `timeout or 30`, `len(rows) == 0`, `dict[str, Any]`, log-and-raise, stateless manager
+Misleading-code smells are gone: wildcard import, `== None`, `== True`, `timeout or 30`, `len(rows) == 0`, `dict[str, Any]`, log-and-raise, stateless manager

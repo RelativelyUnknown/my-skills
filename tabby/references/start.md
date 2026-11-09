@@ -35,7 +35,7 @@ Success:      <how we will know in six months>
 Growth:       <ordered expected changes>
 Constraints:  <versions, platforms, rules>
 Out of scope: <what we are not doing>
-Modules:      engineering, review[, design][, documentation]; kind: <path>
+Modules:      development, review[, design][, documentation]; kind: <path>
 ```
 
 "Sounds good" or "whatever you think" is not a yes: ask what to refine. On a clear yes, write the section and stop; do not start work in the same turn.
@@ -51,19 +51,19 @@ goals: up to three, measurable where possible
 growth: ordered list; the first item is likeliest
 out-of-scope: list
 constraints: python 3.12+; no new runtime dependencies without asking
-kind: software-engineering/library/native
-modules: engineering, review, documentation
+kind: library/native
+modules: development, review, documentation
 docs: README, reference, ADR
 commands: one canonical check command, e.g. `nox -e local` or `make check`
 ```
 
-- `kind:` is one of these paths (more in `engineering/references/which-type.md`):
-  - library others install: `software-engineering/library/shared`
-  - library with Rust, C or Cython behind a Python API: `software-engineering/library/native`
-  - HTTP service: `software-engineering/application/apis/http`
-  - queue worker or scheduler: `software-engineering/application/workers`
-  - anything else: `software-engineering/all`
-- `docs:` lists the page types to keep current (see `documentation/references/index.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
+- `kind:` is one of these paths (more in `development/which-type.md`):
+  - library others install: `library/shared`
+  - library with Rust, C or Cython behind a Python API: `library/native`
+  - HTTP service: `application/apis/http`
+  - queue worker or scheduler: `application/workers`
+  - anything else: `code`
+- `docs:` lists the page types to keep current (see `documentation/pages.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
 - Add `design` to `modules:` only when the user wants diagrams or explainers.
 - Keep `## Python defaults` as it is; Tabby does not replace it.
 - No user to ask (CI, or the user says they cannot answer now)? Do not ask and do not stop: write the section from the repo, mark every unknown `(assumed)`, and tell the user which entries need confirming.

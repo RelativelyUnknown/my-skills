@@ -8,4 +8,4 @@ match: not_contains
 weight: 3
 ---
 
-Wrong-behaviour snags are gone: mutable default, swallowed exception, `utcnow`, `assert isinstance`
+Wrong-behaviour smells are gone: mutable default, swallowed exception, `utcnow`, `assert isinstance`

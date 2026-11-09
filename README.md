@@ -67,7 +67,7 @@ Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. Delete `tabby/e
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/how-it-works-light.png">
-    <img src="assets/how-it-works-light.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: engineering, review, documentation or design.">
+    <img src="assets/how-it-works-light.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: development, review, documentation or design.">
   </picture>
 </p>
 
@@ -96,7 +96,7 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 | Module | What it does |
 | --- | --- |
-| [`tabby/engineering/`](tabby/engineering/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns. Rust or C behind a Python API: layouts, PyO3, the C API, wheels and CI |
+| [`tabby/development/`](tabby/development/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns. Rust or C behind a Python API: layouts, PyO3, the C API, wheels and CI |
 | [`tabby/review/`](tabby/review/) | Self-review of a change, a security audit that separates confirmed bugs from look-alikes, and a checklist for the Python and native boundary |
 | [`tabby/documentation/`](tabby/documentation/) | Documentation by what the reader needs: tutorial, how-to, reference, explanation, docstrings, README, changelog, ADRs, runbooks, troubleshooting |
 | [`tabby/design/`](tabby/design/) | Minimalist diagrams and explainer animations (SVG, MP4, WebM, GIF) |

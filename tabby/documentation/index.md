@@ -2,7 +2,7 @@
 
 Documentation lets a reader do or understand something without asking the author. Every sentence either moves the reader toward that or goes.
 
-Read this first for any documentation task, then the page-type leaf listed in `documentation/references/index.md` (leaf paths start at `documentation/references/`).
+Read this first for any documentation task, then the page-type leaf listed in `documentation/pages.md` (leaf paths start at `documentation/`).
 
 ## Never miss
 
@@ -16,6 +16,6 @@ Read this first for any documentation task, then the page-type leaf listed in `d
 
 1. Outline with headings only; check each heading against the page type.
 2. Draft. Write the example first, run it, then write the prose around it.
-3. Grep for filler: `grep -rniwE "seamless(ly)?|robust|powerful|comprehensive|delve|leverag(e|es|ed|ing)|utili[sz]e|holistic|simply|just|easily|obviously|basically|actually|in order to|note that|currently|recently|soon|as discussed|feel free to" <files>`. Fix each hit or keep it with a reason; a quoted word or a technical term ("trivial" in a math sense) can stay. In reference pages also grep `will` for future tense. If the project has `.vale.ini`, run `vale` with it too.
+3. Read it as the reader would. Cut every word that carries no information, using the patterns in `documentation/ai-patterns.md` and `documentation/voice.md`; judge each one in context, because a quoted word or a technical term can stay.
 4. Edit pass. Delete sentences that restate the heading, summarize the page, announce what comes next, or praise the software. Check that every step is an action, every claim is specific, every link works.
-5. Report what you changed, which examples you ran and how, and which grep hits you kept and why.
+5. Report what you changed and which examples you ran, and how.

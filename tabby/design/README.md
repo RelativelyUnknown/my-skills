@@ -8,13 +8,12 @@ A module of [Tabby](../SKILL.md) for minimalist diagrams and explainer animation
 
 ```
 index.md
-references/
-  diagrams/       index.md  style.md                  visual language, mapped from design.md onto the theme
-  animation/      index.md  pipeline.md  motion.md  formats.md
+diagrams/         index.md  style.md                  visual language, mapped from design.md onto the theme
+animation/        index.md  pipeline.md  motion.md  formats.md
 assets/animation/                                     the render engine: common.js, helpers.js, render.js, specs.js, stage.html, style.css, scenes/
 ```
 
-The pipeline draws SVG scenes as a function of time, renders frames in headless Chromium, and encodes them with ffmpeg. It needs Node 22, Playwright Chromium and ffmpeg; the agent asks before installing any of them. The commands are in [`references/animation/formats.md`](references/animation/formats.md).
+The pipeline draws SVG scenes as a function of time, renders frames in headless Chromium, and encodes them with ffmpeg. It needs Node 22, Playwright Chromium and ffmpeg; the agent asks before installing any of them. The commands are in [`animation/formats.md`](animation/formats.md).
 
 ## Evals
 
