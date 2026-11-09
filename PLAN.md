@@ -2,6 +2,18 @@
 
 Written 2026-11-09 from the directive and a read of the third-party sources. Nothing in this plan is built yet.
 
+## Product: Tabby (2026-11-09 brief)
+
+Tabby is an opinionated set of skills for an AI agent to use across the whole life of a project (library, application, API, web app, tool), including the context around the code: ADRs, documentation, tests, diagrams, explainers. Python first, with Rust and C as first-class citizens. TypeScript and JavaScript later, not now.
+
+- **The router is the product.** An interview (three questions up front, more only when context is missing) or the project's own scope decides which subset of skills the agent loads. Two entry modes: start a new project, or join an existing one. Answers are saved as editable project memory in `AGENTS.md` (section 3).
+- **Goal:** highest quality, clarity, maintainability and explainability, at the lowest token cost.
+- **Third-party skills are sources.** Ideas are taken and rewritten (section 2); nothing is adopted wholesale.
+- **Identity:** name Tabby; logo `assets/tabby-logo.png` (the cat at the laptop, cut out from the supplied JPEG, see-through screen kept on purpose); crayon, rough-edged style; title set in "Pizza is my FAVORITE Font" by Kimberly Geswein.
+  - **Font licence:** the font page says "Freeware, commercial use requires donation". The font file is not committed. The title is rendered once to an image and only the image is committed. The owner decides whether to donate or ask the designer for a licence.
+  - **Font download:** fontspace returned 403 to a scripted download; the owner supplies the file.
+- **README:** its own crayon style, written for a reader who has never seen the repo. Every claim in it must be true of what exists; planned features are marked as planned.
+
 ## 0. Decisions needed first
 
 | # | Question | Recommendation |
