@@ -1,6 +1,6 @@
 ---
 name: python-engineering
-description: "Rules for every Python code change: error handling, minimalism, standard library first, typing, tests, dependencies, performance, packaging, and the end-of-task report. Use whenever you write, modify, refactor, debug, test, speed up or release Python code; load it before editing any .py file."
+description: "Rules for every Python code change: errors, minimalism, standard library first, typing, tests, dependencies and uv, CI, packaging, performance, reporting. Use whenever you write, modify, debug, test, speed up, package or release Python; load before editing any .py or pyproject.toml file."
 license: MIT
 ---
 
@@ -20,8 +20,26 @@ Keys: `kind`, `python`, `runner`, `types`, `layout`, `rigor` (lite, full, ultra)
 - Use the project's own tools and the Python target; never install silently.
 - Replies, comments and docs are short: say what is not obvious, no filler or praise words. Never drop "not", "never", "only", "except".
 
-## Route
+## Read before you write
 
-1. Any code change: read `references/fields/software-engineering/all/index.md`, then the `index.md` of the folder that matches the task.
-2. Project kind: for each path in `kind`, read `references/fields/<path>/index.md`. No `kind`: read `references/which-type.md` once and save the path(s).
-3. A path with no folder: use `software-engineering/all` and say no specialist guidance exists.
+The files below are in this skill's folder, not the project. Open them with Read at the full path (this folder + the path); do not search for them. Paths start at `references/fields/software-engineering/all/`.
+
+Every code change: `code/snags.md`, `workflow/shipping.md`. Then what the task touches:
+
+- new function, class, option, constant, wrapper, naming: `code/minimalism.md`
+- hand-rolling a utility, adding a package: `code/stdlib-first.md`, `dependencies/dependencies.md`
+- raising, catching, batches that partly fail: `code/errors.md`; parsing input: `code/validation.md`
+- annotations or checker errors: `code/typing.md`
+- files, connections, locks, subprocesses, streams: `code/resources.md`
+- a feature newer than the Python target: `code/python-versions.md`
+- docstring or comment: `code/comments.md`
+- logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`
+- script or CLI: `code/scripts.md`
+- tests: `testing/testing.md`
+- slow or memory-heavy code, faster library: `performance/index.md`
+- uv, locking, CI job, Dockerfile: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
+- planning, scope, when to stop: `workflow/planning.md`; a bug: `workflow/debugging.md`
+
+## Project kind
+
+For a library others install, read `references/fields/software-engineering/library/shared/index.md`; for async, request handlers or caches, `.../application/shared/index.md`; for patterns, layers or extension points, `references/fields/software-architecture/index.md`. Other kinds: `references/which-type.md`, then the `index.md` of each path in `kind`. A path with no folder: say no specialist guidance exists.
