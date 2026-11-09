@@ -1,6 +1,10 @@
 # Standard library first
 
-Order: the project's own idiom, the standard library, a widely used package, then your own code. Read `pyproject.toml` first. A package for a few lines is as wrong as a regex parser for dates. Never regex-parse structured formats: dates, URLs, HTML, JSON, CSV, versions. Flag every new dependency in the report, with the reason.
+Order: the project's own idiom, the standard library, a widely used package, then your own code. Match what the project already uses for validation, HTTP, CLI and config.
+
+- Read `pyproject.toml` first. A package for a few lines is as wrong as a regex parser for dates.
+- Never regex-parse structured formats: dates, URLs, HTML, JSON, CSV, versions.
+- Flag every new dependency in the report, with the reason.
 
 1. **The project's own idiom first.** If its code already validates, parses, retries or serialises with a library, use that. Do not add a second mechanism or rewrite working code to switch. A project with pydantic models gets a pydantic model; a project without it does not get it for one function.
 2. **Stay in the standard library while the job is small**: roughly under 15 lines, one or two call sites, none of the hard parts (security, time zones, text formats, network protocols).

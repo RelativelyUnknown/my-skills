@@ -23,7 +23,7 @@ Defaults live in the `## Python defaults` section of AGENTS.md: `kind`, `python`
 Read every file matching the task before writing code. Open them with Read at this folder plus the path; do not search. Paths start at `references/fields/software-engineering/`. Always: `all/code/snags.md`, `all/workflow/shipping.md`. Then:
 
 - new function, class, option, constant, wrapper, name: `all/code/minimalism.md`
-- hand-rolled utility, new package, optional dependency: `all/code/stdlib-first.md`, `all/dependencies/dependencies.md`, `library/shared/api-design.md`
+- hand-rolled utility, new package, optional dependency (extra, lazy import): `all/code/stdlib-first.md`, `all/dependencies/dependencies.md`, `library/shared/api-design.md`
 - raising, catching, partial failure: `all/code/errors.md`; parsing input: `all/code/validation.md`
 - annotations, checker errors: `all/code/typing.md`
 - files, connections, locks, subprocesses, streams: `all/code/resources.md`

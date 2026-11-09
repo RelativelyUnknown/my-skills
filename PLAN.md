@@ -177,7 +177,7 @@ Only the leaves matching a failed baseline are written.
 | Phase | Work | Gate |
 | --- | --- | --- |
 | P0 | Resolve D1-D5. Check installed tools. | Your answers |
-| P1 | Debloat: front door to at most 600 tokens, trim the 8 oversize leaves, remove any rule no case checks | Existing 26 cases do not drop |
+| P1 | Debloat: front door to at most 600 tokens, trim the 8 oversize leaves, remove any rule no case checks | Existing cases do not drop. **Done 2026-11-09:** trimmed leaves to within about 4% of 4,200 characters; front door 4,271 to about 3,750 characters (about 940 tokens, not 600: every routing path is kept). Full run, Haiku 5.5, 3 runs: old 0.841, new 0.818, cost $1.67 vs $1.44. Re-run of 9 dropped cases at 5 runs: mean 0.779 vs 0.775 (noise). Two real losses, both from wording I cut (front-door "extra, lazy import" and the stdlib-first opening bullets); restored: `optional-parquet-dependency` 0.32 to 0.77, `hard-problem-take-a-library` 0.71 to 0.84. Lesson: a one-line pointer in the front door is load-bearing. |
 | P2 | Rename to `python-review`; fold documentation in; split `python-design` | Docs cases at least 0.91; link and name checks via grep |
 | P3 | Onboarding (`start/`) | Two new cases: join an existing repo, start a repo (graded on: inferred facts labelled, at most three questions, restate with Out of scope, `## Project` written, stops after the yes). Run with and without. |
 | P4 | Native baselines B1-B5 | Per-baseline scores recorded |
