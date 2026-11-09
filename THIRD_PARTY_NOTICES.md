@@ -1,6 +1,6 @@
 # Third-party notices
 
-Skills in this repository were adapted from the work of other authors. Each adapted skill folder keeps the upstream licence file and a `SOURCE.md` (upstream URL, pinned commit, what changed). Everything below is MIT-licensed; the MIT licence requires its copyright and permission notice to travel with every copy or substantial portion, which is why the licence text sits next to each adapted skill.
+Skills in this repository were adapted from the work of other authors. The adapted wshobson material keeps the upstream licence as `python-engineering/LICENSE.wshobson` and a `python-engineering/SOURCE.md` (upstream URL, pinned commit, what changed); other adapted material keeps its licence and `SOURCE.md` next to it. Everything below is MIT-licensed; the MIT licence requires its copyright and permission notice to travel with every copy or substantial portion, which is why the licence text sits next to each adapted skill.
 
 The rest of this repository is MIT (see `LICENSE`).
 
@@ -12,20 +12,20 @@ The rest of this repository is MIT (see `LICENSE`).
 
 | Upstream skill | Adapted into |
 | --- | --- |
-| `python-resource-management` | `python-engineering/core/skills/managing-python-resources` |
-| `python-type-safety` | `python-engineering/core/skills/typing-python-code` |
-| `uv-package-manager` | `python-engineering/core/skills/using-uv` |
-| `async-python-patterns` | `python-engineering/application/skills/writing-async-python` |
-| `python-background-jobs` | `python-engineering/application/skills/running-background-jobs` |
-| `python-observability` | `python-engineering/application/skills/adding-observability` |
-| `python-configuration` | `python-engineering/application/skills/configuring-python-applications` |
-| `python-resilience` | `python-engineering/application/skills/making-calls-resilient` |
-| `python-error-handling` | `python-engineering/core/skills/writing-python-code/references/errors-and-validation.md` |
-| `python-design-patterns` | `python-engineering/core/skills/choosing-python-design-patterns/references/principles.md` |
-| `python-testing-patterns` | one section of `python-engineering/core/skills/testing-python-packages/references/mocking-and-fixtures.md`; the rest was already covered (see its `SOURCE.md`) |
-| `python-performance-optimization` | `python-engineering/core/skills/profiling-python-code/references/after-the-profile.md`; the profiler tutorial was not copied (see its `SOURCE.md`) |
-| `python-packaging`, `python-project-structure` | `python-engineering/library/skills/setting-up-python-packages/references/versions-and-entry-points.md`; the rest was already covered (see its `SOURCE.md`) |
-| `python-code-style` | pointer only; nothing copied (see `python-engineering/core/skills/writing-python-code/SOURCE.md`) |
+| `python-resource-management` | `python-engineering/references/fields/software-engineering/all/code/resources.md`, `resource-patterns.md` |
+| `python-type-safety` | `python-engineering/references/fields/software-engineering/all/code/typing.md`, `typing-patterns.md` |
+| `uv-package-manager` | `python-engineering/references/fields/software-engineering/all/dependencies/uv.md`, `uv-ci.md`, `uv-docker.md` |
+| `async-python-patterns` | `python-engineering/references/fields/software-engineering/application/shared/async.md`, `async-patterns.md` |
+| `python-background-jobs` | `python-engineering/references/fields/software-engineering/application/workers/background-jobs.md`, `background-jobs-patterns.md` |
+| `python-observability` | `python-engineering/references/fields/software-engineering/application/shared/observability.md`, `observability-patterns.md` |
+| `python-configuration` | `python-engineering/references/fields/software-engineering/application/shared/configuration.md`, `configuration-patterns.md` |
+| `python-resilience` | `python-engineering/references/fields/software-engineering/application/shared/resilience.md`, `resilience-patterns.md` |
+| `python-error-handling` | `python-engineering/references/fields/software-engineering/all/code/errors.md`, `validation.md` |
+| `python-design-patterns` | `python-engineering/references/fields/software-architecture/design-principles.md` |
+| `python-testing-patterns` | one section of `python-engineering/references/fields/software-engineering/all/testing/mocking.md`; the rest was already covered (see `python-engineering/SOURCE.md`) |
+| `python-performance-optimization` | `python-engineering/references/fields/software-engineering/all/performance/hot-path-fixes.md`; the profiler tutorial was not copied (see `python-engineering/SOURCE.md`) |
+| `python-packaging`, `python-project-structure` | `python-engineering/references/fields/software-engineering/library/shared/versioning.md`, `entry-points.md`, `tooling.md`; the rest was already covered (see `python-engineering/SOURCE.md`) |
+| `python-code-style` | pointer only; nothing copied (see `python-engineering/SOURCE.md`) |
 
 ## blader/humanizer
 

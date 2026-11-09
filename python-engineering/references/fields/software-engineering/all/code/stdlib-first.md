@@ -15,7 +15,7 @@ Examples and a rule, not a boundary. A package for a few lines is as wrong as a 
    - the same job repeats at three or more places, so one shared mechanism removes more code than it adds;
    - it is the ecosystem standard readers expect (pytest, ruff, httpx for async HTTP);
    - it replaces more code than it adds, counting the tests the hand-rolled version would need.
-4. **Weigh the cost.** A dev-only dependency costs users nothing; a runtime one does. A library's dependencies become its users', so keep the base install small and put heavy ones in extras; an application or a single-file script may take more (`# /// script` metadata, PEP 723, declares a script's dependencies inline). Also count install size, import time, transitive packages, licence and maintenance health (see `auditing-python-dependencies`).
+4. **Weigh the cost.** A dev-only dependency costs users nothing; a runtime one does. A library's dependencies become its users', so keep the base install small and put heavy ones in extras; an application or a single-file script may take more (`# /// script` metadata, PEP 723, declares a script's dependencies inline). Also count install size, import time, transitive packages, licence and maintenance health (see [dependencies.md](../dependencies/dependencies.md)).
 5. **Say so when you add one**, with the reason from step 3.
 
 ## Validation ladder

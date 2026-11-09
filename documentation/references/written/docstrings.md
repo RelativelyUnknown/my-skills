@@ -111,4 +111,4 @@ extend-select = ["D2", "D3", "D4"]   # docstring format rules; D1xx (missing doc
 convention = "numpy"   # or "google", "pep257"
 ```
 
-`convention` turns off the rules that conflict with that format; for example, D401 (imperative summary) applies under `numpy` and `pep257` and is off under `google`. Do not select the `D1xx` missing-docstring rules: they push filler docstrings onto code that explains itself (`setting-up-python-packages` says the same). Add docstrings where the reader needs them.
+`convention` turns off the rules that conflict with that format; for example, D401 (imperative summary) applies under `numpy` and `pep257` and is off under `google`. Do not select the `D1xx` missing-docstring rules: they push filler docstrings onto code that explains itself ([tooling.md](../../../python-engineering/references/fields/software-engineering/library/shared/tooling.md) says the same). Add docstrings where the reader needs them.

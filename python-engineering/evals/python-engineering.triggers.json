@@ -1,0 +1,286 @@
+[
+  {
+    "query": "add the pyjson-turbo-schema package and use it in config.py",
+    "should_trigger": true
+  },
+  {
+    "query": "dependabot says urllib3 has a CVE, what do we do",
+    "should_trigger": true
+  },
+  {
+    "query": "run a security audit of our dependencies before release",
+    "should_trigger": true
+  },
+  {
+    "query": "which licenses do our deps use? we're MIT",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a function that retries an HTTP call three times",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a --verbose flag to the CLI",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix the KeyError when a profile has no email",
+    "should_trigger": true
+  },
+  {
+    "query": "Refactor parse_config to be simpler without changing behaviour",
+    "should_trigger": true
+  },
+  {
+    "query": "Create a small module that loads a CSV and totals the amounts",
+    "should_trigger": true
+  },
+  {
+    "query": "Use the strategy pattern to remove this if/elif chain",
+    "should_trigger": true
+  },
+  {
+    "query": "Should I use a factory class or just a function here?",
+    "should_trigger": true
+  },
+  {
+    "query": "Make this class a Singleton",
+    "should_trigger": true
+  },
+  {
+    "query": "Let third parties add export formats to our library",
+    "should_trigger": true
+  },
+  {
+    "query": "Refactor process_payment so adding a payment type is easy",
+    "should_trigger": true
+  },
+  {
+    "query": "this function takes 30s on our real files, make it faster: src/pkg/matcher.py",
+    "should_trigger": true
+  },
+  {
+    "query": "our api worker's memory grows until it gets OOM-killed after a day",
+    "should_trigger": true
+  },
+  {
+    "query": "should I switch json to orjson? we serialize a lot",
+    "should_trigger": true
+  },
+  {
+    "query": "benchmark these two implementations of tokenize() properly",
+    "should_trigger": true
+  },
+  {
+    "query": "Review my PR diff on branch fix-auth",
+    "should_trigger": true
+  },
+  {
+    "query": "Review the changes on feature against main before I merge",
+    "should_trigger": true
+  },
+  {
+    "query": "Before you say you are done, review your own diff",
+    "should_trigger": true
+  },
+  {
+    "query": "Look over this pull request and tell me what is wrong with it",
+    "should_trigger": true
+  },
+  {
+    "query": "Is this change safe to merge? git diff main...topic",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a test for the divide-by-zero case in calculator.py",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix the flaky test_sync",
+    "should_trigger": true
+  },
+  {
+    "query": "pytest says fixture 'db' not found for tests in tests/billing",
+    "should_trigger": true
+  },
+  {
+    "query": "Reproduce this bug with a failing test before we fix it: parse('') crashes",
+    "should_trigger": true
+  },
+  {
+    "query": "Raise coverage on src/pkg/parser.py without writing pointless tests",
+    "should_trigger": true
+  },
+  {
+    "query": "The dashboard shows the guest greeting for users who do have a profile, find the cause and fix it",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a load_settings(path) function that reads a TOML file",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a script that removes duplicate lines from a text file",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a small CLI that renames my photos by date taken",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me a one-off script to convert these CSV files to JSON",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a --dry-run flag to this cleanup script",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a command-line tool that prints the biggest files in a folder",
+    "should_trigger": true
+  },
+  {
+    "query": "Rename the public function parse_config to load_config",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a new exception for invalid config and export it",
+    "should_trigger": true
+  },
+  {
+    "query": "Make pyarrow an optional extra for the new to_parquet function",
+    "should_trigger": true
+  },
+  {
+    "query": "Export Client from the package root so users can write from pkg import Client",
+    "should_trigger": true
+  },
+  {
+    "query": "Deprecate the old fetch_user name but keep it working for a release",
+    "should_trigger": true
+  },
+  {
+    "query": "Cut release 1.2.0 and publish it to PyPI",
+    "should_trigger": true
+  },
+  {
+    "query": "Prepare release 0.4.0 but do not publish anything",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up trusted publishing from GitHub Actions when I push a version tag",
+    "should_trigger": true
+  },
+  {
+    "query": "After pip install, the package raises FileNotFoundError for schema.json though it works in the repo",
+    "should_trigger": true
+  },
+  {
+    "query": "What should go in the changelog entry for 2.0.0?",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up a new Python library called geomkit with linting and type checking",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a GitHub Actions workflow that runs the project's checks on pull requests",
+    "should_trigger": true
+  },
+  {
+    "query": "Convert this repo from setup.py and requirements.txt to pyproject.toml",
+    "should_trigger": true
+  },
+  {
+    "query": "Add mypy strict to the project and to CI",
+    "should_trigger": true
+  },
+  {
+    "query": "I want one command that runs lint, types and tests",
+    "should_trigger": true
+  },
+  {
+    "query": "add GET /orders/{id} to our fastapi app, users should only see their own orders",
+    "should_trigger": true
+  },
+  {
+    "query": "wire up sqlalchemy async sessions and alembic in our fastapi project",
+    "should_trigger": true
+  },
+  {
+    "query": "our django view does 300 queries for one page, fix it",
+    "should_trigger": true
+  },
+  {
+    "query": "write a dockerfile and health checks for the fastapi server in src/server",
+    "should_trigger": true
+  },
+  {
+    "query": "refactor this class into functions",
+    "should_trigger": false
+  },
+  {
+    "query": "write release notes for 1.4.0",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how Python decorators work",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a SQL query for the top 10 customers by revenue",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a README for the package",
+    "should_trigger": false
+  },
+  {
+    "query": "Clean up the code smells in utils.py",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up a new Python library called geomkit",
+    "should_trigger": false
+  },
+  {
+    "query": "add type hints to src/pkg/io.py",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up GitHub Actions to run our checks on pull requests",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up a new Python library called geomkit with linting",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain what __all__ does in Python",
+    "should_trigger": false
+  },
+  {
+    "query": "Add the pyjwt package as a dependency and check it is safe",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a test for the divide-by-zero case",
+    "should_trigger": false
+  },
+  {
+    "query": "Add a test for the empty-input case",
+    "should_trigger": false
+  },
+  {
+    "query": "This job is too slow on 200k rows, make it faster",
+    "should_trigger": false
+  },
+  {
+    "query": "write a CLI with typer that converts csv to parquet",
+    "should_trigger": false
+  },
+  {
+    "query": "make this pandas script faster",
+    "should_trigger": false
+  }
+]

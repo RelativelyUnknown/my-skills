@@ -1,5 +1,5 @@
 ---
-tags: [writing-documentation, page-types]
+tags: [documentation, page-types]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

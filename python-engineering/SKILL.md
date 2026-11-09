@@ -27,7 +27,7 @@ Read every file that matches the task before you write code. The files are in th
 Every code change: `all/code/snags.md`, `all/workflow/shipping.md`. Then what the task touches:
 
 - new function, class, option, constant, wrapper, naming: `all/code/minimalism.md`
-- hand-rolling a utility, adding a package: `all/code/stdlib-first.md`, `all/dependencies/dependencies.md`
+- hand-rolling a utility, adding a package, an optional dependency (extra, lazy import): `all/code/stdlib-first.md`, `all/dependencies/dependencies.md`, `library/shared/api-design.md`
 - raising, catching, batches that partly fail: `all/code/errors.md`; parsing input: `all/code/validation.md`
 - annotations or checker errors: `all/code/typing.md`
 - files, connections, locks, subprocesses, streams: `all/code/resources.md`
@@ -40,7 +40,12 @@ Every code change: `all/code/snags.md`, `all/workflow/shipping.md`. Then what th
 - uv, locking, CI job, Dockerfile: `all/dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
 - planning, scope, when to stop: `all/workflow/planning.md`; a bug: `all/workflow/debugging.md`
 - a library others install: public name, signature, exception, extra: `library/shared/api-design.md`; new package, pyproject, layout, CI: `library/shared/package-setup.md`, `layout.md`; version, release: `library/shared/versioning.md`, `release.md`
-- async code, request handlers, caches, background work: `application/shared/service-snags.md`
+- an HTTP service (endpoints, auth, database, deploy): `application/apis/http/services.md`; auth, tokens, CORS, uploads: `application/apis/shared/security.md`
+- async code, request handlers, caches: `application/shared/async.md`, `application/shared/service-snags.md`
+- background jobs, queues, schedulers: `application/workers/background-jobs.md`
+- logs, metrics, traces, health checks: `application/shared/observability.md`
+- settings, environment variables, secrets in config: `application/shared/configuration.md`
+- timeouts, retries, circuit breakers: `application/shared/resilience.md`
 - a pattern, new layers, an extension point, a settings object: `../software-architecture/design-patterns.md`
 
 Other project kinds: `references/which-type.md`, then the `index.md` of each path in `kind`. A path with no folder: say no specialist guidance exists.

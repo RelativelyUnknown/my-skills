@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: three-pages
-expected_outcome: |
-  Three separate pages of three types: a tutorial (one path, no alternatives), a how-to (starts from a stated precondition, a goal-named heading), and a reference (every parameter listed, no instructions). No minimizers, no time-relative words, sentence-case headings.

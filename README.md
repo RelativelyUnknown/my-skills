@@ -2,29 +2,30 @@
 
 Agent skills for Python development, for **GitHub Copilot first and any agent that reads `SKILL.md` folders and `AGENTS.md`**. The goal is a small, token-lean set: tests that can fail, small honest code, readable APIs and docs. Facts in the skills were checked against current documentation in November 2026.
 
-This repository is mid-restructure: the skills are being folded into three routed skills (`python-engineering`, `reviewing-python-code`, `documentation`) with a nested reference tree, and the third-party material is being absorbed with attribution. Until that lands, the layout below is the interim one.
+## Skills
 
-## Skillsets
+Three skills, each a folder you copy. Each holds a short `SKILL.md` and a tree of `references/` it reads on demand, so only the files a task needs enter the context.
 
 | Folder | What it is |
 | --- | --- |
-| [`python-engineering/`](python-engineering/) | 20 skills for developing Python, grouped in `core`, `library` and `application` folders |
-| [`python-docs/`](python-docs/) | `writing-documentation`: documentation to the conventions of well-documented projects |
-| [`powerpoint-animations/`](powerpoint-animations/) | clean looping explainer animations rendered to MP4/GIF (to be generalized and moved under documentation) |
-| [`third-party/`](third-party/) | unmodified copies of other publishers' skills (MIT), each with licence and `SOURCE.md` (being absorbed) |
+| [`python-engineering/`](python-engineering/) | rules for writing, testing, packaging and running Python; the tree is `references/fields/<field>/<type>/<kind>/`, and a `kind:` path saved in `AGENTS.md` picks the folder to read |
+| [`reviewing-python-code/`](reviewing-python-code/) | reviews a diff or your own change before you say done |
+| [`documentation/`](documentation/) | writing documentation by what the reader needs (tutorial, how-to, reference, explanation, docstrings, README, changelog) |
+
+Still being folded in: [`powerpoint-animations/`](powerpoint-animations/) (to become animation and diagram branches of `documentation`) and [`third-party/`](third-party/) (unmodified copies of other publishers' skills, being absorbed with attribution).
 
 ## Install
 
-Copy skill folders into the folder your tool reads:
+Copy the three folders into the folder your tool reads:
 
 ```bash
 # GitHub Copilot (VS Code agent mode, CLI): project skills
-mkdir -p .github/skills && cp -r python-engineering/{core,library,application}/skills/* python-docs/skills/* .github/skills/
+mkdir -p .github/skills && cp -r python-engineering reviewing-python-code documentation .github/skills/
 # Claude Code (VS Code and the Copilot CLI also read this folder)
-mkdir -p .claude/skills && cp -r python-engineering/{core,library,application}/skills/* python-docs/skills/* .claude/skills/
+mkdir -p .claude/skills && cp -r python-engineering reviewing-python-code documentation .claude/skills/
 ```
 
-Each skill is self-contained, so any subset works. In VS Code run `/skills` to confirm they are listed; this repository was not run in Copilot.
+Delete each skill's `evals/` folder if you do not run evals. In VS Code run `/skills` to confirm they are listed; this repository was not run in Copilot.
 
 ## Project defaults, not arguments
 
@@ -40,19 +41,22 @@ rigor: full
 report: normal
 ```
 
-Claude Code does not read `AGENTS.md`; add `@AGENTS.md` to `CLAUDE.md`.
+Add a `kind:` line (a path such as `software-engineering/library/shared`) to choose which part of the reference tree is read; without one the skill reads `references/which-type.md` once and saves it. Claude Code does not read `AGENTS.md`; add `@AGENTS.md` to `CLAUDE.md`.
 
 ## Checking the skills by hand
 
-No scripts or tests: skills are markdown. From a skills folder:
+No scripts or tests: skills are markdown. From the repository root:
 
 ```bash
 # description length (budget: 300)
-for f in */skills/*/SKILL.md; do awk -v F="$f" '/^description:/{d=substr($0,14); gsub(/^"|"$/,"",d); print length(d), F; exit}' "$f"; done | sort -rn | head
+for f in python-engineering reviewing-python-code documentation; do awk -v F="$f" '/^description:/{d=substr($0,14); gsub(/^"|"$/,"",d); print length(d), F; exit}' $f/SKILL.md; done
 # folder name equals name:
-for f in */skills/*/SKILL.md; do n=$(sed -n 's/^name: //p' "$f" | head -1); [ "$n" = "$(basename "$(dirname "$f")")" ] || echo "bad name: $f"; done
-# size (budget: about 4,200 characters per body)
-wc -c */skills/*/SKILL.md | sort -rn | head
+for f in python-engineering reviewing-python-code documentation; do [ "$(sed -n 's/^name: //p' $f/SKILL.md | head -1)" = "$f" ] || echo "bad name: $f"; done
+# leaves over budget (about 4,200 characters) and folders without an index
+find python-engineering/references documentation/references reviewing-python-code/references -name '*.md' ! -name index.md -size +4200c
+for d in $(find python-engineering/references/fields documentation/references/written -type d); do [ -f $d/index.md ] || echo "no index: $d"; done
+# no grouped names
+find python-engineering reviewing-python-code documentation -name '*-and-*' ! -path '*/evals/*'
 ```
 
 ## What the research says about skills
