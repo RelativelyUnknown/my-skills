@@ -16,7 +16,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/modules-4-cd5c1c?style=flat-square" alt="4 modules">
-  <img src="https://img.shields.io/badge/eval%20cases-49-cd5c1c?style=flat-square" alt="49 eval cases">
+  <img src="https://img.shields.io/badge/eval%20cases-51-cd5c1c?style=flat-square" alt="51 eval cases">
   <img src="https://img.shields.io/badge/format-Agent%20Skills-cd5c1c?style=flat-square" alt="Agent Skills format">
   <img src="https://img.shields.io/badge/license-MIT-cd5c1c?style=flat-square" alt="MIT licence">
 </p>
@@ -45,27 +45,9 @@ The `tabby` skill runs when a project starts, when the agent joins an existing o
 4. It saves a short `## Tabby` section to `AGENTS.md`: purpose, goals, growth, out of scope, constraints, the canonical check command, and the skills and reference folder that apply.
 5. Later work loads only those. A growth item you named, such as a Rust hot path, gets a cheap seam now (a typed Python function with a reference implementation) and no Cargo workspace until you ask. If a task conflicts with the saved answers, the agent asks whether they still fit.
 
-First check (Haiku 5.5, two cases in `tabby/evals/`): the router fired in 9 of 10 runs; joining a Rust-backed library it wrote a correct `## Tabby` section in 6 of 6 runs, marking unknowns as assumed; in an empty repo it asked three or fewer questions with recommended answers in 5 of 5 runs, but 4 of those 5 also asked about things the request already said. No run without the skill yet, so this shows the router works, not that it beats the bare model. The growth table is untested.
-
 Without a `## Tabby` section the router still loads `engineering/index.md`, which lists which file to read for each kind of task (a new function, a dependency, an error path, a CI job, a release).
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
-
-## Does it help? Measured, with the caveats
-
-Every skill ships eval cases and is run with `claude plugin eval` (3 runs per case, regex and LLM-judge graders, one model). A skill was only built where the bare model failed first.
-
-| Task | Without | With |
-| --- | --- | --- |
-| Security audit with 3 real bugs and 3 look-alikes | 0.84 | **1.00** |
-| Three documentation pages (tutorial, how-to, reference) | 0.76 | **0.91** |
-| ADR, runbook and troubleshooting page | 0.94 | **0.98** |
-
-Where the bare model already did well (PyO3 API calls, a leakage-free ML split, a re-runnable data load) nothing was added. Those cases stay as baselines.
-
-Routing against 20 flat skills installed together: score 0.788 against 0.773, and the skill fired in all 26 cases against 15 of 26. It cost about 13% more per run, so the "fewer tokens" goal is not yet met. That is the next thing to fix.
-
-**Limits:** the numbers above predate the rework (they were measured on separate skills, before the router). One model, three runs, one judge, no shell in the eval sandbox, and Tabby has not been run in GitHub Copilot.
 
 ## What is in the box
 
@@ -121,21 +103,13 @@ Claude Code reads `CLAUDE.md`, not `AGENTS.md`; if your repo has no `CLAUDE.md`,
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
-## Roadmap
+## Planned
 
-- [x] Three routed skills with evals
-- [x] Security audit and self-review
-- [x] Documentation by reader need, with the history, operations, troubleshooting and governance add-ons
-- [x] The router interview for new and existing projects (written, not yet measured)
-- [x] Rust and C extensions: layouts, PyO3, the C API, boundary review, wheels and CI (written from sources, not yet measured)
-- [x] One skill with four modules (engineering, review, documentation, design) behind the router
-- [ ] Measure the router and the native leaves against baselines; keep what helps
-- [ ] Trim the front door (about 1,070 tokens, aim 600) without dropping a routing pointer
-- [ ] TypeScript and JavaScript, later
+- TypeScript and JavaScript support.
 
 ## Where the ideas came from
 
-Tabby takes ideas, rewritten in its own words, from [ponytail](https://github.com/DietrichGebert/ponytail), [caveman](https://github.com/JuliusBrussee/caveman), [BeautifulRust](https://github.com/morganlinton/BeautifulRust), [Cloudflare's security-audit skill](https://github.com/cloudflare/security-audit-skill), [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills), [impeccable](https://github.com/pbakaus/impeccable), [diagram-design](https://github.com/cathrynlavery/diagram-design), [stack-diagram](https://github.com/caru-ini/stack-diagram) and others. Adapted material keeps its licence; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). The research behind the "small and focused" design is in [`HANDOVER.md`](HANDOVER.md).
+Tabby takes ideas, rewritten in its own words, from [ponytail](https://github.com/DietrichGebert/ponytail), [caveman](https://github.com/JuliusBrussee/caveman), [BeautifulRust](https://github.com/morganlinton/BeautifulRust), [Cloudflare's security-audit skill](https://github.com/cloudflare/security-audit-skill), [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills), [impeccable](https://github.com/pbakaus/impeccable), [diagram-design](https://github.com/cathrynlavery/diagram-design), [stack-diagram](https://github.com/caru-ini/stack-diagram) and others. Adapted material keeps its licence; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ## Credits and licence
 
