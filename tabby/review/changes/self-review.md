@@ -20,6 +20,10 @@ Find what is wrong with the diff, and say nothing else. A clean diff gets a shor
 6. **Dependencies and files.** A second library for a job one already does, a new dependency in the base install, scratch or summary files, unrelated reformatting, hand-edited generated files.
 7. **Security.** Anything `development/code/security-basics.md` prohibits, for example `shell=True` with interpolation, f-string SQL, secrets in code or fixtures.
 
+## Deferred shortcuts
+
+List the `# shortcut:` comments the change adds or touches (`git grep -nE "# ?shortcut:"` on the changed files). Each must name its limit and the trigger to revisit it; one that names neither is a finding.
+
 ## What not to report
 
 - Anything the linter or type checker already enforces and CI already runs.

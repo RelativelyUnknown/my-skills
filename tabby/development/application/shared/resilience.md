@@ -16,4 +16,4 @@ Use the retry library the project already has (tenacity, backoff, a client's own
 - Log each retry at WARNING with the attempt and delay; count retries and breaker transitions (`adding-observability`).
 - Tests inject `sleep`, `rand` and the clock, then assert attempt counts, delays and breaker states. A test that sleeps for real is a flaky test.
 
-Runnable standard-library versions of the retry, breaker and bulkhead: [resilience-patterns.md](resilience-patterns.md).
+

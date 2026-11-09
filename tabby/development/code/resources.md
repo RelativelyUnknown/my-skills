@@ -16,4 +16,4 @@ A resource has one owner, and the owner releases it on every path: return, excep
 - Streams: collect chunks in a list and `"".join` once; `s += chunk` in a loop can be quadratic. Close the upstream response in `finally` so a consumer that stops early still releases it. Yield chunks as they arrive and time the first one with `time.perf_counter()`.
 - Test the error path: a fake resource with a `closed` flag, an exception in the body (`pytest.raises`), then assert the flag. Run the suite with `-W error::ResourceWarning` (or `python -X dev`); unclosed files and sockets are silent otherwise.
 
-Do not write a class where `@contextmanager` fits, and do not wrap `open()` in another manager. Worked examples: [resource-patterns.md](resource-patterns.md).
+Do not write a class where `@contextmanager` fits, and do not wrap `open()` in another manager.

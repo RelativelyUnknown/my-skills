@@ -4,9 +4,9 @@
 
 Native code is a standing cost: a compiler in the build, a wheel matrix, and an interface that moves with each Python release. Before starting:
 
-1. Profile. Name the function and its share of the run time ([profiling.md](../../performance/profiling.md)).
+1. Profile. Name the function and its share of the run time ([performance](../../performance/index.md)).
 2. Call frequency decides. A 200 ns Python function called once per input gains nothing from a 50 ns native one; a tight loop over large data does.
-3. Try cheaper first: a better algorithm, `itertools`, NumPy vectorisation, an existing library ([faster-libraries.md](../../performance/faster-libraries.md)). I/O-bound work needs `asyncio`, not native code.
+3. Try cheaper first: a better algorithm, `itertools`, NumPy vectorisation, an existing library ([performance](../../performance/index.md)). I/O-bound work needs `asyncio`, not native code.
 4. Record the benchmark and the decision (an ADR or a code comment): "X was 70% of the run at N calls per second."
 
 ## Choose the layer

@@ -15,4 +15,4 @@ Match the project: a dataclass with `os.environ` and `tomllib` (3.11+) is enough
 - Defaults are literals in the config class, not module constants. Read the environment in the loader only; scattered `os.getenv` calls cannot be validated together.
 - Tests build the config object directly (`make_config(**overrides)`) and test the loader with `monkeypatch.setenv` / `delenv`. Construct pydantic settings with `_env_file=None` in tests so a developer's `.env` does not leak in.
 
-Runnable examples: [configuration-patterns.md](configuration-patterns.md).
+

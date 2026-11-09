@@ -10,10 +10,10 @@ A module of [Tabby](../SKILL.md) for writing, testing, packaging and running Pyt
 index.md                  front door
 which-type.md             project signals -> kind paths
 code/                     any Python project: smells, errors, typing, resources, minimalism, stdlib first
-testing/                  tests that can fail; fixtures, mocking, property-based, mutation
-performance/              profiling, benchmarks, hot-path fixes, faster libraries
+testing/                  tests that can fail; mocking, fixtures, rigor (property-based, mutation, release gates)
+performance/              measure first, then fix in order of leverage (one file)
 dependencies/             uv, CI, Docker, choosing and vetting packages
-workflow/                 planning, debugging, shipping
+workflow/                 planning, debugging, refactoring, checking APIs, shipping
 library/                  packages others install
   shared/                 API design, package setup, layout, versions, release
   native/                 Rust or C behind a Python API: architecture, PyO3, the C API, wheels and CI

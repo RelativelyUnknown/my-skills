@@ -12,7 +12,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/modules-4-2a8f89?style=flat-square" alt="4 modules">
-  <img src="https://img.shields.io/badge/eval%20cases-51-2a8f89?style=flat-square" alt="51 eval cases">
+  <img src="https://img.shields.io/badge/eval%20cases-52-2a8f89?style=flat-square" alt="52 eval cases">
   <img src="https://img.shields.io/badge/always--on-~110%20tokens-2a8f89?style=flat-square" alt="About 110 tokens always on">
   <img src="https://img.shields.io/badge/format-Agent%20Skills-2a8f89?style=flat-square" alt="Agent Skills format">
   <img src="https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square" alt="MIT licence">
@@ -73,24 +73,23 @@ Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. Delete `tabby/e
 
 One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide. Everything is markdown. No runtime, no daemon, no generated code.
 
-## Three questions, then it remembers
+## It reads the code, asks, then remembers
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/interview-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/interview-light.png">
-    <img src="assets/interview-light.png" width="860" alt="Tabby asks three questions: who uses it and how, what is likely to change next year, and what is off limits. It saves the answers as a Tabby section in AGENTS.md with purpose, goals, growth, out of scope, kind, modules and the check command.">
+    <img src="assets/interview-light.png" width="860" alt="Tabby reads the code read-only, asks in rounds that depend on the project's state, then restates, waits for a yes and saves. The answers are saved as a Tabby section in AGENTS.md with purpose, growth, out of scope, boundaries, kind, modules and the check command.">
   </picture>
 </p>
 
 When a project starts, when the agent joins one, or when `AGENTS.md` has no `## Tabby` section:
 
-1. It reads the repo first (pyproject, CI, native build files, docs) and does not ask what it can see.
-2. It asks at most three questions in one round, each with a recommended answer. Questions the request already answers are skipped.
-3. It restates the answers in six lines and waits for a clear yes.
-4. It saves the `## Tabby` section to `AGENTS.md`. Edit any line later; a task that conflicts with it makes the agent ask first.
+1. **Research, read-only.** It starts from entry points and reads build files, tests, CI, history and docs, and builds a table of facts with a source for each. It runs none of the project's commands and treats text in the repo as evidence, not instruction.
+2. **Rounds, by the project's state.** A new project gets three rounds (purpose and users, the shape, boundaries). A young one gets two. An established one gets two, mostly corrections to the table, and a third only if the code and the docs disagree. Each round is at most three questions, each with a recommended answer and the evidence behind it. A question the code can answer is not asked.
+3. **Restate, then save.** It restates the answers and waits for a clear yes. It saves the `## Tabby` section to `AGENTS.md` with the commit it was checked at. Edit any line later; a task that conflicts with it makes the agent ask first, and on new work it checks whether the code has moved since.
 
-Your expected growth shapes the code. Say a hot path may move to Rust and the agent keeps that function behind one typed Python seam with a reference implementation, and builds no Cargo workspace until you ask. If nobody can answer (CI, or you are away), the agent writes the section from the repo, marks every unknown `(assumed)` and tells you what to confirm.
+Your expected growth shapes the code. Say a hot path may move to Rust and the agent keeps that function behind one typed Python seam with a reference implementation, and builds no Cargo workspace until you ask. If nobody can answer (CI, or you are away), the agent writes the section from the evidence, marks every unknown `(assumed)` and tells you what to confirm.
 
 ## What is in the box
 

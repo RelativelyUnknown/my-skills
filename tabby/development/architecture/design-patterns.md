@@ -72,4 +72,4 @@ When existing signatures or tests must not change, call `Settings.from_env()` wh
 - More classes than variants: flatten.
 - New code should not be much longer than what it replaced. Say in one line which pattern you chose or declined, and why.
 
-Why: [design-principles.md](design-principles.md).
+Three principles sit under the table: wait for the third similar piece before abstracting (a wrong abstraction costs more than duplication); inherit for "is a", hold the part you reuse for "has a" (a subclass that reuses a parent method which calls other overridable methods changes behaviour silently); pass collaborators in instead of reaching for them.

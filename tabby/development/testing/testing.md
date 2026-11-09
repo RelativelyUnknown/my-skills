@@ -12,7 +12,7 @@ Tests are the spec. They change only when the spec changes, and every test must 
 6. Flaky means find the cause. No sleeps, reruns or retry decorators until the cause is known. Do not look up expected outputs in git history or other branches.
 7. Before reporting done, run the full suite (targeted runs are fine while iterating).
 
-**Redesign exception.** Only when the task explicitly asks for a redesign, read [redesign.md](redesign.md) first; otherwise rule 1 holds.
+**Redesign exception.** Only when the task explicitly asks for a redesign, read the redesign section of [rigor.md](rigor.md) first; otherwise rule 1 holds.
 
 ## Writing tests (every `rigor` level)
 
@@ -28,7 +28,7 @@ Tests are the spec. They change only when the spec changes, and every test must 
 
 - `lite`: The rules above. Nothing else is required.
 - `full`: Everything in "Full" below, and read [mocking.md](mocking.md) and [fixtures.md](fixtures.md).
-- `ultra`: `full`, plus read [property-based.md](property-based.md), [mutation.md](mutation.md) and [gates.md](gates.md) and apply them. Their examples use `uv`; with another runner, use its equivalents.
+- `ultra`: `full`, plus read [rigor.md](rigor.md) (property-based tests, mutation testing, release gates) and apply it. Their examples use `uv`; with another runner, use its equivalents.
 
 ## Full
 

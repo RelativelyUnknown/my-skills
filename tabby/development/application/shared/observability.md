@@ -25,4 +25,4 @@ Use the stack the project already has (stdlib `logging`, structlog, Prometheus, 
 - On failure: `span.record_exception(exc)` and `span.set_status(Status(StatusCode.ERROR, ...))`, then re-raise. Span attributes are bounded and carry no secrets.
 - Add the trace id to log lines so a log and its trace can be joined.
 
-Jobs log their id, key and attempt ([background-jobs.md](../workers/background-jobs.md)). Runnable examples: [observability-patterns.md](observability-patterns.md).
+Jobs log their id, key and attempt ([background-jobs.md](../workers/background-jobs.md)).

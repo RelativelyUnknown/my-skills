@@ -2,7 +2,7 @@
 
 - Mechanical rules live in tool config, not in prose: the ruff list in the template covers bare and blind `except`, mutable defaults, positional booleans, `Any`, leftover `print`, f-strings in logging, blocking calls in async code and more. Do not select ruff's `D1xx` rules; they push filler docstrings.
 - `strict = true` in `[tool.pytest.ini_options]` needs pytest 9; on older pytest use `--strict-markers` and `xfail_strict = true`.
-- `make complexity` runs `xenon` as advice only and is not part of `check`. Read its ranks as hints; do not contort code to reach an A, and do not add it as a CI gate unless asked.
+- `make complexity` runs `xenon` as advice only and is not part of `check`. A rank (`xenon`, `radon cc`, a lint rule) is a hint, not a verdict: simplify when you can say what is hard to follow and a clearer shape exists (early returns, a lookup table). Do not contort logic or split a function into vaguely named fragments to reach an A; a flat run of cases or a parser table that ranks C stays as it is, and the report says so. Never add `# noqa`, raise a threshold or make a test pass differently because of a rank; if CI gates on it and fails, report the failure and the readable options.
 
 - Run `vulture` occasionally to find dead code.
 - Type checker: keep the detected one. Pyrefly (stable since 1.0) and ty (still a 0.0.x beta) are much faster than mypy and pyright; add one beside the existing checker only when asked, and never make a beta checker the only gate.

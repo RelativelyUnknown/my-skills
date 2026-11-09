@@ -17,4 +17,4 @@
 - Adopting strict mode in an existing codebase: `strict = true` for the whole project plus a shrinking `[[tool.mypy.overrides]]` list (`module = "pkg.legacy.*"`, `ignore_errors = true`); new modules never join the list. Pyright: `typeCheckingMode = "strict"` in `[tool.pyright]` with `ignore = [...]`.
 - A library ships `py.typed` and annotates everything it exports; see [api-design.md](../library/shared/api-design.md).
 
-Examples checked with `mypy --strict`: [typing-patterns.md](typing-patterns.md).
+

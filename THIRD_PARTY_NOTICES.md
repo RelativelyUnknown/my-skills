@@ -12,18 +12,18 @@ The rest of this repository is MIT (see `LICENSE`).
 
 | Upstream skill | Adapted into |
 | --- | --- |
-| `python-resource-management` | `tabby/development/code/resources.md`, `resource-patterns.md` |
-| `python-type-safety` | `tabby/development/code/typing.md`, `typing-patterns.md` |
+| `python-resource-management` | `tabby/development/code/resources.md` |
+| `python-type-safety` | `tabby/development/code/typing.md` |
 | `uv-package-manager` | `tabby/development/dependencies/uv.md`, `uv-ci.md`, `uv-docker.md` |
 | `async-python-patterns` | `tabby/development/application/shared/async.md`, `async-patterns.md` |
 | `python-background-jobs` | `tabby/development/application/workers/background-jobs.md`, `background-jobs-patterns.md` |
-| `python-observability` | `tabby/development/application/shared/observability.md`, `observability-patterns.md` |
-| `python-configuration` | `tabby/development/application/shared/configuration.md`, `configuration-patterns.md` |
-| `python-resilience` | `tabby/development/application/shared/resilience.md`, `resilience-patterns.md` |
+| `python-observability` | `tabby/development/application/shared/observability.md` |
+| `python-configuration` | `tabby/development/application/shared/configuration.md` |
+| `python-resilience` | `tabby/development/application/shared/resilience.md` |
 | `python-error-handling` | `tabby/development/code/errors.md`, `validation.md` |
-| `python-design-patterns` | `tabby/development/architecture/design-principles.md` |
+| `python-design-patterns` | `tabby/development/architecture/design-patterns.md` (three principles) |
 | `python-testing-patterns` | one section of `tabby/development/testing/mocking.md`; the rest was already covered (see `tabby/development/SOURCE.md`) |
-| `python-performance-optimization` | `tabby/development/performance/hot-path-fixes.md`; the profiler tutorial was not copied (see `tabby/development/SOURCE.md`) |
+| `python-performance-optimization` | `tabby/development/performance/index.md`; the profiler tutorial was not copied (see `tabby/development/SOURCE.md`) |
 | `python-packaging`, `python-project-structure` | `tabby/development/library/shared/versioning.md`, `entry-points.md`, `tooling.md`; the rest was already covered (see `tabby/development/SOURCE.md`) |
 | `python-code-style` | pointer only; nothing copied (see `tabby/development/SOURCE.md`) |
 
