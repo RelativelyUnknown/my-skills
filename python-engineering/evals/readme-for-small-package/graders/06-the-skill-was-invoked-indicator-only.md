@@ -1,7 +1,7 @@
 ---
 type: tool_used
 tool: Skill
-input_match: "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?reviewing-python-code\""
+input_match: "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?python-engineering\""
 weight: 1
 ---
 

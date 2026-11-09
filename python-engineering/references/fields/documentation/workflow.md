@@ -1,14 +1,8 @@
----
-name: documentation
-description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to, changelog, runbook, ADR or CONTRIBUTING file, or making a minimalist explainer animation or diagram. Applies Diátaxis page types, concise style, runnable examples; avoids AI filler."
-license: MIT
----
-
-# Documentation
+# Writing documentation
 
 Documentation lets a reader do or understand something without asking the author. Every sentence either moves the reader toward that or goes.
 
-Defaults: read the `## Python defaults` section of AGENTS.md (`docstrings`); infer what is missing from the repo; ask only what is still unknown, once; save the answers there.
+Read this first for any documentation task, then the page-type leaf in [index.md](index.md).
 
 ## Never miss
 
@@ -17,10 +11,6 @@ Defaults: read the `## Python defaults` section of AGENTS.md (`docstrings`); inf
 - Read the code and run it before describing it. Documentation that states intended behavior instead of actual behavior is a bug. If the code and the existing docs disagree, report it rather than picking one silently.
 - Be specific (numbers, versions, exact messages) and timeless (no "currently", "now", "new").
 - Every example runs as written, and a test runs it.
-
-## Route
-
-Written docs: read `references/written/index.md`, then the leaf for the page type. An explainer animation or diagram: read `references/diagrams/style.md` and `references/animation/index.md`.
 
 ## Workflow
 

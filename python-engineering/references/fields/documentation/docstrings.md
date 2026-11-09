@@ -1,6 +1,6 @@
 # Docstrings and API reference
 
-Formats from PEP 257, numpydoc and the Google Python Style Guide. What to say and never say: `../../../python-engineering/references/fields/software-engineering/all/code/comments.md`.
+Formats from PEP 257, numpydoc and the Google Python Style Guide. What to say and never say: `../software-engineering/all/code/comments.md`.
 
 ## Choosing a format
 
@@ -100,4 +100,4 @@ extend-select = ["D2", "D3", "D4"]   # docstring format rules; D1xx (missing doc
 convention = "numpy"   # or "google", "pep257"
 ```
 
-`convention` turns off rules that conflict with that format (D401, imperative summary, is off under `google`). Do not select `D1xx` missing-docstring rules: they push filler onto self-explaining code ([tooling.md](../../../python-engineering/references/fields/software-engineering/library/shared/tooling.md)). Add docstrings where the reader needs them.
+`convention` turns off rules that conflict with that format (D401, imperative summary, is off under `google`). Do not select `D1xx` missing-docstring rules: they push filler onto self-explaining code ([tooling.md](../software-engineering/library/shared/tooling.md)). Add docstrings where the reader needs them.

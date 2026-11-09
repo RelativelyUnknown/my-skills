@@ -1,4 +1,4 @@
-# reviewing-python-code
+# python-review
 
 Part of the [skills repository](../README.md). Reviews a Python diff, branch or pull request, audits a project's security, or checks your own change before you report it done. A clean diff or a clean audit gets a short "no findings".
 

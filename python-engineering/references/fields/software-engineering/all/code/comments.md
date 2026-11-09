@@ -1,6 +1,6 @@
 # Docstrings and comments
 
-The one home for these rules; the self-review in `reviewing-python-code` checks against them.
+The one home for these rules; the self-review in `python-review` checks against them.
 
 Write for a reader a year from now who never saw this conversation.
 

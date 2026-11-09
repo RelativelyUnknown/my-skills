@@ -36,7 +36,7 @@ Cases are in `evals/<case>/` (`prompt.md`, `case.yaml`, `graders/`, `fixture.sh`
 
 Six cases that missed a conditional read were then re-run with the v2.1 front door: their mean went from 0.61 to 0.78 (flat install: 0.85). The other 20 cases were not re-run on v2.1, and `optional-parquet-dependency` stayed low (0.26 against 0.69 flat) before one last row was added to the front door, which has not been measured. The routed form costs about 13% more per run than the flat install; its advantage is that the rules are loaded reliably. A first test, where each flat skill was chosen for its case, favoured flat (0.84 against 0.72) and was replaced by the all-installed comparison. Copilot was not run.
 
-Application cases (10) and the pre-existing cases for the other leaves have baselines from earlier runs; the application and `reviewing-python-code` cases were not part of this comparison.
+Application cases (10) and the pre-existing cases for the other leaves have baselines from earlier runs; the application and `python-review` cases were not part of this comparison.
 
 ```bash
 claude plugin eval python-engineering --scaffold --allow-tools Write Edit --judge-model sonnet --max-cost-usd 4

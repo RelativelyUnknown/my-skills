@@ -1,10 +1,10 @@
 ---
-name: reviewing-python-code
+name: python-review
 description: "Use when asked to review a Python diff, branch or pull request, to audit a project's security, or before reporting your own change as done. Finds bugs, silenced checks, weakened tests, unneeded abstractions, public API breaks and new dependencies, and says nothing else."
 license: MIT
 ---
 
-# Reviewing Python code
+# Python review
 
 Defaults: read the `## Python defaults` section of AGENTS.md; use the `report` value for the format.
 
