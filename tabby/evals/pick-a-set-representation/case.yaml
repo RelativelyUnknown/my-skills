@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: pick-a-set-representation
+expected_outcome: |
+  The agent replaces a HashSet of enum feature flags, built and queried on every request, with a fixed-size bitset indexed by the enum's id. It sizes the array from the variant count or fails loudly when the enum outgrows it (the project memory says flags keep growing), tests every variant, and says what workload it assumed and when the choice stops fitting.
+context:
+  scaffold_script: fixture.sh

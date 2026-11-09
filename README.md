@@ -12,7 +12,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/modules-4-2a8f89?style=flat-square" alt="4 modules">
-  <img src="https://img.shields.io/badge/eval%20cases-52-2a8f89?style=flat-square" alt="52 eval cases">
+  <img src="https://img.shields.io/badge/eval%20cases-53-2a8f89?style=flat-square" alt="53 eval cases">
   <img src="https://img.shields.io/badge/always--on-~110%20tokens-2a8f89?style=flat-square" alt="About 110 tokens always on">
   <img src="https://img.shields.io/badge/format-Agent%20Skills-2a8f89?style=flat-square" alt="Agent Skills format">
   <img src="https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square" alt="MIT licence">
@@ -95,7 +95,7 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 | Module | What it does |
 | --- | --- |
-| [`tabby/development/`](tabby/development/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns. Rust or C behind a Python API: layouts, PyO3, the C API, wheels and CI |
+| [`tabby/development/`](tabby/development/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns, and design fit (choosing the data structure or representation that suits the workload and the project's plans, with worked examples from ruff, uv, polars and pandas). Rust or C behind a Python API: layouts, PyO3, the C API, wheels and CI |
 | [`tabby/review/`](tabby/review/) | Self-review of a change, a security audit that separates confirmed bugs from look-alikes, and a checklist for the Python and native boundary |
 | [`tabby/documentation/`](tabby/documentation/) | Documentation by what the reader needs: tutorial, how-to, reference, explanation, docstrings, README, changelog, ADRs, runbooks, troubleshooting |
 | [`tabby/design/`](tabby/design/) | Minimalist diagrams and explainer animations (SVG, MP4, WebM, GIF) |

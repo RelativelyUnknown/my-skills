@@ -21,7 +21,7 @@ application/              services and jobs
   shared/                 async, observability, configuration, resilience, persistence, deployment
   apis/                   shared/ and http/
   workers/                background jobs
-architecture/             patterns, layers, extension points
+architecture/             patterns, layers, extension points; design fit (choosing data structures and representations)
 assets/                   pyproject.toml, Makefile, ci.yml, release.yml templates
 ```
 

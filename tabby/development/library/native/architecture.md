@@ -38,6 +38,8 @@ Four shapes occur in widely used packages. Pick the smallest that fits, and keep
 
 ## The boundary
 
+- Data layout is a design decision: decide it from the workload and the plans, and record why ([fit.md](../../architecture/fit.md)).
+
 - Convert and validate once at the edge, then work on native types. Avoid per-element round trips: pass whole buffers or batches.
 - One owner per allocation; the side that allocates frees. Never hand out a pointer that outlives its owner.
 - Errors cross as Python exceptions, never as panics or unhandled C errors (details in rust.md and c.md).
