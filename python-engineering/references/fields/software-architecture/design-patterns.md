@@ -1,6 +1,6 @@
 # Design patterns
 
-A pattern answers a problem you have today. Python already contains most of them (functions are objects, modules are singletons, generators are iterators), so the first answer is usually fewer classes, not more. Decide whether a pattern is needed, then use its Python form.
+A pattern answers a problem you have today. Python already contains most of them (functions are objects, modules are singletons, generators are iterators), so the first answer is usually fewer classes. Decide whether a pattern is needed, then use its Python form.
 
 ## Decide first, even when the request names a pattern
 
@@ -10,7 +10,7 @@ Use a pattern only if at least one of these is true today:
 2. A seam is needed for a test: time, network or storage you must replace.
 3. Third parties must extend the code without editing it (plugins).
 
-Otherwise write the plain function or data. If the request names a pattern that does not fit, say so in one sentence, build the simplest form that meets the underlying need, and say what you did instead. Do not refuse, and do not deviate silently.
+Otherwise write the plain function or data. If the request names a pattern that does not fit, say so in one sentence and build the simplest form that meets the need. Do not refuse, and do not deviate silently.
 
 ## Python forms
 
@@ -31,7 +31,7 @@ Otherwise write the plain function or data. If the request names a pattern that 
 
 ## Two forms that are asked for most
 
-Strategy as a dict of functions: a new variant is one function and one dict entry.
+Strategy as a dict of functions (a new variant is one function and one entry):
 
 ```python
 def card(amount, d):   return round(amount * 0.029 + 0.30, 2), f"card-{d['last4']}"
@@ -59,17 +59,17 @@ class Settings:
         return cls(database_url=env["DATABASE_URL"], timeout=float(env.get("TIMEOUT", "30")))
 ```
 
-When existing signatures or tests must not change, call `Settings.from_env()` where it is needed. It is cheap and keeps the environment read in one module; a cached global or a singleton class would hide the dependency.
+When existing signatures or tests must not change, call `Settings.from_env()` where needed: cheap, and the environment is read in one module. A cached global or singleton hides the dependency.
 
 ## When structure is right
 
-- **Plugins by third parties:** a registry is justified. Discover through `importlib.metadata.entry_points(group="<pkg>.<thing>")`, keep built-ins in the same name-to-callable mapping, document the group name, and make an unknown name an error that lists the available ones.
-- **Testability:** keep the rules in a function that takes values (including `now` and config); let a thin outer function read the clock, environment and network and pass them in. Passing a callable is simpler than patching.
-- **Real variants with state:** a small class per variant, sharing a `Protocol`, is fine.
+- **Plugins by third parties:** a registry is justified. Discover with `importlib.metadata.entry_points(group="<pkg>.<thing>")`, keep built-ins in the same name-to-callable mapping, document the group name, and make an unknown name an error listing the available ones.
+- **Testability:** rules in a function that takes values (including `now` and config); a thin outer function reads the clock, environment and network and passes them in. Passing a callable beats patching.
+- **Real variants with state:** a small class per variant sharing a `Protocol`.
 
 ## Before finishing
 
-- More classes than variants means flatten it.
-- The new code should not be much longer than what it replaced. Say in one line which pattern you chose or declined, and why.
+- More classes than variants: flatten.
+- New code should not be much longer than what it replaced. Say in one line which pattern you chose or declined, and why.
 
-Why the table says what it says (rule of three, composition over inheritance, passing collaborators in, size by responsibility): [design-principles.md](design-principles.md).
+Why: [design-principles.md](design-principles.md).

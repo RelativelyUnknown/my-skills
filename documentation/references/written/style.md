@@ -20,17 +20,14 @@ Defaults distilled from the Google developer documentation style guide, the Micr
 | will (for behavior) | present tense |
 | click on | click, or select |
 | whitelist, blacklist, master/slave | allowlist, denylist, primary/replica |
-| sanity check | quick check, confirmation |
-| dummy value | placeholder, sample value |
-| abort (for a user action) | cancel, stop |
+| sanity check, dummy value | quick check, placeholder |
 
 ## Grammar and voice
 
 - Second person; present tense; active voice. Passive is fine when the actor is unknown or irrelevant ("The file is deleted after 30 days").
 - Imperative mood for instructions; indicative for descriptions.
-- Contractions are fine in conversational docs (Microsoft, Google) and avoided in formal reference. Pick one per docs set.
-- American spelling by default (Google, Microsoft, Python devguide examples); follow the project if it uses another variety.
-- Use the serial (Oxford) comma.
+- Contractions: fine in conversational docs, avoided in formal reference; one choice per docs set.
+- American spelling unless the project uses another. Serial (Oxford) comma.
 
 ## Headings and titles
 
@@ -46,28 +43,24 @@ Defaults distilled from the Google developer documentation style guide, the Micr
 - State the result after the step when the reader must check it before going on.
 - Introduce a list with a complete sentence or a fragment ending in a colon; keep items parallel.
 - A procedure has at most about ten steps; split longer ones into sub-procedures with their own headings.
-- Optional steps start with "Optional:".
 
 ## Punctuation and capitalization
 
-- One space after a full stop. No exclamation marks.
-- Em dashes sparingly; prefer commas, colons or separate sentences.
+- No exclamation marks. Em dashes sparingly; prefer commas, colons or separate sentences.
 - Capitalize product and feature names exactly as their owners do (Python, PyPI, GitHub, macOS). Generic terms stay lowercase (the command line, the server).
 - Write "Python", "Unicode", "POSIX" capitalized; "reST" with a lowercase r; "free-threaded" rather than "no-GIL" (Python devguide).
 
 ## Numbers, dates and units
 
-- Numerals for numbers 10 and up and for any measurement; spell out one to nine in prose.
-- Units with a space: `500 ms`, `16 GB`. Use the unit symbol consistently.
-- Unambiguous dates: `2026-11-03` in technical text, or "November 3, 2026" in prose; never `11/03/26`.
-- Time zones explicit (UTC). Ranges with "to" in prose ("3 to 5 retries").
+- Numerals for 10 and up and any measurement; spell out one to nine in prose. Units with a space: `500 ms`, `16 GB`.
+- Unambiguous dates: `2026-11-03` in technical text, "November 3, 2026" in prose; never `11/03/26`. Time zones explicit (UTC).
 
 ## Code, UI and file names
 
 - Code font: code, commands, flags, parameters, return values, environment variables, file and directory names, literal values (`true`, `None`, `"utf-8"`).
 - Bold: UI elements the reader clicks or reads (**Save**, **Settings**). Do not put UI names in quotes.
 - Placeholders in angle brackets and uppercase or descriptive (`<PROJECT_ID>`), defined right after the example.
-- Do not use code font as emphasis, or a code term as an English verb ("`git push` the branch"); write "push the branch with `git push`".
+- No code font for emphasis or as a verb; write "push the branch with `git push`".
 
 ## Notes and warnings
 
@@ -78,6 +71,5 @@ Defaults distilled from the Google developer documentation style guide, the Micr
 ## Accessibility and inclusive language
 
 - Alt text says what an image shows and why it matters; decorative images get empty alt text.
-- Do not rely on color, position ("the button on the right") or direction ("above", "below") alone.
-- Avoid ableist and violent metaphors ("crippled", "kill" when "stop" works) where a plain word exists; keep technical terms that are the actual API (`kill -9`).
-- Use "they" for an unspecified person. Write examples with diverse, realistic names, not stereotypes.
+- Do not rely on color, position ("the button on the right") or direction ("above") alone.
+- Avoid ableist and violent metaphors where a plain word exists; keep real API terms (`kill -9`). Use "they" for an unspecified person.

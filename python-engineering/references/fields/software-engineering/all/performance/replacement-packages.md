@@ -1,12 +1,12 @@
 # Finding a replacement package
 
-Read when a measured hot path needs a faster or better library and `faster-libraries.md` has no good fit, or when you must judge one of its entries for this project. The facts about the data sources below were checked on 2026-11-06.
+Read when a measured hot path needs a faster or better library and `faster-libraries.md` has no fit, or to judge one of its entries. Data-source facts checked 2026-11-06.
 
 ## When to look, and when not to
 
 - **Look** when a profile names a function and a number ("`parse_rows` takes 4.1 s of 5 s"); when the incumbent is unmaintained, has an unfixed security advisory, or blocks a Python version you need; or when a requirement (async, typing, licence) cannot be met by what the project has.
 - **Do not look** when nothing was measured; when the gain would be inside the run-to-run spread; when the time goes to waiting on I/O rather than computing; when you merely prefer another library; or when the project has already settled the choice. Recommend in the report; switch only when asked.
-- **Why this is strict:** every dependency adds maintenance, security surface, licence terms, install size and a second API to learn. A swap earns its place only when the measured gain, or the risk it removes, is larger than that cost. Fewer dependencies is the default.
+- **Why strict:** every dependency adds maintenance, security surface, licence terms, install size and a second API. A swap pays only when the measured gain or removed risk is larger. Fewer dependencies is the default.
 
 ## Does it fit this project
 
@@ -23,17 +23,17 @@ Check each against the detected facts and `pyproject.toml`:
 
 In this order, stopping when one fits:
 
-1. The standard library, and what the project already depends on (including features it does not use yet).
-2. The incumbent's own documentation and issue tracker: performance pages, "alternatives", maintainers' replies.
-3. What comparable, well-run projects use: open their `pyproject.toml` on GitHub.
-4. A search of PyPI and GitHub for the job plus "faster" or "alternative", then the project's README.
-5. Treat any README benchmark as a claim: note who ran it, on what data, against which version.
+1. The standard library, and what the project already depends on (including unused features).
+2. The incumbent's documentation and issue tracker.
+3. What comparable, well-run projects use: their `pyproject.toml`.
+4. PyPI and GitHub search for the job plus "faster" or "alternative".
+5. A README benchmark is a claim: note who ran it, on what data, against which version.
 
-Shortlist at most two and judge those. Do not collect ten.
+Shortlist at most two.
 
 ## Judging a candidate
 
-Read-only requests. PyPI asks callers to send a unique `User-Agent` and to avoid bursts of requests.
+Read-only requests; send a unique `User-Agent` to PyPI and avoid bursts.
 
 - Python versions, licence, links → `https://pypi.org/pypi/<name>/json`: `info.requires_python`, `info.license_expression`, `info.classifiers`, `info.project_urls`. Skip `releases` and `downloads`: deprecated, and `downloads` is always -1
 - Release cadence, deprecation → `https://api.deps.dev/v3/systems/pypi/packages/<name>`: each version's `publishedAt`, `isDefault`, `isDeprecated`
@@ -43,17 +43,15 @@ Read-only requests. PyPI asks callers to send a unique `User-Agent` and to avoid
 - Advisories → osv.dev (search the name, ecosystem PyPI), or the audit tool in [dependencies.md](../dependencies/dependencies.md): any unfixed high-severity advisory
 - Wheels → the "Download files" tab on the PyPI page: the project's platforms and Python versions
 
-Example: `curl -s -A "my-project" https://pypi.org/pypi/orjson/json | python3 -c "import json,sys; i=json.load(sys.stdin)['info']; print(i['requires_python'], i['license_expression'])"`
-
-If a source does not respond, say so in the report. Do not guess its values.
+If a source does not respond, say so; do not guess values.
 
 ## Reading the signals
 
-- The date of the last release, an open-issue count that is not climbing, and the Scorecard `Maintained` check matter more than stars.
-- Popularity is not quality or safety. Millions of weekly downloads can still be an abandoned or compromised package; confirm with release cadence and advisories.
-- A low overall Scorecard does not disqualify a package: widely used orjson scored 4.4 on 2026-11-02. Read which checks failed and whether they matter to you.
-- Red flags: no release in a long time (for example 18 months) with open issues and no maintainer replies; a single maintainer; a recent ownership change; a yanked or deprecated latest release; an unfixed high-severity advisory; no licence; no wheels for your platform.
+- Last release date, a non-climbing open-issue count and the Scorecard `Maintained` check matter more than stars.
+- Popularity is not quality or safety; confirm with release cadence and advisories.
+- A low overall Scorecard does not disqualify a package (orjson scored 4.4 on 2026-11-02). Read which checks failed.
+- Red flags: no release for about 18 months with open issues and no maintainer replies; a single maintainer; a recent ownership change; a yanked or deprecated latest release; an unfixed high-severity advisory; no licence; no wheels for your platform.
 
 ## Proving the swap
 
-Benchmark the incumbent and the candidate on the project's own input with the method in [benchmarking.md](benchmarking.md). Run the full test suite. List the behavior differences you found. Report the number before and after, and the dependency added (name, version, licence). Keep the change small enough to revert in one commit.
+Benchmark both on the project's own input ([benchmarking.md](benchmarking.md)). Run the full test suite. List behavior differences. Report before and after, and the dependency added (name, version, licence). Keep the change revertable in one commit.
