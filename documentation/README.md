@@ -6,7 +6,7 @@ Part of the [skills repository](../README.md). One skill for writing and editing
 
 `references/written/` also holds `history/adr`, `operations/runbook`, `troubleshooting/symptom-fix-matrix` and `governance/contributing`. `references/diagrams/style.md` is the visual language for diagrams and animations (it reads a `design.md` at the repository root when there is one) and `references/animation/` covers the pipeline (SVG scenes drawn as a function of time, headless Chromium frames, ffmpeg encodes), motion and formats; the engine is in `assets/animation/`.
 
-The animation pipeline was moved here from an earlier skill and has not been run again since the move.
+The animation pipeline was moved here from an earlier skill and was run again after the move (Node 22, Playwright Chromium, ffmpeg): `render.js` produced 220 frames for the example scene, and the commands in `formats.md` produced a 1920×1080 25 fps MP4, a WebM and a 960×540 GIF. The two font packages came from `npm install` in a scratch folder.
 
 Not built, for lack of a failing baseline: release notes, migration guide, incident manual, onboarding checklist, post-mortem, SLA, security policy, code standards, `AGENTS.md` and skill-authoring leaves (the bare model already writes a sound `AGENTS.md`; the documentation skill did not fire on that prompt).
 
