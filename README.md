@@ -32,7 +32,7 @@ Everything is markdown. No runtime, no daemon, no generated code. The agent read
 ## How it works
 
 <p align="center">
-  <img src="assets/how-it-works.png" width="880" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: engineering, review, documentation or design.">
+  <img src="assets/how-it-works.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: engineering, review, documentation or design.">
 </p>
 
 One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide.
@@ -40,7 +40,7 @@ One skill is registered with your agent: `tabby`. Four modules sit inside it, an
 ## Three questions, then it remembers
 
 <p align="center">
-  <img src="assets/interview.png" width="880" alt="Tabby asks three questions: who uses it and how, what is likely to change next year, and what is off limits. It saves the answers as a Tabby section in AGENTS.md with purpose, goals, growth, out of scope, kind, modules and the check command.">
+  <img src="assets/interview.png" width="860" alt="Tabby asks three questions: who uses it and how, what is likely to change next year, and what is off limits. It saves the answers as a Tabby section in AGENTS.md with purpose, goals, growth, out of scope, kind, modules and the check command.">
 </p>
 
 When a project starts, when the agent joins one, or when `AGENTS.md` has no `## Tabby` section:
@@ -63,7 +63,7 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## The rules it never lets slide
 
-<img src="assets/cat-detective.png" align="right" width="300" alt="A cream cat with a brown mask peering through a magnifying glass, drawn on torn paper, tilted">
+<img src="assets/cat-detective.png" align="right" width="340" alt="A cream cat with a brown mask peering through a magnifying glass, drawn on torn paper, tilted">
 
 - Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal.
 - Never edit, delete, skip or loosen an existing test to get green.
@@ -103,7 +103,7 @@ Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` f
 
 ## FAQ
 
-<img src="assets/cat-sleeping.png" align="left" width="280" alt="A black and white cat asleep in a curled circle, drawn in pen on a yellow lined sticky note, tilted">
+<img src="assets/cat-sleeping.png" align="left" width="220" alt="A black and white cat asleep in a curled circle, drawn in pen on a yellow lined sticky note, tilted">
 
 **Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
