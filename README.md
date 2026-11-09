@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/skills-3-cd5c1c?style=flat-square" alt="3 skills">
+  <img src="https://img.shields.io/badge/skills-4-cd5c1c?style=flat-square" alt="4 skills">
   <img src="https://img.shields.io/badge/eval%20cases-49-cd5c1c?style=flat-square" alt="49 eval cases">
   <img src="https://img.shields.io/badge/format-Agent%20Skills-cd5c1c?style=flat-square" alt="Agent Skills format">
   <img src="https://img.shields.io/badge/license-MIT-cd5c1c?style=flat-square" alt="MIT licence">
@@ -37,14 +37,17 @@ Everything is markdown. There is no runtime, no daemon and no generated code. Th
 
 A project is not a prompt, so Tabby does not load everything. The front door sends the agent to the files that match the task. Each file is one idea, written once.
 
-**Today:** the front door lists exactly which file to read for each kind of task (a new function, a dependency, an error path, a CI job, a release). Project defaults live in your `AGENTS.md`.
+The `tabby` skill runs when a project starts, when the agent joins an existing one, or when `AGENTS.md` has no `## Tabby` section.
 
-**Planned:** an interview when a project starts or when the agent joins an existing one.
+1. It reads the repo first (pyproject, CI, native build files, docs) and does not ask what it can see.
+2. It asks three questions in one round: what the project is and who uses it, what is likely to change, and what is off limits. More questions only if an answer changes what it would build.
+3. It restates the answers in six lines and waits for a clear yes.
+4. It saves a short `## Tabby` section to `AGENTS.md`: purpose, goals, growth, out of scope, constraints, the canonical check command, and the skills and reference folder that apply.
+5. Later work loads only those. A growth item you named, such as a Rust hot path, gets a cheap seam now (a typed Python function with a reference implementation) and no Cargo workspace until you ask. If a task conflicts with the saved answers, the agent asks whether they still fit.
 
-1. It reads the repo first and does not ask what it can see.
-2. It asks three questions: what the project is for, where it is going, and what is out of scope.
-3. It saves the answers as editable memory in `AGENTS.md`, with the list of skills that apply.
-4. Later work loads only those skills, and builds in the seams your stated growth needs, such as a typed Python seam where a Rust hot path may arrive.
+First check (Haiku 5.5, two cases in `tabby/evals/`): the router fired in 9 of 10 runs; joining a Rust-backed library it wrote a correct `## Tabby` section in 6 of 6 runs, marking unknowns as assumed; in an empty repo it asked three or fewer questions with recommended answers in 5 of 5 runs, but 4 of those 5 also asked about things the request already said. No run without the skill yet, so this shows the router works, not that it beats the bare model. The growth table is untested.
+
+Without a `## Tabby` section the front door of `python-engineering` still lists which file to read for each kind of task (a new function, a dependency, an error path, a CI job, a release).
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
@@ -62,7 +65,7 @@ Where the bare model already did well (PyO3 API calls, a leakage-free ML split, 
 
 Routing against 20 flat skills installed together: score 0.788 against 0.773, and the skill fired in all 26 cases against 15 of 26. It cost about 13% more per run, so the "fewer tokens" goal is not yet met. That is the next thing to fix.
 
-**Limits:** one model, three runs, one judge, no shell in the eval sandbox, and the skills have not been run in GitHub Copilot.
+**Limits:** the numbers above predate the rework (documentation was a separate skill then). One model, three runs, one judge, no shell in the eval sandbox, and the skills have not been run in GitHub Copilot.
 
 ## What is in the box
 
@@ -70,9 +73,10 @@ Each skill is a folder you copy. A short `SKILL.md` plus `references/` that load
 
 | Folder | What it does |
 | --- | --- |
-| [`python-engineering/`](python-engineering/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns |
-| [`reviewing-python-code/`](reviewing-python-code/) | Self-review of a change, and a security audit with a confirmed / needs-validation split |
-| [`documentation/`](documentation/) | Documentation by reader need, ADRs, runbooks, troubleshooting, docstrings, and minimalist diagrams and explainer animations |
+| [`tabby/`](tabby/) | The router: project interview, `## Tabby` memory in `AGENTS.md`, growth seams |
+| [`python-engineering/`](python-engineering/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns. Also documentation by reader need (tutorial, how-to, reference, explanation, ADR, runbook, troubleshooting, docstrings) and Rust or C behind a Python API (layouts, PyO3, the C API, wheels and CI) |
+| [`python-review/`](python-review/) | Self-review of a change, a security audit with a confirmed / needs-validation split, and a checklist for the Python and native boundary |
+| [`python-design/`](python-design/) | Minimalist diagrams and explainer animations (SVG, MP4, WebM, GIF) |
 
 ## Install
 
@@ -80,18 +84,30 @@ Copy the folders into the folder your agent reads:
 
 ```bash
 # Claude Code
-mkdir -p .claude/skills && cp -r python-engineering reviewing-python-code documentation .claude/skills/
+mkdir -p .claude/skills && cp -r tabby python-engineering python-review python-design .claude/skills/
 # GitHub Copilot (VS Code agent mode, CLI)
-mkdir -p .github/skills && cp -r python-engineering reviewing-python-code documentation .github/skills/
+mkdir -p .github/skills && cp -r tabby python-engineering python-review python-design .github/skills/
 ```
 
 Delete each skill's `evals/` folder if you do not run evals. Any agent that reads `SKILL.md` folders and `AGENTS.md` can use them.
 
 ## Project defaults live in AGENTS.md
 
-Skills take no arguments. They read a `## Python defaults` section of `AGENTS.md`, infer what is missing from the repo, ask only what is still unknown (once, with the agent's question tool if it has one), and save the answers there. Edit or delete a line to be asked again.
+Skills take no arguments. They read two sections of `AGENTS.md`: `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). They infer what is missing from the repo, ask only what is still unknown (once, with the agent's question tool if it has one), and save the answers there. Edit or delete a line to be asked again.
 
 ```markdown
+## Tabby
+reviewed: 2026-11-09
+purpose: a retry library for HTTP clients
+users: backend developers
+goals: stable API, no runtime dependencies
+growth: a Rust hot path for backoff maths
+out-of-scope: async support
+kind: software-engineering/library/native
+skills: python-engineering, python-review
+docs: README, reference, how-to, changelog
+commands: nox -e local
+
 ## Python defaults
 python: 3.12
 runner: uv
@@ -110,10 +126,11 @@ Claude Code reads `CLAUDE.md`, not `AGENTS.md`; if your repo has no `CLAUDE.md`,
 - [x] Three routed skills with evals
 - [x] Security audit and self-review
 - [x] Documentation by reader need, with the history, operations, troubleshooting and governance add-ons
-- [ ] The router interview for new and existing projects
-- [ ] Rust and C extensions as first-class: layouts, boundary review, build and CI
-- [ ] Folding documentation into `python-engineering` and splitting design into its own skill
-- [ ] Trim the front door and the largest files
+- [x] The router interview for new and existing projects (written, not yet measured)
+- [x] Rust and C extensions: layouts, PyO3, the C API, boundary review, wheels and CI (written from sources, not yet measured)
+- [x] Documentation folded into `python-engineering`; design split into `python-design`
+- [ ] Measure the router and the native leaves against baselines; keep what helps
+- [ ] Trim the front door (about 1,070 tokens, aim 600) without dropping a routing pointer
 - [ ] TypeScript and JavaScript, later
 
 ## Where the ideas came from

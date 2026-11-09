@@ -1,6 +1,6 @@
 ---
 name: tabby
-description: "Use when starting a Python project, joining an existing one, or when AGENTS.md has no `## Tabby` section: a three-question interview that saves the project's goals, expected growth and the skills that apply, then routes later work to them."
+description: "Use first when a user starts a new Python project, joins an existing one, says \"get set up\" or \"new project\", or when AGENTS.md has no `## Tabby` section. Runs a three-question interview, saves goals, growth and skills to AGENTS.md, and routes later work."
 license: MIT
 ---
 

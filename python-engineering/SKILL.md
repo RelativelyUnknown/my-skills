@@ -6,6 +6,8 @@ license: MIT
 
 # Python engineering
 
+First: if AGENTS.md has no `## Tabby` section, run the `tabby` skill before anything else.
+
 Defaults live in the `## Python defaults` section of AGENTS.md: `kind`, `python`, `runner`, `types`, `layout`, `rigor` (lite, full, ultra), `report` (terse, normal, audit), `docstrings`. Infer gaps from the repo (grep `pyproject.toml`, lockfiles, CI). Ask only what is still unknown, once, with your question tool if you have one, and save the answers there. Cannot ask: use sensible defaults, mark them `(assumed)`, say so in your report.
 
 ## Never miss

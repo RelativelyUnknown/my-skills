@@ -55,10 +55,15 @@ docs: README, reference, ADR
 commands: one canonical check command, e.g. `nox -e local` or `make check`
 ```
 
-- `kind:` comes from `python-engineering/references/which-type.md`. `docs:` lists the page types to keep current (see `python-engineering/references/fields/documentation/index.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
+- `kind:` is one of these paths (more in `python-engineering/references/which-type.md`):
+  - library others install: `software-engineering/library/shared`
+  - library with Rust, C or Cython behind a Python API: `software-engineering/library/native`
+  - HTTP service: `software-engineering/application/apis/http`
+  - queue worker or scheduler: `software-engineering/application/workers`
+  - anything else: `software-engineering/all` `docs:` lists the page types to keep current (see `python-engineering/references/fields/documentation/index.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
 - Add `python-design` to `skills:` only when the user wants diagrams or explainers.
 - Keep `## Python defaults` as it is; Tabby does not replace it.
-- Not interactive (CI, no user)? Fill the section from the repo, mark every unknown `(assumed)`, and say so in your report.
+- No user to ask (CI, or the user says they cannot answer now)? Do not ask and do not stop: write the section from the repo, mark every unknown `(assumed)`, and tell the user which entries need confirming.
 
 ## 5. Staleness
 
