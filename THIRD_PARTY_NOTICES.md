@@ -46,3 +46,9 @@ The rest of this repository is MIT (see `LICENSE`).
 | Upstream skill | Adapted into |
 | --- | --- |
 | `writing-clearly-and-concisely` | not yet adapted (still unmodified in `third-party/softaworks-writing`) |
+
+## cloudflare/security-audit-skill
+
+- Upstream: https://github.com/cloudflare/security-audit-skill
+- Author and licence: Cloudflare, Inc., MIT
+- Used as an approach only; no text copied. `reviewing-python-code/references/security-audit/` restates, in new words and for Python, the boundary-and-result requirement, the source-to-sink trace, the attempt to disprove each candidate, the confirmed / needs-validation / rejected buckets with severity only for confirmed findings, and the fix with a regression test.

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: seeded-audit
+expected_outcome: |
+  A security report that names the three real vulnerabilities (SQL injection in find_user, path traversal in download, SSRF in preview) and does not call the three look-alikes vulnerabilities (an allowlisted ORDER BY column, an allowlisted template name, a constant subprocess argument list with an md5 cache key). It separates confirmed findings from ones that need validation and proposes a small fix with a regression test.
+context:
+  scaffold_script: fixture.sh
