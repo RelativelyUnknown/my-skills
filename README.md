@@ -63,7 +63,7 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## The rules it never lets slide
 
-<img src="assets/cat-detective.png" align="right" width="300" alt="A cream cat with a brown mask peering through a magnifying glass, drawn on torn paper">
+<img src="assets/cat-detective.png" align="right" width="300" alt="A cream cat with a brown mask peering through a magnifying glass, drawn on torn paper, tilted">
 
 - Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal.
 - Never edit, delete, skip or loosen an existing test to get green.
@@ -103,7 +103,7 @@ Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` f
 
 ## FAQ
 
-<img src="assets/cat-sleeping.png" align="right" width="260" alt="A black and white cat asleep in a curled circle, drawn in pen on a yellow lined sticky note">
+<img src="assets/cat-sleeping.png" align="left" width="280" alt="A black and white cat asleep in a curled circle, drawn in pen on a yellow lined sticky note, tilted">
 
 **Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
@@ -115,7 +115,7 @@ Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` f
 
 **What does it cost in context?** One short description is always loaded. The router and a module index load when a task needs them, then only the reference files that task names.
 
-<br clear="right">
+<br clear="left">
 
 ## Planned
 
