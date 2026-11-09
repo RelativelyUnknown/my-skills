@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to guide, explanation, changelog, release notes or CONTRIBUTING file for software. Applies Diátaxis page types, concise style and runnable examples; avoids AI filler."
+description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to guide, explanation, changelog, release notes, runbook, ADR or CONTRIBUTING file for software. Applies Diátaxis page types, concise style and runnable examples; avoids AI filler."
 license: MIT
 ---
 
