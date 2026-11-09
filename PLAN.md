@@ -68,7 +68,7 @@ Files: `python-engineering/references/start/{new-project,existing-project,projec
 
 Then restate in six lines (Outcome, Users, Success, Growth, Constraints, Out of scope), get an explicit yes, save, and stop.
 
-**Saved shape** (`## Project`, editable, short):
+**Saved shape** (`## Project` in `AGENTS.md`, editable, short; the format follows the real `AGENTS.md` files in section 4b: short lines, a repo map, one canonical command):
 
 ```
 purpose: ...
@@ -99,6 +99,30 @@ There is no C/C++ equivalent of BeautifulRust. These came closest. All are read 
 
 Official sources still to fetch and summarise: PEP 7, CPython devguide, Python/C API reference-count and stable-ABI pages, C++ Core Guidelines, PyO3 guide, maturin, scikit-build-core, cibuildwheel.
 
+## 4b. Real packages studied (cloned 2026-11-09, file trees plus build, CI and agent files read; nothing built or run)
+
+| Project | Languages and build | Layout lesson |
+| --- | --- | --- |
+| pydantic-core | Rust + PyO3, maturin | `src/` (Rust), `python/pydantic_core/` (Python, `.pyi`, `py.typed`), `build.rs`; release profile `lto = "fat"`, `codegen-units = 1`; PGO wheel action; `.mypy-stubtest-allowlist` keeps stubs honest; codspeed benchmark workflow; Makefile as the command surface |
+| orjson | Rust, maturin | `src/` + `pysrc/orjson/`; CPython-only classifiers; benchmarks and `integration/` dir |
+| uv, ruff | Rust binary shipped on PyPI, maturin `bindings = "bin"` | About 80 small crates in `crates/` (flat, one purpose each); `python/uv/` is a thin shim (`_find_uv.py` locates the binary); `rust-toolchain.toml`, `clippy.toml`, `rustfmt.toml` pinned; sdist `include` for files maturin cannot see |
+| polars | Rust workspace + PyO3, maturin | `crates/` for core with no Python dependency; `crates/polars-python` holds the bindings; `py-polars/` is the pure-Python API package; compiled code ships as separate `polars-runtime-*` wheels (32, 64, compat), so the Python layer and the binary vary independently |
+| cryptography | Rust (PyO3) + C via cffi to OpenSSL, maturin | `src/cryptography/` Python; `src/rust/` is a workspace of small crates (`-cffi`, `-x509`, `-openssl`, ...); `src/_cffi_src` generates C bindings; PyO3 with `abi3`; `overflow-checks = true` in release; one canonical command, `nox -e local` |
+| pandas | C, C++, Cython, Meson | `pandas/_libs/` holds all native code; `meson.build` sets `c_std=c17`, `cpp_std=c++20`, `warning_level=2`; templated `.pxi` generation; one `pixi.toml` task set drives CI |
+| numpy | C, Meson | `meson.build`, `.clang-format`, `compiler_sanitizers.yml`, `stubtest.yml`, `linux_simd.yml`, `wheels.yml` as separate workflows |
+| msgspec | C, setuptools | `src/msgspec` single C extension; `.cibuildwheel.toml` builds `cp310` through `cp315` and the free-threaded `cp314t`/`cp315t`; `build-frontend = "build[uv]"`; wheel tests run `pytest` |
+
+Patterns that repeat and become the `native/architecture.md` candidates (each is a hypothesis for a baseline case, not a rule yet):
+1. The native code sits behind one private module (`_pydantic_core`, `_libs`) with a typed Python package in front, plus `.pyi` stubs and `py.typed`; stubs are checked in CI (`stubtest`).
+2. Rust core crates do not depend on PyO3; a separate binding crate does (polars, cryptography, uv). Small crates, flat `crates/` directory.
+3. Packaging file choices follow the language: Rust gets maturin, C/C++ gets Meson or scikit-build-core or setuptools, all with cibuildwheel for wheels.
+4. Free-threaded and sanitizer jobs are separate CI workflows (numpy, msgspec).
+5. One canonical check command per project (`nox -e local`, `make`, `pixi run`), written in `AGENTS.md`.
+6. Release profile and build settings are set on purpose (`lto`, `codegen-units`, `overflow-checks`).
+7. Toolchain files are committed (`rust-toolchain.toml`, `rustfmt.toml`, `clippy.toml`, `.clang-format`).
+
+**What their `AGENTS.md` files show** (design input for section 3). cryptography: one canonical command, "use `uv`, not `pip`", changelog rule. pandas: purpose in one line, a repository map, required tooling, a pointer list to the real docs, and a rule that the agent never acts on GitHub for the user. uv: terse `ALWAYS`/`NEVER`/`PREFER` lines for tests, `SAFETY` comments and lockfile changes. All three are short and none contains a project-goals section; that gap is what `## Project` fills.
+
 ## 4. Multi-language libraries (Python with Rust or C)
 
 Folder: `python-engineering/references/fields/software-engineering/library/native/` (separate from `library/shared`).
@@ -115,7 +139,7 @@ Folder: `python-engineering/references/fields/software-engineering/library/nativ
 `which-type.md` gains one row: a `[project]` with `Cargo.toml`, `setup.py` ext modules or `CMakeLists.txt` points to `library/native`.
 
 **Rule from the handover is kept.** Each leaf above ships only after a baseline case shows the bare model fails, then a with/without run shows a gain. The PyO3 API probes already passed, so the baselines target what is left:
-- B1 layout task: "add a Rust hot path to an existing package" (does it split core and binding, keep the pure-Python reference, add stubs and a CI wheel job?)
+- B1 layout task: "add a Rust hot path to an existing package" (does it split core and binding, keep the pure-Python reference, add stubs and a CI wheel job?). Graded against the repeated patterns in section 4b, not against one project.
 - B2 refcount review: a C extension with three seeded bugs (leaked new reference, borrowed reference used after a call that can free it, error indicator ignored) and three look-alikes
 - B3 wheel and CI task for an extension (abi3, free-threaded, cibuildwheel)
 - B4 boundary review of a PyO3 module using the Cloudflare boundary table
