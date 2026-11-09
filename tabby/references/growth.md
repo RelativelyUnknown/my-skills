@@ -5,7 +5,7 @@
 | Growth item | Build now | Leave unbuilt |
 | --- | --- | --- |
 | A hot path may move to Rust or C | The function behind one module with a fully typed signature and a pure-Python implementation; one import site; a test that runs the reference on real inputs; a recorded benchmark | Cargo workspace, maturin, wheels, C sources |
-| A public API others will depend on | `__all__`, flat imports, `py.typed`, one root exception, the version in one place, keyword-only options ([api-design.md](../../python-engineering/references/fields/software-engineering/library/shared/api-design.md)) | A plugin system, registries, deprecation machinery |
+| A public API others will depend on | `__all__`, flat imports, `py.typed`, one root exception, the version in one place, keyword-only options ([api-design.md](../engineering/references/fields/software-engineering/library/shared/api-design.md)) | A plugin system, registries, deprecation machinery |
 | It may become a service | Core logic as functions that take values (including time and config); a thin outer layer that reads the clock, environment and network | A web framework, auth, a database layer |
 | More integrations or data sources | One `Protocol` at the single seam where sources differ; one settings object | An adapter per imagined source: write the second one when it exists |
 | More users or scale | Idempotent handlers, timeouts, bounded queues and batches; a profile before any speed-up | Caching, sharding, async everywhere |
@@ -16,7 +16,7 @@
 
 1. Re-read `out-of-scope:` and `constraints:`. Ask if the task conflicts.
 2. Read the leaf for that kind of work: `library/native/index.md` for a first Rust or C module, `application/apis/http/services.md` for a first endpoint, `library/shared/api-design.md` for a first public release.
-3. Write one ADR (`documentation/history/adr.md`): the decision, the alternatives, what would change it.
+3. Write one ADR (`documentation/references/history/adr.md`): the decision, the alternatives, what would change it.
 4. Move the item from `growth:` to `goals:` or delete it. Update `reviewed:`.
 
 ## Smells

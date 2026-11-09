@@ -4,24 +4,26 @@ Goal: a short `## Tabby` section in AGENTS.md that every later task can read in 
 
 ## 1. Look first (no questions yet)
 
-With grep and `ls`, not scripts. Note each finding as `(inferred)`.
+With grep and `ls`. Note each finding as `(inferred)`.
 
-- `pyproject.toml` (`[project]`, build backend, `requires-python`, `[tool.*]`), lockfile (`uv.lock`, `poetry.lock`), `Makefile`, `noxfile.py`, `.github/workflows/`.
-- Native code: `Cargo.toml` (maturin, PyO3), `setup.py` with `ext_modules`, `CMakeLists.txt`, `meson.build`, `*.pyx`, `*.c`, `*.rs` under `src/`.
-- Kind: `[project]` plus `src/` and a build backend means a library; FastAPI, Django, Flask imports mean an HTTP service; celery, rq, arq imports mean workers; `data/`, notebooks, `dbt_project.yml` mean data or ML.
-- Docs and decisions: `docs/`, `mkdocs.yml`, `docs/conf.py`, `docs/adr/`, `CONTRIBUTING.md`, `CHANGELOG.md`, `SECURITY.md`.
-- Existing agent files: AGENTS.md, CLAUDE.md, `.github/copilot-instructions.md`. Merge into AGENTS.md; do not duplicate.
-- An empty folder means a fresh project: nothing to infer.
+- `pyproject.toml` (`[project]`, build backend, `requires-python`), lockfile, `Makefile`, `noxfile.py`, `.github/workflows/`.
+- Native code: `Cargo.toml`, `setup.py` with `ext_modules`, `CMakeLists.txt`, `meson.build`, `*.pyx`, `*.c`, `*.rs`.
+- Kind: `[project]` plus `src/` and a build backend: library; FastAPI, Django or Flask imports: HTTP service; celery, rq or arq: workers; notebooks, `dbt_project.yml`: data or ML.
+- Docs and decisions: `docs/`, `mkdocs.yml`, `docs/adr/`, `CONTRIBUTING.md`, `CHANGELOG.md`, `SECURITY.md`.
+- Agent files (AGENTS.md, CLAUDE.md, `.github/copilot-instructions.md`): merge into AGENTS.md, do not duplicate.
+- An empty folder is a fresh project: nothing to infer.
 
 ## 2. Ask (three questions, one round)
 
-Use your question tool if you have one: one call, three questions, a recommended option first on each. Without one, send one short message with the same three. Skip a question the repo already answers well, and say what you inferred instead.
+Ask only what neither the repo nor the request says. Never ask about what the user just told you (the language, the purpose in their own words, what the thing does). Each question names something unknown and offers a recommended answer to confirm or change. Use your question tool if you have one: one call, up to three questions, a recommended option first on each. Without one, send one short message with the same questions.
 
-1. **What is it, and who uses it?** Library others install, HTTP service, worker or pipeline, command-line tool, internal script, data or ML project.
+1. **Who uses it, and how?** Library others install, HTTP service, worker or pipeline, command-line tool, internal script, data or ML project. Skip when the request or repo already says.
 2. **What is likely to change next year?** Pick any: more users or scale, a hot path in Rust or C, a public API others depend on, new integrations or data sources, a second deployment target, nothing big.
-3. **What is off limits?** Out of scope, things not to touch, hard constraints (Python versions, platforms, no new dependencies, stable API, data that must not change). Free text is fine.
+3. **What is off limits?** Out of scope, things not to touch, hard constraints (Python versions, platforms, no new dependencies, stable API). Free text is fine.
 
-Ask a follow-up only when an answer changes what you would build: "a hot path in Rust" needs to know which function and what speed-up would count; "public API" needs to know who depends on it today.
+A request such as "a library that parses dates people type" already gives the purpose and the kind: ask 2 and 3, plus one question only if something it left open changes the design (for example which languages or formats must work).
+
+Follow up only when an answer changes what you would build (a Rust hot path: which function, what speed-up counts; a public API: who depends on it today).
 
 ## 3. Restate, get a yes, save
 
@@ -33,7 +35,7 @@ Success:      <how we will know in six months>
 Growth:       <ordered expected changes>
 Constraints:  <versions, platforms, rules>
 Out of scope: <what we are not doing>
-Skills:       python-engineering, python-review[, python-design]; kind: <path>
+Modules:      engineering, review[, design][, documentation]; kind: <path>
 ```
 
 "Sounds good" or "whatever you think" is not a yes: ask what to refine. On a clear yes, write the section and stop; do not start work in the same turn.
@@ -50,18 +52,18 @@ growth: ordered list; the first item is likeliest
 out-of-scope: list
 constraints: python 3.12+; no new runtime dependencies without asking
 kind: software-engineering/library/native
-skills: python-engineering, python-review
+modules: engineering, review, documentation
 docs: README, reference, ADR
 commands: one canonical check command, e.g. `nox -e local` or `make check`
 ```
 
-- `kind:` is one of these paths (more in `python-engineering/references/which-type.md`):
+- `kind:` is one of these paths (more in `engineering/references/which-type.md`):
   - library others install: `software-engineering/library/shared`
   - library with Rust, C or Cython behind a Python API: `software-engineering/library/native`
   - HTTP service: `software-engineering/application/apis/http`
   - queue worker or scheduler: `software-engineering/application/workers`
-  - anything else: `software-engineering/all` `docs:` lists the page types to keep current (see `python-engineering/references/fields/documentation/index.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
-- Add `python-design` to `skills:` only when the user wants diagrams or explainers.
+  - anything else: `software-engineering/all` `docs:` lists the page types to keep current (see `documentation/references/index.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
+- Add `design` to `modules:` only when the user wants diagrams or explainers.
 - Keep `## Python defaults` as it is; Tabby does not replace it.
 - No user to ask (CI, or the user says they cannot answer now)? Do not ask and do not stop: write the section from the repo, mark every unknown `(assumed)`, and tell the user which entries need confirming.
 
