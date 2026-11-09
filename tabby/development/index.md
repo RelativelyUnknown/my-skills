@@ -29,7 +29,7 @@ Read every file matching the task before writing code. The paths below start at 
 - slow code: `performance/index.md`
 - uv, locking, CI job, Dockerfile: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
 - scope, when to stop: `workflow/planning.md`; a bug: `workflow/debugging.md`; restructuring code: `workflow/refactoring.md`; an API you are unsure of: `workflow/checking-apis.md`
-- a library others install: `library/smells.md`, `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C or Cython behind a Python API: `library/native/index.md`, `library/native/smells.md`
+- a library others install: `library/smells.md`, `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C, Zig or Cython behind a Python API: `library/native/index.md`, `library/native/smells.md`
 - retries, timeouts, backoff, circuit breakers: `application/shared/resilience.md`
 - a service: `application/smells.md`, `application/apis/http/services.md`, `application/apis/shared/security.md`, `application/shared/async.md`, `observability.md`, `configuration.md`; workers: `application/workers/background-jobs.md`
 - pattern, layers, extension point, settings object: `architecture/design-patterns.md`

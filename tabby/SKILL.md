@@ -1,6 +1,6 @@
 ---
 name: tabby
-description: "Rules for every code change in a Python project, including its Rust, C and C++: errors, minimalism, stdlib first, typing, tests, dependencies, CI, docs, data structures. Use whenever you write, change, debug, test, review or document code; load before editing .py, .rs, .c, .cpp or pyproject.toml."
+description: "Rules for every code change in a Python project, including its Rust, C, C++ and Zig: errors, minimalism, stdlib first, typing, tests, dependencies, CI, docs, data structures. Use whenever you write, change, debug, test, review or document; load before editing .py, .rs, .c, .cpp or pyproject.toml."
 license: MIT
 ---
 
