@@ -15,10 +15,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/modules-4-cd5c1c?style=flat-square" alt="4 modules">
-  <img src="https://img.shields.io/badge/eval%20cases-51-cd5c1c?style=flat-square" alt="51 eval cases">
-  <img src="https://img.shields.io/badge/format-Agent%20Skills-cd5c1c?style=flat-square" alt="Agent Skills format">
-  <img src="https://img.shields.io/badge/license-MIT-cd5c1c?style=flat-square" alt="MIT licence">
+  <img src="https://img.shields.io/badge/modules-4-2a8f89?style=flat-square" alt="4 modules">
+  <img src="https://img.shields.io/badge/eval%20cases-51-2a8f89?style=flat-square" alt="51 eval cases">
+  <img src="https://img.shields.io/badge/format-Agent%20Skills-2a8f89?style=flat-square" alt="Agent Skills format">
+  <img src="https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square" alt="MIT licence">
 </p>
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
@@ -32,7 +32,11 @@ Everything is markdown. No runtime, no daemon, no generated code. The agent read
 ## How it works
 
 <p align="center">
-  <img src="assets/how-it-works.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: engineering, review, documentation or design.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/how-it-works-light.png">
+    <img src="assets/how-it-works-light.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: engineering, review, documentation or design.">
+  </picture>
 </p>
 
 One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide.
@@ -40,7 +44,11 @@ One skill is registered with your agent: `tabby`. Four modules sit inside it, an
 ## Three questions, then it remembers
 
 <p align="center">
-  <img src="assets/interview.png" width="860" alt="Tabby asks three questions: who uses it and how, what is likely to change next year, and what is off limits. It saves the answers as a Tabby section in AGENTS.md with purpose, goals, growth, out of scope, kind, modules and the check command.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/interview-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/interview-light.png">
+    <img src="assets/interview-light.png" width="860" alt="Tabby asks three questions: who uses it and how, what is likely to change next year, and what is off limits. It saves the answers as a Tabby section in AGENTS.md with purpose, goals, growth, out of scope, kind, modules and the check command.">
+  </picture>
 </p>
 
 When a project starts, when the agent joins one, or when `AGENTS.md` has no `## Tabby` section:
