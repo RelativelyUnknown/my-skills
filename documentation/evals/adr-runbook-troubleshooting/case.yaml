@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: adr-runbook-troubleshooting
+expected_outcome: |
+  Three documents of three kinds. An architecture decision record with status, context, decision, alternatives and consequences. A runbook an on-call engineer can follow under pressure: when to use it, numbered steps with the exact commands, how to check each step worked, and when to escalate. A troubleshooting page keyed by the exact error message, with cause and fix.

@@ -9,7 +9,10 @@ Pick by what the reader is doing.
 - docstrings.md: docstrings and API reference.
 - readme.md: a README.
 - changelog.md: changelog, release notes, deprecation notices.
-- governance/: CONTRIBUTING.
+- history/adr.md: an architecture decision record.
+- operations/runbook.md: a runbook for on-call.
+- troubleshooting/symptom-fix-matrix.md: errors by exact message, with cause and fix.
+- governance/contributing.md: CONTRIBUTING.md.
 - placing.md: a page fits no type or mixes two.
 - voice.md: voice, structure and content rules for any page.
 - style.md: word choice, punctuation, numbers, dates, UI text, procedures.
