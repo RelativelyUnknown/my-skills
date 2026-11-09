@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.png">
-    <img src="assets/hero-light.png" width="880" alt="Tabby: an orange tabby cat batting at a laptop keyboard, drawn in crayon, next to the title Tabby">
+    <img src="assets/hero-light.png" width="880" alt="Tabby: a cat batting at a laptop keyboard, drawn in crayon on torn lined paper, next to the title Tabby. An orange tabby in light mode, a black and white spotted cat in dark mode.">
   </picture>
 </p>
 
@@ -63,12 +63,16 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## The rules it never lets slide
 
+<img src="assets/cat-detective.png" align="right" width="300" alt="A cream cat with a brown mask peering through a magnifying glass, drawn on torn paper">
+
 - Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal.
 - Never edit, delete, skip or loosen an existing test to get green.
 - Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom.
 - Do not silence tools (`# type: ignore`, `# noqa`, `Any`, looser config); fix the cause.
 - Smallest diff that solves it properly. No new dependency, public API change, commit or push unasked.
 - Replies, comments and docs are short: what is not obvious, no filler.
+
+<br clear="right">
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
@@ -99,6 +103,8 @@ Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` f
 
 ## FAQ
 
+<img src="assets/cat-sleeping.png" align="right" width="260" alt="A black and white cat asleep in a curled circle, drawn in pen on a yellow lined sticky note">
+
 **Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
 **Do I have to answer questions?** No. Without anyone to ask it fills the section from the repo and marks what it guessed.
@@ -108,6 +114,8 @@ Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` f
 **What about TypeScript?** Not yet.
 
 **What does it cost in context?** One short description is always loaded. The router and a module index load when a task needs them, then only the reference files that task names.
+
+<br clear="right">
 
 ## Planned
 
