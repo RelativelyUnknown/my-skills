@@ -21,7 +21,7 @@ Ask only what neither the repo nor the request says. Never ask about what the us
 2. **What is likely to change next year?** Pick any: more users or scale, a hot path in Rust or C, a public API others depend on, new integrations or data sources, a second deployment target, nothing big.
 3. **What is off limits?** Out of scope, things not to touch, hard constraints (Python versions, platforms, no new dependencies, stable API). Free text is fine.
 
-A request such as "a library that parses dates people type" already gives the purpose and the kind: ask 2 and 3, plus one question only if something it left open changes the design (for example which languages or formats must work).
+If the request already names what the project does and who uses it, skip question 1; ask 2 and 3, plus one design question only if something the request left open changes the design.
 
 Follow up only when an answer changes what you would build (a Rust hot path: which function, what speed-up counts; a public API: who depends on it today).
 

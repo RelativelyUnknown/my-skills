@@ -1,6 +1,6 @@
 ---
 name: tabby
-description: "Use for any Python project work: starting or joining a project, writing, reviewing, testing, packaging or documenting code, diagrams. Load before editing .py or pyproject.toml. Reads the `## Tabby` section of AGENTS.md (runs a short interview if absent) and loads only the modules the task needs."
+description: "Rules for every Python code change: errors, minimalism, stdlib first, typing, tests, dependencies, CI, packaging, performance, docs, reviews. Use whenever you write, change, debug, test, review, package or document Python, or start or join a project; load before editing any .py or pyproject.toml."
 license: MIT
 ---
 
