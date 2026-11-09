@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to guide, explanation, changelog, release notes, runbook, ADR or CONTRIBUTING file for software. Applies Diátaxis page types, concise style and runnable examples; avoids AI filler."
+description: "Use when writing, updating or reviewing a README, docstrings, API reference, tutorial, how-to, changelog, runbook, ADR or CONTRIBUTING file, or making a minimalist explainer animation or diagram. Applies Diátaxis page types, concise style, runnable examples; avoids AI filler."
 license: MIT
 ---
 
@@ -20,7 +20,7 @@ Defaults: read the `## Python defaults` section of AGENTS.md (`docstrings`); inf
 
 ## Route
 
-Read `references/written/index.md`, then the leaf for the page type.
+Written docs: read `references/written/index.md`, then the leaf for the page type. An explainer animation or diagram: read `references/diagrams/style.md` and `references/animation/index.md`.
 
 ## Workflow
 

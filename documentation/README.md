@@ -4,7 +4,11 @@ Part of the [skills repository](../README.md). One skill for writing and editing
 
 `SKILL.md` holds the never-miss rules and the workflow (including a filler check as one `grep` line). `references/written/` holds the leaves, read by what the reader needs: `tutorial`, `how-to`, `reference`, `explanation`, `docstrings`, `readme`, `changelog`, `placing`, `voice`, `style`, `concision`, `ai-patterns`, `code-examples`, and `governance/contributing`. Docstring content rules (no conversation residue, no restated signatures) live in `python-engineering/references/fields/software-engineering/all/code/comments.md`.
 
-Still to come: history, operations, troubleshooting and governance page types, diagrams, animation and writing for agents.
+`references/written/` also holds `history/adr`, `operations/runbook`, `troubleshooting/symptom-fix-matrix` and `governance/contributing`. `references/diagrams/style.md` is the visual language for diagrams and animations (it reads a `design.md` at the repository root when there is one) and `references/animation/` covers the pipeline (SVG scenes drawn as a function of time, headless Chromium frames, ffmpeg encodes), motion and formats; the engine is in `assets/animation/`.
+
+The animation pipeline was moved here from an earlier skill and has not been run again since the move.
+
+Not built, for lack of a failing baseline: release notes, migration guide, incident manual, onboarding checklist, post-mortem, SLA, security policy, code standards, `AGENTS.md` and skill-authoring leaves (the bare model already writes a sound `AGENTS.md`; the documentation skill did not fire on that prompt).
 
 ## Evals
 

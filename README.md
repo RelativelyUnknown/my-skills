@@ -10,9 +10,9 @@ Three skills, each a folder you copy. Each holds a short `SKILL.md` and a tree o
 | --- | --- |
 | [`python-engineering/`](python-engineering/) | rules for writing, testing, packaging and running Python; the tree is `references/fields/<field>/<type>/<kind>/`, and a `kind:` path saved in `AGENTS.md` picks the folder to read |
 | [`reviewing-python-code/`](reviewing-python-code/) | reviews a diff or your own change before you say done |
-| [`documentation/`](documentation/) | writing documentation by what the reader needs (tutorial, how-to, reference, explanation, docstrings, README, changelog) |
+| [`documentation/`](documentation/) | writing documentation by what the reader needs (tutorial, how-to, reference, explanation, docstrings, README, changelog, ADR, runbook, troubleshooting) and minimalist explainer animations and diagrams |
 
-Still being folded in: [`powerpoint-animations/`](powerpoint-animations/) (to become animation and diagram branches of `documentation`) and [`third-party/`](third-party/) (unmodified copies of other publishers' skills, being absorbed with attribution).
+Still being folded in: [`third-party/`](third-party/) (unmodified copies of other publishers' skills, being absorbed with attribution).
 
 ## Install
 

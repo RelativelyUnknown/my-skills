@@ -1,18 +1,22 @@
-# Motion recipes
+# Motion
+
+Use only these motions; each does one job.
+
+| Motion | Job |
+| --- | --- |
+| **pop** (scale in with slight overshoot) | a new object appears: dot, pill, tile |
+| **draw** (stroke grows along a path) | a line, average or guide is being built |
+| **fly** (ease in-out between two positions) | an object moves to a new place or role |
+| **grow** (zone rises from the axis) | a region or bin is claimed |
+| **drop** (dotted guide draws down, fades, pill pops) | a value is read off a chart into a result |
+| **ring** (fade in, hold, fade out) | "look here" |
+| **shake** (4 px, decaying, 0.45 s) | something failed, just before it changes |
+
+Timing: 25 fps; whole loop 7–10 s; stagger siblings by 0.05–0.15 s; pop 0.25 s, draw 0.25–0.4 s, fly 0.5 s. Build in reading order (inputs, then method, then result). After the last event hold briefly, fade only the content (title stays) over 0.45 s, then show the title-only frame for 0.35 s so the loop restarts cleanly.
+
+## Recipes
 
 Copy the snippet, change names and times. All inside the `finish(dyn, END, t => { … })` callback; `a` is the start time.
-
-## Contents
-
-- Pop in
-- Draw a line
-- Staggered list
-- Fly between two places
-- Zone grows from the axis
-- Dotted drop into a result
-- Highlight ring
-- Shake then split
-- Fade a group out when it is replaced
 
 ## Pop in
 

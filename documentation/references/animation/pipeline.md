@@ -1,16 +1,11 @@
----
-name: building-animation-scenes
-description: "Builds a time-driven SVG animation scene (pop, draw, fly, grow) and renders it to PNG frames and MP4/WebM/GIF with headless Chromium and ffmpeg. Use when asked to create or edit an animated explainer, chart or process animation for a PowerPoint deck."
----
+# Animation pipeline
 
-# Building animation scenes
-
-A scene is a pure function of time: `renderAt(t)` sets every attribute for second `t`. Frames can be rendered in any order and are identical on every run. Follow `powerpoint-animation-style` for how it should look.
+A scene is a pure function of time: `renderAt(t)` sets every attribute for second `t`. Frames can be rendered in any order and are identical on every run. Read [style.md](../diagrams/style.md) for how it should look and [motion.md](motion.md) for timing.
 
 ## Setup (once)
 
-1. Copy `<this skill's folder>/assets/` to a working folder (not into the skill). It holds `helpers.js`, `common.js`, `stage.html`, `style.css`, `specs.js`, `package.json` and `scenes/example.js`.
-2. Needs `node` 20+, `ffmpeg`, and Playwright with Chromium (`npm i playwright` somewhere resolvable, or a global install with `NODE_PATH` set). `build.sh` runs `npm install` for the two font packages the first time.
+1. Copy this skill's `assets/animation/` folder to a working folder (not into the skill). It holds `helpers.js`, `common.js`, `render.js`, `stage.html`, `style.css`, `specs.js`, `package.json` and `scenes/example.js`.
+2. Needs `node` 20+, `ffmpeg`, and Playwright with Chromium. In the working folder run `npm install` once (two font packages) and make `playwright` resolvable (`npm i playwright`, or a global install with `NODE_PATH` set).
 
 ## Make a scene
 
@@ -21,12 +16,11 @@ A scene is a pure function of time: `renderAt(t)` sets every attribute for secon
    - Create all elements up front with `opacity: 0`; the loop only updates attributes.
    - Finish with `finish(dyn, END, t => { … })`, where `END` is the time of the last event.
 3. Per element, derive progress with `seg(t, start, end)` (0..1), shape it with `ease.out | inOut | back`, then apply: `pop` for scale-in, `draw` for stroke-in, `lerp` for moves, `place` for a (0,0)-centred group. Name start times as constants at the top (`BIN0`, `PILLS0`) so the choreography reads as a script.
-4. Preview stills while designing:
-   `node <skill>/scripts/render.js <work>/assets <scene> <work>/prev --times 1,2.5,4,6.5`
+4. Preview stills while designing, from the working folder:
+   `node render.js . <scene> prev --times 1,2.5,4,6.5`
    and look at them. Check overlaps, text clipping and that mid-motion frames are legible, not only the last one.
-5. Build everything:
-   `bash <skill>/scripts/build.sh <work>/assets <work>/out <scene> [more scenes]`
-   Output: `out/mp4`, `out/webm`, `out/gif`. Scenes render in parallel.
+5. Render all frames and encode (see [formats.md](formats.md)):
+   `node render.js . <scene> out/.frames/<scene>`
 
 ## Rules
 
@@ -35,4 +29,3 @@ A scene is a pure function of time: `renderAt(t)` sets every attribute for secon
 - Stroke-dash paths (`draw`) need `fill: none`; call `draw` every frame, including with progress 0.
 - Keep text inside its pill or tile: mono 13 px fits about 6 characters in a 60 px pill.
 - Chart-specific layout (`makeChart`) is optional; for other layouts build with `S('rect' | 'path' | …)` and `T()` directly.
-- References: see `references/motion-recipes.md` for ready-made timing patterns.
