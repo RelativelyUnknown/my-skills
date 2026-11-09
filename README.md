@@ -12,7 +12,6 @@ Three skills, each a folder you copy. Each holds a short `SKILL.md` and a tree o
 | [`reviewing-python-code/`](reviewing-python-code/) | reviews a diff or your own change before you say done |
 | [`documentation/`](documentation/) | writing documentation by what the reader needs (tutorial, how-to, reference, explanation, docstrings, README, changelog, ADR, runbook, troubleshooting) and minimalist explainer animations and diagrams |
 
-Still being folded in: [`third-party/`](third-party/) (unmodified copies of other publishers' skills, being absorbed with attribution).
 
 ## Install
 

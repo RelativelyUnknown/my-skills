@@ -27,28 +27,16 @@ The rest of this repository is MIT (see `LICENSE`).
 | `python-packaging`, `python-project-structure` | `python-engineering/references/fields/software-engineering/library/shared/versioning.md`, `entry-points.md`, `tooling.md`; the rest was already covered (see `python-engineering/SOURCE.md`) |
 | `python-code-style` | pointer only; nothing copied (see `python-engineering/SOURCE.md`) |
 
-## blader/humanizer
-
-- Upstream: https://github.com/blader/humanizer
-- Author and licence: Siqi Chen, MIT
-- Commit: 0ef9fe5
-
-| Upstream skill | Adapted into |
-| --- | --- |
-| `humanizer` | not yet adapted (still unmodified in `third-party/humanizer`) |
-
-## softaworks/agent-toolkit
-
-- Upstream: https://github.com/softaworks/agent-toolkit
-- Author and licence: Leonardo Flores, MIT
-- Commit: 3027f20
-
-| Upstream skill | Adapted into |
-| --- | --- |
-| `writing-clearly-and-concisely` | not yet adapted (still unmodified in `third-party/softaworks-writing`) |
-
 ## cloudflare/security-audit-skill
 
 - Upstream: https://github.com/cloudflare/security-audit-skill
 - Author and licence: Cloudflare, Inc., MIT
 - Used as an approach only; no text copied. `reviewing-python-code/references/security-audit/` restates, in new words and for Python, the boundary-and-result requirement, the source-to-sink trace, the attempt to disprove each candidate, the confirmed / needs-validation / rejected buckets with severity only for confirmed findings, and the fix with a regression test.
+
+## Ideas only (no text copied)
+
+- DietrichGebert/ponytail (MIT) and JuliusBrussee/caveman (Apache-2.0): the rules in the `python-engineering` front door and `all/code/comments.md` that comments say only what is not obvious, replies stay short, and negations ("not", "never", "only", "except") are never dropped. Names, installers, proxies and telemetry are not used.
+
+## Read, nothing taken
+
+blader/humanizer (MIT), softaworks/agent-toolkit `writing-clearly-and-concisely` (MIT), addyosmani/agent-skills (MIT), morganlinton/BeautifulRust (MIT), cathrynlavery/diagram-design (MIT), caru-ini/stack-diagram (MIT), pbakaus/impeccable (Apache-2.0), heydamir/unslop (CC BY 4.0), vercel-labs/agent-skills (no LICENSE file), mukul975/Anthropic-Cybersecurity-Skills (Apache-2.0), ComposioHQ/awesome-claude-skills, github/awesome-copilot (MIT). They were read for ideas; where a baseline case showed the model already does the thing, nothing was added. Earlier unmodified copies of humanizer, writing-clearly-and-concisely and the wshobson Python skills were removed from the repository; the adapted wshobson material is in `python-engineering` with its pinned commit.
