@@ -7,27 +7,59 @@
 </p>
 
 <p align="center">
-  <em>Cats walk across keyboards. This one has opinions.</em>
-</p>
-
-<p align="center">
-  <strong>Skills that make an AI agent build, review and explain a project properly.<br>One folder. Python first, with Rust and C as first-class partners.</strong>
+  <em>It walks across the keyboard. It has opinions about what gets typed.</em>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/modules-4-2a8f89?style=flat-square" alt="4 modules">
   <img src="https://img.shields.io/badge/eval%20cases-51-2a8f89?style=flat-square" alt="51 eval cases">
+  <img src="https://img.shields.io/badge/always--on-~110%20tokens-2a8f89?style=flat-square" alt="About 110 tokens always on">
   <img src="https://img.shields.io/badge/format-Agent%20Skills-2a8f89?style=flat-square" alt="Agent Skills format">
   <img src="https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square" alt="MIT licence">
+</p>
+
+<p align="center">
+  <strong>Skills that make an AI agent build, review and explain a Python project properly.</strong><br>
+  Python first. Rust and C as first-class partners. One skill, four modules, and it remembers your project.
 </p>
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
 You know the cat. It sits on the warm laptop, bats at the keys, and something gets typed. Fast, confident, not quite what you meant.
 
-Tabby sits on your agent's keyboard instead. It reads the project first, asks three short questions, remembers the answers, and then makes the agent do the careful things a senior engineer would: find the cause before the fix, use the standard library, keep the diff small, and never edit a test to get it green.
+Tabby sits on your agent's keyboard instead. It reads the project first, asks three short questions, remembers the answers, and then makes the agent do what a careful senior engineer would: find the cause before the fix, reach for the standard library, keep the diff small, and never edit a test to get it green.
 
-Everything is markdown. No runtime, no daemon, no generated code. The agent reads a short front door, then only the few files its task needs.
+## Install
+
+**Claude Code**, as two separate prompts:
+
+```
+/plugin marketplace add RelativelyUnknown/my-skills
+```
+```
+/plugin install tabby@tabby
+```
+
+On Claude Code 2.1.275 or later it also works in one step:
+
+```
+/plugin install tabby --marketplace RelativelyUnknown/my-skills
+```
+
+**Any other agent that reads `SKILL.md` folders:** copy the `tabby/` folder into the folder your agent reads, and keep it whole (the modules inside are read on demand).
+
+```bash
+# GitHub Copilot (VS Code agent mode, CLI)
+mkdir -p .github/skills && cp -r tabby .github/skills/
+# Claude Code, without the plugin
+mkdir -p .claude/skills && cp -r tabby .claude/skills/
+```
+
+That was it. Start a task, and on a project without a `## Tabby` section in `AGENTS.md` it asks its three questions first. Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
+
+Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. Delete `tabby/evals/` if you do not run evals.
+
+<p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
 ## How it works
 
@@ -39,7 +71,7 @@ Everything is markdown. No runtime, no daemon, no generated code. The agent read
   </picture>
 </p>
 
-One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide.
+One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide. Everything is markdown. No runtime, no daemon, no generated code.
 
 ## Three questions, then it remembers
 
@@ -90,26 +122,11 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
   </picture>
 </p>
 
-Measured with `claude plugin eval` on Haiku 5.5: 51 cases, 3 runs each, regex and LLM-judge graders. The router loaded in 97 of 114 runs.
+The same agent, the same 51 cases, 3 runs each, with and without Tabby, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders). Measured on commit `b92a610`. The router loaded in 97 of 114 runs.
 
-**Where it helps:** when the right move is not obvious. A payment-method refactor scored 0.97 with Tabby and 0.39 without; free-form date parsing (take a library, do not write a regex) 0.57 and 0.13; a security audit 0.98 and 0.75; numpydoc docstrings 1.00 and 0.67; an optional dependency kept out of the base install 0.69 and 0.39.
+It helps most when the right move is not obvious: a payment-method refactor scored 0.97 with Tabby and 0.39 without; free-form date parsing (take a library, do not write a regex) 0.57 and 0.13; a security audit 0.98 and 0.75; numpydoc docstrings 1.00 and 0.67. It costs more per run than the bare agent, because it reads before it writes, and in 17 of the 51 cases it scored lower.
 
-**Where it does not:** on tasks the bare agent already does well it can lose ground. A flaky-HTTP retry scored 0.52 with Tabby and 0.91 without; an async generator that must stop early 0.67 and 1.00; adding an owned-resource endpoint 0.11 and 0.44. It also costs more: about half again per run, with more turns, because it reads before it writes.
-
-The score gap is small (+0.03), so the honest summary is mixed: large gains on a few non-obvious cases, small losses on several easy ones. **Limits:** one model, three runs, one judge, no shell in the eval sandbox. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
-
-## Install
-
-Copy the one folder into the folder your agent reads:
-
-```bash
-# Claude Code
-mkdir -p .claude/skills && cp -r tabby .claude/skills/
-# GitHub Copilot (VS Code agent mode, CLI)
-mkdir -p .github/skills && cp -r tabby .github/skills/
-```
-
-Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` folders and `AGENTS.md` can use it. Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
+**Limits:** one model, three runs, one judge, no shell in the eval sandbox. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
 
 ## FAQ
 
@@ -119,15 +136,17 @@ Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` f
   <img src="assets/cat-sleeping-light.png" align="left" width="300" alt="An orange tabby cat asleep in a curl on handmade paper in light mode; a black and white spotted cat asleep in the same pose in dark mode, drawn in crayon and tilted">
 </picture>
 
+**What does it cost in context?** About 110 tokens are always loaded, the short description. When a task fires it, the router adds about 690 tokens; then the module index and only the reference files that task names.
+
 **Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
 **Do I have to answer questions?** No. Without anyone to ask it fills the section from the repo and marks what it guessed.
 
 **Does it work for Rust and C?** Yes, as extensions behind a Python API: when to go native, project layouts, PyO3 and the C API, wheels, CI, and a review checklist for the boundary. Standalone Rust or C projects are out of scope.
 
-**What about TypeScript?** Not yet.
+**What if I want the clever abstraction?** Ask. It will want to know what it is for first.
 
-**What does it cost in context?** One short description is always loaded. The router and a module index load when a task needs them, then only the reference files that task names.
+**What about TypeScript?** Not yet.
 
 <br clear="left">
 

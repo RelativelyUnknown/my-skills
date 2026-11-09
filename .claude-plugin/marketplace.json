@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "tabby",
+  "description": "Skills that make an AI agent build, review and explain a Python project properly.",
+  "owner": {
+    "name": "RelativelyUnknown",
+    "url": "https://github.com/RelativelyUnknown"
+  },
+  "plugins": [
+    {
+      "name": "tabby",
+      "description": "A router and four modules (engineering, review, documentation, design) for Python projects, with Rust and C extensions as first-class partners.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}
