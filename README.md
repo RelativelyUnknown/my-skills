@@ -71,16 +71,12 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## The rules it never lets slide
 
-<img src="assets/cat-detective.png" align="right" width="340" alt="A cream cat with a brown mask peering through a magnifying glass, drawn on torn paper, tilted">
-
 - Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal.
 - Never edit, delete, skip or loosen an existing test to get green.
 - Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom.
 - Do not silence tools (`# type: ignore`, `# noqa`, `Any`, looser config); fix the cause.
 - Smallest diff that solves it properly. No new dependency, public API change, commit or push unasked.
 - Replies, comments and docs are short: what is not obvious, no filler.
-
-<br clear="right">
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
@@ -117,7 +113,11 @@ Delete `tabby/evals/` if you do not run evals. Any agent that reads `SKILL.md` f
 
 ## FAQ
 
-<img src="assets/cat-sleeping.png" align="left" width="220" alt="A black and white cat asleep in a curled circle, drawn in pen on a yellow lined sticky note, tilted">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/cat-sleeping-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="assets/cat-sleeping-light.png">
+  <img src="assets/cat-sleeping-light.png" align="left" width="300" alt="An orange tabby cat asleep in a curl on handmade paper in light mode; a black and white spotted cat asleep in the same pose in dark mode, drawn in crayon and tilted">
+</picture>
 
 **Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
