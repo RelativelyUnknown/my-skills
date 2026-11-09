@@ -86,15 +86,21 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## Numbers
 
-Measured with `claude plugin eval` on Haiku 5.5: 51 cases, 3 runs each, regex and LLM-judge graders, the skill active in every run.
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/scoreboard-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/scoreboard-light.png">
+    <img src="assets/scoreboard-light.png" width="800" alt="The same agent with and without Tabby over 51 cases: mean score 0.77 without and 0.80 with; 18 cases better, 17 worse, 16 unchanged; cost per run $0.0075 without and $0.0112 with, 9.2 turns against 15.5.">
+  </picture>
+</p>
 
-| | |
-| --- | --- |
-| Mean score over the 42 engineering cases | 0.82 |
-| Runs in which the router loaded | 98 of 114 (86%) |
-| Cost of the full 51-case run | about $1.60 |
+Measured with `claude plugin eval` on Haiku 5.5: 51 cases, 3 runs each, regex and LLM-judge graders. The router loaded in 97 of 114 runs.
 
-The cases cover errors, dependencies, typing, services, workers, native extensions, documentation pages, security audits and the project interview. Each case is a small fixture repo, a prompt and a set of graders, in [`tabby/evals/`](tabby/evals/). **Limits:** one model, three runs, one judge, no shell in the eval sandbox, and no comparison against the bare model on this layout. Tabby has not been run in GitHub Copilot.
+**Where it helps:** when the right move is not obvious. A payment-method refactor scored 0.97 with Tabby and 0.39 without; free-form date parsing (take a library, do not write a regex) 0.57 and 0.13; a security audit 0.98 and 0.75; numpydoc docstrings 1.00 and 0.67; an optional dependency kept out of the base install 0.69 and 0.39.
+
+**Where it does not:** on tasks the bare agent already does well it can lose ground. A flaky-HTTP retry scored 0.52 with Tabby and 0.91 without; an async generator that must stop early 0.67 and 1.00; adding an owned-resource endpoint 0.11 and 0.44. It also costs more: about half again per run, with more turns, because it reads before it writes.
+
+The score gap is small (+0.03), so the honest summary is mixed: large gains on a few non-obvious cases, small losses on several easy ones. **Limits:** one model, three runs, one judge, no shell in the eval sandbox. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
 
 ## Install
 
