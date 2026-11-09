@@ -13,6 +13,18 @@ Three skills, each a folder you copy. Each holds a short `SKILL.md` and a tree o
 | [`documentation/`](documentation/) | writing documentation by what the reader needs (tutorial, how-to, reference, explanation, docstrings, README, changelog, ADR, runbook, troubleshooting) and minimalist explainer animations and diagrams |
 
 
+## Size
+
+Tokens are characters divided by four, so approximate. Only the description is always in context; the body loads when the skill fires; a reference file loads only when read.
+
+| Skill | Description | Body | Reference files | Largest file | Eval cases |
+| --- | --- | --- | --- | --- | --- |
+| `python-engineering` | 76 | 980 | 79 (about 42k tokens in all) | 1.5k | 42 |
+| `reviewing-python-code` | 71 | 76 | 3 (1.8k) | 1.0k | 2 |
+| `documentation` | 73 | 587 | 28 (11k) | 1.4k | 5 |
+
+All three descriptions together are about 220 tokens, against about 1.3k for the 20 flat skills they replace. A typical task reads the front door and two to five reference files. The `python-engineering` body is over its 600-token aim because it lists the files to read; naming them directly worked better than relying on index files (the model rarely read those). Eight reference files are above the 4,200-character aim (tables and process guides read on demand); they were not trimmed.
+
 ## Install
 
 Copy the three folders into the folder your tool reads:
