@@ -58,9 +58,12 @@ A case is `case.yaml`, `prompt.md`, `fixture.sh`, `graders/*.md`. Pitfalls found
 
 ## Open
 
-- The README's numbers are stamped with commit hashes from earlier measurements and were not re-run after this round of edits. Re-measure before publishing them.
-- Eval coverage for the new leads is indirect; no case targets them. Add cases only where a bare-model failure is observed.
-- `development/SOURCE.md` credits upstream sources; keep it current when adding material.
+- **The router description now committed has not had a full run.** `AUDIT.md` has runs A and B and the spot check. Re-measure with `--allow-tools Write Edit Bash WebFetch` (needs `bubblewrap` and `socat`; `apt-get update && apt-get install -y bubblewrap socat`) and replace the README table. A full run costs about $5.
+- **The description decides everything.** A rewrite that dropped the opening "Rules for every code change ... Use whenever ..." cut loading from 114 to 49 of 180 runs. Test any wording on a dozen cases with `--ablation none --runs 1` before a full run.
+- The router does not load on review, audit and documentation requests with any wording tried.
+- `new-package-one-check-command`: the interview stalls a fully specified setup request. Options and a recommendation are in `AUDIT.md`; the user has not decided.
+- The C++, supply-chain, commit-message and docs-drift leaves show no measured lift on Haiku.
+- `development/SOURCE.md` and `THIRD_PARTY_NOTICES.md` credit upstream sources; keep them current when adding material.
 
 ## Working rules for this repo
 

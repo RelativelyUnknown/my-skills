@@ -12,7 +12,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/modules-4-2a8f89?style=flat-square" alt="4 modules">
-  <img src="https://img.shields.io/badge/eval%20cases-53-2a8f89?style=flat-square" alt="53 eval cases">
+  <img src="https://img.shields.io/badge/eval%20cases-60-2a8f89?style=flat-square" alt="60 eval cases">
   <img src="https://img.shields.io/badge/always--on-~110%20tokens-2a8f89?style=flat-square" alt="About 110 tokens always on">
   <img src="https://img.shields.io/badge/format-Agent%20Skills-2a8f89?style=flat-square" alt="Agent Skills format">
   <img src="https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square" alt="MIT licence">
@@ -20,7 +20,7 @@
 
 <p align="center">
   <strong>Skills that make an AI agent build, review and explain a Python project properly.</strong><br>
-  Python first. Rust and C as first-class partners. One skill, four modules, and it remembers your project.
+  Python first. Rust, C, C++ and Zig as first-class partners. One skill, four modules, and it remembers your project.
 </p>
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
@@ -113,19 +113,18 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## Numbers
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/scoreboard-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/scoreboard-light.png">
-    <img src="assets/scoreboard-light.png" width="800" alt="The same agent with and without Tabby over 51 cases: mean score 0.78 without and 0.86 with; 19 cases better, 7 worse, 25 unchanged; cost per run $0.0075 without and $0.0103 with, 9.2 turns against 15.0.">
-  </picture>
-</p>
+The same agent with and without Tabby, 60 cases, 3 runs each, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders), measured twice in November 2026. The full account, including what went wrong, is in [`AUDIT.md`](AUDIT.md).
 
-The same agent, the same 51 cases, 3 runs each, with and without Tabby, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders). Measured on commit `8a2b55f`. The router loaded in 99 of 114 runs.
+| Run | Agent tools | Mean score with Tabby | Without | Router loaded | Cost per run |
+| --- | --- | --- | --- | --- | --- |
+| A (`f1fd402`) | write, edit | 0.84 | 0.80 | 114 of 180 runs | $0.014 against $0.011 |
+| B (`73752e0`) | write, edit, shell, web fetch | 0.82 | 0.82 | 49 of 180 runs | $0.015 against $0.014 |
 
-It helps most when the right move is not obvious: joining an existing Rust-backed library and saving project memory scored 1.00 with Tabby and 0.11 without; free-form date parsing (take a library, do not write a regex) 0.76 and 0.13; a payment-method refactor 1.00 and 0.39; literal defaults and checked network calls 1.00 and 0.56; an optional dependency kept out of the base install 0.74 and 0.39. It costs about 38% more per run than the bare agent, because it reads before it writes, and in 7 of the 51 cases it scored lower (for example a streaming subprocess task, 0.71 against 1.00).
+Run B used a router description that loaded far less often; it has since been replaced, and the description now in the repository has not had a full run.
 
-**Limits:** one model, three runs, one judge, no shell in the eval sandbox. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
+Where the router loads, Tabby helps most when the right move is not obvious: free-form date parsing (take a library, do not write a regex) 0.83 against 0.33; literal defaults 1.00 against 0.38; a payment refactor as a dict of functions 1.00 against 0.40; leaving a test that contradicts the spec alone 1.00 against 0.60. On about half the cases the bare agent already scores 1.00 and Tabby changes nothing. It makes one thing worse: asked to set up a fully specified new package, it stops to ask its questions first (0.36 against 0.98).
+
+**Limits:** one model, three runs, one judge of the same model family, small fixtures, single-turn requests. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
 
 ## FAQ
 
