@@ -5,6 +5,7 @@ check: lint types test
 
 lint:
 	uv run ruff check .
+	uv run ruff format --check .   # fix with: uv run ruff format .
 
 types:
 	uv run mypy src tests
