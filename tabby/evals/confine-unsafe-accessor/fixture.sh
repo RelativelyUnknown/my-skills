@@ -39,7 +39,7 @@ users: a query engine calling Row::get millions of times per query
 goals: the fast path must not weaken safety for any other caller
 kind: code
 modules: development, review
-ask-first: new dependency, public API change
+ask-first: new dependency, breaking a public signature
 commands: cargo test
 __F__
 git init -q -b main

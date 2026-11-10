@@ -33,6 +33,7 @@ Read every file matching the task before writing code. The paths below start at 
 - retries, timeouts, backoff, circuit breakers: `application/shared/resilience.md`
 - a service: `application/smells.md`, `application/apis/http/services.md`, `application/apis/shared/security.md`, `application/shared/async.md`, `observability.md`, `configuration.md`; workers: `application/workers/background-jobs.md`
 - pattern, layers, extension point, settings object: `architecture/design-patterns.md`
-- choosing a data structure, representation or algorithm (Rust, C, C++ or Python): `architecture/fit.md`, `architecture/fit-examples.md`, `architecture/senior-engineering.md`
+- choosing a data structure, representation or algorithm (Rust, C, C++ or Python): `architecture/fit.md`, `architecture/fit-examples.md`
+- a design decision under real limits, `unsafe` code, or a workaround for a lower layer: `architecture/senior-engineering.md`
 
 Other project kinds: `development/which-type.md`, then each `kind` path's `index.md` (kind paths start at `development/`).

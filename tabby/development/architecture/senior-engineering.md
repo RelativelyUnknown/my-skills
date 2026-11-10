@@ -1,54 +1,39 @@
-# Senior-level engineering: the habits behind well-run codebases
+# Senior-level engineering: questions to ask, not stories to admire
 
-What separates a senior engineer's code from working code is rarely a clever trick. It is a small set of habits, applied consistently, that catch mistakes early and keep a system fast under real load. This file names the habits, with the real codebases they come from, and says how they apply to Python, Rust and C.
+Each section is a question to apply to a design you have not seen before; that is the point, not the stories that show it working. Illustrations are in [senior-engineering-examples.md](senior-engineering-examples.md); read one to check a doubt, not to learn the rule.
 
-## Assertions as a safety net
+## Make invariants checkable, not implicit
 
-TigerBeetle's style guide treats assertions as the main tool for catching programmer error, not an afterthought: assert a function's arguments, return values and invariants: the target is an average of two assertions per function. Pair assertions where possible, checking the same property on both sides of a boundary (validity before writing to disk, and again right after reading it back). Assert both the positive space you expect and the negative space you do not, because bugs live at that boundary. State invariants as the positive form (`if index < count`), which is easier to read than its negation. Split a compound assertion (`assert(a); assert(b);`) instead of one combined condition, so a failure says which part broke.
+Before trusting a value, ask: what must be true here for what follows to be correct? Turn the answer into a check, not a comment: a comment goes stale silently, a check fails loudly. Check it where the value enters your control, and again where its violation would do damage; the gap between the two is where a corrupted value travels unnoticed. State what must hold, not what must not ("if `index < count`" reads faster than its negation), and split a check that tests two things into two, so a failure says which one broke.
 
-In Python this is `assert` only for invariants the caller cannot violate from outside ([errors.md](../code/errors.md) has the line between a bug and a caller mistake); in Rust, `debug_assert!` for invariants checked in debug builds and a real `assert!` where a release build must still catch it (ruff's bitset array-size check is exactly this); in C, `assert()` from `<assert.h>`, compiled out by `NDEBUG`, so a release build still needs the check to be a real error path if callers can trigger it.
+In Python this is `assert` for invariants a caller cannot violate ([errors.md](../code/errors.md) draws that line); in Rust, `debug_assert!` plus a real `assert!` where a release build must still catch it; in C, `assert()`, compiled out by `NDEBUG`, so a caller-triggerable violation needs a real error path, not just a check.
 
-## Design for limits before you profile
+## Know every limit before you can measure one
 
-TigerBeetle's rule: put a limit on everything, because production always has one. All loops and queues get a fixed upper bound; an event loop that cannot terminate gets an assertion saying so. The best time to think about performance is the design phase, with a back-of-the-envelope sketch of network, disk, memory and CPU cost, not after profiling: a design that is wrong by 1000x is cheap to fix before it is built and expensive after. Optimise the slowest resource first, after weighing how often each one is used; a memory cache miss paid a million times can cost more than a disk fsync paid once.
+A design touches real limits before any code exists to profile: queue depth, cache size, a connection pool, memory bandwidth. For each resource it depends on, ask: what is the actual number, and what happens at and past it? Unknown, find it (the spec, the source, a five-minute sketch) rather than learn it from an incident. Make "past the limit" a defined, observable event (a rejected request, an assertion, a degraded mode), never silent truncation or unbounded growth.
 
-This is the same move as [fit.md](fit.md): know the workload and the limits before writing the structure, then make the limit a loud, cheap-to-fix failure instead of a silent one.
+[fit.md](fit.md) applies this to one case, choosing a data structure: know the workload and its bound first, and make outgrowing it loud and cheap to fix. The same question reaches one level further down, to the hardware or runtime underneath, not only the structures built on it.
 
-## `unsafe`, confined and proven
+## Shrink what has to be trusted without proof
 
-Two different large Rust and Java codebases that lean on `unsafe` for real workloads agree on the shape of the boundary, independent of language.
+Some code cannot be checked by a compiler or type system: a raw pointer cast, manual memory access, hand-built SQL, a type-checker override. There the question is not "is this correct?" (you cannot fully know) but "how small can the part that has to be right be, and can I write down what must hold for it to be right?" Wrap it in the smallest function, state the precondition where declared and restate why it holds where used, and keep every caller on the normally-checked side of that line. Only one small, marked place should need a human to verify it by reading.
 
-Polars pairs almost every unchecked accessor with a safe, bounds-checked twin (`get` beside `get_unchecked`), documents the precondition under a `# Safety` heading ("It is the caller's responsibility that `idx < self.len()`"), and keeps the `unsafe` block itself to the one call that needs it, wrapped in a comment that restates why it is sound at that call site. The public API stays safe; `unsafe` is an internal fast path for a hot loop that has already checked its own bound.
+See [library/native/rust.md](../library/native/rust.md) and [library/native/c.md](../library/native/c.md) for this project's own rules for `unsafe`; this is why those rules take the shape they do.
 
-Spark's `Platform` class concentrates every `sun.misc.Unsafe` call used across the whole engine behind one small set of static methods (`getInt`, `putLong`, byte-array offsets, `throwException`), queried for platform capability once (`unaligned()`) instead of scattered throughout the codebase. `UnsafeRow` then builds a documented binary row layout (a null-tracking bit set, one word per fixed-length field, relative offsets for variable-length ones) on top of that one safe surface, so the whole SQL engine operates on raw memory through one audited seam instead of many.
+## Decide your own pace instead of reacting to someone else's
 
-The shared rule: `unsafe` lives behind the smallest possible interface, has a written precondition, and the code that uses it does not also decide whether the precondition holds; the caller of the safe wrapper does. See [library/native/rust.md](../library/native/rust.md) and [library/native/c.md](../library/native/c.md) for the project's own `unsafe` rules; this file is why those rules exist.
+For code that reacts to external events one at a time (requests, messages, callbacks), ask who decides when the work happens: the caller, or you? If the caller does, every event costs a context switch and your worst-case latency follows their timing. Where you can, pull events into a loop you control: batch related work, defer what can wait, give the processor large predictable chunks instead of many small interruptions. Not "add a queue everywhere": a question for whenever something external is forcing a reaction.
 
-## Let the program set its own pace
+## Name the layer you are really fixing, and write its expiry date
 
-TigerBeetle again: do not react directly to external events; run your own loop and let it decide when to look at events, which both keeps control flow under your control and lets you batch instead of context-switching on every one. This is the same idea as DeepSeek's DualPipe: a bidirectional pipeline schedule built specifically so forward and backward passes, and their communication, overlap instead of stalling on each other, cutting the idle bubbles between stages. Both are the same move at different scales: decide the schedule up front instead of letting external timing decide it for you.
+Before writing a workaround for something broken or slow one layer below (a compiler, a library, the OS), name which layer owns the defect and what change would make the workaround unnecessary; write both down next to the fix as a condition to check later. No trigger means it becomes permanent, because nothing prompts a revisit; this is the general form of the `# shortcut:` convention in [code/minimalism.md](../code/minimalism.md).
 
-## Design around the hardware you actually have
-
-DeepSeek's FlashMLA Ascend kernel work is a documented case of several of the habits above applied under real hardware limits, written up after the fact in their own deep-dive notes:
-
-- **The instruction cache is small (8K to 32K depending on the core type), so code size is a hard budget.** They kept the hot kernel's code under that limit on purpose, the same "put a limit on everything" instinct as above, applied to code size instead of a queue depth.
-- **The hardware issues instructions in order on each pipe, so the issue order has to be designed, not left to chance.** A scalar core and a SIMD core had to pass a signal through a shared buffer because the hardware itself enforces strict in-order issue per pipe; they traced that constraint to its source and designed the issue sequence around it instead of fighting it with retries.
-- **A per-token copy request would have exceeded the hardware's request queue depth, so they batched requests instead ("gather2")**, the same batching instinct as TigerBeetle's "let the CPU be a sprinter": give the hardware large, predictable chunks of work instead of many small ones.
-- **They split tensors across both halves of a banked on-chip memory, and padded a buffer, specifically to avoid a bank conflict**, which is the same "know the memory layout you depend on" reasoning as [fit.md](fit.md), one level closer to the metal.
-
-The lesson is not the specific numbers (another NPU, another cache size, another bank layout). It is reading the hardware's actual constraints first, from its documentation or by measuring, and designing the code's shape around them, rather than writing the obvious version and hoping the compiler or runtime absorbs the mismatch.
-
-## Know which layer you are fixing, and delete the fix when it moves
-
-DeepGEMM's own changelog records this: an instruction-scheduling detail of the generated low-level code used to need a manual post-processing pass, until a newer compiler release did that scheduling automatically, at which point the manual pass was dropped. Two separate disciplines, both visible in that one line: first, noticing that a layer you depend on (here, the compiler's code generation) is leaving measurable performance on the table and writing a narrow, well-tested fix for exactly that gap; second, deleting the fix the moment the lower layer catches up, instead of carrying it forward as dead weight because it still technically works. A workaround that never gets revisited is the same failure as the undated `# shortcut:` comment in [code/minimalism.md](../code/minimalism.md): name what it is working around and when to check if that is still true.
-
-DeepEP shows the companion habit at the planning level: an earlier version needed autotuning to pick how many streaming multiprocessors and queue pairs a communication kernel should use; a later version replaced that search with an analytical calculation of the same numbers. Autotuning is a reasonable first answer when you do not yet understand a system's behaviour well enough to model it. Once you do, a closed-form calculation is faster, more predictable, and has no search budget to run out. Treat a tuning loop in your own code the same way: a placeholder for a model you have not derived yet, not a permanent feature.
+The same applies to solving by search instead of understanding (autotuning, trial and error): a legitimate first answer when you cannot yet calculate the result directly, but a debt against your own incomplete model. Once you understand the system, prefer the closed-form answer: faster, more predictable, with no search budget to run out.
 
 ## Say why, every time
 
-"Always motivate, always say why": a decision explained is a decision the next reader can evaluate, not just obey. This is one of the few rules in this file that costs nothing and always applies: every ADR ([documentation/history/adr.md](../../documentation/history/adr.md)), every `# shortcut:` comment ([code/minimalism.md](../code/minimalism.md)), every rejected alternative in [fit.md](fit.md) is this rule in practice.
+A decision explained is a decision the next reader can evaluate, not just obey. Costs nothing, always applies: every ADR ([documentation/history/adr.md](../../documentation/history/adr.md)), every `# shortcut:` comment, every rejected alternative in [fit.md](fit.md) is this rule in practice.
 
-## What this does not mean
+## Before importing a rule from elsewhere, name its workload
 
-TigerBeetle's "zero dynamic allocation after startup" and 70-line function limit are real constraints for the embedded, safety-critical systems they were written for. They are not general Python rules, and the examples above are taken for the reasoning, not the letter of the rule. Do not import a constraint from a different domain just because the source is well-regarded; state which workload and failure mode it is solving before applying it here.
+A constraint from an admired codebase answers a question you have not asked yet. State in one sentence which workload and failure mode it solved there before adopting it; if you cannot, leave it out rather than carry it over because the source is well regarded.
