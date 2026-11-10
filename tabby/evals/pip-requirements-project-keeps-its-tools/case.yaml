@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: pip-requirements-project-keeps-its-tools
+expected_outcome: |
+  In a project that uses pip with requirements files and tox, adding a dependency edits requirements.txt; no pyproject.toml, uv, poetry or lock file appears.
+context:
+  scaffold_script: fixture.sh

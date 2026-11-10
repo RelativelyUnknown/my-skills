@@ -1,0 +1,9 @@
+---
+type: tool_used
+tool: Write
+min: 0
+max: 0
+weight: 2
+---
+
+Nothing was written

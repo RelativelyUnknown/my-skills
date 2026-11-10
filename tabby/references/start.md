@@ -20,7 +20,7 @@ Ask round one now and stop: the user asked for the interview, so the interview i
 
 | State | Signals | Rounds |
 | --- | --- | --- |
-| New | no code, or a stub | 3: purpose, users, success; the shape (kind, growth, constraints), offering two or three options with trade-offs; boundaries |
+| New | no code, or a stub | 3: purpose, users, success; the shape (kind, growth, constraints, and the tool stack: offer two or three stacks with trade-offs, such as uv with ruff and pytest, or poetry with black and unittest, and recommend the one the user's team already knows); boundaries |
 | Young | under about 30 commits or 6 months, few tests, no CI | 2: confirm the table plus purpose and users; growth and boundaries |
 | Established | many commits, CI, tests, docs | 2: corrections to the table only; then growth, out of scope, boundaries. A third round only for a conflict the research found: docs against code, two build systems, a TODO that contradicts the README |
 | Has a section | `## Tabby` exists | no rounds unless the drift check (section 6) finds a change |
@@ -64,7 +64,8 @@ open: release process
   - anything else: `code`
 - `reviewed:` carries the short commit hash the facts were checked at; the drift check starts from it.
 - `docs:` lists the page types to keep current (`documentation/pages.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
-- Add `design` to `modules:` only when the user wants diagrams or explainers. Keep `## Python defaults` as it is.
+- Add `design` to `modules:` only when the user wants diagrams or explainers.
+- `## Python defaults` holds the tools: `runner`, `build`, `test`, `lint`, `types`, `ci`, `python`. Fill it from the stack detected in `development/which-type.md`; never from Tabby's own defaults for a project that already has tools.
 - No user to ask (CI, or they cannot answer now)? Do not ask and do not stop: write the section from the evidence, mark every unknown `(assumed)`, and say which entries need confirming.
 
 ## 5. Running it again changes nothing

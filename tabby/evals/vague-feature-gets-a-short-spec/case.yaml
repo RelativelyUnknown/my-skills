@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: vague-feature-gets-a-short-spec
+expected_outcome: |
+  For a feature with several plausible readings the agent writes a short spec (objective, success criteria, open questions with assumed answers) and builds at most the first slice, instead of building a scheduler, mail sender, templates and configuration at once.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: port-hot-path-to-rust
+expected_outcome: |
+  rank_items is moved to Rust keeping its quiet behaviour (rounding half to even before sorting, ties in input order, empty input), is exported and declared in the stub, keeps a Python reference, has tests for the quiet parts, and says it was not built.
+context:
+  scaffold_script: fixture.sh

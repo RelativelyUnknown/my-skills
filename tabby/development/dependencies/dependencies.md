@@ -4,7 +4,7 @@ Every dependency is code you run without reading. Add few, verify each, and fix 
 
 ## Start
 
-Commands below use uv; with another runner, export its lock to a requirements file and run the same checks.
+Commands below use uv. With poetry, pdm, pip or another runner, use that runner's own commands for the same step (adding, locking, syncing, auditing), taken from its documentation or `--help`, not translated from memory; if it can export its lock to a requirements file, run the same audit on the export. Never move a project to uv for this.
 
 Never change the lock file, upgrade, downgrade or remove a package as a side effect of an audit. Show the findings and the proposed change; act when asked.
 

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: deprecate-instead-of-delete
+expected_outcome: |
+  Asked to "get rid of" a public function, the agent keeps it as a deprecated alias that warns and still works, moves the internal callers to the standard library, records a Deprecated entry in the changelog and tests the warning, instead of deleting it.
+context:
+  scaffold_script: fixture.sh

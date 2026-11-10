@@ -1,6 +1,8 @@
 # Development
 
-Defaults: the `## Python defaults` section of AGENTS.md: `python`, `runner`, `types`, `layout`, `rigor` (lite, full, ultra), `report` (terse, normal, audit), `docstrings`. Infer gaps from the repo (grep `pyproject.toml`, lockfiles, CI). The project kind is `kind:` in `## Tabby`. Ask only what is still unknown, once, with your question tool if you have one, and save the answers there. Cannot ask: use defaults, mark them `(assumed)`, say so in your report.
+Defaults: the `## Python defaults` section of AGENTS.md: `python`, `runner`, `build`, `test`, `lint`, `ci`, `types`, `layout`, `rigor` (lite, full, ultra), `report` (terse, normal, audit), `docstrings`. Infer gaps from the repo (grep `pyproject.toml`, lockfiles, CI). The project kind is `kind:` in `## Tabby`. Ask only what is still unknown, once, with your question tool if you have one, and save the answers there. Cannot ask: use defaults, mark them `(assumed)`, say so in your report.
+
+Commands in the leaves are written for uv (`uv run`, `uv add`). In a project that uses another runner, use that runner's equivalent from its documentation or `--help`.
 
 ## Never miss
 
@@ -9,8 +11,10 @@ Defaults: the `## Python defaults` section of AGENTS.md: `python`, `runner`, `ty
 - Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom.
 - Do not silence tools (`# type: ignore`, `# noqa`, `cast`, `Any`, looser config); fix the cause.
 - A request you cannot state as one change ("make the reports better") gets one to three short questions, each with a suggested answer, before any edit. A request that names the change is done, not discussed.
+- "Get rid of" a public name is a deprecation, not a deletion, unless you can show nothing outside this repository uses it: keep it, make it warn, move the callers, and say removal needs approval (`workflow/deprecation-and-migration.md`).
+- A feature with several plausible readings ("email the report weekly") gets a one-page spec (objective, success criteria, open questions with your assumed answers) and its first slice only; say what the next slices would be (`workflow/specs-and-slices.md`).
 - Smallest diff that solves it properly. No new dependency, public API change, commit or push unasked.
-- Use the project's own tools and Python target; never install silently.
+- Use the project's own tools and Python target, found from its lock file, `Makefile` or CI (`development/which-type.md`): poetry stays poetry, black stays black, unittest stays unittest. Never swap them, never add a second tool for a job one does, never install silently.
 - Replies, comments and docs are short: what is not obvious, no filler or praise. Never drop "not", "never", "only", "except".
 
 ## Read before you write
