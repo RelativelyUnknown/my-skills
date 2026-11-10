@@ -15,7 +15,7 @@ Defaults: the `## Python defaults` section of AGENTS.md: `python`, `runner`, `ty
 
 ## Read before you write
 
-Read every file matching the task before writing code. The paths below start at `development/` inside the tabby skill folder: `code/smells.md` is `development/code/smells.md`. Open each with Read; do not search. Always: `code/smells.md`, `workflow/shipping.md`. Then:
+Read `code/smells.md` first. Then read only the leaf below for the main thing the task does, and a second only if the task clearly needs it. When you reach a situation a leaf covers while working (a retry, an open file, a new dependency), read that leaf then, not before. Read `workflow/shipping.md` when you are about to report. The paths start at `development/` inside the tabby skill folder: `code/smells.md` is `development/code/smells.md`. Open each with Read; do not search.
 
 - new function, class, option, constant, wrapper, name: `code/minimalism.md`
 - hand-rolled utility, new package, optional dependency (extra, lazy import): `code/stdlib-first.md`, `dependencies/dependencies.md`, `library/shared/api-design.md`
