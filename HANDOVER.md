@@ -16,7 +16,7 @@ Tabby: one registered Claude skill (`tabby/SKILL.md`) that routes to four module
 | `tabby/review/` | Diff review, security audit, native boundary review. |
 | `tabby/documentation/` | Diátaxis page types plus ADR, runbook, troubleshooting, changelog, style. |
 | `tabby/design/` | Diagrams and explainer animations. |
-| `tabby/evals/` | 55 eval cases plus `tabby.triggers.json`. |
+| `tabby/evals/` | 53 eval cases plus `tabby.triggers.json`. |
 
 Project memory is the `## Tabby` section of the user's AGENTS.md (`reviewed:`, `purpose:`, `users:`, `goals:`, `growth:`, `ask-first:`, `never:`, `kind:`, `modules:`, `commands:`). The router reads it before any task.
 
