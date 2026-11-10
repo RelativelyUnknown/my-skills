@@ -1,6 +1,6 @@
 # Library, all kinds
 
-Templates are in the skill's `assets/`: `pyproject.toml`, `Makefile`, `ci.yml`, `release.yml`.
+Templates are in `development/assets/` in this skill's folder: `pyproject.toml`, `Makefile`, `ci.yml`, `release.yml`.
 
 - api-design.md: adding, renaming or removing a public name, signature, exception or extra.
 - package-setup.md: a new package, or editing build, lint, type-check or CI config.

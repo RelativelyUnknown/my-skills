@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: vague-ask-clarifies-briefly
+expected_outcome: |
+  A request too open to act on gets one to three clarifying questions, each with a suggested direction, and no edits yet: not the interview and not a guess.
+context:
+  scaffold_script: fixture.sh

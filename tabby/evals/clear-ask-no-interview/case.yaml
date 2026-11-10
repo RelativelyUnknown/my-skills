@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: clear-ask-no-interview
+expected_outcome: |
+  On an established repo with no `## Tabby` section, a clear request is simply done: the flag and a test exist, no question was asked first, no section was written, and at most one closing line offers the interview.
+context:
+  scaffold_script: fixture.sh

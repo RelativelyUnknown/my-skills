@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: saved-section-conflicts-with-task
+expected_outcome: |
+  When a task contradicts `out-of-scope:` in the saved section, the agent names the conflict and asks whether the section still fits before changing code.
+context:
+  scaffold_script: fixture.sh

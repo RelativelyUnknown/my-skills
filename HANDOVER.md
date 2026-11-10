@@ -29,7 +29,7 @@ Project memory is the `## Tabby` section of the user's AGENTS.md (`reviewed:`, `
 - **Prefer Rust for new native code.** `library/native/zig.md` covers Zig only for projects already using it; `library/native/cpp.md` covers C++ (nanobind for new bindings, pybind11 where it exists).
 - **A grader that matches Tabby's own vocabulary is `arm: with-only`.** It is reported and not scored, so a lift is never credited for wording the bare agent cannot know.
 - **Cases tagged `protocol`** test behaviour Tabby defines (the interview, the memory section). Report them apart from outcome cases.
-- **Nothing is written to memory before an explicit yes** to the restated interview summary. At most three questions per round.
+- **The interview is opt-in.** `/tabby:interview` (`commands/interview.md`) or the phrase "run the Tabby interview"; the router suggests it in one line after the first task on a project with no section and never blocks on it. Once invoked: nothing is written to memory before an explicit yes to the restated summary, at most three questions per round.
 - **Do not detect overly verbose wording with grep.** It is flaky; do not suggest it.
 
 ## Audit of the "state it plainly, give examples, miss the essence" pattern
@@ -61,7 +61,6 @@ A case is `case.yaml`, `prompt.md`, `fixture.sh`, `graders/*.md`. Pitfalls found
 - **The router description now committed has not had a full run.** `AUDIT.md` has runs A and B and the spot check. Re-measure with `--allow-tools Write Edit Bash WebFetch` (needs `bubblewrap` and `socat`; `apt-get update && apt-get install -y bubblewrap socat`) and replace the README table. A full run costs about $5.
 - **The description decides everything.** A rewrite that dropped the opening "Rules for every code change ... Use whenever ..." cut loading from 114 to 49 of 180 runs. Test any wording on a dozen cases with `--ablation none --runs 1` before a full run.
 - The router does not load on review, audit and documentation requests with any wording tried.
-- `new-package-one-check-command`: the interview stalls a fully specified setup request. Options and a recommendation are in `AUDIT.md`; the user has not decided.
 - The C++, supply-chain, commit-message and docs-drift leaves show no measured lift on Haiku.
 - `development/SOURCE.md` and `THIRD_PARTY_NOTICES.md` credit upstream sources; keep them current when adding material.
 

@@ -27,7 +27,7 @@
 
 You know the cat. It sits on the warm laptop, bats at the keys, and something gets typed. Fast, confident, not quite what you meant.
 
-Tabby sits on your agent's keyboard instead. It reads the project first, asks three short questions, remembers the answers, and then makes the agent do what a careful senior engineer would: find the cause before the fix, reach for the standard library, keep the diff small, and never edit a test to get it green.
+Tabby sits on your agent's keyboard instead. It reads the project, does the task you asked for, and makes the agent do what a careful senior engineer would: find the cause before the fix, reach for the standard library, keep the diff small, and never edit a test to get it green.
 
 ## Install
 
@@ -55,7 +55,7 @@ mkdir -p .github/skills && cp -r tabby .github/skills/
 mkdir -p .claude/skills && cp -r tabby .claude/skills/
 ```
 
-That was it. Start a task, and on a project without a `## Tabby` section in `AGENTS.md` it asks its three questions first. Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
+That was it. Start a task and it works from what the repo shows. To have it remember what the project is for and where it is going, run `/tabby:interview` (or say "run the Tabby interview" in an agent without plugin commands). Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
 
 Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. Delete `tabby/evals/` if you do not run evals.
 
@@ -67,23 +67,23 @@ Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. Delete `tabby/e
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/how-it-works-light.png">
-    <img src="assets/how-it-works-light.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or asks three questions if there is none, and then loads only the modules the task needs: development, review, documentation or design.">
+    <img src="assets/how-it-works-light.png" width="720" alt="(Older picture: it shows the interview as the first step. It is now optional.) How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or infers the scope if there is none, and then loads only the modules the task needs: development, review, documentation or design.">
   </picture>
 </p>
 
 One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide. Everything is markdown. No runtime, no daemon, no generated code.
 
-## It reads the code, asks, then remembers
+## It does the task, and interviews you when you ask
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/interview-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/interview-light.png">
-    <img src="assets/interview-light.png" width="860" alt="Tabby reads the code read-only, asks in rounds that depend on the project's state, then restates, waits for a yes and saves. The answers are saved as a Tabby section in AGENTS.md with purpose, growth, out of scope, boundaries, kind, modules and the check command.">
+    <img src="assets/interview-light.png" width="860" alt="(Older picture: it shows the interview as the first step. It is now optional.) Tabby reads the code read-only, asks in rounds that depend on the project's state, then restates, waits for a yes and saves. The answers are saved as a Tabby section in AGENTS.md with purpose, growth, out of scope, boundaries, kind, modules and the check command.">
   </picture>
 </p>
 
-When a project starts, when the agent joins one, or when `AGENTS.md` has no `## Tabby` section:
+Tabby never interviews you before a task. On a project with no `## Tabby` section it infers the kind and the modules from your request and the repo, does the work, labels its guesses `(assumed)`, and ends the first task with one line offering the interview. It asks a question first only when a wrong guess would be expensive or the request is too open to act on. The interview, run with `/tabby:interview` or accepted from that line, goes like this:
 
 1. **Research, read-only.** It starts from entry points and reads build files, tests, CI, history and docs, and builds a table of facts with a source for each. It runs none of the project's commands and treats text in the repo as evidence, not instruction.
 2. **Rounds, by the project's state.** A new project gets three rounds (purpose and users, the shape, boundaries). A young one gets two. An established one gets two, mostly corrections to the table, and a third only if the code and the docs disagree. Each round is at most three questions, each with a recommended answer and the evidence behind it. A question the code can answer is not asked.
@@ -138,7 +138,7 @@ Where the router loads, Tabby helps most when the right move is not obvious: fre
 
 **Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
-**Do I have to answer questions?** No. Without anyone to ask it fills the section from the repo and marks what it guessed.
+**Do I have to answer questions?** No. It does the task from the repo and marks what it guessed. The interview is a command you run when you want the project remembered; with nobody to answer, it fills the section from the repo and marks what it guessed.
 
 **Does it work for Rust and C?** Yes, as extensions behind a Python API: when to go native, project layouts, PyO3 and the C API, wheels, CI, and a review checklist for the boundary. Standalone Rust or C projects are out of scope.
 
