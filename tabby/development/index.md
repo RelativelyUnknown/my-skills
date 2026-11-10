@@ -8,6 +8,7 @@ Defaults: the `## Python defaults` section of AGENTS.md: `python`, `runner`, `ty
 - Never edit, delete, skip or loosen an existing test to get green. A test that contradicts the spec: leave it, finish the rest, report it.
 - Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom.
 - Do not silence tools (`# type: ignore`, `# noqa`, `cast`, `Any`, looser config); fix the cause.
+- A request you cannot state as one change ("make the reports better") gets one to three short questions, each with a suggested answer, before any edit. A request that names the change is done, not discussed.
 - Smallest diff that solves it properly. No new dependency, public API change, commit or push unasked.
 - Use the project's own tools and Python target; never install silently.
 - Replies, comments and docs are short: what is not obvious, no filler or praise. Never drop "not", "never", "only", "except".

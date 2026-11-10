@@ -1,7 +1,7 @@
 ---
 type: llm
-focus: trace
+focus: last_message
 weight: 3
 ---
 
-PASS if the agent either (a) created a minimal project start (a pyproject.toml and a package or module) and its final message states the assumptions it made, or (b) asked between one and three questions in its final message, each with a suggested answer, without creating a project. FAIL if it asked more than three questions, wrote a long list of requirements to be answered, or both built a large project and asked many questions.
+PASS if the final message either (a) describes a minimal project start the agent created and states the assumptions it made or the decision it needs from the user, or (b) asks between one and three questions, each with a suggested answer, without having built a project. FAIL if it asks more than three questions, or presents a long list of requirements for the user to answer before any work can start.
