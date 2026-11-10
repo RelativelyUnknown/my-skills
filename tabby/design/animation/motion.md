@@ -7,7 +7,7 @@ Use only these motions; each does one job.
 | **pop** (scale in with slight overshoot) | a new object appears: dot, pill, tile |
 | **draw** (stroke grows along a path) | a line, average or guide is being built |
 | **fly** (ease in-out between two positions) | an object moves to a new place or role |
-| **grow** (zone rises from the axis) | a region or bin is claimed |
+| **grow** (zone rises from the axis) | a region is claimed |
 | **drop** (dotted guide draws down, fades, pill pops) | a value is read off a chart into a result |
 | **ring** (fade in, hold, fade out) | "look here" |
 | **shake** (4 px, decaying, 0.45 s) | something failed, just before it changes |
@@ -46,7 +46,7 @@ const f = ease.inOut(seg(t, a, a + .5));
 place(g, lerp(from.x, to.x, f), lerp(from.y, to.y, f), 1);
 ```
 
-Copies that fly into a merge: show the copy at `t >= a`, fly it, hide it at arrival (`1 - seg(t, a + .48, a + .52)`), pop the merged result at the same moment.
+A copy that flies into another object (a value moving into its result): show the copy at `t >= a`, fly it, hide it at arrival (`1 - seg(t, a + .48, a + .52)`), pop the result at the same moment.
 
 ## Zone grows from the axis
 
@@ -71,12 +71,12 @@ draw(drop, ease.out(seg(t, a, a + .2)));                 // dashed guide draws d
 ring.setAttribute('opacity', win(t, 5.9, 7.4, .15));     // fade in, hold, fade out
 ```
 
-## Shake then split
+## Shake, then replace
 
 ```js
 const k = seg(t, a, a + .45);
 const dx = Math.sin((t - a) * 60) * 4 * (1 - k) * (t > a && k < 1 ? 1 : 0);
-// apply dx to x, then hide the tile at a + .5 and pop its two halves with a 0.06 s stagger
+// apply dx to x, then hide the tile at a + .5 and pop what replaces it (one or several pieces, 0.06 s stagger)
 ```
 
 ## Fade a group out when it is replaced

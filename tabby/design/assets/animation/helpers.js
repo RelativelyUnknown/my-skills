@@ -1,4 +1,4 @@
-// helpers.js — tiny, dependency-free helpers shared by every scene (same as the join toolkit).
+// helpers.js — tiny, dependency-free helpers shared by every scene.
 // Every animation is a pure function of time: renderAt(t) sets every attribute for that instant,
 // so frames can be rendered in any order and the result is identical on every run.
 

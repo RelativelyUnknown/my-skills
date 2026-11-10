@@ -37,8 +37,12 @@ const C = Object.assign({
 // Text on an accent fill: whichever of the surface and the ink reads better on it.
 C.ON_ACCENT = contrast(C.ACCENT, SURFACE) >= contrast(C.ACCENT, INKC) ? SURFACE : INKC;          // WHITE is the stage surface; THEME.SURFACE is its documented name
 document.documentElement.style.background = SURFACE;
-// Font stacks. 'IN' and 'JBM' are the bundled Inter and JetBrains Mono (style.css); a design.md font goes first.
-const FONT = Object.assign({ sans: 'IN', mono: 'JBM' }, THEME.FONT || {});
+// Font stacks, the same as the static diagram skeleton. 'IN' and 'JBM' are the bundled Inter and JetBrains Mono
+// (style.css); the named fonts and system fonts follow if the bundle is missing. A design.md font goes first.
+const FONT = Object.assign({
+  sans: "IN, Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+  mono: "JBM, 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+}, THEME.FONT || {});
 const PILL_H = 24, PILL_R = 12;
 
 // Text, centred by default, mono 14 px.

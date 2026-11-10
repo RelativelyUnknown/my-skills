@@ -1,80 +1,58 @@
-// scenes/example.js — worked example of a split-screen scene (copy it as the start of a new one).
-// Same input points on both sides (ink). Left (grey): points merge into per-bin averages.
-// Right (accent): a line joins the points and is sampled on the grid. Both results drop into pills.
-// Data lives in specs.js (window.SPECS.example); nothing is computed in the scene.
+// scenes/example.js — a worked example (copy it as the start of a new scene): a request through a service.
+// Roles follow style.md: ink tiles are the given parts, the accent path is the focus (the main request),
+// grey is secondary, dashed is the retry. Data lives in specs.js (window.SPECS.example); nothing is computed here.
 (function () {
   const SP = window.SPECS.example;
   const { dyn } = makeStage(SP.title);
-  const head = splitHeader(dyn, SP.labels);
-  const L = makeChart(dyn, PANELS.left, SP, { ticks: SP.ticks });
-  const R = makeChart(dyn, PANELS.right, SP, { ticks: SP.ticks });
-  const PILL_Y = 448, PW = 60;
+  const TW = 150, TH = 56, R = 8;
+  const byId = {};
 
-  // input points on both sides: pop in with a slight overshoot
-  const raw = [L, R].map(ch => SP.points.map((p, i) => ({
-    c: S('circle', { cx: ch.xOf(p.x), cy: ch.yOf(p.y), r: 4.5, fill: C.INK, opacity: 0 }, ch.raw),
-    i, x: ch.xOf(p.x), y: ch.yOf(p.y) })));
-
-  // left: a dotted zone per bin, a dashed average line, then one dot at the bin start
-  const BIN0 = 1.2, STEP = .45;
-  const bins = SP.left.map((b, k) => {
-    const x0 = L.xOf(b.x), x1 = L.xOf(b.x + SP.step), y = L.yOf(b.value), a = BIN0 + 0.6 + k * STEP;
-    const zone = S('rect', { x: x0 + 2, y: L.plot.t, width: x1 - x0 - 4, height: 0, rx: 8, fill: C.BASE_ZONE,
-      stroke: C.BASE, 'stroke-width': 1.2, 'stroke-dasharray': '1.5 3.5', 'stroke-linecap': 'round', opacity: 0 }, L.zones);
-    const avg = S('path', { d: `M${x0 + 6},${y} H${x1 - 6}`, stroke: C.BASE, 'stroke-width': 1.4, 'stroke-dasharray': '4 3', fill: 'none', opacity: 0 }, L.lines);
-    const dot = S('circle', { cx: x0, cy: y, r: 6, fill: C.BASE, opacity: 0 }, L.marks);
-    return { b, k, x0, y, a, zone, avg, dot };
+  // tiles: pop in, one after another
+  SP.nodes.forEach((n, i) => {
+    const g = S('g', { opacity: 0 }, dyn);
+    S('rect', { x: n.x - TW / 2, y: n.y - TH / 2, width: TW, height: TH, rx: R, fill: C.WHITE, stroke: C.INK, 'stroke-width': 1.5 }, g);
+    T(g, n.x, n.y - 3, n.name, { 'font-family': FONT.sans, 'font-weight': 600, 'font-size': 14 });
+    T(g, n.x, n.y + 14, n.role, { 'font-size': 11, fill: C.LABEL });
+    byId[n.id] = Object.assign({ g, a: .4 + i * .3 }, n);
   });
 
-  // right: the line draws left to right, then a guide + dot per grid step
-  const LINE0 = 1.2, LINE1 = 2.4, SAMPLE0 = 2.6, SAMPLE_STEP = .4;
-  const line = S('path', { d: 'M' + SP.points.map(p => `${R.xOf(p.x)},${R.yOf(p.y)}`).join(' L'), stroke: C.ACCENT_MID,
-    'stroke-width': 2.2, fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, R.lines);
-  const samples = SP.right.map((s, k) => {
-    const x = R.xOf(s.x), y = R.yOf(s.value);
-    return { s, k, x, y, a: SAMPLE0 + k * SAMPLE_STEP,
-      guide: S('path', { d: `M${x},${R.plot.t} V${y}`, stroke: C.ACCENT_LIGHT, 'stroke-width': 1.4, 'stroke-dasharray': '2 4', fill: 'none', opacity: 0 }, R.lines),
-      dot: S('circle', { cx: x, cy: y, r: 6, fill: C.ACCENT, opacity: 0 }, R.marks) };
+  // the one thing to look at: an ink ring, drawn under the connections
+  const hl = byId[SP.highlight];
+  const ring = S('rect', { x: hl.x - TW / 2 - 4, y: hl.y - TH / 2 - 4, width: TW + 8, height: TH + 8, rx: R + 3.5, fill: 'none', stroke: C.INK, 'stroke-width': 1.6, opacity: 0 }, dyn);
+
+  // connections: orthogonal, drawn after both ends exist; the retry is a dashed elbow under the row
+  const arrow = (x, y, dir, fill) => S('path', { d: dir === 'right' ? `M${x},${y} l-8,-4.5 v9 z` : dir === 'up' ? `M${x},${y} l-4.5,8 h9 z` : `M${x},${y} l-4.5,-8 h9 z`, fill, opacity: 0 }, dyn);
+  const edges = SP.edges.map((e, k) => {
+    const a = byId[e.from], b = byId[e.to];
+    const a0 = Math.max(a.a, b.a) + .5 + k * .35;
+    let d, head, lx, ly, color, dash;
+    if (e.kind === 'retry') {
+      const x1 = a.x - 30, x2 = b.x + 30, yb = a.y + TH / 2, yl = a.y + 72;
+      d = `M${x1},${yb} V${yl - R} Q${x1},${yl} ${x1 - R},${yl} H${x2 + R} Q${x2},${yl} ${x2},${yl - R} V${b.y + TH / 2 + 6}`;
+      head = arrow(x2, b.y + TH / 2, 'up', C.SLOT); color = C.SLOT; dash = '4 3'; lx = (x1 + x2) / 2; ly = yl + 16;
+    } else if (a.y === b.y) {
+      const x1 = a.x + TW / 2, x2 = b.x - TW / 2;
+      d = `M${x1},${a.y} H${x2 - 6}`; head = arrow(x2, a.y, 'right', e.kind === 'main' ? C.ACCENT : C.BASE);
+      color = e.kind === 'main' ? C.ACCENT_MID : C.BASE; lx = (x1 + x2) / 2; ly = a.y - 10;
+    } else {
+      const y1 = a.y + TH / 2, y2 = b.y - TH / 2;
+      d = `M${a.x},${y1} V${y2 - 6}`; head = arrow(a.x, y2, 'down', C.BASE); color = C.BASE; lx = a.x + 14; ly = (y1 + y2) / 2 + 4;
+    }
+    const path = S('path', Object.assign({ d, stroke: color, 'stroke-width': e.kind === 'main' ? 2.2 : 1.5, fill: 'none', 'stroke-linecap': 'round', opacity: 0 }, dash ? { 'stroke-dasharray': dash } : {}), dyn);
+    const label = T(dyn, lx, ly, e.label, { 'font-size': 11, fill: C.LABEL, 'text-anchor': e.kind === 'secondary' ? 'start' : 'middle', opacity: 0 });
+    return { e, path, head, label, a0, dash };
   });
 
-  // result pills: a dotted drop from each dot, then the pill pops
-  const PILLS0 = 4.9;
-  const pills = (ch, rows, fill, textFill) => rows.map((r, k) => {
-    const x = ch.xOf(r.x);
-    return { k, x, g: valuePill(ch.pills, PW, fill, r.text, textFill),
-      drop: S('path', { d: `M${x},${ch.yOf(r.value) + 8} V${PILL_Y - PILL_H / 2 - 4}`, stroke: fill === C.BASE ? C.BASE : C.ACCENT_LIGHT,
-        'stroke-width': 1.3, 'stroke-dasharray': '2 4', fill: 'none', opacity: 0 }, ch.lines),
-      ring: k === SP.highlight ? ring(ch.pills, PW) : null };
-  });
-  const pl = pills(L, SP.left, C.BASE, C.INK), pr = pills(R, SP.right, C.ACCENT, C.ON_ACCENT);
-
-  const END = 8.0;
+  const END = 7.4;
   finish(dyn, END, t => {
-    head.update(t); L.update(t); R.update(t);
-    raw.forEach(side => side.forEach(r => pop(r.c, seg(t, .45 + r.i * .06, .7 + r.i * .06), r.x, r.y)));
-
-    bins.forEach(o => {
-      const pz = ease.out(seg(t, BIN0 + o.k * .08, BIN0 + .3 + o.k * .08));
-      o.zone.setAttribute('y', lerp(L.plot.b, L.plot.t, pz)); o.zone.setAttribute('height', (L.plot.b - L.plot.t) * pz);
-      o.zone.setAttribute('opacity', pz > 0 ? 1 : 0);
-      o.avg.setAttribute('opacity', t >= o.a ? 1 : 0); draw(o.avg, ease.out(seg(t, o.a, o.a + .25)));
-      pop(o.dot, seg(t, o.a + .2, o.a + .45), o.x0, o.y);
+    Object.values(byId).forEach(n => pop(n.g, seg(t, n.a, n.a + .25), n.x, n.y));
+    edges.forEach(o => {
+      const p = seg(t, o.a0, o.a0 + .4);
+      o.path.setAttribute('opacity', t >= o.a0 ? 1 : 0);
+      if (o.dash) o.path.setAttribute('opacity', ease.out(p)); else draw(o.path, ease.inOut(p));
+      o.head.setAttribute('opacity', p >= 1 ? 1 : 0);
+      o.label.setAttribute('opacity', seg(t, o.a0 + .3, o.a0 + .55));
     });
-
-    line.setAttribute('opacity', t >= LINE0 ? 1 : 0); draw(line, ease.inOut(seg(t, LINE0, LINE1)));
-    samples.forEach(s => {
-      s.guide.setAttribute('opacity', (t >= s.a ? 1 : 0) * (1 - seg(t, s.a + .5, s.a + .8)));
-      draw(s.guide, ease.out(seg(t, s.a, s.a + .25)));
-      pop(s.dot, seg(t, s.a + .22, s.a + .45), s.x, s.y);
-    });
-
-    [pl, pr].forEach(side => side.forEach(p => {
-      const a = PILLS0 + p.k * .12;
-      p.drop.setAttribute('opacity', (t >= a ? 1 : 0) * (1 - seg(t, a + .45, a + .7)));
-      draw(p.drop, ease.out(seg(t, a, a + .2)));
-      const q = seg(t, a + .15, a + .4);
-      place(p.g, p.x, PILL_Y, ease.back(q)); p.g.setAttribute('opacity', q > 0 ? 1 : 0);
-      if (p.ring) { p.ring.setAttribute('opacity', win(t, 5.9, 7.4, .15)); p.ring.setAttribute('transform', `translate(${p.x} ${PILL_Y})`); }
-    }));
+    ring.setAttribute('opacity', win(t, 5.6, 7.0, .2));
   });
 })();

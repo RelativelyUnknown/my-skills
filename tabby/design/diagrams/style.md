@@ -35,7 +35,7 @@ Ask once only if the file does not say which colour is the accent. For a static 
 
 Light values are the engine's defaults. Dark values are what the engine derives from `SURFACE #0F1115`, `INK #F2F2F2`, `ACCENT #6FB0FF` and `BASE #9AA0AA`, so a dark theme needs only those four keys. Known weak spot: light `MUTED` is 3.5:1 on white, below 4.5:1 for small text; use `LABEL` for anything a reader must read.
 
-**Type:** sans for titles, labels and names, mono for values, times, ports and axis ticks. Stacks: sans `Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`; mono `"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`. Sizes: title 26, panel label 20, body 14, ticks 12, pill 13. The engine bundles Inter and JetBrains Mono from npm; a static SVG relies on the stack, so its fallbacks must look acceptable.
+**Type:** sans for titles, labels and names, mono for values, times, ports and axis ticks. Stacks: sans `Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`; mono `"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`. Sizes: title 26, panel label 20, body 14, ticks 12, pill 13. The engine's `FONT` defaults are the same stacks, with the bundled Inter and JetBrains Mono (from npm) tried first; a static SVG relies on the stack, so its fallbacks must look acceptable.
 
 **Fills are flat.** No gradients, shadows or 3D. Rounded corners (pills fully round, tiles radius 8 to 9).
 
@@ -60,13 +60,13 @@ One accent only. If something needs a fourth colour, the picture is doing too mu
   <title id="d-title">Short name of the subject</title>
   <desc id="d-desc">One sentence about the content, not the geometry.</desc>
   <style>
-    :root { --surface:#FFFFFF; --ink:#111111; --label:#555555; --base:#808080; --accent:#004A96; --accent-zone:#E0E9F2; --slot:#BDBDBD;
+    :root { --surface:#FFFFFF; --ink:#111111; --label:#555555; --base:#808080; --accent:#004A96; --accent-mid:#4472AA; --accent-zone:#E0E9F2; --slot:#BDBDBD;
             --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
-    @media (prefers-color-scheme: dark) { :root { --surface:#0F1115; --ink:#F2F2F2; --label:#B0B1B2; --base:#9AA0AA; --accent:#6FB0FF; --accent-zone:#1B2431; --slot:#4F5053; } }
-    text { font-family: var(--sans); fill: var(--ink); } .mono { font-family: var(--mono); }
+    @media (prefers-color-scheme: dark) { :root { --surface:#0F1115; --ink:#F2F2F2; --label:#B0B1B2; --base:#9AA0AA; --accent:#6FB0FF; --accent-mid:#598BC9; --accent-zone:#1B2431; --slot:#4F5053; } }
+    text { font-family: var(--sans); fill: var(--ink); } .mono { font-family: var(--mono); } .label { fill: var(--label); }
   </style>
   <rect width="960" height="540" fill="var(--surface)"/>
-  <!-- nodes and connections use only these variables -->
+  <!-- nodes and connections use only these variables; set a text colour with a class (.label), because the CSS rule above beats a fill attribute -->
 </svg>
 ```
 
