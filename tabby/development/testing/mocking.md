@@ -1,6 +1,6 @@
 # Mocking
 
-## Mocking
+## Boundaries
 
 A boundary is code you do not own or cannot run in a test: network, clock, randomness, third-party services, the process environment. Everything else runs for real.
 
@@ -68,4 +68,4 @@ def test_does_not_retry_a_permanent_error():
 
 ## Async
 
-Use the plugin in the detected `async` fact. With `pytest-asyncio`, set `asyncio_mode = "auto"` only if the project already does; otherwise mark tests with `@pytest.mark.asyncio`. Do not call `asyncio.run` inside a test body.
+Use the async test plugin the project already has. With `pytest-asyncio`, set `asyncio_mode = "auto"` only if the project already does; otherwise mark tests with `@pytest.mark.asyncio`. Do not call `asyncio.run` inside a test body.

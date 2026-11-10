@@ -10,4 +10,5 @@ Find vulnerabilities an outside party can reach, and report only what you can sh
 - Static reading first. Run target code only with no network, a scrubbed environment, dummy secrets and writes limited to a scratch directory; if you cannot isolate it, say so and do not run it. Never install a tool to audit.
 - Facts outside the repository (proxy, identity provider, deployment) are not proof either way: a finding that depends on one is `needs validation` with the question and who can answer it.
 - Library and framework defaults depend on the pinned version. Check the version before relying on a default.
+- Dependencies, CI workflows and the release path: [supply-chain.md](supply-chain.md).
 - Per-class checks and their Python fixes: [security-basics.md](../../development/code/security-basics.md).

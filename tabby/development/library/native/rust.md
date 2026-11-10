@@ -56,6 +56,18 @@ See also [senior-engineering.md](../../architecture/senior-engineering.md) for t
 - Wrapping a C library: a `-sys` crate (generated with `bindgen`) plus a safe crate. `#[repr(C)]` on shared structs, `CString`/`CStr` for strings, free on the side that allocated, an RAII type whose `Drop` releases C-owned memory, check for null.
 - No `unsafe impl Send` to silence the compiler; no `transmute` to cast enums or dodge lifetimes.
 
+## The core crate
+
+The crate without PyO3 is ordinary Rust, and its mistakes surface in Python as wrong results. Checked against the Rust API Guidelines and the digests in BeautifulRust (read 10 November 2026):
+
+- One error enum for the crate, implementing `Display` and `std::error::Error` and keeping the cause (`source()`); no `String`, `()` or `Box<dyn Error>` as a public error, and no `map_err(|_| ...)` that drops what failed. The binding crate turns it into a Python exception in one place.
+- Put invariants in types: a newtype for each id or unit, an enum instead of a `bool` flag or a "must be X when Y" comment, a constructor that validates once. `#[non_exhaustive]` on a public enum or struct that will grow.
+- Conversions that can lose data use `try_from`, not `as`: a wrapped length from Python is a wrong answer, not an error.
+- A hand-written `Ord`, `PartialEq` or `Hash` must agree with the others, or maps, sorts and `dedup` corrupt silently. Derive them together unless there is a reason not to.
+- `HashMap` iteration order must not reach output, a returned list or a test expectation; sort, or use `BTreeMap` or `IndexMap`.
+- Borrowed parameters (`&str`, `&[T]`), no clone made only to satisfy the borrow checker, no lock guard held across `.await` or a call back into Python.
+- Public items document `# Errors`, `# Panics` and `# Safety` where they apply; `cargo doc --no-deps` runs clean.
+
 ## Types, stubs, tests
 
 - Ship `py.typed` and a hand-written `.pyi` for `<pkg>._core`; check it in CI with `python -m mypy.stubtest <pkg>`.

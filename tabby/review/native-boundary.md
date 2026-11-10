@@ -31,13 +31,19 @@ Then ask of every row:
 - Errors mapped to the wrong exception or with the cause dropped.
 - `#[pymodule(gil_used = false)]` claimed with shared mutable state.
 
-## 4. Layout and ABI
+## 4. C++ bindings (nanobind, pybind11)
+
+- A returned pointer or reference with no stated return value policy; a raw owning pointer in a signature; a reference kept into an object Python can free or resize.
+- An exception that can escape a destructor or a `noexcept` function; an index or size from Python used unchecked.
+- Python touched while the GIL is released; a free-threaded opt-in (`FREE_THREADED`, `py::mod_gil_not_used()`) with unsynchronised shared state.
+
+## 5. Layout and ABI
 
 - Struct, enum and integer widths that differ by platform; `#[repr(C)]` missing on a shared struct.
 - Exceptions or panics unwinding through an ABI that forbids it; callbacks run after the module is torn down; an API that needs one thread called from another.
 - A module that claims `abi3` using a non-limited API symbol; a wheel tag that does not match what was built.
 
-## 5. Tests and tools to ask for
+## 6. Tests and tools to ask for
 
 - Sanitizer run (ASan, UBSan, TSan for threads), Miri for Rust `unsafe`, a Python debug build, a 10,000-call leak loop.
 - A test for each error path, and for empty, maximum and negative sizes.

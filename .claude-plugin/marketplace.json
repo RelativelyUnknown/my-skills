@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "tabby",
-      "description": "A router and four modules (engineering, review, documentation, design) for Python projects, with Rust and C extensions as first-class partners.",
+      "description": "A router and four modules (development, review, documentation, design) for Python projects, with Rust, C, C++ and Zig extensions as first-class partners.",
       "source": "./",
       "category": "development"
     }

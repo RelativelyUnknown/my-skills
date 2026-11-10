@@ -5,7 +5,7 @@ A scene is a pure function of time: `renderAt(t)` sets every attribute for secon
 ## Setup (once)
 
 1. Copy this skill's `assets/animation/` folder to a working folder (not into the skill). It holds `helpers.js`, `common.js`, `render.js`, `stage.html`, `style.css`, `specs.js`, `package.json` and `scenes/example.js`.
-2. Needs `node` 20+, `ffmpeg`, and Playwright with Chromium. In the working folder run `npm install` once (two font packages) and make `playwright` resolvable (`npm i playwright`, or a global install with `NODE_PATH` set).
+2. Needs `node` 22+, `ffmpeg`, and Playwright with Chromium. In the working folder run `npm install` once (two font packages) and make `playwright` resolvable (`npm i playwright`, or a global install with `NODE_PATH` set).
 
 ## Make a scene
 

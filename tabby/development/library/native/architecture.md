@@ -42,6 +42,6 @@ Four shapes occur in widely used packages. Pick the smallest that fits, and keep
 
 - Convert and validate once at the edge, then work on native types. Avoid per-element round trips: pass whole buffers or batches.
 - One owner per allocation; the side that allocates frees. Never hand out a pointer that outlives its owner.
-- Errors cross as Python exceptions, never as panics or unhandled C errors (details in rust.md and c.md).
+- Errors cross as Python exceptions, never as panics or unhandled C errors (details in rust.md, c.md and cpp.md).
 - Release the GIL for long native work; touch Python objects only while holding it.
 - Declare free-threaded support only after the module has no unsynchronised shared state, and test it.

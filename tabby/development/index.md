@@ -1,6 +1,6 @@
 # Development
 
-Defaults: the `## Python defaults` section of AGENTS.md: `kind`, `python`, `runner`, `types`, `layout`, `rigor` (lite, full, ultra), `report` (terse, normal, audit), `docstrings`. Infer gaps from the repo (grep `pyproject.toml`, lockfiles, CI). Ask only what is still unknown, once, with your question tool if you have one, and save the answers there. Cannot ask: use defaults, mark them `(assumed)`, say so in your report.
+Defaults: the `## Python defaults` section of AGENTS.md: `python`, `runner`, `types`, `layout`, `rigor` (lite, full, ultra), `report` (terse, normal, audit), `docstrings`. Infer gaps from the repo (grep `pyproject.toml`, lockfiles, CI). The project kind is `kind:` in `## Tabby`. Ask only what is still unknown, once, with your question tool if you have one, and save the answers there. Cannot ask: use defaults, mark them `(assumed)`, say so in your report.
 
 ## Never miss
 
@@ -29,7 +29,7 @@ Read every file matching the task before writing code. The paths below start at 
 - slow code: `performance/index.md`
 - uv, locking, CI job, Dockerfile: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
 - scope, when to stop: `workflow/planning.md`; a bug: `workflow/debugging.md`; restructuring code: `workflow/refactoring.md`; an API you are unsure of: `workflow/checking-apis.md`
-- a library others install: `library/smells.md`, `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C, Zig or Cython behind a Python API: `library/native/index.md`, `library/native/smells.md`
+- a library others install: `library/smells.md`, `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C, C++, Zig or Cython behind a Python API: `library/native/index.md`, `library/native/smells.md`, then the leaf for the language (`rust.md`, `c.md`, `cpp.md`, `zig.md`)
 - retries, timeouts, backoff, circuit breakers: `application/shared/resilience.md`
 - a service: `application/smells.md`, `application/apis/http/services.md`, `application/apis/shared/security.md`, `application/shared/async.md`, `observability.md`, `configuration.md`; workers: `application/workers/background-jobs.md`
 - pattern, layers, extension point, settings object: `architecture/design-patterns.md`

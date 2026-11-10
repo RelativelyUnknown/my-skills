@@ -16,7 +16,7 @@ Each is a folder in this skill's folder; open its `index.md` with Read first. Fi
 | --- | --- |
 | `development/` | writing, changing, debugging, testing, speeding up, packaging or releasing code; services, workers, libraries, Rust or C behind Python |
 | `review/` | reviewing a diff, a security audit, or before reporting your own change as done |
-| `documentation/` | a README, docstring, tutorial, how-to, reference, changelog, ADR, runbook, troubleshooting page, CONTRIBUTING |
+| `documentation/` | a README, docstring, tutorial, how-to, reference, changelog, ADR, runbook, troubleshooting page, CONTRIBUTING, commit message, or checking docs against code |
 | `design/` | a diagram, an architecture picture, an explainer animation |
 
 ## Section exists
@@ -27,7 +27,7 @@ Each is a folder in this skill's folder; open its `index.md` with Read first. Fi
 
 ## Section missing
 
-A small fix to existing code: do the work with `development/index.md` and offer the interview afterwards. Anything that starts a project, joins one, or sets its structure is not a small fix: read `references/start.md` and run the interview before building anything. It it researches the code first, then asks in rounds that depend on the project's state (new, young, established), with questions that cite what the code showed.
+A small fix to existing code: do the work with `development/index.md` and offer the interview afterwards. Anything that starts a project, joins one, or sets its structure is not a small fix: read `references/start.md` and run the interview before building anything. It researches the code first, then asks in rounds that depend on the project's state (new, young, established), with questions that cite what the code showed.
 
 ## Never
 

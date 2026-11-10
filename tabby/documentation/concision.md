@@ -46,6 +46,7 @@ The composition principles of Strunk's *The Elements of Style* (1918, public dom
 
 ## An editing pass
 
+0. Before cutting, mark what must survive: names, numbers and units, commands, paths, links, conditions, trade-offs, stated uncertainty, and every "not", "only" and "except". After the pass, compare with the original and restore any that were lost.
 1. Read only the headings and first sentences. Do they tell the story? Fix the outline before the prose.
 2. For each paragraph: delete the sentence that adds least. Repeat until deleting hurts.
 3. For each sentence: find the actor and the action; make the actor the subject and the action the verb.

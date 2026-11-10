@@ -13,6 +13,8 @@ Pick by what the reader is doing.
 - operations/runbook.md: a runbook for on-call.
 - troubleshooting/symptom-fix-matrix.md: errors by exact message, with cause and fix.
 - governance/contributing.md: CONTRIBUTING.md.
+- commits.md: a commit message or pull request description.
+- drift.md: docs that must change with a code change; auditing docs against code.
 - placing.md: a page fits no type or mixes two.
 - voice.md: voice, structure and content rules for any page.
 - style.md: word choice, punctuation, numbers, dates, UI text, procedures.

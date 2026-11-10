@@ -23,6 +23,16 @@ Same format as [code/smells.md](../../code/smells.md): the smell, `→`, the fix
 - Python objects touched between `Py_BEGIN_ALLOW_THREADS` and `Py_END_ALLOW_THREADS` → none
 - A module claiming abi3 that uses a non-limited symbol, or `Py_MOD_GIL_NOT_USED` declared without thread-safe state → limited API only; declare it after the state is safe
 
-## Both
+## C++ bindings (nanobind, pybind11)
+
+- A raw pointer or reference returned with the default policy → state the policy: `reference_internal` for a member, `reference` for something C++ owns for the whole program, `take_ownership` only for a fresh `new`
+- A raw owning pointer in a bound signature → `std::unique_ptr` to hand over, `std::shared_ptr` to share
+- A reference, iterator or `string_view` into a Python-owned object kept after the call → copy it, or keep the owner alive with `keep_alive`
+- An exception that can leave a destructor or a `noexcept` function → catch inside; it calls `std::terminate()`
+- Python called, or a Python object destroyed, while the GIL is released → reacquire first
+- Unchecked `operator[]` or pointer arithmetic on an index or size from Python → check, then throw `std::out_of_range`
+- Leak warnings switched off, or stubs not checked against the module → fix the leak; run `mypy.stubtest`
+
+## All
 
 - No sanitizer, Miri or leak-loop run, and no pure-Python reference to compare against → run them and keep one

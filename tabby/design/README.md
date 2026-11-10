@@ -8,7 +8,7 @@ A module of [Tabby](../SKILL.md) for minimalist diagrams and explainer animation
 
 ```
 index.md
-diagrams/         index.md  style.md                  visual language, mapped from design.md onto the theme
+diagrams/         index.md  choosing.md  style.md     when and what to draw; visual language, mapped from design.md onto the theme
 animation/        index.md  pipeline.md  motion.md  formats.md
 assets/animation/                                     the render engine: common.js, helpers.js, render.js, specs.js, stage.html, style.css, scenes/
 ```

@@ -2,6 +2,8 @@
 
 A public name is a promise. Make the common call short, the wrong call hard to write, and every name say what it does. Users will not read its source.
 
+Callers come to depend on everything they can observe, promised or not: the order of results, the text of an error message, which exception type, timing. Expose on purpose, and treat a change to any of it as a change to the API.
+
 ## Before merging a new public name
 
 1. Write the call site first, in a test or the README. Awkward to write means the interface is wrong.

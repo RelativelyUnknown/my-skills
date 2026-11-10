@@ -1,12 +1,13 @@
-# Native extensions: Python with Rust or C
+# Native extensions: Python with Rust, C or C++
 
-A library whose hot or low-level part is written in Rust, C or (rarely) Zig and called from Python. Read `../shared/index.md` too: everything for a pure-Python library still applies.
+A library whose hot or low-level part is written in Rust, C, C++ or (rarely) Zig and called from Python. Read `../shared/index.md` too: everything for a pure-Python library still applies.
 
 - architecture.md: whether to go native, which layer, the layout, the seam, how the two sides are tested.
 - rust.md: PyO3 and maturin: errors, the GIL, ownership, stubs, lints, `unsafe`.
 - c.md: the CPython C API: reference counts, errors, init, threads, the stable ABI, sanitizers.
+- cpp.md: C++ with nanobind or pybind11: ownership and return policies, exceptions, the GIL, stubs, the stable ABI.
 - zig.md: Ziggy Pydust, when the project already uses Zig or wants its comptime model; prefer Rust for new native code.
-- smells.md: native boundary mistakes in Rust, PyO3 and the C API. Read before finishing a native change.
+- smells.md: native boundary mistakes in Rust, PyO3, the C API and C++ bindings. Read before finishing a native change.
 - ci-wheels.md: build backends, wheels, CI jobs, release checks.
 
 Formatters and linters (the project's own config wins):

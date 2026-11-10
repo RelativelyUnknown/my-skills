@@ -39,7 +39,7 @@ A test is evidence about behaviour. Ask of any test: if the behaviour broke, wou
 - Strict config in `pyproject.toml`: `strict = true` (pytest 9+; earlier: `--strict-markers` and `xfail_strict = true`), `filterwarnings = ["error"]`. For a new project use `--import-mode=importlib`; if `test.import_mode` is already `prepend`, leave it and mention it.
 - Docstring examples are doctests (`--doctest-modules`). The README's code block is executed by a test.
 - Coverage is a floor, not a goal: `--cov=<pkg> --cov-branch --cov-fail-under=<N>`. Read the uncovered lines and branches; add a test only for behavior that matters.
-- Async code: use the plugin already in `async` (`pytest-asyncio` or `anyio`); add none unprompted.
+- Async code: use the plugin the project already has (`pytest-asyncio` or `anyio`); add none unprompted.
 
 ## Report
 

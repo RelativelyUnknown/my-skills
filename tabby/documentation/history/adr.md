@@ -2,6 +2,10 @@
 
 One record per decision, numbered, kept in `docs/adr/NNNN-short-title.md`. It lets a stranger understand in a year why the code is shaped this way.
 
+Write one when a decision would be expensive to reverse: a framework or major dependency, a data model or schema, an authentication scheme, a public API shape, a storage or wire format, going native. A choice that one commit can undo needs a commit message, not a record.
+
+The project's convention comes first. If records exist, match their directory, file format, numbering, name pattern and headings, and continue the sequence. Use the template below only when there is none; if two conventions exist, say so instead of adding a third.
+
 ```markdown
 # ADR NNNN: <decision as a short phrase>
 

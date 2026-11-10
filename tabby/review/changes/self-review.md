@@ -13,16 +13,17 @@ Find what is wrong with the diff, and say nothing else. A clean diff gets a shor
 ## What to look for, in this order
 
 1. **Correctness.** A variable unassigned on a path (a `try` that can fail before the assignment), swallowed errors, wrong boundary, a mutable default, a result that differs from the docstring. Reproduce it when you can and quote the failing input.
-2. **Silenced or weakened checks.** Anything the `development` module forbids silencing (its front door), plus the never-miss rules in `development/testing/testing.md`: a new skip or xfail, loosened lint, type or pytest config, a weakened assertion, a deleted test, expected values copied from the code's own output.
-3. **Unneeded concepts.** Apply `development/code/minimalism.md` (the deletion test, wrappers, one-implementation abstractions, `utils.py`, unused parameters) to every new function, class, constant and exception, plus an exception that only renames a library error. Check each changed function against the smells files for the area it touches: `development/code/smells.md` always, plus `development/library/smells.md`, `development/testing/smells.md`, `development/application/smells.md` or `development/library/native/smells.md`. A smell is a finding only when you can name the input or situation where it goes wrong.
-4. **Docs and comments.** Check against `development/code/comments.md`: conversation residue, restated signatures, negatives that should be behavior. Also a docstring that is wrong for the code.
-5. **Public API.** New, renamed or removed names; a changed return type; positional booleans; a missing deprecation warning; a version bump that does not match the change; `__all__` and the changelog not updated.
-6. **Dependencies and files.** A second library for a job one already does, a new dependency in the base install, scratch or summary files, unrelated reformatting, hand-edited generated files.
-7. **Security.** Anything `development/code/security-basics.md` prohibits, for example `shell=True` with interpolation, f-string SQL, secrets in code or fixtures.
+2. **Load.** Read the expected load from `users:` and `growth:` in `## Tabby`, or from the README and deploy config: one person running a script, or many users and processes at once. Judge against that and say which you assumed. Fine for one, wrong for many: check-then-write races, a query per item, a list or cache that only grows, per-process state that must be shared, quadratic work on input a caller controls.
+3. **Silenced or weakened checks.** Anything the `development` module forbids silencing (its front door), plus the never-miss rules in `development/testing/testing.md`: a new skip or xfail, loosened lint, type or pytest config, a weakened assertion, a deleted test, expected values copied from the code's own output.
+4. **Unneeded concepts.** Apply `development/code/minimalism.md` (the deletion test, wrappers, one-implementation abstractions, `utils.py`, unused parameters) to every new function, class, constant and exception, plus an exception that only renames a library error. Check each changed function against the smells files for the area it touches: `development/code/smells.md` always, plus `development/library/smells.md`, `development/testing/smells.md`, `development/application/smells.md` or `development/library/native/smells.md`. A smell is a finding only when you can name the input or situation where it goes wrong.
+5. **Docs and comments.** Check against `development/code/comments.md`: conversation residue, restated signatures, negatives that should be behavior. Also a docstring that is wrong for the code.
+6. **Public API.** New, renamed or removed names; a changed return type; positional booleans; a missing deprecation warning; a version bump that does not match the change; `__all__` and the changelog not updated.
+7. **Dependencies and files.** A second library for a job one already does, a new dependency in the base install, scratch or summary files, unrelated reformatting, hand-edited generated files.
+8. **Security.** Anything `development/code/security-basics.md` prohibits, for example `shell=True` with interpolation, f-string SQL, secrets in code or fixtures.
 
 ## Deferred shortcuts
 
-List the `# shortcut:` comments the change adds or touches (`git grep -nE "# ?shortcut:"` on the changed files). Each must name its limit and the trigger to revisit it; one that names neither is a finding.
+List the `# shortcut:` comments the change adds or touches (`git grep -nE "# ?shortcut:"` on the changed files). Each must name its limit and the trigger to revisit it; one that names neither is a finding. A shortcut that names both is a decision, not a finding, unless the expected load already crosses its limit.
 
 ## What not to report
 
@@ -35,7 +36,7 @@ List the `# shortcut:` comments the change adds or touches (`git grep -nE "# ?sh
 
 ## Output
 
-For each finding, ordered by severity: `file:line`, what is wrong, the input or situation where it fails, and the smallest fix. Then one line: `Checked, no findings: <areas>`. End with a verdict: `request changes` or `no findings`.
+Number the findings, ordered by severity, so the author can answer "fix 2 and 5". For each: `file:line`, what is wrong, the input or situation where it fails, and the smallest fix. Then one line: `Checked, no findings: <areas>`. End with a verdict: `request changes` or `no findings`.
 
 A diff with no findings: the verdict plus the `Checked` line, nothing more (at most 10 lines). Format the final report as the `report` default asks (`terse`, `normal`, `audit`; see `development/workflow/shipping.md`).
 

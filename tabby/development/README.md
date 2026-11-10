@@ -29,7 +29,7 @@ Every area has an `index.md` with a "read when" line per file, and most have a `
 
 ## Defaults
 
-Reads the `## Python defaults` section of `AGENTS.md` (`kind`, `python`, `runner`, `types`, `layout`, `rigor`, `report`, `docstrings`), infers what is missing, asks once for the rest and saves the answers there. It takes no arguments.
+Reads the `## Python defaults` section of `AGENTS.md` (`python`, `runner`, `types`, `layout`, `rigor`, `report`, `docstrings`), infers what is missing, asks once for the rest and saves the answers there. It takes no arguments.
 
 ## Evals
 

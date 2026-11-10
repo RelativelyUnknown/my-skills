@@ -11,6 +11,7 @@ index.md                              rules and workflow
 pages.md                              the page-type leaves, by reader need
 tutorial.md  how-to.md  reference.md  explanation.md         the four reader needs
 docstrings.md  readme.md  changelog.md  placing.md           where and in what form
+commits.md  drift.md                                         commit messages; docs in step with code
 voice.md  style.md  concision.md  ai-patterns.md  code-examples.md
 history/        adr.md                                       decisions and rationale
 operations/     runbook.md                                   incident and setup steps
