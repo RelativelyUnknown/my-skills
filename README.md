@@ -12,7 +12,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/modules-4-2a8f89?style=flat-square" alt="4 modules">
-  <img src="https://img.shields.io/badge/eval%20cases-60-2a8f89?style=flat-square" alt="60 eval cases">
+  <img src="https://img.shields.io/badge/eval%20cases-84-2a8f89?style=flat-square" alt="84 eval cases">
   <img src="https://img.shields.io/badge/always--on-~110%20tokens-2a8f89?style=flat-square" alt="About 110 tokens always on">
   <img src="https://img.shields.io/badge/format-Agent%20Skills-2a8f89?style=flat-square" alt="Agent Skills format">
   <img src="https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square" alt="MIT licence">
@@ -113,18 +113,20 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## Numbers
 
-The same agent with and without Tabby, 60 cases, 3 runs each, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders), measured twice in November 2026. The full account, including what went wrong, is in [`AUDIT.md`](AUDIT.md).
+The same agent with and without Tabby, 84 cases, 3 runs each, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders), measured on 10 November 2026. The full account, with the cases where Tabby does not help, is in [`AUDIT.md`](AUDIT.md).
 
-| Run | Agent tools | Mean score with Tabby | Without | Router loaded | Cost per run |
-| --- | --- | --- | --- | --- | --- |
-| A (`f1fd402`) | write, edit | 0.84 | 0.80 | 114 of 180 runs | $0.014 against $0.011 |
-| B (`73752e0`) | write, edit, shell, web fetch | 0.82 | 0.82 | 49 of 180 runs | $0.015 against $0.014 |
+| | With Tabby | Without |
+| --- | --- | --- |
+| Mean score, all cases | 0.85 | 0.76 |
+| Cases that test a habit the bare agent skips (26 of 84) | 0.90 | 0.56 |
+| Cases where it changes nothing (51 of 84) | 0.87 | 0.86 |
+| Cases where it is worse (7 of 84) | 0.54 | 0.73 |
+| Cost per run | $0.0168 | $0.0142 |
+| Turns per run | 16.2 | 10.8 |
 
-Run B used a router description that loaded far less often; it has since been replaced, and the description now in the repository has not had a full run.
+It helps most when the right move is not obvious and a habit decides it: deprecate a public name instead of deleting it (1.00 against 0.18), a dict of functions instead of a class hierarchy (0.94 against 0.33), take the ecosystem's standard HTTP client instead of hand-rolling one (0.90 against 0.30), ask before overriding a saved project rule (1.00 against 0.43), find that a longer timeout is not the fix (0.54 against 0.00), take a library for a hard problem (0.77 against 0.27). On 51 of the 84 cases the bare agent does as well, and Tabby only adds cost. It is not cheaper: about 19% more per run and half again as many turns. The router description decides everything: it loaded in 76% of the runs, and not at all on review, audit and documentation requests.
 
-Where the router loads, Tabby helps most when the right move is not obvious: free-form date parsing (take a library, do not write a regex) 0.83 against 0.33; literal defaults 1.00 against 0.38; a payment refactor as a dict of functions 1.00 against 0.40; leaving a test that contradicts the spec alone 1.00 against 0.60. On about half the cases the bare agent already scores 1.00 and Tabby changes nothing. It makes one thing worse: asked to set up a fully specified new package, it stops to ask its questions first (0.36 against 0.98).
-
-**Limits:** one model, three runs, one judge of the same model family, small fixtures, single-turn requests. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
+**Limits:** one model, three runs, one judge of the same model family, small single-turn fixtures. The senior-engineer methods (footprint of a similar change, scouting, options and seams) did not show a measured benefit on this model. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
 
 ## FAQ
 

@@ -16,7 +16,7 @@ Tabby: one registered Claude skill (`tabby/SKILL.md`) that routes to four module
 | `tabby/review/` | Diff review, security audit (code, and dependencies, CI and release), native boundary review. |
 | `tabby/documentation/` | Diátaxis page types plus ADR, runbook, troubleshooting, changelog, commit messages, docs drift, style. |
 | `tabby/design/` | Choosing and checking a diagram, visual style, explainer animations. |
-| `tabby/evals/` | 60 eval cases plus `tabby.triggers.json` (30 should-trigger, 30 should-not). |
+| `tabby/evals/` | 84 eval cases plus `tabby.triggers.json` (30 should-trigger, 30 should-not). |
 
 Project memory is the `## Tabby` section of the user's AGENTS.md (`reviewed:`, `purpose:`, `users:`, `goals:`, `growth:`, `out-of-scope:`, `constraints:`, `always:`, `ask-first:`, `never:`, `kind:`, `modules:`, `docs:`, `commands:`, `open:`; the template is in `tabby/references/start.md`). Tool and style defaults are the separate `## Python defaults` section; `kind:` is only in `## Tabby`. The router reads it before any task.
 
@@ -38,7 +38,7 @@ Every content file was checked. Result:
 
 - **Rewritten earlier:** `architecture/senior-engineering.md` (was a list of named examples; now questions, with the stories in the sibling file).
 - **Given an opening question this round** (they were bare rule lists): `code/minimalism.md`, `errors.md`, `comments.md`, `typing.md`, `logging.md`, `security-basics.md`; `testing/testing.md`, `fixtures.md`; `workflow/debugging.md`, `planning.md`; `library/shared/tooling.md`, `layout.md`; `documentation/voice.md`. The rules stay as the detail beneath.
-- **Already principle-led, left alone:** `architecture/fit.md`, `design-patterns.md`; `code/stdlib-first.md`, `resources.md`, `validation.md`, `scripts.md`; `library/native/architecture.md`; `dependencies/dependencies.md`; `workflow/refactoring.md`, `shipping.md`, `checking-apis.md`; `library/shared/api-design.md`; `references/*`; `documentation/placing.md`, `style.md`, `concision.md`, `ai-patterns.md`; the `review/` files.
+- **Already principle-led, left alone:** `architecture/fit.md`, `design-patterns.md`; `resources.md`, `validation.md`, `scripts.md`; `library/native/architecture.md`; `dependencies/dependencies.md`; `workflow/refactoring.md`, `shipping.md`, `checking-apis.md`; `library/shared/api-design.md`; `references/*`; `documentation/placing.md`, `style.md`, `concision.md`, `ai-patterns.md`; the `review/` files.
 - **Reference by nature, left alone:** `application/**` (versioned facts run on a stated Python and library version), `dependencies/uv*.md`, `library/native/{c,rust,zig,ci-wheels}.md`, `library/shared/{release,versioning,entry-points,package-setup}.md`, `design/**` (a fixed visual vocabulary), page-type templates (`tutorial`, `how-to`, `reference`, `explanation`, `adr`, `runbook`, `symptom-fix-matrix`, `changelog`, `readme`, `docstrings`).
 - **Lists by design, left alone:** every `smells.md` (smell → fix). Their intro says when to report one.
 - **Not checked for rigor:** whether each added lead is the best wording. They are short and easy to tune.
@@ -58,10 +58,12 @@ A case is `case.yaml`, `prompt.md`, `fixture.sh`, `graders/*.md`. Pitfalls found
 
 ## Open
 
-- **The router description now committed has not had a full run.** `AUDIT.md` has runs A and B and the spot check. Re-measure with `--allow-tools Write Edit Bash WebFetch` (needs `bubblewrap` and `socat`; `apt-get update && apt-get install -y bubblewrap socat`) and replace the README table. A full run costs about $5.
-- **The description decides everything.** A rewrite that dropped the opening "Rules for every code change ... Use whenever ..." cut loading from 114 to 49 of 180 runs. Test any wording on a dozen cases with `--ablation none --runs 1` before a full run.
-- The router does not load on review, audit and documentation requests with any wording tried.
-- The C++, supply-chain, commit-message and docs-drift leaves show no measured lift on Haiku.
+- **Results (10 November 2026, 84 cases, 3 runs, both arms): 0.85 with, 0.76 without; +19% cost and +50% turns.** Efficiency targets (cost at most +15%, turns at most +35%) were missed. Full account and per-case table in `AUDIT.md`. A full run costs about $8 (more if the 5-hour usage limit interrupts it: use `--max-cost-usd` and check for `exit 1: You've hit your ... limit` errors, which score 0 without grading).
+- **The senior-engineer methods have no measured benefit yet** (footprint, scout, learned note, options and seams on the API example). Either the model already does them or the instructions are not followed; reading the traces of `scout-reports-what-it-noticed` and `api-on-plain-sql-*` is the next step. The reuse ladder and deprecation rules do show lift.
+- **Cost:** 51 of 84 cases tie; Tabby adds 22% there. Ideas not tried: shorten `development/index.md` (5.9 KB), drop `workflow/shipping.md` reading, make the `Noticed:` line optional for tiny changes.
+- **The router description decides everything.** A rewrite that dropped "Rules for every code change ... Use whenever ..." cut loading from 114 to 49 of 180 runs. Test any wording on a dozen cases with `--ablation none --runs 1` before a full run. The router does not load on review, audit and documentation requests with any wording tried.
+- **Confidential content in git history.** An example scene from another project was in the animation engine; it is removed from the current tree, but 6 commits on the PR branches still contain it. The owner said they will handle the history. Do not rewrite or force-push without their say-so.
+- The C++, supply-chain, commit-message, docs-drift, porting, specs and slices, deprecation and repo-audit leaves are unproven except deprecation. nanobind templates were not built.
 - `development/SOURCE.md` and `THIRD_PARTY_NOTICES.md` credit upstream sources; keep them current when adding material.
 
 ## Working rules for this repo
