@@ -15,7 +15,7 @@
 ## When an item becomes real
 
 1. Re-read `out-of-scope:` and `constraints:`. Ask if the task conflicts.
-2. Read the leaf for that kind of work: `development/library/native/index.md` for a first Rust or C module, `development/application/apis/http/services.md` for a first endpoint, `development/library/shared/api-design.md` for a first public release.
+2. Read the leaf for that kind of work: `development/library/native/index.md` for a first Rust, C or C++ module (`porting.md` to move an existing function), `development/application/apis/http/services.md` for a first endpoint, `development/library/shared/api-design.md` for a first public release.
 3. For a first data structure, representation or algorithm choice, read `development/architecture/fit.md`.
 4. Write one ADR (`documentation/history/adr.md`): the decision, the alternatives, what would change it.
 5. Move the item from `growth:` to `goals:` or delete it. Update `reviewed:`.

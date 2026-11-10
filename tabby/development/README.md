@@ -22,7 +22,7 @@ application/              services and jobs
   apis/                   shared/ and http/
   workers/                background jobs
 architecture/             patterns, layers, extension points; design fit (choosing data structures and representations)
-assets/                   pyproject.toml, Makefile, ci.yml, release.yml templates
+assets/                   pyproject.toml, Makefile, ci.yml, release.yml; native/ (Cargo lints, nanobind CMake and pyproject)
 ```
 
 Every area has an `index.md` with a "read when" line per file, and most have a `smells.md`: a list of mistakes for that area, each line a smell and its fix (`code/`, `testing/`, `library/`, `library/native/`, `application/`). A path with no folder means no specialist guidance exists for it.

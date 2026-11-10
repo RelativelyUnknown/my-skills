@@ -75,3 +75,17 @@ Every source was cloned again at the commit below and read for ideas Tabby did n
 Read again, nothing taken: heydamir/unslop (`97daa3e`, interface restyling; its copy rules are already in `documentation/ai-patterns.md`), vercel-labs/agent-skills (`1a2c79d`, React and deployment rules; its one-rule-per-file layout was weighed against Tabby's smells lists and not adopted), pbakaus/impeccable (`ec229b4`, interface design), ComposioHQ/awesome-claude-skills (`be2a406`, application connectors).
 
 The C++ leaf (`development/library/native/cpp.md`) was written from the documentation in wjakob/nanobind (`af676a3`, BSD-3-Clause) and pybind/pybind11 (`3beb376`, BSD-3-Clause); no text copied.
+
+## Gap fill (2026-11-10)
+
+Ideas restated for Tabby; no text copied. `development/SOURCE.md` lists the leaves.
+
+| Source (commit) | Licence | Idea taken | Where it went |
+| --- | --- | --- | --- |
+| morganlinton/BeautifulRust (`b971843`) `rust-port` | MIT | list the observable behaviour including the quiet parts, port the tests first, keep and flag the original's bugs, mapping tables | `development/library/native/porting.md` (the arithmetic and sorting rows were run with Python 3.13, rustc and g++) |
+| addyosmani/agent-skills (`301b02b`) `spec-driven-development`, `incremental-implementation`, `planning-and-task-breakdown` | MIT | a short spec with boundaries and success criteria, thin vertical slices, checkpoints | `development/workflow/specs-and-slices.md` |
+| github/awesome-copilot (`227949a`) `refactor-plan` | MIT | a plan with rollback and risks before a multi-file refactor | `development/workflow/refactoring.md` |
+| DietrichGebert/ponytail (`96608e0`) `ponytail-audit`, `ponytail-debt` | MIT | audit order (bug, risk, load, test, speed, lean), a debt ledger of shortcut markers | `review/repo-audit.md` |
+| cloudflare/security-audit-skill (`c1c8a8c`), addyosmani `doubt-driven-development` | MIT | a fresh verifier tries to refute each candidate | `review/security-audit/reporting.md` |
+| addyosmani `deprecation-and-migration` | MIT | the questions before deprecating, advisory against compulsory, strangler, zombie code | `development/workflow/deprecation-and-migration.md` |
+| morganlinton/BeautifulRust `lints/` | MIT | a lints block with the suppression and panic lints | `development/assets/native/Cargo.lints.toml` (run under clippy 0.1.97) |

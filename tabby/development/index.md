@@ -29,8 +29,9 @@ Read `code/smells.md` first. Then read only the leaf below for the main thing th
 - tests: `testing/testing.md`, `testing/smells.md`
 - slow code: `performance/index.md`
 - uv, locking, CI job, Dockerfile: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
+- a request with several readings, a feature over several steps: `workflow/specs-and-slices.md`; removing or replacing a public name, dependency or Python version: `workflow/deprecation-and-migration.md`
 - scope, when to stop: `workflow/planning.md`; a bug: `workflow/debugging.md`; restructuring code: `workflow/refactoring.md`; an API you are unsure of: `workflow/checking-apis.md`
-- a library others install: `library/smells.md`, `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C, C++, Zig or Cython behind a Python API: `library/native/index.md`, `library/native/smells.md`, then the leaf for the language (`rust.md`, `c.md`, `cpp.md`, `zig.md`)
+- a library others install: `library/smells.md`, `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C, C++, Zig or Cython behind a Python API: `library/native/index.md`, `library/native/smells.md`, then the leaf for the language (`rust.md`, `c.md`, `cpp.md`, `zig.md`); moving a Python function native: `library/native/porting.md`
 - retries, timeouts, backoff, circuit breakers: `application/shared/resilience.md`
 - a service: `application/smells.md`, `application/apis/http/services.md`, `application/apis/shared/security.md`, `application/shared/async.md`, `observability.md`, `configuration.md`; workers: `application/workers/background-jobs.md`
 - pattern, layers, extension point, settings object: `architecture/design-patterns.md`

@@ -11,3 +11,15 @@ Change the structure, not the behaviour. Behaviour here means public interfaces,
 7. **Prove it.** Run the same checks after as before. Report the rung, what moved, what you kept on purpose, and anything you could not verify.
 
 Not a refactor: a signature change, a new error type, a different output. That is a feature or a break: handle it as one ([api-design.md](../library/shared/api-design.md)).
+
+## Plan for a change across several files
+
+Before editing, write the plan and show it. Skip it for a change in one file or one function.
+
+- **Current state and target,** each in a few lines.
+- **Affected files and callers,** found by search, including tests, scripts, config and docs.
+- **Steps,** each leaving the tests green and committable alone.
+- **Rollback:** how to undo each step. If there is none for a step (a data change, a public name), that step needs approval first.
+- **Risks:** what could break that the tests do not cover.
+
+A plan that changes a public API, a schema or a dependency waits for a yes; any other plan can proceed once shown.

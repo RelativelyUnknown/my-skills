@@ -11,6 +11,7 @@ index.md
 changes/self-review.md                silenced checks, weakened tests, smells, API breaks, new dependencies
 security-audit/process.md             name the boundary, trace input to sink, try to disprove each candidate
 security-audit/reporting.md           confirmed / needs-validation / rejected; severity only for confirmed; a fix with a regression test
+repo-audit.md                        whole-repository audit: bugs, risk, load, missing tests, what to delete
 security-audit/supply-chain.md        package sources, CI workflows as authorization code, the release path
 native-boundary.md                    per-function table and checklist for the Python to Rust or C boundary
 ```
