@@ -1,5 +1,7 @@
 # Debugging
 
+Debugging is testing a hypothesis about a cause, not trying changes until the symptom stops. A symptom that disappears without a stated cause has usually only moved. Reproduce, name the cause, fix that, and prove it with the test that failed first.
+
 - Reproduce first: a failing test, or the smallest failing input. A fix starts red ([testing.md](../testing/testing.md)).
 - State the cause of a bug in one sentence before fixing it; if you cannot, investigate.
 - Never special-case inputs or hardcode expected outputs. No sleeps, retries or longer timeouts until the cause of a race is known. Do not pin, downgrade or swap a dependency, or edit `sys.path`, to get past an error without explaining why.

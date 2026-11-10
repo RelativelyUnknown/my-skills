@@ -1,5 +1,7 @@
 # Tooling
 
+A rule a tool can check should be checked by the tool, not remembered by an agent or reader. Ask: is this mechanical? Then it goes in config and CI; prose is for judgment. A tool's score is a hint to look at the code, never a target to game.
+
 - Mechanical rules live in tool config, not in prose: the ruff list in the template covers bare and blind `except`, mutable defaults, positional booleans, `Any`, leftover `print`, f-strings in logging, blocking calls in async code and more. Do not select ruff's `D1xx` rules; they push filler docstrings.
 - `strict = true` in `[tool.pytest.ini_options]` needs pytest 9; on older pytest use `--strict-markers` and `xfail_strict = true`.
 - `make complexity` runs `xenon` as advice only and is not part of `check`. A rank (`xenon`, `radon cc`, a lint rule) is a hint, not a verdict: simplify when you can say what is hard to follow and a clearer shape exists (early returns, a lookup table). Do not contort logic or split a function into vaguely named fragments to reach an A; a flat run of cases or a parser table that ranks C stays as it is, and the report says so. Never add `# noqa`, raise a threshold or make a test pass differently because of a rank; if CI gates on it and fails, report the failure and the readable options.

@@ -1,5 +1,7 @@
 # Security basics
 
+Security bugs come from one mistake: data crossing into something that interprets it (SQL, a shell, a deserializer, a template) or a secret crossing out. Ask of each boundary: who controls this value, and what will it be treated as? Keep data as data (parameters, argument lists, safe parsers) and keep secrets out of code and logs. The lines below are that question for the common interpreters.
+
 - No secrets in code, tests or fixtures; read them from the environment. Parameterized SQL only. No `shell=True` with interpolated values. No `eval`, `exec`, `pickle` or `yaml.load` on untrusted data.
 
 Apply a line only when its condition holds.

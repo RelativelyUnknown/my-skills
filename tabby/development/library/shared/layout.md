@@ -2,6 +2,8 @@
 
 Packages are organized by component; dependencies point one way. Look at the tree before adding a file.
 
+Layout is a map of who may know about whom. Ask where a new piece belongs by what it owns and what depends on it, not by what kind of code it is; a circular import is the map telling you a boundary is in the wrong place.
+
 - Name packages for what they own (`billing/`, `ingest/`, `auth/`), never for the shape of the code (`models/`, `utils/`, `common/`, `misc/`, `base/`).
 - A component is a subpackage with its own `__init__.py` and tests that mirror it. Nest only when a package has distinct components, to about three levels below the source root.
 - Each package has a public face: its `__init__.py` re-exports what others may use, and other packages import from it, not from internal modules. Layers point one way (`api` to `services` to `domain`); a circular import means the boundary is in the wrong place, so move the boundary instead of hiding the import inside a function.

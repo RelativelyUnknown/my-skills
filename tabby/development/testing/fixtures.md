@@ -1,5 +1,7 @@
 # Fixtures
 
+A fixture should make a test easier to read, not hide what it depends on. Ask: can a reader see what state this test starts from? Keep scope and sharing as small as the cost allows, so one test cannot change another's outcome.
+
 - Smallest scope that works: the default `function` scope. Widen to `module` or `session` only for something expensive and read-only.
 - Shared fixtures live in the `conftest.py` nearest to their users. A fixture used by one file stays in that file.
 - Yield for cleanup:

@@ -1,5 +1,7 @@
 # Voice and structure
 
+The reader is mid-task and reads in order, looking for the next thing to do. Ask of each sentence: what does this let them do or understand, and is it the first thing they need? Put the point first, keep sentences single-purpose, and cut anything that announces instead of informing.
+
 - Address the reader as "you". Present tense ("returns", not "will return"). Active voice; name who acts. Imperative for instructions ("Run", "Set").
 - Lead with the point. A page's first sentence says what it is for; a section's first sentence answers its heading. No introductions that announce what follows.
 - Sentence-case headings that name the task or topic: "Configure retries", not "Retries Configuration Options". Task headings start with a verb.
