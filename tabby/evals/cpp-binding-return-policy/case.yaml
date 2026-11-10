@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: cpp-binding-return-policy
+expected_outcome: |
+  The binding for Grid.cell states a return value policy under which Python does not own the pointer and the Grid stays alive while a Cell is held (reference_internal, or an equivalent), an out-of-range index raises IndexError instead of reading past the vector, and leak warnings are not switched off.
+context:
+  scaffold_script: fixture.sh

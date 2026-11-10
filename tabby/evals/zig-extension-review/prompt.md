@@ -1,5 +1,5 @@
 ---
-tags: [tabby, native, zig]
+tags: [native-extension, zig]
 max_turns: 25
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,5 +1,5 @@
 ---
-tags: [python-engineering, machine-learning]
+tags: [development, machine-learning, baseline]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: audit-ci-workflow
+expected_outcome: |
+  The report names the two real problems in labeler.yml (a pull_request_target workflow that checks out and runs the pull request head with a secret present, and a pull request title pasted into a shell script) and does not call the two look-alikes vulnerabilities (ci.yml running fork code on pull_request without secrets, and release.yml using trusted publishing with id-token only in the publish job).
+context:
+  scaffold_script: fixture.sh

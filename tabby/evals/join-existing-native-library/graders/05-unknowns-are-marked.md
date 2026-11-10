@@ -6,6 +6,7 @@ target:
 pattern: "\\((?:assumed|inferred)\\)"
 weight: 2
 flags: i
+arm: with-only
 ---
 
 Facts that were inferred or assumed are labelled

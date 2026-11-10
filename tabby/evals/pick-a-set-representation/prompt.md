@@ -1,5 +1,5 @@
 ---
-tags: [tabby, design-fit, rust]
+tags: [development, architecture, rust]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

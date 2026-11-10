@@ -1,5 +1,5 @@
 ---
-tags: [configuring-python-applications, settings]
+tags: [development, configuration, settings]
 max_turns: 30
 timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash]
