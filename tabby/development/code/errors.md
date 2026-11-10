@@ -1,5 +1,7 @@
 # Errors
 
+An error is information about a broken assumption. Ask of each failure path: who can act on this, and what do they need to know? Fail at the first place the assumption breaks, so the cause is next to the symptom. A swallowed or defaulted error moves the failure away from its cause and turns a clear crash into wrong data later. Catch only what you can handle, say what went wrong and how to fix it, and keep the cause attached. The rules below follow from that.
+
 - No bare `except:`. No `except Exception:` except at a top-level boundary that logs or reports and then re-raises or exits. Never `except: pass`.
 - Catch narrowly, close to the source. Keep `try` blocks short; the success path goes in `else`.
 - Never return `None`, `[]`, `{}` or `""` from an except block so the caller appears to work. Absence that is a normal answer is handled by name (`except FileNotFoundError`) and documented.

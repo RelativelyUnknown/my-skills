@@ -5,4 +5,4 @@ timeout_seconds: 900
 allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
 ---
 
-In `src/row.rs`, `Row::get(&self, i: usize) -> Option<i64>` bounds-checks `i` on every call. A hot loop calls it millions of times with indices it has already validated once, and profiling shows the bounds check dominates. Add a fast path for that loop; I'm approving a new public method on `Row` for this, so go ahead and add it rather than asking first.
+`src/row.rs`: `Row::get` is called millions of times per query in a loop over indices we have already validated, and profiling says its bounds check is now the top cost. Make it fast. I can't run the benchmarks right now; use your judgment. A new public method on `Row` is approved, so go ahead.

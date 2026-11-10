@@ -2,6 +2,8 @@
 
 Tests are the spec. They change only when the spec changes, and every test must be able to fail.
 
+A test is evidence about behaviour. Ask of any test: if the behaviour broke, would this notice, and does the expected value come from the spec rather than from the code under test? A test that cannot fail, or that was bent to pass, is not evidence; the rules below protect that.
+
 ## Never-miss rules (every rigor level)
 
 1. **Never edit, delete, skip or xfail an existing test to get green.** Never weaken an assertion (`is not None` for `== expected`, wider tolerance, looser regex). If a test contradicts the spec, the docstring or the task, stop treating it as yours to fix: leave it untouched, finish the rest of the work, and report the test, the line it contradicts and the change you propose.

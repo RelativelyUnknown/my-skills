@@ -1,5 +1,7 @@
 # Typing
 
+Types are checked documentation of what can flow where. Ask of each value: what is it exactly, and what may the caller rely on? A precise type lets the checker catch a mistake before a user does; `Any` and bare dicts give that up silently. Fix a type error by understanding it, never by silencing it.
+
 - Structured data is a dataclass, `TypedDict` or the model class the project already uses, not a `dict[str, Any]` passed around. No `Any`: write the precise type, or `object` for a truly opaque value. `Optional` return only if the function can return `None`. No tuples of three or more values as a return type. No `x = x or 30` (`or` also replaces `0` and `""`).
 - Run the checker after every change and fix the types instead of silencing it; never add a second checker.
 

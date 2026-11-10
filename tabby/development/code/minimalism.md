@@ -4,6 +4,8 @@ Aim for the fewest concepts a reader must learn, not the fewest characters. Writ
 
 Every function, class, constant and exception is something a reader must look up. Each must earn its place.
 
+The question for every piece you add: what does the reader lose if this is gone? If nothing, it is cost without value. Indirection (a wrapper, a hook, a constant, a base class) is worth it only when it hides a real decision or protects a rule that must stay consistent; "flexibility" nobody asked for is a guess about the future, paid for now. The lines below are that question applied to common cases.
+
 - A function must hide real logic or enforce a rule that has to stay consistent. Deletion test: if inlining it leaves every call site as short and clear, delete it. No one-line wrappers around expressions, stdlib calls or library methods (`def quote(s): return f'"{s}"'`).
 - A method that never reads `self` is a function; a class with `__init__` and one method is a function. No wrapper classes that only forward; no ABCs, Protocols, factories or registries with one implementation; no parameters, options or hooks "for flexibility"; no `**kwargs` unless forwarding.
 - Defaults are literals in the signature or the dataclass field (`timeout: float = 30`), so hovering over a function in an editor shows the value. No `DEFAULT_*` constant and no `DEFAULTS` dict standing in for a default, and "easy to change later" is no reason: a caller can pass the value and a developer edits one line. A constant is for a value the body uses; a value used once stays inline. Mutable defaults are never allowed: use `None` and build the object in the body.
