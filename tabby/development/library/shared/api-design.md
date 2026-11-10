@@ -48,6 +48,8 @@ A public name is a promise. Make the common call short, the wrong call hard to w
 
 ## Changing a public name
 
-- New options: keyword-only with defaults (safe in a minor release). Never change a return type in a minor release (`list` to `Iterator`, `T` to `T | None`).
+Every change to a public name still needs the ask-first approval the front door requires, whether additive or breaking; "safe" below is about what a caller's existing code survives, not about permission.
+
+- New options: keyword-only with defaults (compatible with a minor release, since no existing call breaks). Never change a return type in a minor release (`list` to `Iterator`, `T` to `T | None`).
 - Rename or remove: keep the old name for at least one minor release as a deprecated alias with `warnings.warn(..., DeprecationWarning, stacklevel=2)` naming the replacement. Update every caller, test, doc, the README and the changelog; the changelog says what users must change.
 - Removal is breaking: get approval; versions and changelog rules are in [release.md](release.md).
