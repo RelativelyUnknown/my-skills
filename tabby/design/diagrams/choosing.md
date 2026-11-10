@@ -18,21 +18,21 @@ One type per picture. If you need two, draw two.
 ## Budget
 
 - At most 9 nodes and 12 connections. Past that, split into an overview and a detail picture.
-- One or two accented elements: the thing the reader should look at. Accent on everything is accent on nothing.
+- One or two accented elements: the focus (see Roles in [style.md](style.md)). Accent on everything is accent on nothing.
 - Remove test, before reporting done: can a node go (would the reader still understand)? Do two nodes always travel together (merge them)? Is a connection obvious from the layout (remove the line)? Does a label repeat what colour or position already says?
 
 ## Nodes and connections
 
 - A node is a name plus, at most, one short role in lowercase (`http server`, `job table`). Names in the sans face; ports, commands and paths in mono.
-- Three kinds of connection, and no more: the main request or data path (accent, solid, one continuous route), secondary runtime connections (neutral, solid), build-time or deploy-time relations (neutral, dashed).
+- Three kinds of connection, and no more: the main request or data path (the focus colour, solid, one continuous route), secondary runtime connections (`BASE`, solid), build-time or deploy-time relations (`SLOT`, dashed).
 - Connections run horizontally and vertically, with right-angle bends. No diagonals, no two lines on top of each other, no line passing behind a box it does not connect to.
 - A label sits beside its line on a background patch, never on the stroke, and never rotated.
 - No legend inside the drawing; if the picture needs one, the roles are not clear enough.
 
 ## Format
 
-- SVG with real text, so it stays searchable and sharp. Follow [style.md](style.md) for colour roles and type.
-- Accessible by default: `role="img"` on the `<svg>`, a `<title>` (the subject, under 60 characters) as its first child and a `<desc>` (one sentence about the content, not the geometry), both referenced by `aria-labelledby`.
+- SVG with real text, so it stays searchable and sharp. Start from the skeleton in [style.md](style.md): its custom properties carry the colour and font tokens (light and dark), and a design.md replaces their values.
+- Accessible by default: the skeleton's `role="img"`, `<title>` (the subject, under 60 characters, first child) and `<desc>` (one sentence about the content, not the geometry), referenced by `aria-labelledby`.
 - Diagrams that live in Markdown and must stay editable by hand: Mermaid, if the project already uses it. Do not convert existing diagrams between formats unasked.
 
 ## Verify by looking

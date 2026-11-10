@@ -1,23 +1,44 @@
 // common.js — frame, palette, typography and the split-screen chart shared by every scene.
 //
 // Colour roles (the whole visual language):
-//   input / recorded data    = ink dots              #111111
-//   baseline / "before"      = grey                  #808080 (zones #F0F0F0)
-//   result / "after"         = accent blue           #004A96 (line #4472AA, guides #7CA0C6, zones #E0E9F2)
+//   given data, names        = ink                   #111111
+//   baseline / secondary     = grey                  #808080 (zones #F0F0F0)
+//   focus: the result, or the main flow = accent blue #004A96 (line #4472AA, guides #7CA0C6, zones #E0E9F2)
 //   no value                 = dashed grey outline   #BDBDBD
 // Text: title, the two panel labels, axis ticks and result values. No legend, no captions.
-// Re-brand by setting window.THEME = { ACCENT: '#…', … } in specs.js; unset keys keep the defaults.
+// Re-brand by setting window.THEME in specs.js: ACCENT, BASE, SURFACE, INK, LABEL, MUTED, GRID, AXIS, SLOT, FONT { sans, mono }.
+// ACCENT alone derives its three tints; unset keys keep the defaults. See design/diagrams/style.md.
 
 const W = 960, H = 540;                       // 16:9 stage; render.js renders it at 2× (1920×1080)
 window.STAGE_W = W; window.STAGE_H = H;
 
+// Mix colour a over colour b at share t (hex strings #RRGGBB).
+const mixHex = (a, b, t) => '#' + [1, 3, 5].map(i =>
+  Math.round(parseInt(a.substr(i, 2), 16) * t + parseInt(b.substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('').toUpperCase();
+const THEME = window.THEME || {};
+const SURFACE = THEME.SURFACE || THEME.WHITE || '#FFFFFF';
+// Giving only ACCENT (or BASE) is enough: the tints are derived over the surface, as the defaults were
+// (zone 12%, light 52%, mid 77% of the accent; the grey zone 12% of the grey).
+// Neutrals follow from INK over the surface the same way (label 71%, muted 49%, grid 7%, axis 23%, empty slot 28%).
+const luminance = h => { const f = c => (c /= 255) <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4);
+  const [r, g, b] = [1, 3, 5].map(i => f(parseInt(h.substr(i, 2), 16))); return .2126 * r + .7152 * g + .0722 * b; };
+const contrast = (a, b) => { const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p); return (x + .05) / (y + .05); };
+const INKC = THEME.INK || '#111111';
+const derived = Object.assign({},
+  THEME.INK || THEME.SURFACE || THEME.WHITE ? { LABEL: mixHex(INKC, SURFACE, .71), MUTED: mixHex(INKC, SURFACE, .49), GRID: mixHex(INKC, SURFACE, .07), AXIS: mixHex(INKC, SURFACE, .23), SLOT: mixHex(INKC, SURFACE, .28) } : {},
+  THEME.ACCENT ? { ACCENT_MID: [.77, .85, .93, 1].map(t => mixHex(THEME.ACCENT, SURFACE, t)).find(c => contrast(c, SURFACE) >= 3) || THEME.ACCENT, ACCENT_LIGHT: mixHex(THEME.ACCENT, SURFACE, .52), ACCENT_ZONE: mixHex(THEME.ACCENT, SURFACE, .12) } : {},
+  THEME.BASE ? { BASE_ZONE: mixHex(THEME.BASE, SURFACE, .12) } : {});
 const C = Object.assign({
   INK: '#111111', LABEL: '#555555', MUTED: '#8A8A8A', GRID: '#EEEEEE', AXIS: '#C9C9C9', WHITE: '#FFFFFF',
   BASE: '#808080', BASE_ZONE: '#F0F0F0',
   ACCENT: '#004A96', ACCENT_MID: '#4472AA', ACCENT_LIGHT: '#7CA0C6', ACCENT_ZONE: '#E0E9F2',
   SLOT: '#BDBDBD',
-}, window.THEME || {});
-const FONT = { sans: 'IN', mono: 'JBM' };
+}, derived, THEME, { WHITE: SURFACE });
+// Text on an accent fill: whichever of the surface and the ink reads better on it.
+C.ON_ACCENT = contrast(C.ACCENT, SURFACE) >= contrast(C.ACCENT, INKC) ? SURFACE : INKC;          // WHITE is the stage surface; THEME.SURFACE is its documented name
+document.documentElement.style.background = SURFACE;
+// Font stacks. 'IN' and 'JBM' are the bundled Inter and JetBrains Mono (style.css); a design.md font goes first.
+const FONT = Object.assign({ sans: 'IN', mono: 'JBM' }, THEME.FONT || {});
 const PILL_H = 24, PILL_R = 12;
 
 // Text, centred by default, mono 14 px.

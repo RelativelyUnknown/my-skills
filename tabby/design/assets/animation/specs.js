@@ -1,5 +1,6 @@
 // specs.js — one entry per scene: window.SPECS.<scene> = { title, … }. Plain data, no logic.
 // Compute real values in your own code (any language) and write them here; scenes only draw.
+// Optional brand: window.THEME = { ACCENT: '#1B7F5C', SURFACE: '#101614', INK: '#EAF2EE', FONT: { sans: "'IBM Plex Sans', IN, sans-serif" } };
 window.SPECS = {
   example: {
     title: 'method comparison – Before vs After',

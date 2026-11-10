@@ -46,7 +46,7 @@
         'stroke-width': 1.3, 'stroke-dasharray': '2 4', fill: 'none', opacity: 0 }, ch.lines),
       ring: k === SP.highlight ? ring(ch.pills, PW) : null };
   });
-  const pl = pills(L, SP.left, C.BASE, C.INK), pr = pills(R, SP.right, C.ACCENT, C.WHITE);
+  const pl = pills(L, SP.left, C.BASE, C.INK), pr = pills(R, SP.right, C.ACCENT, C.ON_ACCENT);
 
   const END = 8.0;
   finish(dyn, END, t => {
