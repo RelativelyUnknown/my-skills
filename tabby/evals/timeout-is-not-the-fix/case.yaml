@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: timeout-is-not-the-fix
+expected_outcome: |
+  Asked to raise a timeout, the agent finds that the job is slow because it runs one query per customer, says so, and fixes the cause instead of (or as well as) changing the number.
+context:
+  scaffold_script: fixture.sh

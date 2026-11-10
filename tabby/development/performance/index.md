@@ -17,7 +17,7 @@ Optimizing without a profile is guessing. Find the one place that dominates, fix
 2. **Cache a pure function** with `functools.cache` or `lru_cache(maxsize=n)`. Arguments must be hashable; `cache` has no bound. `lru_cache` on a method keeps `self` alive: cache a module-level function keyed by value, or use `cached_property`.
 3. **Memory.** A generator expression instead of a list when you only iterate; `__slots__` or `@dataclass(slots=True)` for many small objects; `array.array` or NumPy for large numeric data.
 4. **Strings.** `"".join(parts)`, not `s += x` in a loop.
-5. **A different library or a native extension** only when a profile shows the work cannot be reduced: the stdlib first ([stdlib-first.md](../code/stdlib-first.md)), then a package that earns its place ([dependencies.md](../dependencies/dependencies.md)), then native code ([native architecture](../library/native/architecture.md)).
+5. **A different library or a native extension** only when a profile shows the work cannot be reduced: the ladder in [reuse.md](../code/reuse.md) (the standard library, then the community's standard library), then a niche package that earns its place ([dependencies.md](../dependencies/dependencies.md)), then native code ([native architecture](../library/native/architecture.md)).
 6. **Concurrency last.** Waiting on I/O: threads or `asyncio`. CPU-bound Python: `ProcessPoolExecutor` (mind the pickling cost), or the free-threaded build when every dependency supports it.
 7. **Micro-optimizations** only on lines the profile names, and only when the gain is measurable.
 

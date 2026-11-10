@@ -20,7 +20,7 @@ Ask round one now and stop: the user asked for the interview, so the interview i
 
 | State | Signals | Rounds |
 | --- | --- | --- |
-| New | no code, or a stub | 3: purpose, users, success; the shape (kind, growth, constraints, and the tool stack: offer two or three stacks with trade-offs, such as uv with ruff and pytest, or poetry with black and unittest, and recommend the one the user's team already knows); boundaries |
+| New | no code, or a stub | 3: purpose, users, success; the shape (kind, growth and workload, constraints, and the tool stack: offer two or three stacks with trade-offs, such as uv with ruff and pytest, or poetry with black and unittest, and recommend the one the user's team already knows); boundaries |
 | Young | under about 30 commits or 6 months, few tests, no CI | 2: confirm the table plus purpose and users; growth and boundaries |
 | Established | many commits, CI, tests, docs | 2: corrections to the table only; then growth, out of scope, boundaries. A third round only for a conflict the research found: docs against code, two build systems, a TODO that contradicts the README |
 | Has a section | `## Tabby` exists | no rounds unless the drift check (section 6) finds a change |
@@ -44,6 +44,10 @@ purpose: one line
 users: who, in what situation
 goals: up to three, measurable where possible
 growth: ordered list; the first item is likeliest
+workload: read or write heavy, rough request rates, concurrency, data size
+map: five lines: entry points, layers, how data is reached, where the closest example of each kind of change lives
+conventions: the patterns this code follows that a newcomer would miss
+gotchas: things that surprised the team
 out-of-scope: list
 constraints: python 3.12+; no new runtime dependencies
 always: run `make check` before reporting done

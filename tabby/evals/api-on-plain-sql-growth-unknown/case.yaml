@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: api-on-plain-sql-growth-unknown
+expected_outcome: |
+  Same app with no saved section: the API is built from the same evidence, and the reply asks the one or two questions about what is coming that would change the choice, while still doing the work.
+context:
+  scaffold_script: fixture.sh

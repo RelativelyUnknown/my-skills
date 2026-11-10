@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: learned-something-offers-a-note
+expected_outcome: |
+  While doing the task the agent meets a non-obvious project rule (config must not import the ORM, enforced by a test), keeps to it, and mentions it so it can be saved; it does not write to the repository's agent file unasked.
+context:
+  scaffold_script: fixture.sh

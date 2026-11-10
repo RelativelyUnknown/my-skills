@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: footprint-of-a-similar-change
+expected_outcome: |
+  Adding a flag touches every place the previous flag touched: the CLI, its test, the README usage, the changelog and the shell completion file.
+context:
+  scaffold_script: fixture.sh

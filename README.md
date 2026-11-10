@@ -27,7 +27,7 @@
 
 You know the cat. It sits on the warm laptop, bats at the keys, and something gets typed. Fast, confident, not quite what you meant.
 
-Tabby sits on your agent's keyboard instead. It reads the project, does the task you asked for, and makes the agent do what a careful senior engineer would: find the cause before the fix, reach for the standard library, keep the diff small, and never edit a test to get it green.
+Tabby sits on your agent's keyboard instead. It reads the project, does the task you asked for, and makes the agent do what a careful senior engineer would: find the cause before the fix, reuse before you write (the standard library, then the community's standard library, then your own), think past the ask while keeping options open, keep the diff small, and never edit a test to get it green.
 
 ## Install
 

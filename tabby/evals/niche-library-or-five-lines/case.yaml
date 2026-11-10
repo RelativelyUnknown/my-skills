@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: niche-library-or-five-lines
+expected_outcome: |
+  A tiny job with a niche package suggested is done with a few lines of the standard library (or the package is added with a flagged reason); accents are handled and tested.
+context:
+  scaffold_script: fixture.sh

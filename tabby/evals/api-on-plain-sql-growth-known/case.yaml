@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: api-on-plain-sql-growth-known
+expected_outcome: |
+  In a web app with plain parameterised SQL and a saved growth and workload, "build me an API" is answered with a choice grounded in the project (data layer, sync or async, caching), the existing query functions reused behind the handlers, explicit response shapes, and the stated growth cited.
+context:
+  scaffold_script: fixture.sh

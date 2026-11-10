@@ -1,45 +1,41 @@
 # Development
 
-Defaults: the `## Python defaults` section of AGENTS.md: `python`, `runner`, `build`, `test`, `lint`, `ci`, `types`, `layout`, `rigor` (lite, full, ultra), `report` (terse, normal, audit), `docstrings`. Infer gaps from the repo (grep `pyproject.toml`, lockfiles, CI). The project kind is `kind:` in `## Tabby`. Ask only what is still unknown, once, with your question tool if you have one, and save the answers there. Cannot ask: use defaults, mark them `(assumed)`, say so in your report.
+Tool and style defaults are the `## Python defaults` section of AGENTS.md (`python`, `runner`, `build`, `test`, `lint`, `ci`, `types`, `rigor`, `report`, `docstrings`); the kind is `kind:` in `## Tabby`. Infer gaps from the repo; ask only what is still unknown; if you cannot ask, use defaults marked `(assumed)`.
 
-Commands in the leaves are written for uv (`uv run`, `uv add`). In a project that uses another runner, use that runner's equivalent from its documentation or `--help`.
+## Work like a senior engineer
+
+1. **Know the platform.** For each job, name what the language and ecosystem already give, in the order of `code/reuse.md` (the project's own tool, the standard library, the community's standard library, then niche or your own); `ecosystem.md` lists them by job. Check installed versions and the Python target (`workflow/checking-apis.md`); do not recall.
+2. **Know the project.** Before the first edit, map it in about five commands: entry points, layers, how data is reached, the closest existing code to the ask, the most-changed files (`git log --name-only`), decisions (ADRs, `git log -S<name>`). With a `## Tabby` section, read its `map:`, `conventions:`, `gotchas:`, `workload:`, `growth:` instead.
+3. **Understand the want.** One line before building: "You asked X. I take the goal to be Y. I will also do Z, and leave W." Y comes from the README, `purpose:`, `growth:`, nearby TODOs and recent commits. Z is the footprint of the last similar change: the commit that added the previous flag or endpoint, and every file it touched (tests, docs, help text, changelog, config). If the literal ask will not reach the goal (a longer timeout when the cause is a query per item), say so first.
+4. **Think past the ask.** When the request adds a layer or a hard-to-undo choice (an API, queue, cache, auth, ORM, async, a new store), read `references/growth.md` in the skill folder: options from the project's evidence, the one that fits today, the seams that keep the others cheap.
+5. **Build** under the rules below.
+6. **Verify, then scout.** Run it. Add at most three lines under "Noticed": a measured slowdown on the touched path, hand-rolled code the ladder covers, a bug next to the change, duplicated logic. Fix only what is inside the lines you change and trivially safe; list the rest; never widen the diff silently.
+7. **Offer what you learned.** If the task taught something non-obvious about the project, end with "Learned: ...; add to AGENTS.md?" and write it only on a yes.
 
 ## Never miss
 
 - Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal.
 - Never edit, delete, skip or loosen an existing test to get green. A test that contradicts the spec: leave it, finish the rest, report it.
-- Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom.
-- Do not silence tools (`# type: ignore`, `# noqa`, `cast`, `Any`, looser config); fix the cause.
-- A request you cannot state as one change ("make the reports better") gets one to three short questions, each with a suggested answer, before any edit. A request that names the change is done, not discussed.
-- "Get rid of" a public name is a deprecation, not a deletion, unless you can show nothing outside this repository uses it: keep it, make it warn, move the callers, and say removal needs approval (`workflow/deprecation-and-migration.md`).
-- A feature with several plausible readings ("email the report weekly") gets a one-page spec (objective, success criteria, open questions with your assumed answers) and its first slice only; say what the next slices would be (`workflow/specs-and-slices.md`).
-- Smallest diff that solves it properly. No new dependency, public API change, commit or push unasked.
-- Use the project's own tools and Python target, found from its lock file, `Makefile` or CI (`development/which-type.md`): poetry stays poetry, black stays black, unittest stays unittest. Never swap them, never add a second tool for a job one does, never install silently.
-- Replies, comments and docs are short: what is not obvious, no filler or praise. Never drop "not", "never", "only", "except".
+- Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom. Do not silence tools (`# type: ignore`, `# noqa`, `Any`, looser config).
+- A request you cannot state as one change ("make the reports better") gets one to three short questions with suggested answers before any edit. A request that names the change is done, not discussed. A feature with several readings gets a one-page spec and its first slice (`workflow/specs-and-slices.md`).
+- "Get rid of" a public name is a deprecation unless nothing outside this repository can use it (`workflow/deprecation-and-migration.md`).
+- Smallest diff that solves it properly. A new dependency is chosen by the ladder and named in the reply (rung and reason), and needs a yes first when `ask-first:` says so. A public API change, a commit or a push only when asked.
+- Use the project's own tools, runner and Python target, found from its lock file, `Makefile` or CI (`which-type.md`): never swap one, add a second for a job one does, or install silently. Commands in the leaves are written for uv; use the project's equivalent.
+- Replies, comments and docs are short: what is not obvious, no filler. Never drop "not", "never", "only", "except".
 
 ## Read before you write
 
-Read `code/smells.md` first. Then read only the leaf below for the main thing the task does, and a second only if the task clearly needs it. When you reach a situation a leaf covers while working (a retry, an open file, a new dependency), read that leaf then, not before. Read `workflow/shipping.md` when you are about to report. The paths start at `development/` inside the tabby skill folder: `code/smells.md` is `development/code/smells.md`. Open each with Read; do not search.
+Read `code/smells.md` first, then only the leaf for the main thing the task does (a second only if clearly needed); others when you reach a situation they cover. `workflow/shipping.md` when about to report. Paths start at `development/`. Open each with Read; do not search.
 
-- new function, class, option, constant, wrapper, name: `code/minimalism.md`
-- hand-rolled utility, new package, optional dependency (extra, lazy import): `code/stdlib-first.md`, `dependencies/dependencies.md`, `library/shared/api-design.md`
-- raising, catching, partial failure: `code/errors.md`; parsing input: `code/validation.md`
-- annotations, checker errors: `code/typing.md`
+- new function, class, option, constant, name: `code/minimalism.md`
+- what exists for a job: `ecosystem.md`; hand-rolled utility, new package: `code/reuse.md`, `dependencies/dependencies.md`
+- errors: `code/errors.md`; parsing input: `code/validation.md`; annotations: `code/typing.md`
 - files, connections, locks, subprocesses, streams: `code/resources.md`
-- feature newer than the Python target: `code/python-versions.md`
-- docstring, comment: `code/comments.md`
-- logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`
-- script or CLI: `code/scripts.md`
-- tests: `testing/testing.md`, `testing/smells.md`
-- slow code: `performance/index.md`
-- uv, locking, CI job, Dockerfile: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`
-- a request with several readings, a feature over several steps: `workflow/specs-and-slices.md`; removing or replacing a public name, dependency or Python version: `workflow/deprecation-and-migration.md`
-- scope, when to stop: `workflow/planning.md`; a bug: `workflow/debugging.md`; restructuring code: `workflow/refactoring.md`; an API you are unsure of: `workflow/checking-apis.md`
-- a library others install: `library/smells.md`, `library/shared/package-setup.md`, `layout.md`, `versioning.md`, `release.md`; with Rust, C, C++, Zig or Cython behind a Python API: `library/native/index.md`, `library/native/smells.md`, then the leaf for the language (`rust.md`, `c.md`, `cpp.md`, `zig.md`); moving a Python function native: `library/native/porting.md`
-- retries, timeouts, backoff, circuit breakers: `application/shared/resilience.md`
-- a service: `application/smells.md`, `application/apis/http/services.md`, `application/apis/shared/security.md`, `application/shared/async.md`, `observability.md`, `configuration.md`; workers: `application/workers/background-jobs.md`
-- pattern, layers, extension point, settings object: `architecture/design-patterns.md`
-- choosing a data structure, representation or algorithm (Rust, C, C++ or Python): `architecture/fit.md`, `architecture/fit-examples.md`
-- a design decision under real limits, `unsafe` code, or a workaround for a lower layer: `architecture/senior-engineering.md`
+- feature newer than the Python target: `code/python-versions.md`; docstring, comment: `code/comments.md`
+- logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`; script or CLI: `code/scripts.md`
+- tests: `testing/testing.md`, `testing/smells.md`; slow code: `performance/index.md`
+- retries, timeouts, circuit breakers: `application/shared/resilience.md`
+- scope: `workflow/planning.md`; bug: `workflow/debugging.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; several readings: `workflow/specs-and-slices.md`; removing or replacing: `workflow/deprecation-and-migration.md`
+- pattern, layers: `architecture/design-patterns.md`; data structure or algorithm: `architecture/fit.md`; design under real limits, `unsafe`: `architecture/senior-engineering.md`
 
-Other project kinds: `development/which-type.md`, then each `kind` path's `index.md` (kind paths start at `development/`).
+The project's kind adds one index (`which-type.md` names it: library, service, worker, native). Read it and only it.

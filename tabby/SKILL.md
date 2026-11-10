@@ -19,6 +19,10 @@ Each is a folder in this skill's folder; open its `index.md` with Read first. Fi
 | `documentation/` | a README, docstring, tutorial, how-to, reference, changelog, ADR, runbook, troubleshooting page, CONTRIBUTING, commit message, or checking docs against code |
 | `design/` | a diagram, an architecture picture, an explainer animation |
 
+## How to work
+
+Work as a senior engineer: read `development/index.md` (the method: know the platform, know the project, understand the want, think past the ask, scout), and `references/growth.md` when a request adds a layer.
+
 ## Section exists
 
 1. Read it. Load the modules in `modules:` that the task needs, and follow `kind:`, `always:`, `ask-first:` and `never:`.

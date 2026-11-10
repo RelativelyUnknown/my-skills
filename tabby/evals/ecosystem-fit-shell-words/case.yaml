@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: ecosystem-fit-shell-words
+expected_outcome: |
+  Splitting a typed command line like a shell uses shlex, not a regular expression, and handles quotes.
+context:
+  scaffold_script: fixture.sh
