@@ -1,11 +1,7 @@
 ---
-type: regex
-target:
-  source: file
-  path: "tests/test_tasks.py"
-pattern: "send_welcome_email\\([^)]*\\)[\\s\\S]*send_welcome_email\\("
-flags: i
+type: llm
+focus: trace
 weight: 2
 ---
 
-A test calls the task twice
+PASS if the agent wrote a test, in any test file under `tests/`, that calls `send_welcome_email` twice for the same user (one after the other or from two threads) and asserts that exactly one email was sent. FAIL if no such test was written.
