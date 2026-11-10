@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: ecosystem-fit-ordering
+expected_outcome: |
+  Ordering tasks by dependency uses the standard library (graphlib), reports a cycle clearly, adds no dependency and has tests.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: validate-with-existing-pydantic
+expected_outcome: |
+  Uses the pydantic the project already depends on (a BaseModel with Field constraints), instead of hand-written dict checks or a second mechanism; no dependency change.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: audit-repo-bloat-and-load
+expected_outcome: |
+  The report finds the query-per-item loop, the check-then-write race on coupons and the untested refund arithmetic, says the invoice formatter is dead, does not call the console-script entry point dead, does not call the marked shortcut a bug, and changes nothing.
+context:
+  scaffold_script: fixture.sh

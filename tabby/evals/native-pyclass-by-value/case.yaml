@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: native-pyclass-by-value
+expected_outcome: |
+  A `translate` function that compiles against PyO3 0.30. Since 0.30 a `#[pyclass]` that is `Clone` is no longer extractable by value on its own: the solution either opts in with `#[pyclass(from_py_object)]` or takes the class by reference (`&Point`, `PyRef`, `Bound`). It is registered in the module, declared in the stub and exported.
+context:
+  scaffold_script: fixture.sh

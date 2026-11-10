@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: find-faster-json-library
+expected_outcome: |
+  Measures the current loader first, recommends a candidate instead of migrating, vets it with real signals (requires-python, licence, wheels, release history, advisories), states behaviour differences and when not to switch, and does not edit `pyproject.toml` or `src/`.
+context:
+  scaffold_script: fixture.sh

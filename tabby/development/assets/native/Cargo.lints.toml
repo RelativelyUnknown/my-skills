@@ -1,0 +1,18 @@
+# Paste into Cargo.toml (rust-version 1.81 or later for #[expect]). Fix a lint; where one is wrong
+# for a single item use #[expect(clippy::name, reason = "...")] on that item, never a crate-wide allow.
+# Checked with cargo and clippy 0.1.97 on a crate with an unwrap, an index and a cast (10 November 2026).
+[lints.rust]
+unsafe_op_in_unsafe_fn = "warn"
+missing_debug_implementations = "warn"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "warn"          # Python input must never reach an unwrap
+expect_used = "warn"          # allowed only for invariants your own code guarantees
+panic = "warn"
+indexing_slicing = "warn"
+undocumented_unsafe_blocks = "warn"
+missing_errors_doc = "warn"
+missing_panics_doc = "warn"
+module_name_repetitions = "allow"

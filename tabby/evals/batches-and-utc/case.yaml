@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: batches-and-utc
+expected_outcome: |
+  Uses `itertools.batched` and `datetime.fromisoformat` with UTC on Python 3.12, no regex, no one-line wrapper helpers, with tests.
+context:
+  scaffold_script: fixture.sh

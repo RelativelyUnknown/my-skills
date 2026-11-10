@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: ci-job-for-a-uv-project
+expected_outcome: |
+  A CI job that syncs with `uv sync --locked` (not --frozen, not pip) and runs the tests through uv.
+context:
+  scaffold_script: fixture.sh

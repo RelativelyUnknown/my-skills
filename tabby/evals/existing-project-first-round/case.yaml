@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: existing-project-first-round
+expected_outcome: |
+  On an established project with a user present, the agent researches the code read-only and asks a first round of at most three questions. Each cites what the code showed and carries a recommended answer; none asks what the repo already states. It writes no files yet.
+context:
+  scaffold_script: fixture.sh

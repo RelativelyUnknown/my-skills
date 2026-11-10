@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: retry-a-flaky-http-call
+expected_outcome: |
+  A bounded retry with jitter, only for transient failures (connection errors, 429 and 5xx), Retry-After honoured, a timeout set on the client, no while True; tests do not sleep.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: diagram-of-a-small-service
+expected_outcome: |
+  One SVG architecture diagram at docs/architecture.svg whose nodes are the things that exist in the repository (the API, the worker, Postgres, Redis and the external payment provider), with no invented components, a small number of nodes, and a title and description for screen readers.
+context:
+  scaffold_script: fixture.sh

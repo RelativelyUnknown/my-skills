@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: new-package-one-check-command
+expected_outcome: |
+  A src-layout package with pyproject.toml as the only config, py.typed, `__all__`, strict mypy, ruff, strict pytest, a test, and one command (Makefile `check`, justfile or noxfile) that runs everything.
+context:
+  scaffold_script: fixture.sh

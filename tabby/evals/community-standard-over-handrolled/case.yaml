@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: community-standard-over-handrolled
+expected_outcome: |
+  A job that needs timeouts, retries and connection reuse is done with the ecosystem's standard HTTP library, added and named in the reply, not a hand-rolled urllib loop.
+context:
+  scaffold_script: fixture.sh

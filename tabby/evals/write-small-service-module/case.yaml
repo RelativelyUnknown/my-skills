@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: write-small-service-module
+expected_outcome: |
+  Written code avoids the common smells without being told: encoding on open, a timeout and a status check on the network call, timezone-aware time, no masked missing data, literal defaults, no import-time work, no broad except.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: native-free-threaded
+expected_outcome: |
+  The module declares it supports the free-threaded build with `#[pymodule(gil_used = false)]`, so importing it on python3.14t does not re-enable the GIL, and the change adds no unsafe Sync hack.
+context:
+  scaffold_script: fixture.sh

@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: local-development-env-file
+expected_outcome: |
+  A committed .env.example with placeholders and variable names, .env ignored by git, and no real-looking secret anywhere.
+context:
+  scaffold_script: fixture.sh

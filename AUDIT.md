@@ -1,0 +1,207 @@
+# Audit, November 2026
+
+Three audits of Tabby against its mission: an opinionated, token-efficient skill set for the whole development process of a Python project and its native languages (C, C++, Rust, Zig), selected by a router from an interview or the project's scope. Each section says what was checked, what was found, what changed and what was left.
+
+## 1. Third-party sources
+
+Every listed source was cloned at its current commit and read for ideas Tabby did not yet use. An idea was adopted only when it closed a gap that could be named; it was restated in Tabby's words, principle first. No text was copied. Commits and licences are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+
+| Source | Your target | Found | Decision |
+| --- | --- | --- | --- |
+| DietrichGebert/ponytail | Core skills, simpler inputs and types | Most of it was already in `minimalism.md` and `stdlib-first.md`. Missing: asking first whether code needs to exist, keeping values in the form they arrive in, a list of what minimalism never cuts, moved code keeping its checks, reviewing against the expected load | Adopted in `code/minimalism.md`, `workflow/refactoring.md`, `review/changes/self-review.md` |
+| cloudflare/security-audit-skill | Review module | The boundary, trace and disprove method was already adapted. Missing: dependencies, CI and release | New leaf `review/security-audit/supply-chain.md`. Its 14 other domain files (cloud, mobile, protocols, AI) are outside a Python library or service audit and were left |
+| morganlinton/BeautifulRust | Rust and PyO3 | Tabby's Rust leaf covered the binding only. The crate behind it had one line of style | New section "The core crate" in `library/native/rust.md` (error enum, invariants in types, lossy casts, trait contracts, map order). Bevy and port material left |
+| pbakaus/impeccable, cathrynlavery/diagram-design, caru-ini/stack-diagram | One diagram and animation skill, no PowerPoint | `design/` had a visual style and an animation engine but nothing on whether to draw, which diagram, or how to check one. No PowerPoint wording remains (`grep -rniE "powerpoint|pptx|slide|deck" tabby` finds nothing) | New leaf `design/diagrams/choosing.md`. Their 45 diagram types, icon sets, importers and brand onboarding were left: too much to load for the diagrams a code project needs. impeccable is interface design and gave nothing new here |
+| JuliusBrussee/caveman | Concise comments and docs | The rules against filler and dropped negations were in. Missing: when a short reply must become full sentences, leaving existing comments alone, commit messages | Adopted in `workflow/shipping.md`, `code/comments.md`; new leaf `documentation/commits.md`. The caveman voice itself is not used |
+| addyosmani/agent-skills | API design | Call-site-first design and validation at the edge were in. Missing: observable behaviour becomes contract, state-dependent fields as a union, when to write an ADR and matching the project's convention, details that must survive an edit, a timeout as an unknown outcome | Adopted in `api-design.md`, `typing.md`, `history/adr.md`, `concision.md`, `resilience.md`. REST naming tables and TypeScript examples left |
+| ComposioHQ/awesome-claude-skills | Architecture and patterns | Application connectors and office skills | Nothing taken |
+| github/awesome-copilot | Architecture and patterns | Mostly other stacks. `docs-sync-audit` describes a docs drift audit Tabby lacked | New leaf `documentation/drift.md` |
+| mukul975/Anthropic-Cybersecurity-Skills | Security workflows | 818 skills, mostly incident response and offensive tooling. Relevant: dependency confusion and typosquatting | Covered as checks in `supply-chain.md` and the existing `dependencies.md`; the tooling walkthroughs left |
+| vercel-labs/agent-skills | Rewrite structure for Python | React, React Native and deployment rules, one rule per file with an impact rating | Not adopted. Tabby's per-area `smells.md` already holds one line per rule at a fraction of the tokens; splitting to a file per rule would multiply reads |
+| heydamir/unslop | Rewrite structure for Python | Interface restyling. Its copy rules (no hype words, no unverifiable claims) are already in `documentation/ai-patterns.md` | Nothing taken |
+
+The C++ leaf you asked for (`library/native/cpp.md`) was written from the nanobind and pybind11 documentation. One claim in my first draft was wrong and was corrected against the pybind11 docs before commit: an exception type not derived from `std::exception` becomes a `RuntimeError`, it does not terminate the process.
+
+## 2. Skills against the mission
+
+| Question | Finding | Action |
+| --- | --- | --- |
+| Does the router select a subset from an interview or the project scope? | Yes: `kind:` and `modules:` in `## Tabby` are written by the interview (`references/start.md`) and read before each task. A small fix on a project with no section skips the interview by design | None |
+| One home for each fact? | `kind` was defined in both `## Tabby` and `## Python defaults` | `kind:` now lives only in `## Tabby` |
+| Names from earlier layouts? | `adding-observability` (two files), "detected `async` fact", `render.py`, "engineering" in the marketplace manifest, `tabby/review/references/` in the notices, a doubled word in the router | Fixed |
+| Principle first? | The handover's earlier audit holds. The five new leaves open with the question to ask | None |
+| Token cost | Always-on description 297 characters. No content file is over about 5,300 characters except `SOURCE.md`, which is never loaded for a task | None |
+| Every file reachable? | Every content file is named by an index or the front door; 0 broken links | Check script result recorded in the handover's working rules |
+| Coverage of the mission's scope | Missing: C++, commit messages, docs drift, CI and release security, how to choose a diagram | Added. Web apps and data or ML leaves were not built, by your choice |
+| Claims checked against real source? | New versioned claims name what they were checked against and say that nothing was compiled. GitHub Actions facts in `supply-chain.md` are from GitHub's documentation and were not exercised | Stated in the files |
+
+Not done: a line-by-line check of every existing versioned claim (Django 6, uv 0.13, PyO3 0.30 and others) against current releases. They carry their own "checked on" dates.
+
+## 3. Eval cases
+
+### What was wrong
+
+| Bias | Where | Effect | Fix |
+| --- | --- | --- | --- |
+| Graders that match Tabby's own vocabulary | `join-existing-native-library` (`## Tabby`, `kind:`, `modules:`, `(assumed)`), `agents-md-for-a-repo` (`## Python defaults`), `seeded-audit` ("confirmed", "needs validation") | The bare agent cannot know these words, so the lift was partly credited for wording. The README's largest lift (1.00 against 0.11) came from the first of these | Marked `arm: with-only`: reported, not scored. Outcome graders that either arm can pass were added in their place |
+| Prompts that name the answer | `request-metrics-bounded-labels` ("think about what you label the metrics with"), `do-not-over-engineer-orders` ("Don't over-engineer"), `retry-a-flaky-http-call` and `stop-calling-a-failing-dependency` ("tests that run instantly"), `enqueue-after-commit` (the requirement spelled out the fix) | Both arms were handed the rule the case was meant to test | Rewritten as a task and a symptom |
+| One accepted spelling of a correct answer | `bounded-fan-out-with-deadline` (`asyncio.timeout` and `TaskGroup` only), `batches-and-utc` (`batched` only), `payment-strategy` (a dict literal starting with `"card"`) | A correct solution in another form scored as wrong | Widened, or replaced by a rubric that states the behaviour |
+| Graders that cannot pass | About 20 graders need a `Bash` call and one needs `WebFetch`; the eval cannot grant `Bash` here | They fail in both arms, lowering every absolute score and hiding part of the difference | Kept, because they are right when `Bash` is granted. Scores below exclude them and say so |
+| Unbalanced, outdated trigger set | 58 should-trigger against 17 should-not; negatives such as "add type hints to src/pkg/io.py" contradicted the current description | A trigger test would have rewarded not firing on Python work | Rebuilt: 30 and 30 |
+| Old tags | `python-engineering`, `using-uv` and 12 more from the 20-skill layout | Results could not be grouped by module | Retagged; `protocol`, `baseline` and `guard` tags added |
+
+### What remains biased, and is labelled instead of fixed
+
+- **Protocol cases** (`existing-project-first-round`, `fresh-project-asks-first`, `join-existing-native-library`) test behaviour Tabby itself defines: ask before building, at most three questions, save a memory section. A bare agent that starts building is doing what many users expect. These are reported apart from the outcome cases.
+- **Opinion cases** (`literal-defaults-fetch-json`, `payment-strategy`, `one-settings-object`, `load-settings-house-rules`, `dedupe-lines-script`) grade Tabby's house style. The style has reasons, but the expected outcome comes from the skill, not from an outside standard.
+- **Prompts are still tidier than real requests**: one task each, a named file, a small fixture (about 70 lines). `vague-request-larger-repo` is the one case that starts from a complaint. There is no multi-turn case and no case in a large or messy repository.
+- **One model family** runs the agent and judges it (Haiku), three runs per arm.
+- **Two-sidedness**: six cases can catch the skill over-applying a rule (`do-not-over-engineer-orders`, `hard-problem-take-a-library`, `validate-one-function-stdlib`, `clean-diff-no-noise`, `contradicting-test-left-alone`, `tiny-fix-stays-tiny`). The other 54 only reward applying one.
+
+### Results
+
+Final measurement: 84 cases, 3 runs per case and arm, 504 valid runs, Haiku 5.5 as agent and as judge, `claude plugin eval --ablation with-without`, shell and web fetch granted (`bubblewrap` and `socat` installed). Scores are weighted pass rates of the scored graders; graders marked `arm: with-only` are reported, not scored. With three runs, a difference under about 0.15 on one case is noise.
+
+| | With Tabby | Without |
+| --- | --- | --- |
+| Mean score, all 84 cases | **0.85** | 0.76 |
+| Outcome cases (74) | 0.84 | 0.77 |
+| Protocol cases (10: interview, saved section, text in the repo) | 0.93 | 0.65 |
+| Guard cases (9: the right result is to do little) | 0.94 | 0.70 |
+| Cases where the bare agent already passed (5 baselines) | 0.93 | 0.96 |
+| Cost per run | $0.0168 | $0.0142 (+19%) |
+| Turns per run | 16.2 | 10.8 (+50%) |
+| Score per dollar | 50 | 53 |
+| Router loaded | 192 of 252 runs (76%) | |
+
+By how much Tabby changed each case:
+
+| Group | Cases | Score with / without | Cost per run |
+| --- | --- | --- | --- |
+| Helps by 0.10 or more | 26 | 0.90 / 0.56 | +17% |
+| Within 0.10 | 51 | 0.87 / 0.86 | +22% |
+| Hurts by 0.10 or more | 7 | 0.54 / 0.73 | +8% |
+
+**Against the targets set before the run**
+
+| Target | Result |
+| --- | --- |
+| Mean score at least the bare agent's | Met: +0.09 |
+| Cost per run at most 15% above the bare agent | **Missed: +19%** |
+| Turns at most 35% above | **Missed: +50%** |
+| Each new senior, options and ladder case at least 0.1 above the bare agent, or reported as unproven | **3 of 12 met**; the rest are unproven (below) |
+
+**What the evidence supports**
+
+1. **Tabby makes the agent follow engineering habits it would otherwise skip.** The largest gains: deprecate instead of delete (1.00 against 0.18), join a project and run the interview (1.00 against 0.25), a dict of functions instead of a class hierarchy (0.94 against 0.33), take the ecosystem's standard HTTP client (0.90 against 0.30), ask before changing something the saved section rules out (1.00 against 0.43), find that a timeout is not the fix (0.54 against 0.00), ask instead of guessing on a vague request (0.80 against 0.30), take a library for a hard problem (0.77 against 0.27), keep a pip or poetry project's own tools (up to +0.35).
+2. **It is not cheaper.** The score gain costs 19% more per run and half again as many turns, because it reads and reports more. Score per dollar is 50 against 53. On the 51 cases where it changes nothing it is overhead: +22% cost for a difference of 0.01.
+3. **Where it hurts (7 cases):** `speed-up-matcher` (0.08 against 0.42; the router loaded in none of the 3 runs, so this is probably noise in a case with LLM-judged graders), `vague-feature-gets-a-short-spec` (0.15 against 0.41), `dev-tool-and-script-dependency` (0.79 against 1.00), `api-on-plain-sql-growth-known` (0.52 against 0.69), `new-package-one-check-command` (0.75 against 0.90), `cpp-binding-return-policy`, `niche-library-or-five-lines` (each -0.10).
+4. **The senior-engineer additions are mostly unproven.** Of the 12 cases written for them, three show a lift: community standard over hand-rolled (+0.60), timeout is not the fix (+0.54), ecosystem fit, ordering (+0.22). No lift or a loss: the footprint of a similar change (1.00 both), learned-something note (0.86 both), scout (0.61 against 0.67), the API on plain SQL with growth known (0.52 against 0.69) and unknown (0.44 against 0.50), CLI to team tool (+0.04), the niche library case (-0.10). The options-and-seams method, which is what the API example was meant to test, did not show a benefit on this model; the lift on those two cases is not there.
+5. **The leaves added in this audit show little.** Porting to Rust +0.04, C++ return policy -0.10, CI workflow audit +0.05, repo audit +0.11, specs and slices -0.26 on its one case. They are kept because the mission names those areas, and are unproven.
+6. **Design:** with a design.md the diagram used the brand colours and fonts (0.89 against 0.81); without one the default case ties at 0.67 in both arms (the shell sandbox made the working directory read-only in some runs, so some runs could not save the file).
+
+**How the numbers moved during the audit** (same cases where they overlap)
+
+| Step | Change | Effect measured |
+| --- | --- | --- |
+| Interview first (the starting state) | A project with no saved section triggered the interview | `new-package-one-check-command` 0.36 against 0.98 |
+| Interview as a command | Offered once at the end, never a gate | the same case 0.75 against 0.90 (the stall is gone) |
+| Leaner front door | One leaf read instead of every match | Tabby reads of its own files per run 6.1 to 3.4 on 21 cases |
+| Reuse ladder, senior method, kind index | This run | the table above |
+
+**Incident:** the first full run of the final state reached the account's 5-hour usage limit; 236 of its 504 runs ended in an API error and scored nothing. The 41 cases that were cut off were re-run in full after the reset on the same commit, and the table above merges the 43 complete cases with those. Spend on measurement in this session was about $30 in total.
+
+**Not measured or not run**
+- Animation encoding (MP4, WebM, GIF): the example scene was rendered to PNG stills in light and dark and compared with a static diagram; the full encode was not run. The bundled fonts were not installed (npm), so renders used the system Inter.
+- The nanobind CMake and pyproject templates were not built (nanobind not installed). The Cargo lints block was run under clippy.
+- GitHub Copilot was never run. One model family, three runs, small single-turn fixtures, LLM judge of the same family.
+- The router does not load on review, audit and documentation requests: the cases for them score 0 of 3 loaded, so Tabby's effect there is not measured.
+
+**Per case, final run** (sorted by difference)
+
+| Case | With | Without | Difference |
+| --- | --- | --- | --- |
+| `deprecate-instead-of-delete` | 1.00 | 0.18 | +0.82 |
+| `join-existing-native-library` | 1.00 | 0.25 | +0.75 |
+| `payment-strategy` | 0.94 | 0.33 | +0.61 |
+| `community-standard-over-handrolled` | 0.90 | 0.30 | +0.60 |
+| `saved-section-conflicts-with-task` | 1.00 | 0.43 | +0.57 |
+| `timeout-is-not-the-fix` | 0.54 | 0.00 | +0.54 |
+| `vague-ask-clarifies-briefly` | 0.80 | 0.30 | +0.50 |
+| `hard-problem-take-a-library` | 0.77 | 0.27 | +0.50 |
+| `existing-project-first-round` | 0.92 | 0.49 | +0.44 |
+| `pip-requirements-project-keeps-its-tools` | 1.00 | 0.65 | +0.35 |
+| `literal-defaults-fetch-json` | 0.78 | 0.44 | +0.33 |
+| `typed-decorator-keeps-signature` | 1.00 | 0.67 | +0.33 |
+| `interview-saves-after-yes` | 0.67 | 0.33 | +0.33 |
+| `exhaustive-event-handling` | 1.00 | 0.77 | +0.23 |
+| `dedupe-lines-script` | 1.00 | 0.77 | +0.23 |
+| `ecosystem-fit-ordering` | 0.89 | 0.67 | +0.22 |
+| `retry-a-flaky-http-call` | 1.00 | 0.79 | +0.21 |
+| `interview-vague-yes-does-not-save` | 1.00 | 0.81 | +0.19 |
+| `contradicting-test-left-alone` | 0.88 | 0.73 | +0.15 |
+| `load-settings-house-rules` | 0.93 | 0.79 | +0.14 |
+| `vague-request-larger-repo` | 1.00 | 0.87 | +0.13 |
+| `adr-runbook-troubleshooting` | 0.99 | 0.86 | +0.13 |
+| `find-faster-json-library` | 0.67 | 0.55 | +0.12 |
+| `request-id-on-every-log-line` | 1.00 | 0.89 | +0.11 |
+| `vet-before-adding` | 0.78 | 0.67 | +0.11 |
+| `audit-repo-bloat-and-load` | 0.95 | 0.84 | +0.11 |
+| `ecosystem-fit-shell-words` | 1.00 | 0.92 | +0.08 |
+| `bug-fix-starts-red` | 0.50 | 0.42 | +0.08 |
+| `optional-parquet-dependency` | 0.69 | 0.61 | +0.08 |
+| `diagram-honours-design-md` | 0.89 | 0.81 | +0.07 |
+| `poetry-black-unittest-keeps-its-tools` | 0.87 | 0.80 | +0.07 |
+| `validate-with-existing-pydantic` | 1.00 | 0.94 | +0.06 |
+| `clean-diff-no-noise` | 0.61 | 0.56 | +0.06 |
+| `audit-ci-workflow` | 0.85 | 0.79 | +0.05 |
+| `validate-one-function-stdlib` | 0.97 | 0.92 | +0.05 |
+| `batches-and-utc` | 0.76 | 0.71 | +0.05 |
+| `three-pages` | 0.89 | 0.85 | +0.05 |
+| `cli-to-team-tool` | 0.93 | 0.89 | +0.04 |
+| `port-hot-path-to-rust` | 0.88 | 0.84 | +0.04 |
+| `add-owned-resource-endpoint` | 1.00 | 1.00 | +0.00 |
+| `agents-md-for-a-repo` | 1.00 | 1.00 | +0.00 |
+| `ci-job-for-a-uv-project` | 0.88 | 0.88 | +0.00 |
+| `clean-up-ingest-module` | 0.53 | 0.53 | +0.00 |
+| `clear-ask-no-interview` | 1.00 | 1.00 | +0.00 |
+| `confine-unsafe-accessor` | 0.80 | 0.80 | +0.00 |
+| `de-rerunnable-load` | 1.00 | 1.00 | +0.00 |
+| `diagram-of-a-small-service` | 0.67 | 0.67 | +0.00 |
+| `do-not-over-engineer-orders` | 1.00 | 1.00 | +0.00 |
+| `enqueue-after-commit` | 1.00 | 1.00 | +0.00 |
+| `footprint-of-a-similar-change` | 1.00 | 1.00 | +0.00 |
+| `fresh-project-open-request` | 1.00 | 1.00 | +0.00 |
+| `import-rows-some-fail` | 1.00 | 1.00 | +0.00 |
+| `learned-something-offers-a-note` | 0.86 | 0.86 | +0.00 |
+| `local-development-env-file` | 1.00 | 1.00 | +0.00 |
+| `native-free-threaded` | 1.00 | 1.00 | +0.00 |
+| `native-pyclass-by-value` | 0.90 | 0.90 | +0.00 |
+| `numpydoc-docstrings` | 0.78 | 0.78 | +0.00 |
+| `one-settings-object` | 0.44 | 0.44 | +0.00 |
+| `readme-for-small-package` | 1.00 | 1.00 | +0.00 |
+| `repo-text-addressed-to-the-agent` | 1.00 | 1.00 | +0.00 |
+| `request-metrics-bounded-labels` | 0.86 | 0.86 | +0.00 |
+| `settings-loaded-at-startup` | 0.91 | 0.91 | +0.00 |
+| `single-source-version` | 0.56 | 0.56 | +0.00 |
+| `stop-calling-a-failing-dependency` | 1.00 | 1.00 | +0.00 |
+| `stop-early-from-an-async-generator` | 1.00 | 1.00 | +0.00 |
+| `stream-command-output-with-limit` | 1.00 | 1.00 | +0.00 |
+| `tiny-fix-stays-tiny` | 1.00 | 1.00 | +0.00 |
+| `welcome-email-exactly-once` | 1.00 | 1.00 | +0.00 |
+| `write-small-service-module` | 0.91 | 0.91 | +0.00 |
+| `zig-extension-review` | 1.00 | 1.00 | +0.00 |
+| `seeded-audit` | 0.86 | 0.88 | -0.02 |
+| `scout-reports-what-it-noticed` | 0.61 | 0.67 | -0.06 |
+| `native-gil-checksum` | 0.82 | 0.88 | -0.06 |
+| `api-on-plain-sql-growth-unknown` | 0.44 | 0.50 | -0.06 |
+| `bounded-fan-out-with-deadline` | 0.93 | 1.00 | -0.07 |
+| `ml-leaky-validation` | 0.92 | 1.00 | -0.08 |
+| `pick-a-set-representation` | 0.67 | 0.75 | -0.08 |
+| `niche-library-or-five-lines` | 0.71 | 0.81 | -0.10 |
+| `cpp-binding-return-policy` | 0.80 | 0.90 | -0.10 |
+| `new-package-one-check-command` | 0.75 | 0.90 | -0.16 |
+| `api-on-plain-sql-growth-known` | 0.52 | 0.69 | -0.17 |
+| `dev-tool-and-script-dependency` | 0.79 | 1.00 | -0.21 |
+| `vague-feature-gets-a-short-spec` | 0.15 | 0.41 | -0.26 |
+| `speed-up-matcher` | 0.08 | 0.42 | -0.33 |

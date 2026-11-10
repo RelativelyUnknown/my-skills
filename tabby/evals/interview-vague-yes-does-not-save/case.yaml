@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: interview-vague-yes-does-not-save
+expected_outcome: |
+  "Sounds good, whatever you think" is not a yes: nothing is saved and the agent asks what to refine.
+context:
+  scaffold_script: fixture.sh

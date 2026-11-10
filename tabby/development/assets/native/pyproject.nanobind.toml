@@ -1,0 +1,22 @@
+# NOT BUILT HERE (see CMakeLists.txt). Replace <pkg>. Layout: src/<pkg>/__init__.py re-exports from
+# <pkg>._core, src/_core.cpp holds the bindings, tests/ runs against the installed wheel.
+[build-system]
+requires = ["scikit-build-core>=0.10", "nanobind>=2.4"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "<pkg>"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+[tool.scikit-build]
+wheel.py-api = "cp312"      # stable ABI wheel for 3.12+; remove if STABLE_ABI is not set in CMake
+wheel.packages = ["src/<pkg>"]
+
+[tool.cibuildwheel]
+test-command = "pytest {project}/tests"
+test-requires = "pytest"
+build-verbosity = 1
+
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "10.14"   # C++17 on macOS, per the nanobind packaging docs

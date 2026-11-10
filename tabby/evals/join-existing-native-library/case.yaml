@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: join-existing-native-library
+expected_outcome: |
+  The agent joins a repo that has no ## Tabby section. It reads the repo first, then saves a short ## Tabby section in AGENTS.md: kind points at the native library folder, the canonical check command comes from the repo, facts it could not know (growth, out of scope) are marked assumed rather than invented, and it writes no source code.
+context:
+  scaffold_script: fixture.sh

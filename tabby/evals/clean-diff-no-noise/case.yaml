@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: clean-diff-no-noise
+expected_outcome: |
+  A clean diff gets a short 'no findings' verdict with a one-line list of what was checked, not a list of speculative observations.
+context:
+  scaffold_script: fixture.sh

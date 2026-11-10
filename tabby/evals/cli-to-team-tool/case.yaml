@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: cli-to-team-tool
+expected_outcome: |
+  A personal CSV tool becomes a tool for other people: the agent finds what stops it working on their machines (a hard-coded path, no entry point, a traceback on a missing file, no install instructions), fixes it, and asks what would change the design.
+context:
+  scaffold_script: fixture.sh

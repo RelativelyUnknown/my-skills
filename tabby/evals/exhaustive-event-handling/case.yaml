@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: exhaustive-event-handling
+expected_outcome: |
+  Annotates the module so a new event kind is a type error: Literal or Enum, match with assert_never, structured payloads, no Any, modern union syntax.
+context:
+  scaffold_script: fixture.sh

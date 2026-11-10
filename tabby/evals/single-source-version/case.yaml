@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: single-source-version
+expected_outcome: |
+  Bumps the version to 0.4.0 in one place (removing or deriving the second `__version__` literal), writes a 0.4.0 changelog entry, builds and smoke-tests the wheel, and does not commit, tag or publish.
+context:
+  scaffold_script: fixture.sh

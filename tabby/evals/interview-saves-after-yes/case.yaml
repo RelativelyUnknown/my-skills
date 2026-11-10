@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: interview-saves-after-yes
+expected_outcome: |
+  After an explicit yes to the restated summary, the section is written in the user's words with the repo's check command, and no source file is touched.
+context:
+  scaffold_script: fixture.sh

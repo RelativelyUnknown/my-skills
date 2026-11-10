@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: zig-extension-review
+expected_outcome: |
+  Asked to add a Zig function to an existing Ziggy Pydust extension, the agent follows the project's existing pattern (comptime rootmodule registration, struct-shaped arguments) instead of inventing CPython C-API calls, and does not silently skip allocator or error handling.
+context:
+  scaffold_script: fixture.sh

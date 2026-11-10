@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: poetry-black-unittest-keeps-its-tools
+expected_outcome: |
+  In a poetry project that formats with black, lints with flake8 and tests with unittest, the new code and tests follow that stack: unittest TestCase tests, no uv, no ruff, no pytest, no new tool config.
+context:
+  scaffold_script: fixture.sh
