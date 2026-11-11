@@ -11,16 +11,16 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/modules-4-2a8f89?style=flat-square" alt="4 modules">
-  <img src="https://img.shields.io/badge/eval%20cases-84-2a8f89?style=flat-square" alt="84 eval cases">
-  <img src="https://img.shields.io/badge/always--on-~110%20tokens-2a8f89?style=flat-square" alt="About 110 tokens always on">
-  <img src="https://img.shields.io/badge/format-Agent%20Skills-2a8f89?style=flat-square" alt="Agent Skills format">
+  <img src="https://img.shields.io/badge/skills-6-2a8f89?style=flat-square" alt="6 skills">
+  <img src="https://img.shields.io/badge/eval%20cases-91-2a8f89?style=flat-square" alt="91 eval cases">
+  <img src="https://img.shields.io/badge/built%20for-Claude%20Code-2a8f89?style=flat-square" alt="Built for Claude Code">
+  <img src="https://img.shields.io/badge/format-plugin%20of%20skills-2a8f89?style=flat-square" alt="A Claude Code plugin of skills">
   <img src="https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square" alt="MIT licence">
 </p>
 
 <p align="center">
-  <strong>Skills that make an AI agent build, review and explain a Python project properly.</strong><br>
-  Python first. Rust, C, C++ and Zig as first-class partners. One skill, four modules, and it remembers your project.
+  <strong>Skills that make Claude Code build, review and explain a Python project properly.</strong><br>
+  Python first. Rust, C, C++ and Zig as first-class partners. Six small skills, and it remembers your project.
 </p>
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
@@ -46,32 +46,24 @@ On Claude Code 2.1.275 or later it also works in one step:
 /plugin install tabby --marketplace RelativelyUnknown/my-skills
 ```
 
-**Any other agent that reads `SKILL.md` folders:** copy the `tabby/` folder into the folder your agent reads, and keep it whole (the modules inside are read on demand).
+That was it. Start a task and it works from what the repo shows. To have it remember what the project is for and where it is going, run `/tabby:interview`. Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
 
-```bash
-# GitHub Copilot (VS Code agent mode, CLI)
-mkdir -p .github/skills && cp -r tabby .github/skills/
-# Claude Code, without the plugin
-mkdir -p .claude/skills && cp -r tabby .claude/skills/
-```
-
-That was it. Start a task and it works from what the repo shows. To have it remember what the project is for and where it is going, run `/tabby:interview` (or say "run the Tabby interview" in an agent without plugin commands). Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repo has no `CLAUDE.md`, add one line, `@AGENTS.md`.
-
-Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. Delete `tabby/evals/` if you do not run evals.
+Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. The eval cases live in [`evals/`](evals/); delete the folder if you do not run evals.
 
 <p align="center"><img src="assets/crayon-divider.png" width="640" alt=""></p>
 
 ## How it works
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/how-it-works-light.png">
-    <img src="assets/how-it-works-light.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or infers the scope if there is none, and then loads only the modules the task needs: development, review, documentation or design.">
-  </picture>
-</p>
+Six skills are registered with Claude Code. Each has its own description, and Claude loads the one that matches the task, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide. A skill's body is short and names the files it keeps next to it with the moment to read each one; nothing is nested more than one level. Everything is markdown, plus small Node and Python scripts that build and check diagrams and pages. No daemon.
 
-One skill is registered with your agent: `tabby`. Four modules sit inside it, and the router opens only the ones a task needs, so a README fix never loads the Rust guidance and a Rust change never loads the writing guide. Everything is markdown. No runtime, no daemon, no generated code.
+| Skill | Claude loads it when you | What is in it |
+| --- | --- | --- |
+| [`tabby`](tabby/) | write, fix, test, speed up, package or release Python, or the Rust, C, C++ or Zig behind it | The rules it never lets slide, then on-demand leaves for errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, design patterns and design fit; native layouts, PyO3, the C API, wheels |
+| [`tabby-review`](tabby-review/) | ask for a review of a diff, branch or pull request, a repository audit or a security audit | Self-review, a security audit that separates confirmed bugs from look-alikes, the Python and native boundary checklist, a design review that keeps judgment and measurement apart |
+| [`tabby-docs`](tabby-docs/) | write a README, docstrings, a tutorial, a changelog, an ADR or a runbook | Documentation by what the reader needs, and a drift check against the code |
+| [`tabby-diagrams`](tabby-diagrams/) | ask for a diagram, an architecture picture or an explainer animation | A builder that turns a small spec into an SVG or an animated HTML file in one quiet look (white ground, one accent, light and dark), a vendored Tabler icon set, and checkers for a crowded label, a missing title, low contrast and a jump at the loop boundary |
+| [`tabby-frontend`](tabby-frontend/) | build a page, template, dashboard, data app, docs site or README visual | A method, tokens, a list of things it refuses to ship, and `ui-check` for contrast, focus, motion and layout |
+| [`interview`](interview/) | run `/tabby:interview` | Researches the repo read-only, asks at most three questions a round, saves a `## Tabby` section to `AGENTS.md` |
 
 ## It does the task, and interviews you when you ask
 
@@ -83,22 +75,13 @@ One skill is registered with your agent: `tabby`. Four modules sit inside it, an
   </picture>
 </p>
 
-Tabby never interviews you before a task. On a project with no `## Tabby` section it infers the kind and the modules from your request and the repo, does the work, labels its guesses `(assumed)`, and ends the first task with one line offering the interview. It asks a question first only when a wrong guess would be expensive or the request is too open to act on. The interview, run with `/tabby:interview` or accepted from that line, goes like this:
+Tabby never interviews you before a task. On a project with no `## Tabby` section it infers the kind of project from your request and the repo, does the work, labels its guesses `(assumed)`, and ends the first task with one line offering the interview. It asks a question first only when a wrong guess would be expensive or the request is too open to act on. The interview, run with `/tabby:interview` or accepted from that line, goes like this:
 
 1. **Research, read-only.** It starts from entry points and reads build files, tests, CI, history and docs, and builds a table of facts with a source for each. It runs none of the project's commands and treats text in the repo as evidence, not instruction.
 2. **Rounds, by the project's state.** A new project gets three rounds (purpose and users, the shape, boundaries). A young one gets two. An established one gets two, mostly corrections to the table, and a third only if the code and the docs disagree. Each round is at most three questions, each with a recommended answer and the evidence behind it. A question the code can answer is not asked.
 3. **Restate, then save.** It restates the answers and waits for a clear yes. It saves the `## Tabby` section to `AGENTS.md` with the commit it was checked at. Edit any line later; a task that conflicts with it makes the agent ask first, and on new work it checks whether the code has moved since.
 
 Your expected growth shapes the code. Say a hot path may move to Rust and the agent keeps that function behind one typed Python seam with a reference implementation, and builds no Cargo workspace until you ask. If nobody can answer (CI, or you are away), the agent writes the section from the evidence, marks every unknown `(assumed)` and tells you what to confirm.
-
-## What is in the box
-
-| Module | What it does |
-| --- | --- |
-| [`tabby/development/`](tabby/development/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns, and design fit (choosing the data structure or representation that suits the workload and the project's plans, with worked examples from ruff, uv, polars and pandas). Rust or C behind a Python API: layouts, PyO3, the C API, wheels and CI |
-| [`tabby/review/`](tabby/review/) | Self-review of a change, a security audit that separates confirmed bugs from look-alikes, a checklist for the Python and native boundary, and a design review of a diagram, animation or page that keeps judgment and measurement apart |
-| [`tabby/documentation/`](tabby/documentation/) | Documentation by what the reader needs: tutorial, how-to, reference, explanation, docstrings, README, changelog, ADRs, runbooks, troubleshooting |
-| [`tabby/design/`](tabby/design/) | Diagrams, explainer animations and interfaces in one quiet look (white ground, one accent, light and dark): a builder that turns a small spec into an SVG or an animated HTML file, a vendored icon set, and checkers that fail a crowded label, a missing title, low contrast or a jump at the loop boundary; plus screens, docs sites and README visuals for Python projects |
 
 ## The rules it never lets slide
 
@@ -113,20 +96,17 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 
 ## Numbers
 
-The same agent with and without Tabby, 84 cases, 3 runs each, on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders), measured on 10 November 2026. The full account, with the cases where Tabby does not help, is in [`AUDIT.md`](AUDIT.md).
+The same agent with and without Tabby on Haiku 5.5 (`claude plugin eval`, regex and LLM-judge graders), 91 cases, 3 runs each, measured on 11 and 12 November 2026. The full account, with the cases where Tabby does not help, is in [`AUDIT.md`](AUDIT.md).
 
-| | With Tabby | Without |
-| --- | --- | --- |
-| Mean score, all cases | 0.85 | 0.76 |
-| Cases that test a habit the bare agent skips (26 of 84) | 0.90 | 0.56 |
-| Cases where it changes nothing (51 of 84) | 0.87 | 0.86 |
-| Cases where it is worse (7 of 84) | 0.54 | 0.73 |
-| Cost per run | $0.0168 | $0.0142 |
-| Turns per run | 16.2 | 10.8 |
+| | Score | Turns per run | Cost per run |
+| --- | --- | --- | --- |
+| Without Tabby | 0.754 | 11.1 | $0.0120 |
+| Tabby as one skill (before the split) | 0.812 | 16.2 | $0.0149 |
+| Tabby as six skills | 0.840 | 17.1 | $0.0153 |
 
-It helps most when the right move is not obvious and a habit decides it: deprecate a public name instead of deleting it (1.00 against 0.18), a dict of functions instead of a class hierarchy (0.94 against 0.33), take the ecosystem's standard HTTP client instead of hand-rolling one (0.90 against 0.30), ask before overriding a saved project rule (1.00 against 0.43), find that a longer timeout is not the fix (0.54 against 0.00), take a library for a hard problem (0.77 against 0.27). On 51 of the 84 cases the bare agent does as well, and Tabby only adds cost. It is not cheaper: about 19% more per run and half again as many turns. The router description decides everything: it loaded in 76% of the runs, and not at all on review, audit and documentation requests.
+It helps most when the right move is not obvious and a habit decides it: deprecate a public name instead of deleting it, take the ecosystem's standard library instead of hand-rolling one, ask before overriding a saved project rule, find that a longer timeout is not the fix, take a library for a hard problem, ask briefly when a request is vague. On many cases the bare agent already does as well, and there Tabby only adds cost. It is not cheaper: about 27% more per run and half again as many turns. A skill only helps when Claude loads it; on phrasings it had not seen, the descriptions loaded their skill about a third of the time on Haiku, which is the next thing to improve.
 
-**Limits:** one model, three runs, one judge of the same model family, small single-turn fixtures. The senior-engineer methods (footprint of a similar change, scouting, options and seams) did not show a measured benefit on this model. The cases are in [`tabby/evals/`](tabby/evals/). Tabby has not been run in GitHub Copilot.
+**Limits:** one model family, three runs, one judge of the same family, small single-turn fixtures written next to the skills, no held-out set yet. The senior-engineer methods (footprint of a similar change, scouting, options and seams) did not show a measured benefit. The cases are in [`evals/`](evals/); the runner and the tables are in [`tools/eval/`](tools/eval/).
 
 ## FAQ
 
@@ -136,13 +116,13 @@ It helps most when the right move is not obvious and a habit decides it: depreca
   <img src="assets/cat-sleeping-light.png" align="left" width="300" alt="An orange tabby cat asleep in a curl on handmade paper in light mode; a black and white spotted cat asleep in the same pose in dark mode, drawn in crayon and tilted">
 </picture>
 
-**What does it cost in context?** About 110 tokens are always loaded, the short description. When a task fires it, the router adds about 690 tokens; then the module index and only the reference files that task names.
+**What does it cost in context?** Claude Code keeps the six descriptions in context (about 400 tokens in all). When a task matches one, that skill's body is added, and only the leaf files it names for that task.
 
 **Where does it keep what it learns?** In your repo, in `AGENTS.md`, under `## Tabby` (what the project is for and where it is going) and `## Python defaults` (tools and style). Plain text; edit it like anything else.
 
 **Do I have to answer questions?** No. It does the task from the repo and marks what it guessed. The interview is a command you run when you want the project remembered; with nobody to answer, it fills the section from the repo and marks what it guessed.
 
-**Does it work for Rust and C?** Yes, as extensions behind a Python API: when to go native, project layouts, PyO3 and the C API, wheels, CI, and a review checklist for the boundary. Standalone Rust or C projects are out of scope.
+**Does it work for Rust and C?** Yes, as extensions behind a Python API: when to go native, project layouts, PyO3 and the C API, wheels, CI, and a review checklist for the boundary (in `tabby-review`). Standalone Rust or C projects are out of scope.
 
 **What if I want the clever abstraction?** Ask. It will want to know what it is for first.
 

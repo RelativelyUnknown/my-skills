@@ -28,7 +28,9 @@ def read(path):
 
 def errors_of(doc):
     out = []
-    for c in (doc or {}).get("cases", []):
+    if not doc or not doc.get("cases"):
+        return ["no result file written (the eval command failed to start)"]
+    for c in doc.get("cases", []):
         for arm, runs in c.get("arms", {}).items():
             for r in runs:
                 if r.get("error"):
