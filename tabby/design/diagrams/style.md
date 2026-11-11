@@ -1,88 +1,81 @@
 # Visual style
 
-One look for every diagram and animation, so a set of them reads as one. The tokens below are the single source: the animation engine's defaults (`assets/animation/common.js`) and static diagrams use the same values, in a light and a dark set. Apply before writing code. Motion is in [motion.md](../animation/motion.md); choosing and checking a diagram is in [choosing.md](choosing.md).
+One quiet look for every picture, so a set of them reads as one. White ground, soft zones, tonal role fills, one accent. Depth comes from tone, not from outlines or shadows. Tokens below are the single source; `assets/diagram/make.mjs` and the animation templates read the same values. Choosing and checking a diagram: [choosing.md](choosing.md). Connector geometry: [connectors.md](connectors.md). Motion: [../animation/motion.md](../animation/motion.md).
+
+## Build it, do not hand-place it
+
+Write a small JSON spec (nodes, edges, optional zones) and run `node assets/diagram/make.mjs spec.json out.svg`. The builder applies the tokens, the 4 px grid, icons, connector routing and label pills, and writes light and dark into one SVG. Hand-drawn SVG is for a type the builder does not cover (a sequence diagram); it follows the same tokens and the contract at the end of this page.
 
 ## design.md
 
-If `design.md` (or `DESIGN.md`) exists at the repository root, read it first and map it as below. Say in the report what was applied and what was not.
+If `design.md` (or `DESIGN.md`) exists at the repository root, read it first and map it. Say in the report what was applied and what was not.
 
-| design.md says | Token | What happens |
+| design.md says | Spec `theme` key | What happens |
 | --- | --- | --- |
-| Primary or brand colour | `ACCENT` | The three tints are derived over the surface (zone 12%, light 52%, mid 77% of the accent; the mid line is raised until it keeps 3:1 against the surface). |
-| Background or surface | `SURFACE` | The stage, or the SVG's background. |
-| Text colour | `INK` | Label, muted, grid, axis and empty-slot colours are derived from ink over the surface (71, 49, 7, 23 and 28%). |
-| Secondary or neutral grey | `BASE` | Its zone is derived (12%). |
-| Fonts (headings, body, code) | `FONT.sans`, `FONT.mono` | The design.md family goes first in the stack, the default stack after it. The font must be installed or loaded, or the fallback shows. |
-| Corner radius, spacing | the layout constants | Set by hand: tiles radius 8 to 9, pills fully round, 4 px grid. |
-| Stage size or aspect, motion curves and durations | not applied | The stage is 960×540 and the motion vocabulary is fixed. Say so; do not promise them. |
+| Primary or brand colour | `accent` | The focal tint is 12% of it over the surface. A readable `accent-text` is derived, mixed toward the ink until it reaches 4.5:1. |
+| Background or surface | `surface` | Zone, node, hairline and tile fills are derived from the ink over it. One brand set gives one theme: there is no automatic dark variant. |
+| Text colour | `ink` | Label (71%), line (52%), icon ink (78%) and hairline (14%) are derived from it. |
+| Fonts | `font` | The design.md sans family goes first in the stack. It must be installed or loaded, or the fallback shows. |
+| Corner radius, spacing, stage size, motion curves | not applied | Say so; do not promise them. |
 
-Ask once only if the file does not say which colour is the accent. For a static diagram, write the mapped values into the SVG's custom properties (skeleton below). For an animation, set `window.THEME` in `specs.js` (keys `ACCENT`, `BASE`, `SURFACE`, `INK`, `LABEL`, `MUTED`, `GRID`, `AXIS`, `SLOT`, `FONT`). Give both the same values. With no design.md use the defaults below, and offer once to write a short one (accent, surface, fonts); never create it unasked.
+Ask once only if the file does not say which colour is the accent. Always run `check.py` after mapping: a brand colour that fails a contrast pair is reported there, and the answer is to say so, not to hide it.
 
 ## Tokens
 
-| Token | Light | Dark |
-| --- | --- | --- |
-| `SURFACE` | `#FFFFFF` | `#0F1115` |
-| `INK` (given data, names) | `#111111` | `#F2F2F2` |
-| `LABEL` | `#555555` | `#B0B1B2` |
-| `MUTED` (axis numbers) | `#8A8A8A` | `#7E7F81` |
-| `GRID` / `AXIS` | `#EEEEEE` / `#C9C9C9` | `#1F2124` / `#434548` |
-| `BASE` (baseline, secondary) | `#808080` | `#9AA0AA` |
-| `BASE_ZONE` | `#F0F0F0` | `#202227` |
-| `ACCENT` (focus) | `#004A96` | `#6FB0FF` |
-| `ACCENT_MID` / `ACCENT_LIGHT` / `ACCENT_ZONE` | `#4472AA` / `#7CA0C6` / `#E0E9F2` | `#598BC9` / `#41648F` / `#1B2431` |
-| `SLOT` (empty, dashed) | `#BDBDBD` | `#4F5053` |
+| Token | Light | Dark | Used for |
+| --- | --- | --- | --- |
+| `surface` | `#FFFFFF` | `#0E1016` | the canvas |
+| `zone` | `#F5F6F9` | `#151824` | a container that groups nodes |
+| `node` | `#FFFFFF` | `#171B28` | an ordinary node |
+| `hair` | `#DADEE6` | `#2A3042` | node outline, secondary label outline |
+| `ink` | `#14171F` | `#F1F3F8` | title, names |
+| `label` | `#5B6270` | `#9BA3B4` | subtitle, role text, secondary labels |
+| `accent` | `#2F5BEA` | `#7C9BFF` | the focal node, the main flow |
+| `accent-text` | `#2F5BEA` | `#7C9BFF` | accent used as text (4.5:1 on the surface) |
+| `accent-tint` | `#E8EEFF` | `#1C2547` | the focal node's fill |
+| `tile`, `tile-ink` | `#EEF0F5`, `#3A4152` | `#20263A`, `#C7CEDF` | the icon tile and its icon |
+| `line` | `#7A8294` | `#6A748C` | secondary and optional connectors (3:1 on the zone) |
+| `on-accent` | `#FFFFFF` | `#0E1016` | an icon on the accent tile |
 
-Light values are the engine's defaults. Dark values are what the engine derives from `SURFACE #0F1115`, `INK #F2F2F2`, `ACCENT #6FB0FF` and `BASE #9AA0AA`, so a dark theme needs only those four keys. Known weak spot: light `MUTED` is 3.5:1 on white, below 4.5:1 for small text; use `LABEL` for anything a reader must read.
-
-**Type:** sans for titles, labels and names, mono for values, times, ports and axis ticks. Stacks: sans `Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`; mono `"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`. Sizes: title 26, panel label 20, body 14, ticks 12, pill 13. The engine's `FONT` defaults are the same stacks, with the bundled Inter and JetBrains Mono (from npm) tried first; a static SVG relies on the stack, so its fallbacks must look acceptable.
-
-**Fills are flat.** No gradients, shadows or 3D. Rounded corners (pills fully round, tiles radius 8 to 9).
+`check.py` tests the pairs that matter, in both themes. Light `label` on `zone` is 5.7:1 and `line` on `zone` 3.6:1; the limits are 4.5:1 and 3:1.
 
 ## Roles
 
-One meaning for each colour, in every diagram type:
+One meaning for each treatment, in every diagram type:
 
-| Role | Token | Use |
-| --- | --- | --- |
-| Given | `INK` | Input data, names, the things every side starts from |
-| Baseline, secondary | `BASE`, `BASE_ZONE` | The old or reference method; secondary connections |
-| Focus | `ACCENT` family | The one thing to look at: the result in a comparison, the main flow in an architecture picture |
-| Empty | `SLOT`, dashed | A null, a gap, a build-time or deploy-time relation |
-| Selection | `INK` ring, 1.6 px | The one value to compare |
+| Role | Treatment |
+| --- | --- |
+| Focal (one, at most two) | `accent-tint` fill, `accent` outline, solid accent icon tile. The thing the reader must see first. |
+| Ordinary node | `node` fill, `hair` outline, `tile` icon tile |
+| Main flow | `accent`, 2.5 px, solid, one continuous route |
+| Secondary connection | `line`, 1.75 px, solid |
+| Optional, retry, build-time | `line`, 1.5 px, dashed |
+| Group | a `zone` container with an uppercase label at its top left; no outline |
 
-One accent only. If something needs a fourth colour, the picture is doing too much.
+One accent only. A second saturated colour means the picture is doing too much. Never use the accent on more than two nodes.
 
-## Static diagram skeleton
+## Type
 
-```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="d-title d-desc">
-  <title id="d-title">Short name of the subject</title>
-  <desc id="d-desc">One sentence about the content, not the geometry.</desc>
-  <style>
-    :root { --surface:#FFFFFF; --ink:#111111; --label:#555555; --base:#808080; --accent:#004A96; --accent-mid:#4472AA; --accent-zone:#E0E9F2; --slot:#BDBDBD;
-            --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
-    @media (prefers-color-scheme: dark) { :root { --surface:#0F1115; --ink:#F2F2F2; --label:#B0B1B2; --base:#9AA0AA; --accent:#6FB0FF; --accent-mid:#598BC9; --accent-zone:#1B2431; --slot:#4F5053; } }
-    text { font-family: var(--sans); fill: var(--ink); } .mono { font-family: var(--mono); } .label { fill: var(--label); }
-  </style>
-  <rect width="960" height="540" fill="var(--surface)"/>
-  <!-- nodes and connections use only these variables; set a text colour with a class (.label), because the CSS rule above beats a fill attribute -->
-</svg>
-```
+- **Inter** for the title (28 px, 650, tracking -0.4), node names (15 px, 650), subtitle (15 px) and role text (11.5 px). Sentence case; the title is left aligned with one subtitle line under it.
+- **JetBrains Mono** only for technical values: ports, paths, commands, column names and types. Not for ordinary role text.
+- Connector labels are uppercase, 10.5 px, 600, tracking 0.5, in a pill that sits on the line. Nothing is below 10 px.
 
-With a design.md, replace the values (and the font stacks) in the two blocks and keep the rest.
+## Shape and space
 
-## Layouts (animation stage)
+- 4 px grid for every node origin, width, height and gap. Radius 24 on a zone, 14 on a node, 10 on a tile, fully round on a pill.
+- A node is an icon tile (40 px) plus a name and, at most, one short lowercase role (`http server`, `job table`). A table node (entity, schema) is a header and mono rows.
+- Gap between nodes on a row: at least the label pill's width plus 40 px (104 px for `ENQUEUE`), so the pill clears both boxes and the arrowhead. `check.py` fails a label closer than 16 px to its arrowhead.
+- The canvas is fitted to the content with a 40 px margin unless width and height are given. Content that leaves a third of the canvas empty is on the wrong canvas.
+- No gradients, no shadows, no glow, no decorative background pattern.
 
-- **Stage:** surface colour, 16:9 (960×540 units, rendered at 1920×1080). One centred title (sans 600, 26 px). Nothing else is permanent: no logo, legend, caption or footer. This is the animation stage; a static architecture diagram may carry group labels and a legend if it needs them.
-- **Split screen** for comparisons: left grey, right accent, a hairline divider, the two labels at the top. Both halves start from identical input and play in parallel.
-- **Full width** for a process: stages left to right, headers as small sans labels in the top row.
-- Result values drop into a row of **pills** at the bottom (grey with ink text on the left, accent with `ON_ACCENT` text on the right).
+## Contract for a hand-drawn SVG
+
+So that `check.py` can read it: `role="img"` and `aria-labelledby` pointing at a `<title>` (first child, the subject, under 60 characters) and a `<desc>` (one sentence about the content, not the geometry); a `<g data-node="id">` with a `<rect data-box>` per node; `<path data-edge="a>b">` per connector, right angles only; `<g data-pill="a>b">` per label. Colours and fonts come from the custom properties in `make.mjs`; set a text colour with a class, because the CSS rule beats a `fill` attribute.
 
 ## Checklist
 
 1. Can it be understood with no narration and no legend?
-2. Do colours mean the same thing as in every other picture in the set?
-3. Is every element in the final frame necessary?
-4. Does it loop without a visible jump (animation)?
-5. Light and dark both readable, if the picture will be shown on either.
+2. Is there one focal node, and is it the one the reader must see first?
+3. Do colours mean the same thing as in every other picture in the set?
+4. `python3 assets/diagram/check.py out.svg` exits 0.
+5. Rendered in light and dark and looked at, at the size it will be shown (`assets/diagram/render.mjs`).

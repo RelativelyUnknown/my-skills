@@ -1,0 +1,81 @@
+{
+  "id": "ord",
+  "title": "The life of an order",
+  "subtitle": "An order is paid before it ships, and can be cancelled until then.",
+  "nodes": [
+    {
+      "id": "created",
+      "name": "Created",
+      "role": "unpaid",
+      "icon": "file-plus",
+      "x": 40,
+      "y": 160
+    },
+    {
+      "id": "paid",
+      "name": "Paid",
+      "role": "packing",
+      "icon": "credit-card",
+      "x": 296,
+      "y": 160,
+      "focal": true
+    },
+    {
+      "id": "shipped",
+      "name": "Shipped",
+      "role": "in transit",
+      "icon": "truck-delivery",
+      "x": 536,
+      "y": 160
+    },
+    {
+      "id": "delivered",
+      "name": "Delivered",
+      "role": "closed",
+      "icon": "package",
+      "x": 792,
+      "y": 160
+    },
+    {
+      "id": "cancelled",
+      "name": "Cancelled",
+      "role": "refunded if paid",
+      "icon": "circle-x",
+      "x": 264,
+      "y": 336
+    }
+  ],
+  "edges": [
+    {
+      "from": "created",
+      "to": "paid",
+      "label": "PAY",
+      "kind": "main"
+    },
+    {
+      "from": "paid",
+      "to": "shipped",
+      "label": "SHIP",
+      "kind": "main"
+    },
+    {
+      "from": "shipped",
+      "to": "delivered",
+      "label": "ARRIVE",
+      "kind": "main"
+    },
+    {
+      "from": "created",
+      "to": "cancelled",
+      "label": "CANCEL",
+      "kind": "optional",
+      "route": "vh"
+    },
+    {
+      "from": "paid",
+      "to": "cancelled",
+      "label": "REFUND",
+      "kind": "optional"
+    }
+  ]
+}

@@ -4,39 +4,38 @@ A diagram answers one question a reader has about structure, order or state. Wri
 
 ## Pick the type from the question
 
-| The reader asks | Draw |
-| --- | --- |
-| What are the parts and who talks to whom? | architecture: boxes grouped by what they share (a process, a host, a repository, a trust boundary) |
-| In what order do things happen between parts? | sequence: one lifeline per part, time downward |
-| What states can one thing be in, and what moves it? | state machine: states, transitions, terminal states |
-| What does the data look like? | entity-relationship: tables or types, keys, cardinality |
-| What are the steps, and where does it branch? | flowchart, or swimlanes when who does each step matters |
-| What changed? | two pictures with identical layout, the difference in the accent colour |
+| The reader asks | Draw | Page |
+| --- | --- | --- |
+| What are the parts and who talks to whom? | architecture | [types/architecture.md](types/architecture.md) |
+| In what order do things happen between parts? | sequence | [types/sequence.md](types/sequence.md) |
+| What states can one thing be in, and what moves it? | state machine | [types/state.md](types/state.md) |
+| What does the data look like? | entity-relationship | [types/entity-relationship.md](types/entity-relationship.md) |
+| What are the steps, and where does it branch? | flowchart | [types/flowchart.md](types/flowchart.md) |
+| Who does each step, and where does work change hands? | swimlane | [types/swimlane.md](types/swimlane.md) |
+| Where does it run? | deployment | [types/deployment.md](types/deployment.md) |
+| What depends on what? | dependency graph | [types/dependency.md](types/dependency.md) |
+| When did or will things happen? | timeline | [types/timeline.md](types/timeline.md) |
+| What sits on what? | layer stack | [types/layers.md](types/layers.md) |
+| What changed? | two pictures with identical layout, the difference in the accent | this page |
 
-One type per picture. If you need two, draw two.
+One type per picture. If you need two, draw two. Read the type's page before drawing.
 
 ## Budget
 
-- At most 9 nodes and 12 connections. Past that, split into an overview and a detail picture.
-- One or two accented elements: the focus (see Roles in [style.md](style.md)). Accent on everything is accent on nothing.
+- At most 9 nodes, 12 connections and 2 focal nodes (`check.py` fails more). Past that, split into an overview and a detail picture.
 - Remove test, before reporting done: can a node go (would the reader still understand)? Do two nodes always travel together (merge them)? Is a connection obvious from the layout (remove the line)? Does a label repeat what colour or position already says?
+- A node is a name plus, at most, one short lowercase role. The look, tokens and roles are in [style.md](style.md); connection kinds and label rules are in [connectors.md](connectors.md); icons in [icons.md](icons.md).
 
-## Nodes and connections
+## Build
 
-- A node is a name plus, at most, one short role in lowercase (`http server`, `job table`). Names in the sans face; ports, commands and paths in mono.
-- Three kinds of connection, and no more: the main request or data path (the focus colour, solid, one continuous route), secondary runtime connections (`BASE`, solid), build-time or deploy-time relations (`SLOT`, dashed).
-- Connections run horizontally and vertically, with right-angle bends. No diagonals, no two lines on top of each other, no line passing behind a box it does not connect to.
-- A label sits beside its line on a background patch, never on the stroke, and never rotated.
-- No legend inside the drawing; if the picture needs one, the roles are not clear enough.
+1. Write the spec: nodes with their grid positions (multiples of 4), edges with kinds, zones for groups. Start from an example in `assets/diagram/examples/`.
+2. `node assets/diagram/make.mjs spec.json out.svg`. The canvas is fitted to the content; the SVG has real text, so it stays searchable and sharp, and carries `role="img"`, a `<title>` and a `<desc>`.
+3. A diagram that lives in Markdown and must stay editable by hand: Mermaid, if the project already uses it. Do not convert existing diagrams between formats unasked.
 
-## Format
+## Verify
 
-- SVG with real text, so it stays searchable and sharp. Start from the skeleton in [style.md](style.md): its custom properties carry the colour and font tokens (light and dark), and a design.md replaces their values.
-- Accessible by default: the skeleton's `role="img"`, `<title>` (the subject, under 60 characters, first child) and `<desc>` (one sentence about the content, not the geometry), referenced by `aria-labelledby`.
-- Diagrams that live in Markdown and must stay editable by hand: Mermaid, if the project already uses it. Do not convert existing diagrams between formats unasked.
-
-## Verify by looking
-
-Render the picture to PNG at the size it will be shown and read it; reading the SVG source proves nothing about overlaps. Check: no line crosses a label, no arrowhead lands in text, nothing is clipped at an edge or sticks out of its group, every label is readable at that size. Fix and render again. If you cannot render here, say so in the report.
+1. `python3 assets/diagram/check.py out.svg` must exit 0. It fails diagonals, labels touching nodes or arrowheads, lines behind boxes, node overlap, a picture past its budget, text under 10 px, a missing title or description, anything outside the viewBox, and any token pair below its contrast minimum. A failure is fixed in the spec, never waived without saying so.
+2. `node assets/diagram/render.mjs out.svg --scale 2` writes `out.png` and `out-dark.png`. Look at both, at the size the picture will be shown: reading the SVG source proves nothing about balance. Check that the focal node is the first thing seen, that nothing crowds the edge, and that every label reads. Fix and render again.
+3. If you cannot render here (no Playwright, and installing it needs a yes), say so in the report and leave the `check.py` result next to it.
 
 Every fact in the picture comes from the code or from the user: a service, queue or arrow you cannot point to in the repository is marked as assumed or left out.

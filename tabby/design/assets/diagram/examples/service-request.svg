@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 552" width="1040" height="552" role="img" aria-labelledby="svc-title svc-desc" data-diagram="1">
+<title id="svc-title">A request through the service</title>
+<desc id="svc-desc">Work is queued, consumed once, and retried if it fails.</desc>
+<defs><style>:root{--surface:#FFFFFF;--zone:#F5F6F9;--node:#FFFFFF;--hair:#DADEE6;--ink:#14171F;--label:#5B6270;--accent:#2F5BEA;--accent-text:#2F5BEA;--accent-tint:#E8EEFF;--tile:#EEF0F5;--tile-ink:#3A4152;--line:#7A8294;--on-accent:#FFFFFF;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--surface:#0E1016;--zone:#151824;--node:#171B28;--hair:#2A3042;--ink:#F1F3F8;--label:#9BA3B4;--accent:#7C9BFF;--accent-text:#7C9BFF;--accent-tint:#1C2547;--tile:#20263A;--tile-ink:#C7CEDF;--line:#6A748C;--on-accent:#0E1016}}
+text{font-family:var(--sans);fill:var(--ink)}
+.m{font-family:var(--mono)}.l{fill:var(--label)}.a{fill:var(--accent-text)}.on{fill:var(--on-accent)}
+.mka{fill:none;stroke:var(--accent)}.mkl{fill:none;stroke:var(--line)}</style>
+<marker id="svc-ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path class="mka" d="M1 1 L9 5 L1 9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="svc-ml" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path class="mkl" d="M1 1 L9 5 L1 9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="1040" height="552" fill="var(--surface)"/>
+<text x="40" y="64" font-size="28" font-weight="650" letter-spacing="-0.4">A request through the service</text>
+<text class="l" x="40" y="92" font-size="15">Work is queued, consumed once, and retried if it fails.</text>
+<g data-zone="Your service"><rect x="244" y="156" width="756" height="348" rx="24" fill="var(--zone)"/><text class="l" x="268" y="188" font-size="12" font-weight="600" letter-spacing="1.2">YOUR SERVICE</text></g>
+<path data-edge="client&gt;api" data-kind="main" d="M180,272 H284" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#svc-ma)"/>
+<path data-edge="api&gt;queue" data-kind="main" d="M448,272 H544" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#svc-ma)"/>
+<path data-edge="queue&gt;worker" data-kind="main" d="M700,272 H796" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#svc-ma)"/>
+<path data-edge="worker&gt;db" data-kind="secondary" d="M888,312 V392" fill="none" stroke="var(--line)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#svc-ml)"/>
+<path data-edge="worker&gt;queue" data-kind="optional" d="M844,312 V344 Q844,356 832,356 H672 Q660,356 660,344 V312" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#svc-ml)"/>
+<g data-pill="client&gt;api"><rect x="212" y="260" width="44" height="24" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><text class="a" x="234" y="276" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">POST</text></g>
+<g data-pill="api&gt;queue"><rect x="464" y="260" width="64" height="24" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><text class="a" x="496" y="276" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">ENQUEUE</text></g>
+<g data-pill="queue&gt;worker"><rect x="716" y="260" width="64" height="24" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><text class="a" x="748" y="276" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">CONSUME</text></g>
+<g data-pill="worker&gt;db"><rect x="864" y="340" width="52" height="24" rx="12" fill="var(--surface)" stroke="var(--hair)" stroke-width="1"/><text class="l" x="890" y="356" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">WRITE</text></g>
+<g data-pill="worker&gt;queue"><rect x="728" y="344" width="52" height="24" rx="12" fill="var(--surface)" stroke="var(--hair)" stroke-width="1"/><text class="l" x="754" y="360" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">RETRY</text></g>
+<g data-node="client"><rect data-box="1" x="40" y="236" width="136" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="52" y="252" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(60,260) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10"/><path d="M7 20h10"/><path d="M9 16v4"/><path d="M15 16v4"/></g>
+<text x="104" y="268" font-size="15" font-weight="650">Client</text>
+<text class="l" x="104" y="287" font-size="11.5">browser</text>
+</g>
+<g data-node="api"><rect data-box="1" x="288" y="236" width="156" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="300" y="252" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(308,260) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-2"/><path d="M3 15a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -2"/><path d="M7 8l0 .01"/><path d="M7 16l0 .01"/></g>
+<text x="352" y="268" font-size="15" font-weight="650">API</text>
+<text class="l" x="352" y="287" font-size="11.5">http server</text>
+</g>
+<g data-node="queue" data-focal="1"><rect data-box="1" x="548" y="236" width="148" height="72" rx="14" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.75"/>
+<rect x="560" y="252" width="40" height="40" rx="10" fill="var(--accent)"/>
+<g transform="translate(568,260) scale(0.6667)" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l-8 4l8 4l8 -4l-8 -4"/><path d="M4 12l8 4l8 -4"/><path d="M4 16l8 4l8 -4"/></g>
+<text x="612" y="268" font-size="15" font-weight="650">Queue</text>
+<text class="l" x="612" y="287" font-size="11.5">redis list</text>
+</g>
+<g data-node="worker"><rect data-box="1" x="800" y="236" width="176" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="812" y="252" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(820,260) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -12"/><path d="M9 9h6v6h-6l0 -6"/><path d="M3 10h2"/><path d="M3 14h2"/><path d="M10 3v2"/><path d="M14 3v2"/><path d="M21 10h-2"/><path d="M21 14h-2"/><path d="M14 21v-2"/><path d="M10 21v-2"/></g>
+<text x="864" y="268" font-size="15" font-weight="650">Worker</text>
+<text class="l" x="864" y="287" font-size="11.5">python process</text>
+</g>
+<g data-node="db"><rect data-box="1" x="812" y="396" width="152" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="824" y="412" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(832,420) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0"/><path d="M4 6v6a8 3 0 0 0 16 0v-6"/><path d="M4 12v6a8 3 0 0 0 16 0v-6"/></g>
+<text x="876" y="428" font-size="15" font-weight="650">Database</text>
+<text class="l" x="876" y="447" font-size="11.5">postgres</text>
+</g>
+</svg>
