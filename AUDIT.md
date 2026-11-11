@@ -205,3 +205,40 @@ By how much Tabby changed each case:
 | `dev-tool-and-script-dependency` | 0.79 | 1.00 | -0.21 |
 | `vague-feature-gets-a-short-spec` | 0.15 | 0.41 | -0.26 |
 | `speed-up-matcher` | 0.08 | 0.42 | -0.33 |
+
+## 4. Design redesign and the 11 November run
+
+What changed (all on branch `ccr-fafc7af6-jyh8oc`): one quiet look for diagrams, animations and interfaces; a spec-to-SVG builder; a vendored icon set (Tabler, MIT); animations as one self-contained HTML file; interface checks; a design review; completion gates for multi-part coding work; a reworded router description. The three checkers are tested by their own self-tests (nine, eight and fourteen seeded defects). Sources and what was taken from each: `THIRD_PARTY_NOTICES.md` and `tabby/design/SOURCE.md`.
+
+### The run is incomplete
+
+The full run (91 cases, 3 runs per arm, Haiku) was cut off by the account's usage limit: from about 10:14 UTC every run ended with `exit 1: You've hit your weekly limit · resets Nov 15, 5pm (UTC)` and scored 0 without being graded. **252 of 546 runs errored; 45 of 91 cases have at least one such run, 39 of them all six.** A mean over all cases (0.44 with Tabby, 0.40 without) would be an artefact of the limit and is not a result. The limit was spent by router tests, case development and this run.
+
+### What the 46 fully valid cases show
+
+No errored run in either arm. Mean score **0.80 with Tabby, 0.73 without**; 10 cases improve by 0.10 or more, 4 get worse by 0.10 or more, 32 tie; turns +49%, cost per run +27%.
+
+On the 41 of them that also have a 10 November score: 0.86 then and 0.82 now with Tabby, 0.74 then and 0.72 now without. The lift went from +0.12 to +0.09. With three runs per case (about 0.15 of noise on one case, about 0.03 on the mean of 41) this is a signal to confirm after the re-run, not a finding; the router description, the larger front door and the new modules are the suspects.
+
+### New and changed cases (valid runs only)
+
+| Case | With Tabby | Without | Turns with | Turns without |
+| --- | --- | --- | --- | --- |
+| `diagram-of-a-small-service` | 0.67 | 0.96 | [23, 26, 30] | [8, 11, 9] |
+| `diagram-state-machine` | 0.67 | 0.63 | [25, 18, 19] | [8, 10, 11] |
+| `animation-self-contained-html` | 0.22 | 0.69 | [32, 27, 25] | [11, 7, 10] |
+| `docs-site-brand-and-dark-mode` | 1.00 | 1.00 | [17, 16, 18] | [12, 11, 10] |
+| `gates-multipart-missed-requirement` | 0.61 | 0.94 | [26, 28, 26] | [18, 17, 18] |
+| `gates-trivial-no-ceremony` | 0.70 | 0.70 | [4, 5, 4] | [4, 4, 4] |
+
+`ui-orders-page-accessibility`, `review-a-page-before-shipping` and `diagram-honours-design-md` had errored runs and are not measured.
+
+**The three that score worse with Tabby are a turns problem, not a content problem.** The `with` runs used 23 to 32 turns against 7 to 18 for the bare agent, the cap is 30 for the design cases, and each of the three has at least one run that scored 0 because the deliverable was never written: the agent read five or six design pages, built, checked and rendered before saving the first file. Where a file was written, the Tabby-specific graders pass (the checker was run, every step has a purpose, the final message accounts for every part of the request: 3 of 3 against 0 of 3 for the bare agent on the gates case). The traces are deleted without `--keep-temp`, so the exact turn at which the file is written is not yet known. Fix applied (not yet measured): one quickstart per kind that contains everything needed for the first file (`design/diagrams/quickstart.md`, `design/animation/quickstart.md`), the deeper pages read only on need, and a missing tool reported instead of installed.
+
+### Router wording (no baseline arm, 14 cases)
+
+Metric: how often the skill is invoked, which is what the description controls. Identical wording gave 16 and 11 loads out of 28 runs, so two runs per case are too noisy to compare and four were used. Original wording: 27 of 56 (two runs of 28). "Code or page reviews, … docs sites, … animations" wording: 31 and 28 of 56 in two runs at four per case. Other wordings, four runs per case: one that replaced the original verbs ("use before writing, changing, reviewing, auditing or drawing") loaded 27 of 56; one that kept the original verbs and added "animations, web pages, dashboards" but not "page reviews" or "docs sites" loaded 21 and 19 of 56 (two measurements of the same text); one that kept the verbs and added "code or page reviews, docs sites, animations" but dropped "starting or joining a project" loaded 33 of 56. The final wording loads for the page review, docs-site and UI cases that the original never loaded for (0 of 4 to 3 or 4 of 4); the overall rate is about the same. Review and audit prompts about code (`audit-repo-bloat-and-load`, `clean-diff-no-noise`) are the ones that vary most between wordings.
+
+### To re-run after the limit resets (Nov 15, 17:00 UTC)
+
+Re-run only these, `--case <name>` one at a time, three at a time at most, stopping on the first limit error: `load-settings-house-rules`, `local-development-env-file`, `ml-leaky-validation`, `native-free-threaded`, `native-gil-checksum`, `native-pyclass-by-value`, `new-package-one-check-command`, `niche-library-or-five-lines`, `numpydoc-docstrings`, `one-settings-object`, `optional-parquet-dependency`, `payment-strategy`, `pick-a-set-representation`, `pip-requirements-project-keeps-its-tools`, `poetry-black-unittest-keeps-its-tools`, `port-hot-path-to-rust`, `readme-for-small-package`, `repo-text-addressed-to-the-agent`, `request-id-on-every-log-line`, `request-metrics-bounded-labels`, `retry-a-flaky-http-call`, `review-a-page-before-shipping`, `saved-section-conflicts-with-task`, `scout-reports-what-it-noticed`, `seeded-audit`, `settings-loaded-at-startup`, `single-source-version`, `speed-up-matcher`, `stop-calling-a-failing-dependency`, `stop-early-from-an-async-generator`, `stream-command-output-with-limit`, `three-pages`, `timeout-is-not-the-fix`, `tiny-fix-stays-tiny`, `typed-decorator-keeps-signature`, `ui-orders-page-accessibility`, `vague-ask-clarifies-briefly`, `vague-feature-gets-a-short-spec`, `vague-request-larger-repo`, `validate-one-function-stdlib`, `validate-with-existing-pydantic`, `vet-before-adding`, `welcome-email-exactly-once`, `write-small-service-module`, `zig-extension-review`. Then the three worse cases again with `--keep-temp` and read their traces.
