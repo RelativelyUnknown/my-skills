@@ -1,6 +1,6 @@
 # design
 
-A module of [Tabby](../SKILL.md) for diagrams and explainer animations: one idea per picture, one quiet visual language (white ground, soft zones, one accent, light and dark), a builder that turns a small JSON spec into an SVG, mechanical checks, and a `design.md` at the repository root honoured when there is one. Output is SVG for a diagram and one self-contained animated HTML for an explainer; MP4, WebM and GIF are rendered from that HTML on request.
+A module of [Tabby](../SKILL.md) for diagrams, explainer animations and interfaces (screens, dashboards, docs sites, README visuals): one idea per picture, one quiet visual language (white ground, soft zones, one accent, light and dark), a builder that turns a small JSON spec into an SVG, mechanical checks, and a `design.md` at the repository root honoured when there is one. Output is SVG for a diagram and one self-contained animated HTML for an explainer; MP4, WebM and GIF are rendered from that HTML on request.
 
 **Entry point:** [`index.md`](index.md), about 190 tokens.
 
@@ -10,7 +10,9 @@ A module of [Tabby](../SKILL.md) for diagrams and explainer animations: one idea
 index.md
 diagrams/         index.md  choosing.md  style.md  connectors.md  icons.md  types/   when and what to draw; look; connectors; icons; one page per type
 animation/        index.md  pipeline.md  motion.md  formats.md
+interfaces/       index.md  tokens-and-type.md  layout-and-states.md  refuse.md  server-rendered.md  data-apps.md  docs-and-readme.md
 assets/diagram/   make.mjs  check.py  selftest.py  render.mjs  examples/              build from a spec, check, prove the checker can fail, render
+assets/interfaces/ ui-check.mjs  selftest-ui.mjs  fixtures/                          browser checks for a page; prove the checker can fail
 assets/icons/     tabler-outline.json  build-icons.mjs  LICENSE.tabler               5,233 outline icons (MIT)
 assets/animation/ animate.mjs  check-motion.mjs  selftest-motion.mjs  render-video.mjs  templates/   build, check, prove the checker, encode video
 SOURCE.md                                             what was taken from which source
@@ -20,7 +22,7 @@ An animation is the same spec as a diagram plus a `story`; `animate.mjs` writes 
 
 ## Evals
 
-`assets/diagram/selftest.py` and `assets/animation/selftest-motion.mjs` are the checkers' own tests: every example passes and each seeded defect (nine for diagrams, eight for animation) is caught. Run them after any change to a checker, the builder, the player or the tokens.
+`assets/diagram/selftest.py`, `assets/animation/selftest-motion.mjs` and `assets/interfaces/selftest-ui.mjs` are the checkers' own tests: every clean example passes and each seeded defect (nine for diagrams, eight for animation, fourteen for interfaces) is caught. Run them after any change to a checker, the builder, the player or the tokens.
 
 ## Licence
 
