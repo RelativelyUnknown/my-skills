@@ -60,7 +60,7 @@ commands: one canonical check command
 open: release process
 ```
 
-- `kind:` is one of these paths under `development/` (more in `development/which-type.md`):
+- `kind:` is one of these paths under `../tabby/development/` (more in `../tabby/development/which-type.md`):
   - library others install: `library/shared`
   - library with Rust, C or Cython behind a Python API: `library/native`
   - HTTP service: `application/apis/http`
@@ -69,7 +69,7 @@ open: release process
 - `reviewed:` carries the short commit hash the facts were checked at; the drift check starts from it.
 - `docs:` lists the page types to keep current (`documentation/pages.md`): a library usually gets README, reference, how-to, changelog; a service gets README, runbook, ADR.
 - Add `design` to `modules:` only when the user wants diagrams or explainers.
-- `## Python defaults` holds the tools: `runner`, `build`, `test`, `lint`, `types`, `ci`, `python`. Fill it from the stack detected in `development/which-type.md`; never from Tabby's own defaults for a project that already has tools.
+- `## Python defaults` holds the tools: `runner`, `build`, `test`, `lint`, `types`, `ci`, `python`. Fill it from the stack detected in `../tabby/development/which-type.md`; never from Tabby's own defaults for a project that already has tools.
 - No user to ask (CI, or they cannot answer now)? Do not ask and do not stop: write the section from the evidence, mark every unknown `(assumed)`, and say which entries need confirming.
 
 ## 5. Running it again changes nothing

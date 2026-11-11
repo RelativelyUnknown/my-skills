@@ -60,7 +60,7 @@ const mix = (a, b, t) => '#' + [1, 3, 5].map(i => Math.round(parseInt(a.substr(i
 const lum = h => { const f = c => (c /= 255) <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4); const [r, g, b] = [1, 3, 5].map(i => f(parseInt(h.substr(i, 2), 16))); return .2126 * r + .7152 * g + .0722 * b; };
 const cr = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + .05) / (y + .05); };
 
-// Default tokens (art direction A), light and dark. See design/diagrams/style.md.
+// Default tokens (art direction A), light and dark. See diagrams/style.md.
 const LIGHT = { surface: '#FFFFFF', zone: '#F5F6F9', node: '#FFFFFF', hair: '#DADEE6', ink: '#14171F', label: '#5B6270', accent: '#2F5BEA', 'accent-text': '#2F5BEA', 'accent-tint': '#E8EEFF', tile: '#EEF0F5', 'tile-ink': '#3A4152', line: '#7A8294', 'on-accent': '#FFFFFF' };
 const DARK = { surface: '#0E1016', zone: '#151824', node: '#171B28', hair: '#2A3042', ink: '#F1F3F8', label: '#9BA3B4', accent: '#7C9BFF', 'accent-text': '#7C9BFF', 'accent-tint': '#1C2547', tile: '#20263A', 'tile-ink': '#C7CEDF', line: '#6A748C', 'on-accent': '#0E1016' };
 const decl = (o, extra = '') => Object.entries(o).map(([k, v]) => `--${k}:${v}`).join(';') + extra;

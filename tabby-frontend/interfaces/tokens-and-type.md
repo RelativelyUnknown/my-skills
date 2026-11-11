@@ -1,6 +1,6 @@
 # Tokens and type
 
-One quiet system: neutral surfaces, one accent, one type family. The values are the diagram tokens in [../diagrams/style.md](../diagrams/style.md), so a project's pictures and screens look related. A `design.md` replaces them, and a project's existing tokens win.
+One quiet system: neutral surfaces, one accent, one type family. The values are the `tabby-diagrams` skill's diagram tokens (`../tabby-diagrams/diagrams/style.md`), so a project's pictures and screens look related. A `design.md` replaces them, and a project's existing tokens win.
 
 ## Colour as custom properties
 

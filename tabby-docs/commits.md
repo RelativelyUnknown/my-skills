@@ -2,7 +2,7 @@
 
 A commit message is read by someone running `git log` or `git blame` on a line they do not understand, long after the conversation that produced it is gone. Ask: what would they need to know that the diff does not show? Almost always that is why, and what else was considered or deliberately left out.
 
-Commit only when asked ([planning.md](../development/workflow/planning.md)). These rules apply when you are asked to commit or to draft a message.
+Commit only when asked ([planning.md](../tabby/development/workflow/planning.md)). These rules apply when you are asked to commit or to draft a message.
 
 - The project's convention comes first: read `git log --oneline -20` and CONTRIBUTING. If it uses Conventional Commits (`fix(parser): ...`), a ticket prefix or a sign-off, match it; do not introduce one.
 - Subject: imperative mood ("Add", "Fix", "Remove"), what changed for the reader of the log, about 50 characters and never past 72, no trailing period.

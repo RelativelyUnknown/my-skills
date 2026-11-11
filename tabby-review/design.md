@@ -4,7 +4,7 @@ Reviewing a diagram, an animation, an interface or a README picture, whether it 
 
 ## Two assessments, kept apart
 
-**A. Judgment (before any checker output).** Look at the thing itself: render it (`design/assets/diagram/render.mjs` for a diagram, the contact sheet from `check-motion.mjs` for an animation, the page at 390 px and 1280 px in light and dark for an interface) and read the source. Answer:
+**A. Judgment (before any checker output).** Look at the thing itself: render it (`../tabby-diagrams/assets/diagram/render.mjs` for a diagram, the contact sheet from `check-motion.mjs` for an animation, the page at 390 px and 1280 px in light and dark for an interface) and read the source. Answer:
 
 - **Specific or generic?** Could an unrelated project use this unchanged? A picture or screen that fits any product is a finding.
 - **Hierarchy and focus.** Is there one thing to see first, and is it the right one? Squint test: does it survive?
@@ -12,15 +12,15 @@ Reviewing a diagram, an animation, an interface or a README picture, whether it 
 - **Fit to the reader's job.** The question a diagram answers (is it the one the reader has?), the mode of an interface (persuade, operate, read; one page, one mode).
 - **Content and copy.** Labels that say something, controls named for their action, errors with a way out, no filler.
 - **States and edges.** Empty, error, loading, long text, many items; the first frame of an animation; both themes.
-- **Known defaults.** Anything in `design/interfaces/refuse.md` that the brief did not earn.
+- **Known defaults.** Anything in `../tabby-frontend/interfaces/refuse.md` that the brief did not earn.
 
 **B. Measurement.** Run the checkers and record exit codes and findings exactly as printed:
 
 | Subject | Command |
 | --- | --- |
-| a diagram | `python3 design/assets/diagram/check.py file.svg` |
-| an animation | `node design/assets/animation/check-motion.mjs file.html` |
-| an interface | `node design/assets/interfaces/ui-check.mjs <url or file>` |
+| a diagram | `python3 ../tabby-diagrams/assets/diagram/check.py file.svg` |
+| an animation | `node ../tabby-diagrams/assets/animation/check-motion.mjs file.html` |
+| an interface | `node ../tabby-frontend/assets/interfaces/ui-check.mjs <url or file>` |
 
 A checker that cannot run (no Playwright) is reported as not run, never as passed. A waived finding is listed with its reason; judge the reason.
 

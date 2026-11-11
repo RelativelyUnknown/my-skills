@@ -2,11 +2,11 @@
 
 CI configuration is authorization code: it decides whose code runs with which secrets and what gets published. Ask of each workflow: what event starts it, whose code does it run, which tokens and secrets exist while it runs, and what may it change? A finding needs the same four parts as any other ([process.md](process.md)): a lower-trust party, something they control, the trusted job or installer that consumes it, and what they gain. A floating version or a missing best practice with no such path is a hardening note.
 
-Read with [dependencies.md](../../development/dependencies/dependencies.md), which covers vetting and scanning packages. Facts about GitHub Actions below are from GitHub's documentation and were not exercised here; branch protection, environment rules and registry settings are not in the repository, so a finding that depends on them is `needs validation`.
+Read with [dependencies.md](../../tabby/development/dependencies/dependencies.md), which covers vetting and scanning packages. Facts about GitHub Actions below are from GitHub's documentation and were not exercised here; branch protection, environment rules and registry settings are not in the repository, so a finding that depends on them is `needs validation`.
 
 ## Where packages come from
 
-- Two indexes configured without pinning each package to one: a name that exists on the private index can be supplied by the public one. In uv, the private index needs `explicit = true` and the package an entry under `[tool.uv.sources]` ([uv.md](../../development/dependencies/uv.md)); `--extra-index-url` with pip has no such protection.
+- Two indexes configured without pinning each package to one: a name that exists on the private index can be supplied by the public one. In uv, the private index needs `explicit = true` and the package an entry under `[tool.uv.sources]` ([uv.md](../../tabby/development/dependencies/uv.md)); `--extra-index-url` with pip has no such protection.
 - An internal package name that is not registered on PyPI and is installed anywhere without a pinned index.
 - A dependency name one typo away from a popular package, or one the repository's history shows was added by an agent or a paste without the check in `dependencies.md`.
 - An install that does not use the lock (`pip install` in CI beside a committed `uv.lock`, `--frozen` where `--locked` was meant).
@@ -23,7 +23,7 @@ Read with [dependencies.md](../../development/dependencies/dependencies.md), whi
 
 ## Release
 
-- Publishing with a stored API token where trusted publishing is possible, or `id-token: write` granted to more than the publish job ([release.md](../../development/library/shared/release.md)).
+- Publishing with a stored API token where trusted publishing is possible, or `id-token: write` granted to more than the publish job ([release.md](../../tabby/development/library/shared/release.md)).
 - The published artifact is rebuilt in the publish job instead of being the one that was tested: build once, upload the artifact, publish that file.
 - A release triggered by any tag from any branch, with no environment protection, on a repository where many people can push tags.
 - Secrets, `.env` files, test fixtures or local configuration inside the sdist or wheel: list the archive (`unzip -l dist/*.whl`, `tar tf dist/*.tar.gz`) and read it.

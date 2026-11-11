@@ -1,8 +1,14 @@
+---
+name: tabby-docs
+description: "Use when writing, fixing or checking documentation: a README, docstrings, tutorial, how-to, reference, explanation, changelog, ADR, runbook, troubleshooting page, CONTRIBUTING, a commit message, or whether docs still match the code."
+license: MIT
+---
+
 # Writing documentation
 
 Documentation lets a reader do or understand something without asking the author. Every sentence either moves the reader toward that or goes.
 
-Read this first for any documentation task, then the page-type leaf listed in `documentation/pages.md` (leaf paths start at `documentation/`).
+Read this first for any documentation task, then the page-type leaf listed in `pages.md` (paths are relative to this skill's folder).
 
 ## Never miss
 
@@ -16,6 +22,6 @@ Read this first for any documentation task, then the page-type leaf listed in `d
 
 1. Outline with headings only; check each heading against the page type.
 2. Draft. Write the example first, run it, then write the prose around it.
-3. Read it as the reader would. Cut every word that carries no information, using the patterns in `documentation/ai-patterns.md` and `documentation/voice.md`; judge each one in context, because a quoted word or a technical term can stay.
+3. Read it as the reader would. Cut every word that carries no information, using the patterns in `ai-patterns.md` and `voice.md`; judge each one in context, because a quoted word or a technical term can stay.
 4. Edit pass. Delete sentences that restate the heading, summarize the page, announce what comes next, or praise the software. Check that every step is an action, every claim is specific, every link works.
 5. Report what you changed and which examples you ran, and how.

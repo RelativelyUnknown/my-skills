@@ -1,6 +1,6 @@
 # Self-review and diff review
 
-Paths starting `development/` are in the tabby skill folder.
+Paths starting `development/` are in the `tabby` skill folder, `../tabby/` from this skill's folder.
 
 Find what is wrong with the diff, and say nothing else. A clean diff gets a short "no findings", not a list of maybes. Prefer a fresh session that did not write the code; a person still reviews multi-file changes.
 

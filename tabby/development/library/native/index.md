@@ -18,4 +18,4 @@ Formatters and linters (the project's own config wins):
 - C and C++: `clang-format` with the project's `.clang-format`, `-Wall -Wextra -Werror` in CI, `clang-tidy` if configured.
 - Zig: `zig fmt --check`, `zig build test`.
 
-Reviewing a native change: the `review` module has a boundary checklist (`review/native-boundary.md`).
+Reviewing a native change: the `tabby-review` skill has a boundary checklist (`native-boundary.md`).

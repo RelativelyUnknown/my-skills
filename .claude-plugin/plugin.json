@@ -1,12 +1,19 @@
 {
   "name": "tabby",
   "version": "0.1.0",
-  "description": "Skills that make an AI agent build, review and explain a Python project properly. One skill, four modules, project memory in AGENTS.md.",
+  "description": "Skills that make Claude Code build, review and explain a Python project properly: a core development skill (with Rust, C, C++ and Zig extensions) plus review, docs, diagrams, frontend and an opt-in interview.",
   "author": {
     "name": "RelativelyUnknown",
     "url": "https://github.com/RelativelyUnknown"
   },
   "license": "MIT",
   "repository": "https://github.com/RelativelyUnknown/my-skills",
-  "skills": ["./tabby"]
+  "skills": [
+    "./tabby",
+    "./tabby-review",
+    "./tabby-docs",
+    "./tabby-diagrams",
+    "./tabby-frontend",
+    "./tabby-interview"
+  ]
 }

@@ -33,7 +33,7 @@ Reads the `## Python defaults` section of `AGENTS.md` (`python`, `runner`, `type
 
 ## Evals
 
-The development cases are in [`../evals/`](../evals/) (errors, dependencies, typing, services, workers, native extensions, ML and data pipelines). Run them from the repository root:
+The development cases are in [`../evals/`](../../evals/) (errors, dependencies, typing, services, workers, native extensions, ML and data pipelines). Run them from the repository root:
 
 ```bash
 claude plugin eval tabby --scaffold --allow-tools Write Edit --judge-model sonnet --max-cost-usd 4
@@ -42,7 +42,7 @@ claude plugin eval tabby --scaffold --allow-tools Write Edit --judge-model sonne
 - `--scaffold` runs each case's `fixture.sh` as you; read it first.
 - Granting `Bash` needs an OS sandbox (on Linux, `bubblewrap` and `socat`); without one the run refuses.
 - A `tool_used: Skill` grader shows whether the skill fired on a plain request.
-- [`../evals/tabby.triggers.json`](../evals/tabby.triggers.json) lists prompts that should and should not load the skill.
+- [`../evals/tabby.triggers.json`](../../evals/tabby.triggers.json) lists prompts that should and should not load the skill.
 
 ## Known interactions
 

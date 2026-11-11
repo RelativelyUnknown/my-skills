@@ -32,7 +32,7 @@ The same applies to solving by search instead of understanding (autotuning, tria
 
 ## Say why, every time
 
-A decision explained is a decision the next reader can evaluate, not just obey. Costs nothing, always applies: every ADR ([documentation/history/adr.md](../../documentation/history/adr.md)), every `# shortcut:` comment, every rejected alternative in [fit.md](fit.md) is this rule in practice.
+A decision explained is a decision the next reader can evaluate, not just obey. Costs nothing, always applies: every ADR (`history/adr.md` in the `tabby-docs` skill), every `# shortcut:` comment, every rejected alternative in [fit.md](fit.md) is this rule in practice.
 
 ## Before importing a rule from elsewhere, name its workload
 
