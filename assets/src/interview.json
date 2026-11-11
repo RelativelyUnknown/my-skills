@@ -1,0 +1,81 @@
+{
+ "id": "iv",
+ "title": "The interview is optional",
+ "subtitle": "Tabby does the task first. It saves project memory only after you ask for the interview and say yes.",
+ "zones": [
+  {
+   "label": "Only if you ask",
+   "x": 208,
+   "y": 280,
+   "w": 600,
+   "h": 136
+  }
+ ],
+ "nodes": [
+  {
+   "id": "req",
+   "name": "Request",
+   "role": "\"add a retry\"",
+   "icon": "message",
+   "x": 40,
+   "y": 152
+  },
+  {
+   "id": "task",
+   "name": "The task",
+   "role": "done first",
+   "icon": "checklist",
+   "x": 288,
+   "y": 152,
+   "focal": true
+  },
+  {
+   "id": "offer",
+   "name": "One offer",
+   "role": "at the end, once",
+   "icon": "bell",
+   "x": 568,
+   "y": 152
+  },
+  {
+   "id": "ask",
+   "name": "Interview",
+   "role": "you run it",
+   "icon": "messages",
+   "x": 568,
+   "y": 320
+  },
+  {
+   "id": "mem",
+   "name": "AGENTS.md",
+   "role": "## Tabby, after a yes",
+   "icon": "file-text",
+   "x": 232,
+   "y": 320
+  }
+ ],
+ "edges": [
+  {
+   "from": "req",
+   "to": "task",
+   "kind": "main"
+  },
+  {
+   "from": "task",
+   "to": "offer",
+   "label": "THEN"
+  },
+  {
+   "from": "offer",
+   "to": "ask",
+   "label": "YES",
+   "kind": "optional"
+  },
+  {
+   "from": "ask",
+   "to": "mem",
+   "label": "SAVES",
+   "kind": "optional"
+  }
+ ]
+}

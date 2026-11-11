@@ -67,7 +67,7 @@ Only install Tabby from `RelativelyUnknown/my-skills` on GitHub. Delete `tabby/e
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/how-it-works-light.png">
-    <img src="assets/how-it-works-light.png" width="720" alt="(Older picture: it shows the interview as the first step. It is now optional.) How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or infers the scope if there is none, and then loads only the modules the task needs: development, review, documentation or design.">
+    <img src="assets/how-it-works-light.png" width="720" alt="How Tabby routes a task. A request goes to the Tabby router, which reads the Tabby section of AGENTS.md, or infers the scope if there is none, and then loads only the modules the task needs: development, review, documentation or design.">
   </picture>
 </p>
 
@@ -79,7 +79,7 @@ One skill is registered with your agent: `tabby`. Four modules sit inside it, an
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/interview-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="assets/interview-light.png">
-    <img src="assets/interview-light.png" width="860" alt="(Older picture: it shows the interview as the first step. It is now optional.) Tabby reads the code read-only, asks in rounds that depend on the project's state, then restates, waits for a yes and saves. The answers are saved as a Tabby section in AGENTS.md with purpose, growth, out of scope, boundaries, kind, modules and the check command.">
+    <img src="assets/interview-light.png" width="860" alt="The interview is optional. Tabby does the task first and makes one offer at the end. Only if you ask for the interview, and say yes to its summary, does it save a Tabby section to AGENTS.md.">
   </picture>
 </p>
 
@@ -96,9 +96,9 @@ Your expected growth shapes the code. Say a hot path may move to Rust and the ag
 | Module | What it does |
 | --- | --- |
 | [`tabby/development/`](tabby/development/) | Writing, testing, packaging and running Python: errors, minimalism, typing, dependencies and uv, CI, performance, libraries, services, workers, design patterns, and design fit (choosing the data structure or representation that suits the workload and the project's plans, with worked examples from ruff, uv, polars and pandas). Rust or C behind a Python API: layouts, PyO3, the C API, wheels and CI |
-| [`tabby/review/`](tabby/review/) | Self-review of a change, a security audit that separates confirmed bugs from look-alikes, and a checklist for the Python and native boundary |
+| [`tabby/review/`](tabby/review/) | Self-review of a change, a security audit that separates confirmed bugs from look-alikes, a checklist for the Python and native boundary, and a design review of a diagram, animation or page that keeps judgment and measurement apart |
 | [`tabby/documentation/`](tabby/documentation/) | Documentation by what the reader needs: tutorial, how-to, reference, explanation, docstrings, README, changelog, ADRs, runbooks, troubleshooting |
-| [`tabby/design/`](tabby/design/) | Minimalist diagrams and explainer animations (SVG, MP4, WebM, GIF) |
+| [`tabby/design/`](tabby/design/) | Diagrams, explainer animations and interfaces in one quiet look (white ground, one accent, light and dark): a builder that turns a small spec into an SVG or an animated HTML file, a vendored icon set, and checkers that fail a crowded label, a missing title, low contrast or a jump at the loop boundary; plus screens, docs sites and README visuals for Python projects |
 
 ## The rules it never lets slide
 
@@ -156,7 +156,7 @@ It helps most when the right move is not obvious and a habit decides it: depreca
 
 ## Where the ideas came from
 
-Tabby takes ideas, rewritten in its own words, from [ponytail](https://github.com/DietrichGebert/ponytail), [caveman](https://github.com/JuliusBrussee/caveman), [BeautifulRust](https://github.com/morganlinton/BeautifulRust), [Cloudflare's security-audit skill](https://github.com/cloudflare/security-audit-skill), [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills), [impeccable](https://github.com/pbakaus/impeccable), [diagram-design](https://github.com/cathrynlavery/diagram-design), [stack-diagram](https://github.com/caru-ini/stack-diagram) and others. Adapted material keeps its licence; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+Tabby takes ideas, rewritten in its own words, from [ponytail](https://github.com/DietrichGebert/ponytail), [caveman](https://github.com/JuliusBrussee/caveman), [BeautifulRust](https://github.com/morganlinton/BeautifulRust), [Cloudflare's security-audit skill](https://github.com/cloudflare/security-audit-skill), [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills), [impeccable](https://github.com/pbakaus/impeccable), [taste-skill](https://github.com/Leonxlnx/taste-skill), [unlazy](https://github.com/Leonxlnx/unlazy), [diagram-design](https://github.com/cathrynlavery/diagram-design), [stack-diagram](https://github.com/caru-ini/stack-diagram) and others. The diagram icons are [Tabler Icons](https://github.com/tabler/tabler-icons) (MIT). Adapted material keeps its licence; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 ## Credits and licence
 
