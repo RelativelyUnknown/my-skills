@@ -39,7 +39,7 @@ The rest of this repository is MIT (see `LICENSE`).
 
 ## Read, nothing taken
 
-blader/humanizer (MIT), softaworks/agent-toolkit `writing-clearly-and-concisely` (MIT), addyosmani/agent-skills (MIT), morganlinton/BeautifulRust (MIT), cathrynlavery/diagram-design (MIT), caru-ini/stack-diagram (MIT), pbakaus/impeccable (Apache-2.0), heydamir/unslop (CC BY 4.0), vercel-labs/agent-skills (no LICENSE file), mukul975/Anthropic-Cybersecurity-Skills (Apache-2.0), ComposioHQ/awesome-claude-skills, github/awesome-copilot (MIT). They were read for ideas; where a baseline case showed the model already does the thing, nothing was added. Earlier unmodified copies of humanizer, writing-clearly-and-concisely and the wshobson Python skills were removed from the repository; the adapted wshobson material is in `tabby/development` with its pinned commit.
+blader/humanizer (MIT), softaworks/agent-toolkit `writing-clearly-and-concisely` (MIT), addyosmani/agent-skills (MIT), morganlinton/BeautifulRust (MIT), heydamir/unslop (CC BY 4.0), vercel-labs/agent-skills (no LICENSE file), mukul975/Anthropic-Cybersecurity-Skills (Apache-2.0), ComposioHQ/awesome-claude-skills, github/awesome-copilot (MIT). (cathrynlavery/diagram-design, caru-ini/stack-diagram and pbakaus/impeccable were listed here by mistake; they were reread on 2026-11-11 and are credited in the design section below.) They were read for ideas; where a baseline case showed the model already does the thing, nothing was added. Earlier unmodified copies of humanizer, writing-clearly-and-concisely and the wshobson Python skills were removed from the repository; the adapted wshobson material is in `tabby/development` with its pinned commit.
 
 ## Read for ideas, rewritten (added 2026-11-09)
 
@@ -72,7 +72,7 @@ Every source was cloned again at the commit below and read for ideas Tabby did n
 | github/awesome-copilot (`227949a`), `docs-sync-audit` | MIT | both sides of a docs mismatch; definite-answer checks first | `documentation/drift.md` |
 | mukul975/Anthropic-Cybersecurity-Skills (`54a7988`) | Apache-2.0 | dependency-confusion and typosquat checks, as pointers | `review/security-audit/supply-chain.md` |
 
-Read again, nothing taken: heydamir/unslop (`97daa3e`, interface restyling; its copy rules are already in `documentation/ai-patterns.md`), vercel-labs/agent-skills (`1a2c79d`, React and deployment rules; its one-rule-per-file layout was weighed against Tabby's smells lists and not adopted), pbakaus/impeccable (`ec229b4`, interface design), ComposioHQ/awesome-claude-skills (`be2a406`, application connectors).
+Read again, nothing taken: heydamir/unslop (`97daa3e`, interface restyling; its copy rules are already in `documentation/ai-patterns.md`), vercel-labs/agent-skills (`1a2c79d`, React and deployment rules; its one-rule-per-file layout was weighed against Tabby's smells lists and not adopted), ComposioHQ/awesome-claude-skills (`be2a406`, application connectors).
 
 The C++ leaf (`development/library/native/cpp.md`) was written from the documentation in wjakob/nanobind (`af676a3`, BSD-3-Clause) and pybind/pybind11 (`3beb376`, BSD-3-Clause); no text copied.
 
@@ -89,3 +89,19 @@ Ideas restated for Tabby; no text copied. `development/SOURCE.md` lists the leav
 | cloudflare/security-audit-skill (`c1c8a8c`), addyosmani `doubt-driven-development` | MIT | a fresh verifier tries to refute each candidate | `review/security-audit/reporting.md` |
 | addyosmani `deprecation-and-migration` | MIT | the questions before deprecating, advisory against compulsory, strangler, zombie code | `development/workflow/deprecation-and-migration.md` |
 | morganlinton/BeautifulRust `lints/` | MIT | a lints block with the suppression and panic lints | `development/assets/native/Cargo.lints.toml` (run under clippy 0.1.97) |
+
+## Design skills, read in full and adapted (2026-11-11)
+
+The earlier entries for diagram-design, stack-diagram and impeccable said "nothing taken", and taste-skill and unlazy were not listed; that was wrong. Each was cloned and read in full at the commit below. No text, example, icon or diagram was copied; the ideas are restated in new words for Tabby's diagrams, animations, interfaces and completion gates. `tabby/design/SOURCE.md` lists them per leaf.
+
+| Source (commit) | Licence | Idea taken | Where it went |
+| --- | --- | --- | --- |
+| cathrynlavery/diagram-design (`f2496ac`) | MIT | node treatment by role; six connector rules (orthogonal elbows, label gap, no overlaps, one attach point per connector, no transit behind a box, label mask before node); per-type budgets; a 4 px grid; choosing a semantic pattern before the visual type; mechanical geometry and accessibility checks as scripts; animation modes with budgets, a complete static frame and reduced motion | `design/diagrams/`, `design/animation/`, `design/assets/diagram/check.py` |
+| caru-ini/stack-diagram (`5af3b09`) | MIT | labelled group containers; a node is its tile plus its text, so connectors anchor to the box boundary; edge labels with a halo; a pictogram for an abstract node, never text or emoji; render to PNG in both themes and look before delivering | `design/diagrams/connectors.md`, `design/assets/diagram/render.mjs` |
+| Leonxlnx/taste-skill (`f6b7657`) | MIT | diagrams as small specs with a few layouts (hub, lanes, fan-in, sync, timeline); every motion gets a written purpose or is cut; a finish gate that runs the checker in a real browser with documented waivers; a copy-slop vocabulary | `design/diagrams/types/`, `design/animation/motion.md`, `design/interfaces/` |
+| pbakaus/impeccable (`c1e0e54`, and the docs at impeccable.style) | Apache-2.0 | context before visuals; visitor modes (persuade, operate, read); a list of known defaults to refuse; a detector that runs in code with exit codes 0, 2 and 1; a critique split into two isolated assessments (judgment and detector) with a banner when they cannot be isolated; a motion thesis and one authored moment | `design/interfaces/`, `review/design.md`, `design/animation/motion.md` |
+| Leonxlnx/unlazy (`1667149`) | MIT | acceptance gates written before the work, each with a runnable check and an expected result; gates that cannot fail are linted and given a negative control; the request is re-read and every claim re-measured before reporting; an unmet or abandoned gate is reported as a handoff | `development/workflow/gates.md` |
+
+## Icons
+
+The diagram icon set is Tabler Icons (MIT, Copyright (c) 2020-2026 Pawel Kuna; https://github.com/tabler/tabler-icons), outline style, vendored as one JSON file at `tabby/design/assets/icons/tabler-outline.json` with its licence in `tabby/design/assets/icons/LICENSE.tabler`.
