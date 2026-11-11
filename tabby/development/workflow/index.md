@@ -7,3 +7,4 @@
 - specs-and-slices.md: a request with several readings or edges; building in thin vertical slices; a task list.
 - deprecation-and-migration.md: removing or replacing a public name, a dependency, a framework or a Python version.
 - checking-apis.md: calling a third-party API you are not sure of; check the installed version, not memory.
+- gates.md: a request with three or more independent outcomes, or "all" and "every": write the checks first, run them again before you report.

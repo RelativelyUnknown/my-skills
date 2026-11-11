@@ -37,7 +37,7 @@ Read `code/smells.md` first, then only the leaf for the main thing the task does
 - logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`; script or CLI: `code/scripts.md`
 - tests: `testing/testing.md`, `testing/smells.md`; slow code: `performance/index.md`
 - retries, timeouts, circuit breakers: `application/shared/resilience.md`
-- scope: `workflow/planning.md`; bug: `workflow/debugging.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; several readings: `workflow/specs-and-slices.md`; removing or replacing: `workflow/deprecation-and-migration.md`
+- scope: `workflow/planning.md`; bug: `workflow/debugging.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; three or more outcomes, or "all"/"every": `workflow/gates.md`; several readings: `workflow/specs-and-slices.md`; removing or replacing: `workflow/deprecation-and-migration.md`
 - pattern, layers: `architecture/design-patterns.md`; data structure or algorithm: `architecture/fit.md`; design under real limits, `unsafe`: `architecture/senior-engineering.md`
 
 The project's kind adds one index (`which-type.md` names it: library, service, worker, native). Read it and only it.
