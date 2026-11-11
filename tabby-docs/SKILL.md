@@ -1,6 +1,6 @@
 ---
 name: tabby-docs
-description: "Use when writing, fixing or checking documentation: a README, docstrings, tutorial, how-to, reference, explanation, changelog, ADR, runbook, troubleshooting page, CONTRIBUTING, a commit message, or whether docs still match the code."
+description: "Rules for writing documentation in a Python project: README, docstrings, tutorial, how-to, reference, changelog or release notes, ADR, runbook, troubleshooting page, CONTRIBUTING, a commit message, or checking docs against the code. Invoke before writing or editing any of them, even a one-line docstring or commit message."
 license: MIT
 ---
 

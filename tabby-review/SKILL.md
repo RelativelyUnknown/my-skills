@@ -1,6 +1,6 @@
 ---
 name: tabby-review
-description: "Use when asked to review a diff, branch or pull request, audit a repository or its security (dependencies, CI workflows, release path), or check a change before reporting it done; also to review an existing diagram, animation or web page before it ships. A clean review gets a short no-findings answer."
+description: "Rules for reviewing: a diff, branch or pull request, a repository audit, a security audit (code, dependencies, CI workflows, release path), your own change before you call it done, or an existing diagram, animation or page before it ships. Invoke before giving any finding, even for a quick look; a clean review is a short no-findings answer."
 license: MIT
 ---
 

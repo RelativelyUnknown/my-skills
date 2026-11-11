@@ -1,0 +1,102 @@
+[
+ {
+  "query": "Rename this helper and update all its call sites",
+  "expect": "tabby"
+ },
+ {
+  "query": "The CSV export drops the last row, find the bug",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add pytest fixtures for the database layer",
+  "expect": "tabby"
+ },
+ {
+  "query": "Replace requests with httpx in the client module",
+  "expect": "tabby"
+ },
+ {
+  "query": "Cache the result of this expensive lookup",
+  "expect": "tabby"
+ },
+ {
+  "query": "Wrap this C library with a Python extension",
+  "expect": "tabby"
+ },
+ {
+  "query": "Is this pull request safe to merge?",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Look over my changes for anything I missed",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Do a security pass over the upload handler",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Write the contributing guide",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Document how to deploy this service",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Draft the changelog entry for this fix",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Explain the architecture in prose for new developers",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Sketch how data flows from the API to the warehouse",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Make a visual of the retry state machine",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Show the request lifecycle as an animation",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Diagram the modules and who imports whom",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "The settings page looks broken on a phone",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Build an admin screen to list failed jobs",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Make our Gradio demo look professional",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add a dark theme to the Sphinx docs",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Write a haiku about databases",
+  "expect": "none"
+ },
+ {
+  "query": "Convert this Python 2 snippet explanation into French",
+  "expect": "none"
+ },
+ {
+  "query": "Set up a Vue component for the header",
+  "expect": "none"
+ },
+ {
+  "query": "What does the GIL do?",
+  "expect": "none"
+ }
+]

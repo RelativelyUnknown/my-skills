@@ -1,6 +1,6 @@
 ---
 name: tabby-diagrams
-description: "Use when asked for a diagram, an architecture or flow picture, a sequence, state, entity-relationship or deployment diagram, or an explainer animation of how something works, drawn as SVG or animated HTML (video only on request). Not for web pages, dashboards or other UI."
+description: "Draws diagrams and explainer animations as SVG or animated HTML: architecture, flow, sequence, state, entity-relationship (database tables), deployment (cloud or servers), a request travelling through a system. Invoke before drawing anything, even a quick sketch; it holds the builder and the checkers. Not for web pages, dashboards or other UI."
 license: MIT
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: tabby
-description: "Use when writing, changing, debugging, testing, speeding up, packaging or releasing code in a Python project, including its Rust, C, C++ or Zig extensions: rules that keep a change small, verified and in the project's own tools. Load before editing .py or .rs."
+description: "Rules for any code task in a Python project: fix a bug, add a feature, flag or endpoint, refactor, add types or tests, make code faster, add a dependency, set up CI, cut a release, bind Rust, C, C++ or Zig. Invoke before reading or editing code. Always invoke it, even when the task looks simple: the rules apply to every change, however small. Docs, reviews, diagrams and browser UI have their own skills (tabby-docs, tabby-review, tabby-diagrams, tabby-frontend)."
 license: MIT
 ---
 
