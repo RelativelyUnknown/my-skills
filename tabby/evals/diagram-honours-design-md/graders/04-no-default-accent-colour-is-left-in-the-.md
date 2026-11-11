@@ -3,7 +3,7 @@ type: regex
 target:
   source: file
   path: "docs/architecture.svg"
-pattern: "#004A96|#4472AA|#7CA0C6|#E0E9F2|#6FB0FF"
+pattern: "#2F5BEA|#7C9BFF|#E8EEFF|#1C2547"
 match: not_contains
 weight: 3
 ---

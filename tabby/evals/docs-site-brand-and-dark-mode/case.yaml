@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: docs-site-brand-and-dark-mode
+expected_outcome: |
+  The MkDocs Material docs site has a light and dark switch and uses the brand colour #1B7F5C, set through the theme palette and an extra stylesheet that mkdocs.yml loads.
+context:
+  scaffold_script: fixture.sh

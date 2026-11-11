@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: gates-trivial-no-ceremony
+expected_outcome: |
+  A one-word README typo is fixed with a single small edit and a short reply: no checklist, no gates file, no ceremony.
+context:
+  scaffold_script: fixture.sh

@@ -238,5 +238,49 @@
   {
     "query": "Set up ESLint and Prettier for this repo",
     "should_trigger": false
+  },
+  {
+    "query": "Draw an architecture diagram of the checkout flow for the docs",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a short animation of how a request travels through the service",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix the accessibility problems on the orders page",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this dashboard before we ship it",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a light and dark mode switch to the MkDocs site",
+    "should_trigger": true
+  },
+  {
+    "query": "Update every caller of get_user to the new signature and fix all the failing tests",
+    "should_trigger": true
+  },
+  {
+    "query": "Draw the states a job can be in as a diagram",
+    "should_trigger": true
+  },
+  {
+    "query": "Design a README header image for this Python library",
+    "should_trigger": true
+  },
+  {
+    "query": "Write a poem about spring",
+    "should_trigger": false
+  },
+  {
+    "query": "Translate this paragraph into Spanish",
+    "should_trigger": false
+  },
+  {
+    "query": "Turn this list of recipes into a weekly meal plan",
+    "should_trigger": false
   }
 ]

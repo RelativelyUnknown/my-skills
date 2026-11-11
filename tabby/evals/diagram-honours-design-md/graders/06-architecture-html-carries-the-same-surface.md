@@ -2,10 +2,10 @@
 type: regex
 target:
   source: file
-  path: "docs/theme.js"
+  path: "docs/architecture.html"
 pattern: "#101614"
 flags: i
 weight: 1
 ---
 
-theme.js carries the same surface
+architecture.html carries the same surface
