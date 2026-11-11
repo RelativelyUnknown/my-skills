@@ -19,7 +19,7 @@
 // "ghost": true on a node or edge draws it only in the animation's "before" state (hidden in the static picture).
 // A node with "rows": [["id","uuid"],["email","text"]] is drawn as a table (entity, schema).
 // Edge kind: main (accent, solid) | secondary (grey, solid, default) | optional (grey, dashed).
-// Edge route: h | v (chosen automatically when nodes are aligned) | hv | vh (one elbow) |
+// Edge route: h | v (chosen automatically when nodes are aligned) | hv | vh (one elbow) | z (fan: horizontal, vertical, horizontal; "slot": [i, n]) |
 //   below | above (a U shape under or over both nodes, for a return or retry path).
 // Icons are Tabler outline names (assets/icons/tabler-outline.json); an unknown name lists near matches.
 // The output carries data-node / data-edge / data-pill attributes that check.py reads.
@@ -163,6 +163,17 @@ export function build(spec) {
     } else if (route === 'vh') {
       const sx = dir(a.cx, b.cx), sy = dir(a.cy, b.cy), y1 = sy > 0 ? a.b + G : a.y - G, x2 = sx > 0 ? b.x - G : b.r + G;
       d = `M${a.cx},${y1} V${b.cy - sy * R} Q${a.cx},${b.cy} ${a.cx + sx * R},${b.cy} H${x2}`; pill = [(a.cx + sx * R + x2) / 2, b.cy];
+    } else if (route === 'z') {
+      // Z route: horizontal, vertical, horizontal. e.slot = [i, n] spreads the start points of n connectors along the
+      // source's edge so a fan-out does not share a stroke; the vertical runs are staggered so none cross.
+      const [i, n] = e.slot || [0, 1];
+      const sx = dir(a.cx, b.cx), x1 = sx > 0 ? a.r + G : a.x - G, x2 = sx > 0 ? b.x - G : b.r + G;
+      const sy = g4(a.y + a.h * (i + 1) / (n + 1)), cyb = b.cy, dy = Math.sign(cyb - sy), span = Math.abs(x2 - x1);
+      const mid = (n - 1) / 2, k = n > 1 ? 1 - Math.abs(i - mid) / (mid + 0.5) : 0.5;
+      const xm = g4(x1 + sx * span * (0.3 + 0.4 * k)), r = Math.min(R, Math.abs(cyb - sy) / 2, Math.abs(xm - x1) / 2);
+      if (dy === 0 || r < 4) d = `M${x1},${sy} H${xm} V${cyb} H${x2}`;
+      else d = `M${x1},${sy} H${xm - sx * r} Q${xm},${sy} ${xm},${sy + dy * r} V${cyb - dy * r} Q${xm},${cyb} ${xm + sx * r},${cyb} H${x2}`;
+      pill = [(xm + x2) / 2, cyb];
     } else if (route === 'below' || route === 'above') {
       const below = route === 'below', s = below ? 1 : -1;
       const toLeft = b.cx < a.cx;

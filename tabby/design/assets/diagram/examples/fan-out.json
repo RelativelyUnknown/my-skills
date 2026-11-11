@@ -1,0 +1,107 @@
+{
+  "id": "fan",
+  "title": "How Tabby routes a task",
+  "subtitle": "Only the modules a task needs are read. Everything else stays out of context.",
+  "nodes": [
+    {
+      "id": "req",
+      "name": "Your request",
+      "role": "\"add a retry\"",
+      "icon": "message",
+      "x": 40,
+      "y": 216
+    },
+    {
+      "id": "router",
+      "name": "Tabby router",
+      "role": "reads ## Tabby in AGENTS.md",
+      "icon": "route",
+      "x": 300,
+      "y": 216,
+      "focal": true
+    },
+    {
+      "id": "dev",
+      "name": "development",
+      "role": "write, test, package, ship",
+      "icon": "code",
+      "x": 672,
+      "y": 112,
+      "w": 272
+    },
+    {
+      "id": "rev",
+      "name": "review",
+      "role": "a diff, an audit, a page",
+      "icon": "eye-check",
+      "x": 672,
+      "y": 200,
+      "w": 272
+    },
+    {
+      "id": "doc",
+      "name": "documentation",
+      "role": "README, ADR, runbook",
+      "icon": "book",
+      "x": 672,
+      "y": 288,
+      "w": 272
+    },
+    {
+      "id": "des",
+      "name": "design",
+      "role": "diagrams, animations, screens",
+      "icon": "palette",
+      "x": 672,
+      "y": 376,
+      "w": 272
+    }
+  ],
+  "edges": [
+    {
+      "from": "req",
+      "to": "router",
+      "kind": "main"
+    },
+    {
+      "from": "router",
+      "to": "dev",
+      "kind": "main",
+      "route": "z",
+      "slot": [
+        0,
+        4
+      ]
+    },
+    {
+      "from": "router",
+      "to": "rev",
+      "kind": "main",
+      "route": "z",
+      "slot": [
+        1,
+        4
+      ]
+    },
+    {
+      "from": "router",
+      "to": "doc",
+      "kind": "main",
+      "route": "z",
+      "slot": [
+        2,
+        4
+      ]
+    },
+    {
+      "from": "router",
+      "to": "des",
+      "kind": "main",
+      "route": "z",
+      "slot": [
+        3,
+        4
+      ]
+    }
+  ]
+}

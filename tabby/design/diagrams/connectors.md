@@ -29,6 +29,8 @@ If two connectors need different meanings, a legend is not the answer: label the
 { "from": "worker", "to": "queue", "label": "RETRY", "kind": "optional", "route": "below" }
 ```
 
+`z` is for one node reaching several in a column (a router to its modules, a source to its consumers): horizontal, vertical, horizontal, with `"slot": [i, n]` spreading the `n` start points along the source's edge so no two connectors share a stroke, and the vertical runs staggered so none cross. Order the slots top to bottom to match the targets. Example: `assets/diagram/examples/fan-out.json`.
+
 A connector that needs two elbows and a detour means the layout is wrong: move a node.
 
 ## Labels
