@@ -265,3 +265,21 @@ Tabby does not hurt the stronger model, but its overhead is larger there. The 10
 **Worse cases are still the design and gates cases** (`animation-self-contained-html` -0.46, `gates-multipart-missed-requirement` -0.33, `diagram-of-a-small-service` -0.29) plus two resource and resilience cases (`stream-command-output-with-limit` -0.33, `stop-calling-a-failing-dependency` -0.30). In the traces the design cases read the index and the quickstart and wrote their first file at turn 5 to 6, so the quickstarts worked on reading volume; the remaining gap on those cases is in the work itself (build, check, render loops) and in graders that need the checker to run, which the bare agent never does.
 
 **Caveat.** The eval cases are small, single-turn fixtures. A leaf that is never opened here may matter in a large real task, so the 116 unread files are candidates to demote into a skill's on-demand reference folder, not to delete.
+
+
+## 6. Flattening experiment (12 November; Haiku, 3 runs, all 91 cases, with-arm only, bare arm reused from section 5)
+
+Question: does removing the router, the front-door method and the `Noticed:` rule cut turns and cost without losing lift (hypothesis H1)? Variants are in `tools/eval/variants/`: V1 = router text plus the "Never miss" list with direct leaf pointers, no method steps, no `Noticed:` (7.9 KB); V2 = V1 plus the seven-step method and `Noticed:` (10.0 KB). Same 298-character description; rest of the plugin unchanged.
+
+| Arm | Score | Turns | Cost per run | Improve / worse vs bare (±0.10) |
+| --- | --- | --- | --- | --- |
+| Bare | 0.755 | 11.1 | $0.0119 | |
+| Current plugin | 0.818 | 16.1 | $0.0147 | 17 / 6 |
+| V1 flat, lean | 0.813 | 15.0 | $0.0145 | 24 / 16 |
+| V2 flat, method | 0.802 | 14.3 | $0.0140 | 22 / 17 |
+
+V2 had one errored case (`animation-self-contained-html`), excluded from its means (90 cases).
+
+Reading: **the score does not change** (0.813 vs 0.818 is inside the noise of three runs), **turns fall 7% to 11% and cost 1% to 5%**, and the plugin still costs about +22% over bare. The gate (cost at most +10%) is not met. So the router and the method are not where the cost comes from; the cost is the agent following the "Never miss" rules (verify by running, read before writing, report). Per-case results move a lot (worse count 6 vs 16 with the same mean): `payment-strategy` 1.00 to 0.61, `community-standard-over-handrolled` 0.50 to 0.94, `hard-problem-take-a-library` 0.50 to 0.91, `timeout-is-not-the-fix` stays at 0.15 to 0.25 in every arm. With three runs, per-case differences under 0.3 should not be read.
+
+Decision: flattening is **safe and slightly cheaper but not a lever**. It is adopted as part of the split (a router no longer exists once each module is its own skill), not as a cost fix. The cost lever that remains is making the rules fire only where they help (the 36 cases bare already passes), which is a hold-out and rule-scoping question for the next phase, not a structure question.
