@@ -283,3 +283,19 @@ V2 had one errored case (`animation-self-contained-html`), excluded from its mea
 Reading: **the score does not change** (0.813 vs 0.818 is inside the noise of three runs), **turns fall 7% to 11% and cost 1% to 5%**, and the plugin still costs about +22% over bare. The gate (cost at most +10%) is not met. So the router and the method are not where the cost comes from; the cost is the agent following the "Never miss" rules (verify by running, read before writing, report). Per-case results move a lot (worse count 6 vs 16 with the same mean): `payment-strategy` 1.00 to 0.61, `community-standard-over-handrolled` 0.50 to 0.94, `hard-problem-take-a-library` 0.50 to 0.91, `timeout-is-not-the-fix` stays at 0.15 to 0.25 in every arm. With three runs, per-case differences under 0.3 should not be read.
 
 Decision: flattening is **safe and slightly cheaper but not a lever**. It is adopted as part of the split (a router no longer exists once each module is its own skill), not as a cost fix. The cost lever that remains is making the rules fire only where they help (the 36 cases bare already passes), which is a hold-out and rule-scoping question for the next phase, not a structure question.
+
+
+## 7. Split into six skills (12 November; Haiku, 3 runs, all 91 cases, with-arm only, bare arm reused from section 5)
+
+The plugin was split into `tabby` (core, native fused in), `tabby-review`, `tabby-docs`, `tabby-diagrams`, `tabby-frontend` and `interview`, each with its own description. Two defects found in the first split run were fixed before this one: the `interview` skill returned no body while it was a command with `disable-model-invocation` (now a plain skill named `interview`), and the diagram quickstart failed in a read-only shell (it now says to print the SVG to stdout and save it with the Write tool). Results: `tools/eval/results/2026-11-11-haiku-split-6skills.csv`; no errored runs.
+
+| Arm | Score | Turns | Cost per run |
+| --- | --- | --- | --- |
+| Bare | 0.754 | 11.1 | $0.0120 |
+| Current plugin (one skill) | 0.812 | 16.2 | $0.0149 |
+| V1 flat | 0.812 | 15.1 | $0.0147 |
+| **Six skills** | **0.840** | 17.1 | $0.0153 |
+
+Against the current plugin: 18 cases improve and 9 get worse by 0.10 or more. Biggest gains: `vague-ask-clarifies-briefly` +0.62, `hard-problem-take-a-library` +0.50, `interview-saves-after-yes` +0.48, `community-standard-over-handrolled` +0.35, `vague-feature-gets-a-short-spec` +0.32. Biggest losses: `three-pages` -0.36, `ci-job-for-a-uv-project` -0.30, `import-rows-some-fail` -0.30, `agents-md-for-a-repo` -0.21.
+
+Reading: the split gives **+0.03 score over the current plugin and +0.09 over bare, at +2.7% cost over the current plugin (+27% over bare)**. The gain is real in size (more than the 0.01 noise between the two earlier arms) but not yet proven: three runs, no hold-out, and the cases were written next to the content. Cost is still above the +10% gate. Skill loading on unseen phrasings stays at about 35% on Haiku (see the trigger tests), so the next steps are description tuning with a held-out split and a Sonnet check.
