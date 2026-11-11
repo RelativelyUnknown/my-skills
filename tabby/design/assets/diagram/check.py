@@ -163,6 +163,8 @@ def check(path):
     nodes, zones, pills, edges = {}, [], {}, []
     for g in root.iter():
         t = tag(g)
+        if g.get("data-ghost"):
+            continue
         if t == "g" and g.get("data-node"):
             r = rect_of(g)
             if r:

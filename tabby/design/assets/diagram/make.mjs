@@ -16,6 +16,7 @@
 //   "edges": [{ "from": "client", "to": "api", "label": "POST", "kind": "main" }],
 //   "theme": { "accent": "#1B7F5C", "surface": "#101614", "ink": "#EAF2EE", "font": "IBM Plex Sans" }  // from a design.md; optional
 // }
+// "ghost": true on a node or edge draws it only in the animation's "before" state (hidden in the static picture).
 // A node with "rows": [["id","uuid"],["email","text"]] is drawn as a table (entity, schema).
 // Edge kind: main (accent, solid) | secondary (grey, solid, default) | optional (grey, dashed).
 // Edge route: h | v (chosen automatically when nodes are aligned) | hv | vh (one elbow) |
@@ -175,8 +176,8 @@ export function build(spec) {
     const main = kind === 'main';
     const cls = main ? 'ma' : 'ml';
     const attrs = main ? 'stroke="var(--accent)" stroke-width="2.5"' : kind === 'optional' ? 'stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5"' : 'stroke="var(--line)" stroke-width="1.75"';
-    edgeSvg.push(`<path data-edge="${esc(key)}" data-kind="${kind}" d="${d}" fill="none" ${attrs} stroke-linecap="round" stroke-linejoin="round" marker-end="url(#${id}-${cls})"/>`);
-    if (e.label) pills.push({ key, label: e.label, at: pill, accent: main });
+    edgeSvg.push(`<path data-edge="${esc(key)}" data-kind="${kind}"${e.ghost ? ' data-ghost="1" display="none"' : ''} d="${d}" fill="none" ${attrs} stroke-linecap="round" stroke-linejoin="round" marker-end="url(#${id}-${cls})"/>`);
+    if (e.label) pills.push({ key, label: e.label, at: pill, accent: main, ghost: !!e.ghost });
   }
   edgeSvg.forEach(add);
 
@@ -184,7 +185,7 @@ export function build(spec) {
   for (const p of pills) {
     const text = String(p.label).toUpperCase();
     const w = up4(text.length * 6.6 + 16), h = 24, x = g4(p.at[0] - w / 2), y = g4(p.at[1] - h / 2);
-    add(`<g data-pill="${esc(p.key)}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="var(--surface)" stroke="var(${p.accent ? '--accent' : '--hair'})" stroke-width="1"/>` +
+    add(`<g data-pill="${esc(p.key)}"${p.ghost ? ' data-ghost="1" display="none"' : ''}><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="var(--surface)" stroke="var(${p.accent ? '--accent' : '--hair'})" stroke-width="1"/>` +
         `<text class="${p.accent ? 'a' : 'l'}" x="${x + w / 2}" y="${y + 16}" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">${esc(text)}</text></g>`);
   }
 
@@ -192,7 +193,7 @@ export function build(spec) {
   for (const n of nodes.values()) {
     const f = !!n.focal;
     const fill = f ? 'var(--accent-tint)' : 'var(--node)', stroke = f ? 'var(--accent)' : 'var(--hair)';
-    add(`<g data-node="${esc(n.id)}"${f ? ' data-focal="1"' : ''}><rect data-box="1" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="14" fill="${fill}" stroke="${stroke}" stroke-width="${f ? 1.75 : 1.25}"/>`);
+    add(`<g data-node="${esc(n.id)}"${f ? ' data-focal="1"' : ''}${n.ghost ? ' data-ghost="1" display="none"' : ''}><rect data-box="1" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="14" fill="${fill}" stroke="${stroke}" stroke-width="${f ? 1.75 : 1.25}"/>`);
     if (n.rows) {
       add(`<text x="${n.x + 16}" y="${n.y + 28}" font-size="14" font-weight="650">${esc(n.name)}</text>`);
       add(`<line x1="${n.x}" y1="${n.y + 44}" x2="${n.r}" y2="${n.y + 44}" stroke="var(--hair)" stroke-width="1"/>`);

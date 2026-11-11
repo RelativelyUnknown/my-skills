@@ -1,31 +1,21 @@
-# Animation pipeline
+# Making an animation
 
-A scene is a pure function of time: `renderAt(t)` sets every attribute for second `t`. Frames can be rendered in any order and are identical on every run. Read [style.md](../diagrams/style.md) for how it should look and [motion.md](motion.md) for timing.
+The default deliverable is one self-contained HTML file: the diagram as inline SVG plus a small player. No network, no dependencies, and it opens from a file. The picture is a pure function of time, so any moment can be reproduced (`window.__seek(t)`).
 
-## Setup (once)
+## Steps
 
-1. Copy this skill's `assets/animation/` folder to a working folder (not into the skill). It holds `helpers.js`, `common.js`, `render.js`, `stage.html`, `style.css`, `specs.js`, `package.json` and `scenes/example.js`.
-2. Needs `node` 22+, `ffmpeg`, and Playwright with Chromium. In the working folder run `npm install` once (two font packages) and make `playwright` resolvable (`npm i playwright`, or a global install with `NODE_PATH` set).
+1. **Thesis.** Write the three lines in [motion.md](motion.md): order, focus, why each motion.
+2. **Spec.** Copy a template from `assets/animation/templates/` (`flow.json` a request through parts, `state-change.json` one thing moving through states, `before-after.json` a design change) and replace the nodes, edges and zones with the real ones, as in [diagrams/choosing.md](../diagrams/choosing.md). The look is the diagram look: [diagrams/style.md](../diagrams/style.md), with a `design.md` mapped through the spec's `theme`.
+3. **Story.** Add the `story` list (the steps in [motion.md](motion.md)). Without one a default is generated: parts and main connectors appear in order, then one packet runs the main path.
+4. **Build.** `node assets/animation/animate.mjs spec.json out.html`.
+5. **Check the picture and the motion.** `python3 assets/diagram/check.py` on the static SVG (`node assets/diagram/make.mjs spec.json out.svg`), then `node assets/animation/check-motion.mjs out.html`. It fails a step budget, too many steps at once, a jump at the loop boundary, a page that moves under reduced motion, a request to the network, a script error and missing controls, and writes `contact-sheet.png`.
+6. **Look.** Open the contact sheet: stills at the start, a quarter, half and three quarters of the story, its end and the last frame of the loop. Check that each still reads, the focus lands where intended, nothing overlaps mid-motion, and the first frame is not confusing.
+7. **Deliver** the HTML. Video only when asked: [formats.md](formats.md).
 
-## Make a scene
+## Needs
 
-1. Add data to `specs.js`: `window.SPECS.<scene> = { title, … }`. Plain numbers and strings. Compute real values in your own code and paste or generate the file; scenes only draw, never compute.
-2. Copy `scenes/example.js` to `scenes/<scene>.js`. Keep this shape:
-   - `makeStage(title)` returns `{ dyn }`; add everything to `dyn`.
-   - `splitHeader(dyn, [left, right])`, `makeChart(dyn, PANELS.left, spec, { ticks })`, `valuePill`, `emptySlot`, `ring` are in `common.js`; `S`, `seg`, `win`, `lerp`, `ease`, `draw`, `pop` in `helpers.js`.
-   - Create all elements up front with `opacity: 0`; the loop only updates attributes.
-   - Finish with `finish(dyn, END, t => { … })`, where `END` is the time of the last event.
-3. Per element, derive progress with `seg(t, start, end)` (0..1), shape it with `ease.out | inOut | back`, then apply: `pop` for scale-in, `draw` for stroke-in, `lerp` for moves, `place` for a (0,0)-centred group. Name start times as constants at the top (`BIN0`, `PILLS0`) so the choreography reads as a script.
-4. Preview stills while designing, from the working folder:
-   `node render.js . <scene> prev --times 1,2.5,4,6.5`
-   and look at them. Check overlaps, text clipping and that mid-motion frames are legible, not only the last one.
-5. Render all frames and encode (see [formats.md](formats.md)):
-   `node render.js . <scene> out/.frames/<scene>`
+Playwright with Chromium for steps 5 and 6 (and for `assets/diagram/render.mjs`). Node 22 for every `.mjs` script. Ask before installing anything; if Playwright is not available, say that the motion was not checked and deliver the HTML with the `check.py` result.
 
-## Rules
+## Proving the checkers
 
-- No wall-clock time, no `Math.random()`, no CSS animations or transitions: they break determinism.
-- Gate "appears at time a" with `opacity = t >= a ? 1 : 0` or `seg`, never by creating elements late.
-- Stroke-dash paths (`draw`) need `fill: none`; call `draw` every frame, including with progress 0.
-- Keep text inside its pill or tile: mono 13 px fits about 6 characters in a 60 px pill.
-- Chart-specific layout (`makeChart`) is optional; for other layouts build with `S('rect' | 'path' | …)` and `T()` directly.
+`python3 assets/diagram/selftest.py` and `node assets/animation/selftest-motion.mjs` run each checker against a clean example and against seeded defects. Run them after changing a checker, the builder, the player or the tokens.

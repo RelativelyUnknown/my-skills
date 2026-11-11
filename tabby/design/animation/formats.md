@@ -1,18 +1,17 @@
-# Encoding formats
+# Formats
 
-`render.js` writes 2× PNG frames (`f_0001.png`, …; 1920×1080 for the 960×540 stage) to `out/.frames/<scene>`. Encode from there at 25 fps. With `F=out/.frames/<scene>` and `N=<scene>`:
+**The animated HTML is the default.** It is a few tens of kilobytes, stays sharp at any size, honours `prefers-reduced-motion` and the viewer's light or dark scheme, and needs nothing to open. Use video only where a page cannot run it: a README that must autoplay, a slide, a chat message.
 
 ```bash
-mkdir -p out/mp4 out/webm out/gif
-# MP4 (H.264): widest support. yuv420p and faststart so it plays inline.
-ffmpeg -loglevel error -y -framerate 25 -i "$F/f_%04d.png" -c:v libx264 -pix_fmt yuv420p -crf 20 -preset slow -movflags +faststart out/mp4/$N.mp4
-# WebM (VP9): smallest file for modern browsers.
-ffmpeg -loglevel error -y -framerate 25 -i "$F/f_%04d.png" -c:v libvpx-vp9 -b:v 0 -crf 36 -row-mt 1 -pix_fmt yuv420p out/webm/$N.webm
-# GIF at 960×540: one palette from all frames, mapped without dithering so flat fills stay clean.
-ffmpeg -loglevel error -y -framerate 25 -i "$F/f_%04d.png" -vf "scale=iw/2:ih/2:flags=lanczos,palettegen=max_colors=96:stats_mode=full" out/.palette-$N.png
-ffmpeg -loglevel error -y -framerate 25 -i "$F/f_%04d.png" -i out/.palette-$N.png -lavfi "scale=iw/2:ih/2:flags=lanczos[x];[x][1:v]paletteuse=dither=none:diff_mode=rectangle" -loop 0 out/gif/$N.gif
+node assets/animation/render-video.mjs anim.html out.mp4            # H.264, plays everywhere
+node assets/animation/render-video.mjs anim.html out.webm           # VP9, smallest for web pages
+node assets/animation/render-video.mjs anim.html out.gif --fps 12   # where video does not autoplay (README files)
 ```
 
-- 96 colours: charts add anti-aliased lines in two hues, which 64 colours would band.
-- Pick the format by destination: MP4 for documents and most players, WebM for web pages, GIF where video does not autoplay (README files).
-- Scenes are independent: render several in parallel with `&` and `wait`.
+Options: `--fps` (default 30), `--scale` (default 2; the frame is the diagram's own size times this), `--dark` for the dark scheme, `--loops N`. Frames come from seeking the page, so every run is identical.
+
+- Needs Playwright with Chromium and ffmpeg: ask before installing either. For video that matches the diagram exactly, Inter should be resolvable (`@fontsource/inter` in the working folder); without it a fallback font shows and the report says so.
+- MP4 and WebM are encoded yuv420p with even dimensions so they play inline; MP4 has faststart.
+- GIF uses one 96-colour palette built from all frames and no dithering, so flat fills stay clean. 12 fps is enough for this kind of motion; the file is the largest per second of the three.
+- Pick by destination: MP4 for documents and most players, WebM for web pages, GIF where video will not autoplay.
+- Look at a frame from the output before reporting: extract one with `ffmpeg -i out.mp4 -vf "select=eq(n\,60)" -frames:v 1 check.png`.

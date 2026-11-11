@@ -1,86 +1,44 @@
 # Motion
 
-Use only these motions; each does one job.
+Motion explains a change in order. If the picture explains itself still, leave it still. Write the thesis before you animate: what changes, in what causal order, and what the reader should notice. A motion with no purpose is cut.
 
-| Motion | Job |
-| --- | --- |
-| **pop** (scale in with slight overshoot) | a new object appears: dot, pill, tile |
-| **draw** (stroke grows along a path) | a line, average or guide is being built |
-| **fly** (ease in-out between two positions) | an object moves to a new place or role |
-| **grow** (zone rises from the axis) | a region is claimed |
-| **drop** (dotted guide draws down, fades, pill pops) | a value is read off a chart into a result |
-| **ring** (fade in, hold, fade out) | "look here" |
-| **shake** (4 px, decaying, 0.45 s) | something failed, just before it changes |
+## The thesis (three lines, before any story)
 
-Timing: 25 fps; whole loop 7–10 s; stagger siblings by 0.05–0.15 s; pop 0.25 s, draw 0.25–0.4 s, fly 0.5 s. Build in reading order (inputs, then method, then result). After the last event hold briefly, fade only the content (title stays) over 0.45 s, then show the title-only frame for 0.35 s so the loop restarts cleanly.
+1. **Order:** what happens first, second, third (a request moves left to right; a state changes along its transitions).
+2. **Focus:** the one moment to remember (the packet reaching the queue and the count rising; the queue appearing where the direct call was).
+3. **Why each motion:** one short purpose per step, in its `"why"` field ("the packet shows the path a request takes"). A step you cannot justify in a few words goes; `check-motion.mjs` fails a step without a `why`.
 
-## Recipes
+## Vocabulary
 
-Copy the snippet, change names and times. All inside the `finish(dyn, END, t => { … })` callback; `a` is the start time.
+Use these step kinds in `assets/animation/animate.mjs`; each does one job.
 
-## Pop in
+| Step | Job | Time |
+| --- | --- | --- |
+| `reveal` (fade in, rise 8 px) | a part appears, in the order the reader should meet it | 0.45 s |
+| `draw` (line draws itself, then its label fades in) | a connection is made | 0.55 s |
+| `packet` (a dot travels along connectors) | something moves through the system | set by `dur`, 1.5 to 2.5 s |
+| `pulse` (one ring expands from a node) | "look here" | 0.7 s |
+| `badge` (a count appears and updates) | a state change you can see (the queue fills) | 0.25 s |
+| `active` (a node takes the focal look) | the one thing currently true (the order's state) | 0.2 s |
+| `hide` (fades out) | the old way, replaced (before and after) | 0.3 s |
 
-```js
-pop(dot, seg(t, a, a + .25), cx, cy);                    // scale 0 → 1 with overshoot, around (cx, cy)
-```
+`reveal`, `draw` and `hide` take a list and a `stagger`, so one step can bring in a row of parts in turn.
 
-For a pill drawn at (0,0): `const q = seg(t, a, a + .25); place(g, x, y, ease.back(q)); g.setAttribute('opacity', q > 0 ? 1 : 0);`
+## Rules
 
-## Draw a line
+- **Budget:** at most 8 steps, at most 2 running at once, one focal moment. `check-motion.mjs` fails more.
+- **Static first:** the picture without script is complete and correct; the player only hides parts at the start and shows them in order. Under `prefers-reduced-motion` the page shows the end state and offers "Play once".
+- **Ease out, never bounce:** entrances decelerate (exponential ease-out); lines draw with an ease in-out; nothing overshoots, shakes or loops forever on its own.
+- **Durations:** 150 to 300 ms for feedback, 300 to 500 ms for a change of layout, 500 to 800 ms for the one authored moment. A packet crossing the picture takes 1.5 to 2.5 s so it can be followed.
+- **Order of reading:** inputs, then the method, then the result. Parts that explain nothing (a retry path, a legend of context) appear with their neighbours or stay still.
+- **Loop without a jump:** hold on the finished picture for 2 s, fade the story out over 0.5 s, then restart from the empty or "before" state. `check-motion.mjs` fails a loop whose boundary is not empty.
+- **One mover at a time on the eye:** while a packet moves, nothing else draws.
+- Never animate for decoration: no idle pulsing, no ambient drift, no looping shimmer.
 
-```js
-path.setAttribute('opacity', t >= a ? 1 : 0);
-draw(path, ease.inOut(seg(t, a, a + .6)));               // stroke grows along the path
-```
+## Before and after
 
-## Staggered list
+Show the old way first (`"ghost": true` elements are visible only in the before state), hold for 2 s, `hide` what goes, `reveal` and `draw` what replaces it, and `pulse` the new part. The end state is the new picture, which is also the static one.
 
-```js
-items.forEach((it, i) => pop(it.g, seg(t, a + i * .06, a + .25 + i * .06), it.x, it.y));
-```
+## Anything the vocabulary does not cover
 
-## Fly between two places
-
-```js
-const f = ease.inOut(seg(t, a, a + .5));
-place(g, lerp(from.x, to.x, f), lerp(from.y, to.y, f), 1);
-```
-
-A copy that flies into another object (a value moving into its result): show the copy at `t >= a`, fly it, hide it at arrival (`1 - seg(t, a + .48, a + .52)`), pop the result at the same moment.
-
-## Zone grows from the axis
-
-```js
-const p = ease.out(seg(t, a, a + .3));
-zone.setAttribute('y', lerp(plot.b, plot.t, p));
-zone.setAttribute('height', (plot.b - plot.t) * p);
-zone.setAttribute('opacity', p > 0 ? 1 : 0);
-```
-
-## Dotted drop into a result
-
-```js
-drop.setAttribute('opacity', (t >= a ? 1 : 0) * (1 - seg(t, a + .45, a + .7)));
-draw(drop, ease.out(seg(t, a, a + .2)));                 // dashed guide draws down, then fades
-// then pop the result pill at a + .15
-```
-
-## Highlight ring
-
-```js
-ring.setAttribute('opacity', win(t, 5.9, 7.4, .15));     // fade in, hold, fade out
-```
-
-## Shake, then replace
-
-```js
-const k = seg(t, a, a + .45);
-const dx = Math.sin((t - a) * 60) * 4 * (1 - k) * (t > a && k < 1 ? 1 : 0);
-// apply dx to x, then hide the tile at a + .5 and pop what replaces it (one or several pieces, 0.06 s stagger)
-```
-
-## Fade a group out when it is replaced
-
-```js
-group.setAttribute('opacity', 1 - seg(t, a, a + .25));
-```
+A sequence diagram or a chart comparison is hand-authored: still a pure function of time (no wall clock, no random, no CSS animation), still budgeted, still ending on the complete static picture. Add the new step kind to the player rather than bolting on a second mechanism, and add a seeded defect for it to `selftest-motion.mjs`.
