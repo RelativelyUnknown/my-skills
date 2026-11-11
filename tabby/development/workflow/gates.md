@@ -10,7 +10,7 @@ Do **not** use them for a one-line fix, a question, a single focused change, or 
 
 ## Write the gates first
 
-Reread the request, then list every outcome that someone could notice missing. One observable outcome per gate. Keep the list in the session's scratch folder if there is one; otherwise in `GATES.md` at the repository root, deleted before you report (never committed unless asked).
+Reread the request, then list every outcome that someone could notice missing, one observable outcome per gate. The list is for you, not a deliverable: five lines is enough, and the first edit follows it at once; add a gate later when you notice a missing outcome. Keep the list in the session's scratch folder if there is one; otherwise in `GATES.md` at the repository root, deleted before you report (never committed unless asked).
 
 ```
 # Gates: add retries to the three HTTP clients

@@ -1,11 +1,12 @@
 # Design: diagrams, explainer animations and interfaces
 
-Say one thing per picture. Delete a node or a line when the picture still works without it.
+Say one thing per picture. Delete a node or a line when the picture still works without it. Write the first valid file early, then check and look.
 
-1. A diagram: read `design/diagrams/choosing.md` first (whether to draw, which type, the budget, how to build and check it), then the type's page under `design/diagrams/types/`.
-2. Read `design/diagrams/style.md`: the tokens (light and dark), the builder (`assets/diagram/make.mjs`) and how a `design.md` at the repository root maps onto them.
-3. Animation: also read `design/animation/index.md`, then `pipeline.md` and `motion.md`; `formats.md` only if video is asked for. The default is one self-contained animated HTML built by `design/assets/animation/animate.mjs` (Node 22; Playwright Chromium to check it; ffmpeg only for video: ask before installing any of them).
-4. A screen, a template, a dashboard, a docs site or a README visual: read `design/interfaces/index.md` instead; the method and the checker are there (the tokens are the same).
-5. Run `check.py` (and `check-motion.mjs` for an animation), render the picture, and look at it in light and dark. Check it at its smallest display size before reporting it done. If text cannot be read there, cut text.
+- **A diagram:** read `design/diagrams/quickstart.md` and follow it.
+- **An animation:** read `design/animation/quickstart.md` and follow it.
+- **A screen, template, dashboard, docs site or README visual:** read `design/interfaces/index.md`.
+- **Deeper, only when a check finding or an unusual request needs it:** `design/diagrams/style.md` (look, tokens, `design.md` mapping), `connectors.md`, `icons.md`, `types/`, `design/animation/motion.md`, `pipeline.md`, `formats.md` (video, only if asked).
+
+Needs: Node 22 for the builders; Playwright Chromium to render and to check motion or interfaces; ffmpeg only for video. Ask before installing any of them; if one is missing, say what was not checked.
 
 Defaults: `## Tabby` or `## Python defaults` in AGENTS.md. Ask only what is still unknown.

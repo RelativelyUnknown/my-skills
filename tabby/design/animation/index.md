@@ -2,6 +2,7 @@
 
 An explainer animation is a diagram that moves in a purposeful order, delivered as one self-contained HTML file. Video is made from it on request.
 
+- quickstart.md: the shortest path to a correct animation; start here.
 - pipeline.md: the steps, from thesis to checked HTML.
 - motion.md: the thesis, the step vocabulary, timing and the rules.
 - formats.md: HTML first; MP4, WebM and GIF on request.

@@ -8,8 +8,8 @@ A module of [Tabby](../SKILL.md) for diagrams, explainer animations and interfac
 
 ```
 index.md
-diagrams/         index.md  choosing.md  style.md  connectors.md  icons.md  types/   when and what to draw; look; connectors; icons; one page per type
-animation/        index.md  pipeline.md  motion.md  formats.md
+diagrams/         index.md  quickstart.md  choosing.md  style.md  connectors.md  icons.md  types/   when and what to draw; look; connectors; icons; one page per type
+animation/        index.md  quickstart.md  pipeline.md  motion.md  formats.md
 interfaces/       index.md  tokens-and-type.md  layout-and-states.md  refuse.md  server-rendered.md  data-apps.md  docs-and-readme.md
 assets/diagram/   make.mjs  check.py  selftest.py  render.mjs  examples/              build from a spec, check, prove the checker can fail, render
 assets/interfaces/ ui-check.mjs  selftest-ui.mjs  fixtures/                          browser checks for a page; prove the checker can fail
