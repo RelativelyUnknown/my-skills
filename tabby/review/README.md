@@ -2,7 +2,7 @@
 
 A module of [Tabby](../SKILL.md) for reviewing a Python diff, branch or pull request, auditing a project's security, and checking your own change before you report it done. A clean diff or a clean audit gets a short "no findings".
 
-**Entry point:** [`index.md`](index.md), about 110 tokens.
+**Entry point:** [`index.md`](index.md), about 130 tokens.
 
 ## Layout
 
@@ -14,6 +14,7 @@ security-audit/reporting.md           confirmed / needs-validation / rejected; s
 repo-audit.md                        whole-repository audit: bugs, risk, load, missing tests, what to delete
 security-audit/supply-chain.md        package sources, CI workflows as authorization code, the release path
 native-boundary.md                    per-function table and checklist for the Python to Rust or C boundary
+design.md                             diagram, animation or interface: a judgment pass and a measured pass, kept apart
 ```
 
 The self-review checks a change against the rule and smells files in [`../development/`](../development/), so the two modules ship together. The audit approach is adapted in spirit from the Cloudflare security-audit skill (MIT, Cloudflare, Inc.) and written for Python; see [`../../THIRD_PARTY_NOTICES.md`](../../THIRD_PARTY_NOTICES.md).

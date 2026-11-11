@@ -15,7 +15,7 @@ Each is a folder in this skill's folder; open its `index.md` with Read first. Fi
 | Module | Read when |
 | --- | --- |
 | `development/` | writing, changing, debugging, testing, speeding up, packaging or releasing code; services, workers, libraries, Rust or C behind Python |
-| `review/` | reviewing a diff, a security audit, or before reporting your own change as done |
+| `review/` | reviewing a diff, a diagram or screen, a security audit, or before reporting your own change as done |
 | `documentation/` | a README, docstring, tutorial, how-to, reference, changelog, ADR, runbook, troubleshooting page, CONTRIBUTING, commit message, or checking docs against code |
 | `design/` | a diagram, an architecture picture, an explainer animation, or a screen, template, dashboard, docs site or README visual |
 
