@@ -26,3 +26,5 @@ python3 assets/diagram/check.py docs/diagram.svg        # exit 0 is required; fi
 6. **Report:** what it shows, anything assumed, the checker result.
 
 Need more: [style.md](style.md) (look, theme mapping), [connectors.md](connectors.md) (routes, fan-out), [icons.md](icons.md), [types/](index.md) (one page per type), [choosing.md](choosing.md).
+
+If the shell cannot write into the project (a read-only sandbox), print the SVG to stdout (`node assets/diagram/make.mjs spec.json`, no output path) and save it with the Write tool; the same goes for `check.py`, which only reads.

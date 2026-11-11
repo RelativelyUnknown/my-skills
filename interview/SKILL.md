@@ -1,7 +1,6 @@
 ---
-name: tabby-interview
-description: "Interview the user about a project and save the answers as a ## Tabby section in AGENTS.md. Runs only when asked: /tabby:interview, 'run the Tabby interview', 'set up Tabby'."
-disable-model-invocation: true
+name: interview
+description: "Use only when the user asks for it: /tabby:interview, 'run the Tabby interview', 'set up Tabby'. Interviews them about the project and saves the answers as a ## Tabby section in AGENTS.md. Never start it on your own."
 license: MIT
 ---
 

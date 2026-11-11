@@ -14,6 +14,6 @@
     "./tabby-docs",
     "./tabby-diagrams",
     "./tabby-frontend",
-    "./tabby-interview"
+    "./interview"
   ]
 }
