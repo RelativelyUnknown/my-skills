@@ -1,13 +1,13 @@
 # Third-party notices
 
-Skills in this repository were adapted from the work of other authors. The adapted wshobson material keeps the upstream licence as `provenance/LICENSE.wshobson` and a `provenance/development-SOURCE.md` (upstream URL, pinned commit, what changed); other adapted material keeps its licence and `SOURCE.md` next to it. Everything below is MIT-licensed; the MIT licence requires its copyright and permission notice to travel with every copy or substantial portion, which is why the licence text sits next to each adapted skill.
+Skills in this repository were adapted from the work of other authors. The adapted wshobson material is credited below with its copyright line, and `provenance/development-SOURCE.md` records (upstream URL, pinned commit, what changed); other adapted material keeps its licence and `SOURCE.md` next to it. Everything below is MIT-licensed; the MIT licence requires its copyright and permission notice to travel with every copy or substantial portion, which is why the licence text sits next to each adapted skill.
 
 The rest of this repository is MIT (see `LICENSE`).
 
 ## wshobson/agents (python-development plugin)
 
 - Upstream: https://github.com/wshobson/agents
-- Author and licence: Seth Hobson, MIT
+- Author and licence: Copyright (c) 2024 Seth Hobson, MIT License
 - Commit: 4bde3168b43c0655c4d00ea2726e631719908a6d (5 November 2026)
 
 | Upstream skill | Adapted into |
