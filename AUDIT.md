@@ -329,3 +329,24 @@ Question: why do the skills load on only a third of unseen prompts, and what rai
 - A `UserPromptSubmit` hook that prints a 120-word reminder naming the skill for each kind of task raises loading to 91% to 95% on the hold-out, including 30 of 30 correct "no skill" prompts. A weaker, descriptive reminder ("invoke the Skill ...") gave 66% on dev; the imperative form with a bullet per skill gave 93%. With the hook the description wording matters little (95% old vs 91% new, inside the noise of 3 runs).
 - This mechanism is the one the popular packs use (superpowers injects its bootstrap at session start). Here it ships **off by default**: `/tabby:hooks on` shows the reminder text and the settings entry, then writes it to `.claude/settings.json` on a yes; `/tabby:hooks off` removes it. It runs one `cat` and nothing else.
 - Limits: empty-folder prompts, Haiku only, one prompt per run, so a real session with a repository and a saved `## Tabby` section may load more often; the hook result is the loading rate, not yet the task score (see below).
+
+
+## 9. Worst-case fixes and the detect script (12 November; Haiku, 14 cases, 3 runs, plugin arm only)
+
+What the traces of the cases that scored worst said, and what was changed:
+
+- `speed-up-matcher` (0.25 in every arm): a **broken case**. The prompt names `matcher.py` and `test_matcher.py`, but the case had no fixture, so the agent searched for files that did not exist (once it read Tabby's own eval folder). The case now has a fixture. Its earlier scores are not comparable.
+- `dev-tool-and-script-dependency`, `import-rows-some-fail` (one of two runs 0 or 0.38): the shell was read-only (`mount` showed `ro`), `Write` still worked, and the agent gave up and pasted code into its reply. New core rule: on `Read-only file system`, make the change with Write and Edit, run what can run, and say which command could not.
+- `timeout-is-not-the-fix` (0.25 in every arm): the skill did not load in either traced run, so no rule could apply. New core rule: asked to raise a timeout, limit or retry count, first read what the failing code does; name and fix or offer a fixable cause, then do what was asked. **Not shown to work**: the skill still did not load in 3 of 3 runs of the re-test inside `plugin eval` (it did load in 2 of 3 under `claude -p` with the hook).
+- `agents-md-for-a-repo`, `ci-job-for-a-uv-project`: 1.0 in both arms on repeat. The earlier drops were noise.
+- Added `tabby/scripts/detect.py` (files only; runner, Python target, tests, format and lint, types, check command, CI, docs, native, project memory). First attempt: injecting its output into the skill with `` !`...` `` made the whole skill body vanish in a read-only shell (the shell wrapper failed writing its own state file, and Claude Code treated that as a failed command), which dropped `deprecate-instead-of-delete` from 1.00 to 0.22 and `hard-problem-take-a-library` from 1.00 to 0.52 in that run. The skill now tells the agent to run the script as its first command, so a failure costs one line, not the skill. Lesson: never make a skill's body depend on a command that can fail.
+
+Result with the final core (hook on in the test plugin; `tools/eval/results/` has the CSV):
+
+| Cases (14) | Bare | One skill | Six skills (old) | Six skills + new core |
+| --- | --- | --- | --- | --- |
+| Mean score | 0.699 | | 0.785 | **0.824** |
+
+Turns fell on 12 of the 14 (for example `new-package-one-check-command` 33.3 to 20.7, `bug-fix-starts-red` 15.7 to 11.7); the detect script ran in 36 of the first 56 loads in the full hook run. `speed-up-matcher` is not comparable, `timeout-is-not-the-fix` is unchanged (loading), `bug-fix-starts-red` 0.44 against 0.74 in the hook run (noise or a real loss; 3 runs cannot tell).
+
+**What the agent reads** (165 kept traces of the hook run and this run): `development/code/smells.md` 74, `scripts/detect.py` 36, `development/which-type.md` 30, `development/code/reuse.md` 20, `development/testing/testing.md` 16, `interview/references/start.md` 9, `tabby-diagrams/diagrams/quickstart.md` 9, then 7 or fewer for everything else; 58 distinct files in all. No leaf was demoted or deleted: unread leaves cost nothing until opened, the single-turn cases cannot show what a rarely read leaf is worth, and the only place leaves cost tokens is the core's reading list, which was left as it is until an ablation shows a line can go.
