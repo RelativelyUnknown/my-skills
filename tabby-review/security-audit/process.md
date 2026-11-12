@@ -13,7 +13,7 @@ Before judging a line, find how this project already does the thing: its sanitis
 
 ## 3. Boundaries and flows
 
-1. **Boundaries.** List the entry points (routes, CLI arguments, queue messages, files and environment the process reads) and which side of each is untrusted. A finding names a lower-trust party, the input it controls, the control that should stop it, and what crosses.
+1. **Boundaries.** List the entry points (routes, CLI arguments, queue messages, files and environment the process reads) and which side of each is untrusted. Sort each entry point by who may call it: anyone, an authenticated user, a named role, or another service. Verify the check rather than trust its name (a decorator called `admin_required` may only test that a header is present), and an internal callback or webhook with no caller check is public. A condition such as a feature flag is not a role. A finding names a lower-trust party, the input it controls, the control that should stop it, and what crosses.
 2. **Flows.** Follow each untrusted value from entry, through parsing, validation and copies, to where it is used: SQL, file paths, URLs, shell, templates, `eval`, deserializers, redirects. Include sibling, batch, retry and error paths. Compare what one function guarantees (a length cap, a coercion, an allowlist) with what the next assumes.
 3. **Classes.** Walk the class pages for the classes those boundaries make relevant: [injection-and-output.md](injection-and-output.md), [identity-and-access.md](identity-and-access.md), [files-network-and-crypto.md](files-network-and-crypto.md), [defaults-and-config.md](defaults-and-config.md). Record each as clean, not applicable, finding or unverified.
 
