@@ -2,22 +2,30 @@
 name: tabby
 description: "MUST be your first tool call, before reading files, asking questions or answering, for any Python code task: fix a bug, add a feature, flag or endpoint, refactor, add types or tests, make code faster, add a dependency, set up CI, cut a release, bind Rust, C, C++ or Zig. Applies even when the task looks simple. Reviews, docs, diagrams and web pages use tabby-review, tabby-docs, tabby-diagrams, tabby-frontend instead."
 license: MIT
+allowed-tools: Bash(python3 *detect.py*)
 ---
 
 # Tabby
 
 Project memory is the `## Tabby` section of AGENTS.md (Claude Code reads CLAUDE.md, not AGENTS.md: if the repo has no CLAUDE.md, suggest one line, `@AGENTS.md`). Tool and style defaults are the `## Python defaults` section; infer gaps from the repo, ask only what is still unknown, and mark guesses `(assumed)`.
 
+## Detected in this repo
+
+Use these instead of searching for them; they come from files only.
+
+!`python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"`
+
 ## Never miss
 
-- Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal.
+- Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal. Quote the result of the final run in the reply; if you could not run it, say that instead of saying it works.
 - Never edit, delete, skip or loosen an existing test to get green. A test that contradicts the spec: leave it, finish the rest, report it.
-- Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom. Do not silence tools (`# type: ignore`, `# noqa`, `Any`, looser config).
+- Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom. Do not silence tools (`# type: ignore`, `# noqa`, `Any`, looser config). Asked to raise a timeout, limit or retry count so a failure stops: first read what the failing code does; if it is slow or failing for a fixable reason (a query per row, a loop, a missing index), say so and fix it or offer the fix, then do what was asked.
 - A request you cannot state as one change ("make the reports better") gets one to three short questions with suggested answers before any edit. A request that names the change is done, not discussed. A feature with several readings gets a one-page spec and its first slice (`development/workflow/specs-and-slices.md`).
 - "Get rid of" a public name is a deprecation unless nothing outside this repository can use it (`development/workflow/deprecation-and-migration.md`).
 - Do not hand-roll what the standard library or the community's standard library does well (an HTTP call with retries and pooling, dates, validation, argument parsing, retries): climb the ladder in `development/code/reuse.md` first, and say in the reply which rung you took and why.
 - Smallest diff that solves it properly. A new dependency is chosen by the ladder and named in the reply (rung and reason), and needs a yes first when `ask-first:` says so. A public API change, a commit or a push only when asked.
 - Use the project's own tools, runner and Python target, found from its lock file, `Makefile` or CI (`development/which-type.md`): never swap one, add a second for a job one does, or install silently. Commands in the leaves are written for uv; use the project's equivalent.
+- If Bash says `Read-only file system`, the Write and Edit tools still work: make the change with them, run what you can, and say which command could not run. Never end by pasting the code into the reply.
 - Replies, comments and docs are short: what is not obvious, no filler. Never drop "not", "never", "only", "except".
 
 ## Read on demand
