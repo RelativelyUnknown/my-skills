@@ -299,3 +299,13 @@ The plugin was split into `tabby` (core, native fused in), `tabby-review`, `tabb
 Against the current plugin: 18 cases improve and 9 get worse by 0.10 or more. Biggest gains: `vague-ask-clarifies-briefly` +0.62, `hard-problem-take-a-library` +0.50, `interview-saves-after-yes` +0.48, `community-standard-over-handrolled` +0.35, `vague-feature-gets-a-short-spec` +0.32. Biggest losses: `three-pages` -0.36, `ci-job-for-a-uv-project` -0.30, `import-rows-some-fail` -0.30, `agents-md-for-a-repo` -0.21.
 
 Reading: the split gives **+0.03 score over the current plugin and +0.09 over bare, at +2.7% cost over the current plugin (+27% over bare)**. The gain is real in size (more than the 0.01 noise between the two earlier arms) but not yet proven: three runs, no hold-out, and the cases were written next to the content. Cost is still above the +10% gate. Skill loading on unseen phrasings stays at about 35% on Haiku (see the trigger tests), so the next steps are description tuning with a held-out split and a Sonnet check.
+
+**Sonnet 5.5, one run per case, all 91 cases, plugin arm only** (`tools/eval/results/2026-11-12-sonnet-split-6skills.csv`; the one-skill and bare figures are from the Sonnet run in section 5):
+
+| Arm | Score | Turns | Cost per run |
+| --- | --- | --- | --- |
+| Bare | 0.782 | 7.7 | $0.085 |
+| One skill | 0.865 | 12.5 | $0.117 |
+| Six skills | 0.840 | 10.9 | $0.111 |
+
+On Sonnet the split is 0.025 below the one-skill plugin (10 cases better, 17 worse by 0.10 or more; one run, so per-case moves are noise) and 6% cheaper. Two cases explain most of the gap: `diagram-of-a-small-service` (1.00 to 0.00) and `animation-self-contained-html` (0.78 to 0.09). The trace of the animation case shows why: the builder and checker wrote to the project from Bash, which was read-only in the sandbox, and the agent retried other paths until it gave up without writing the file. The diagram case scored 0.95 on a repeat, so it is flaky. The animation quickstart now says to print to stdout and save with Write (as the diagrams quickstart already did). That fix is **not yet measured**: the re-test hit the 5-hour usage limit (resets 01:30 UTC) and both runs errored, so they are not counted. Without those two cases the Sonnet means are within about 0.01 of each other.
