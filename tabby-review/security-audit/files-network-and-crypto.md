@@ -1,4 +1,4 @@
-# Audit classes: files, network, secrets and configuration
+# Audit classes: files, network and cryptography
 
 Every hit needs the trace from attacker-controlled input to the sink ([process.md](process.md)). Settings, environment variables and the project's own constants are server-controlled: they are not a path, URL or command source unless a secret is committed or the value is built from user input. Fixes are in `tabby/development/code/security-basics.md`.
 
@@ -24,27 +24,6 @@ Every hit needs the trace from attacker-controlled input to the sink ([process.m
 - TLS: `verify=False`, `ssl._create_unverified_context`, `check_hostname = False`, `urllib3.disable_warnings()`. Use `ssl.create_default_context()` and leave the cipher list alone.
 - Key and secret handling: committed `.env` and keys, secrets in logs, URLs, error pages, container images or a settings object's `repr`; one key for every purpose; no way to rotate (tag ciphertext with a key version).
 - Timing: `==` on tokens, MACs or password hashes (use `hmac.compare_digest`).
-
-## Fail-open defaults and exposure
-
-A missing or broken setting must stop the process or fall to the strict behaviour. Look for:
-
-- Fallback secrets: `os.environ.get("SECRET_KEY", "dev")`, `getenv("TOKEN") or "changeme"`, default credentials (`admin/admin`, `postgres/postgres`, in `docker-compose.yml` and Kubernetes secrets, where base64 `YWRtaW4=` is `admin`).
-- Switches that default to unsafe: auth off when an env var is unset, `except Exception: return True` or `pass` around a permission check, an `authenticate` that returns `None` on error and a caller that treats it as success.
-- Debug and diagnostics: `app.run(debug=True)` (the Werkzeug debugger runs code), Django `DEBUG = True`, `ALLOWED_HOSTS = ["*"]`, stack traces or `str(e)` in responses, `/debug`, `/env`, `/config`, `/metrics`, `.git` or `.env` reachable, directory listing (`python -m http.server` is not a production server).
-- Exposure: responses that return more fields than the caller may see; sensitive responses without `Cache-Control: no-store`; cache entries holding sensitive objects.
-- Logging: passwords, tokens or personal data written to logs; whole request bodies logged on error (log flooding).
-
-## Frameworks
-
-- **Django:** `DEBUG`, `ALLOWED_HOSTS`, `SECRET_KEY` committed, `SESSION_COOKIE_SECURE` and `CSRF_COOKIE_SECURE` false, `SecurityMiddleware` or `CsrfViewMiddleware` missing; `.raw()`, `.extra()`, `RawSQL`; `|safe`, `mark_safe`, `{% autoescape off %}`; `@csrf_exempt`; `fields = "__all__"`.
-- **Flask:** short or hard-coded `secret_key`; `debug=True`; `render_template_string(user_text)`; `Markup(user_text)`; no `CSRFProtect`; session cookie flags.
-- **FastAPI/Starlette:** a route without the `Depends` its siblings have; a function behind `Depends(get_current_user)` whose dependency does not actually validate; a response that returns an ORM object or dict (extra fields leak); `CORSMiddleware` with `*` and credentials; an `UploadFile` read whole into memory; `StaticFiles` over a directory holding more than assets.
-
-## Containers (a service's Dockerfile, compose file, manifests)
-
-No `USER` (runs as root); `:latest` or an unpinned base image; secrets in `ARG`, `ENV` or `COPY .env` (all visible in `docker history`; build secrets belong in BuildKit `--mount=type=secret`); no `.dockerignore` excluding `.env`, keys and `.git`; at runtime `--privileged`, `--cap-add`, a mounted `/var/run/docker.sock` (root on the host), `-v /:/host`, `--network=host`.
-
-## Limits and parsing
-
-Unbounded request bodies, uploads, decompression, page sizes, or a regex with nested quantifiers on attacker input are findings only where a small input from a low-trust caller causes large amplification (an unauthenticated endpoint pinned by one request). Otherwise they are hardening notes, as are missing rate limits and missing security headers.
+- A hash is not a key-derivation function (`sha256(password)` as a key is fast to brute force; use `hashlib.scrypt`, PBKDF2 or Argon2), and encryption is not password storage (one stolen master key exposes every password; store a salted one-way hash).
+- Decryption that tells the caller *why* it failed ("invalid padding" against "MAC mismatch") is a padding oracle; fail with one error, and prefer authenticated encryption.
+- Secrets in native code: general bignum libraries (GMP's `mpz_powm`) are not constant-time, and a freed buffer is not wiped; secrets belong in code written for it (libsodium, OpenSSL's constant-time paths, the `cryptography` package).

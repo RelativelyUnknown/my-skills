@@ -31,6 +31,7 @@ A URL from outside is fetched only after: an allowlist of hosts when you can hav
 - JWT: `jwt.decode(token, key, algorithms=[...], audience=..., issuer=...)` with a pinned list; never `verify_signature=False`.
 - Authorize on every path to the data, and at the object: scope the query to the owner or tenant (`get(pk=pk, owner=request.user)`). Hiding a button or checking only in the UI is no check. Write the test: user B asking for user A's object gets 403 or 404.
 - Accept only the fields a caller may set (a model without `is_admin`), and return only the fields a caller may see (a response model, never `obj.__dict__`).
+- A security number (a lifetime, an attempt limit, a timeout) is positive and has a minimum and a maximum; `0`, a negative number or an empty secret is rejected, never read as "off" or "unlimited". Roles and permissions are `Enum` members or a `frozenset`, compared by equality, never by substring or in a comma-separated string. A password is rejected when it is too long, not truncated.
 - Type hints are not validation: `request.json()["id"]` can be a list, a dict or a float. Parse request data into a typed model at the edge.
 
 ## Money, state and races
