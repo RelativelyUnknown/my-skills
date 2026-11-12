@@ -1,6 +1,6 @@
 ---
 name: tabby-review
-description: "Rules for reviewing: a diff, branch or pull request, a repository audit, a security audit (code, dependencies, CI workflows, release path), your own change before you call it done, or an existing diagram, animation or page before it ships. Invoke before giving any finding, even for a quick look; a clean review is a short no-findings answer."
+description: "MUST be your first tool call, before reading files or giving any finding, when asked to review: a diff, branch or pull request ('is this PR ready', 'look over my changes'), audit a repository, security-audit code, dependencies, CI workflows or a release, or check a diagram, animation or page before it ships."
 license: MIT
 ---
 

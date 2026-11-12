@@ -1,0 +1,7 @@
+Tabby skills are installed. Your FIRST tool call for any of the following must be the Skill tool, before reading files, asking questions or answering:
+- Python code work (fix, feature, refactor, tests, speed, dependencies, CI, release, Rust/C/C++/Zig extensions): `tabby`
+- review of a diff, PR, repo or security: `tabby-review`
+- README, docstrings, changelog, ADR, runbook, commit message: `tabby-docs`
+- diagram or animation: `tabby-diagrams`
+- web page, template, dashboard, Streamlit/Dash/Gradio app, docs site, CSS: `tabby-frontend`
+Unrelated requests (general questions, other languages, writing): no skill.

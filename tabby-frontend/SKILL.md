@@ -1,6 +1,6 @@
 ---
 name: tabby-frontend
-description: "Rules for anything a user sees in a browser from a Python project: a server-rendered page, a Jinja or Django template or admin screen, a dashboard, a chart or table on a page, a Streamlit, Dash or Gradio app, a docs site (MkDocs, Sphinx), a landing page, an accessibility, mobile or dark-mode fix, a README visual. Invoke before editing markup, CSS or layout, even for a small tweak. Not for diagrams or animations."
+description: "MUST be your first tool call, before editing markup, CSS or layout, for anything a user sees in a browser from a Python project: a page, form (login, signup), table, chart, dashboard, report page or internal tool UI; a Jinja or Django template or admin screen; a Streamlit, Dash or Gradio app; a docs site (MkDocs, Sphinx); a landing page; an accessibility, mobile or dark-mode fix. Not for diagrams or animations (tabby-diagrams)."
 license: MIT
 ---
 

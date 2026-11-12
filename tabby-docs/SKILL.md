@@ -1,6 +1,6 @@
 ---
 name: tabby-docs
-description: "Rules for writing documentation in a Python project: README, docstrings, tutorial, how-to, reference, changelog or release notes, ADR, runbook, troubleshooting page, CONTRIBUTING, a commit message, or checking docs against the code. Invoke before writing or editing any of them, even a one-line docstring or commit message."
+description: "MUST be your first tool call, before writing anything, for any writing about the code: a README, docstrings, a tutorial, how-to, reference or explanation page, changelog or release notes, ADR, runbook, troubleshooting page, CONTRIBUTING, a commit message or PR description, or checking docs against the code. Applies even to a one-line docstring or commit message."
 license: MIT
 ---
 

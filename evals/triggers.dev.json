@@ -1,0 +1,366 @@
+[
+ {
+  "query": "Fix the off-by-one in paginate() in utils.py",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add a --dry-run flag to the sync command",
+  "expect": "tabby"
+ },
+ {
+  "query": "Make the report generation faster, it takes 40 seconds",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add type hints to the whole auth package",
+  "expect": "tabby"
+ },
+ {
+  "query": "We need a /health endpoint on the FastAPI app",
+  "expect": "tabby"
+ },
+ {
+  "query": "Why does pytest hang on test_worker_shutdown? fix it",
+  "expect": "tabby"
+ },
+ {
+  "query": "set up GitHub Actions to run tests on 3.11 and 3.12",
+  "expect": "tabby"
+ },
+ {
+  "query": "Replace the hand-written retry loop with something standard",
+  "expect": "tabby"
+ },
+ {
+  "query": "can you make a Zig extension for the checksum function",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add a cache in front of get_exchange_rate",
+  "expect": "tabby"
+ },
+ {
+  "query": "The worker sometimes processes the same job twice. Find out why.",
+  "expect": "tabby"
+ },
+ {
+  "query": "add logging to the payment flow",
+  "expect": "tabby"
+ },
+ {
+  "query": "Handle the case where the config file is missing",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add async support to the HTTP client wrapper",
+  "expect": "tabby"
+ },
+ {
+  "query": "Move the database access behind a repository class",
+  "expect": "tabby"
+ },
+ {
+  "query": "the nightly job times out sometimes, make it reliable",
+  "expect": "tabby"
+ },
+ {
+  "query": "Convert these dataclasses to pydantic models",
+  "expect": "tabby"
+ },
+ {
+  "query": "build a small service that receives webhooks and queues them",
+  "expect": "tabby"
+ },
+ {
+  "query": "Speed up the C++ matcher binding, it copies the strings",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add pagination to the list_users endpoint",
+  "expect": "tabby"
+ },
+ {
+  "query": "upgrade the project to Python 3.13",
+  "expect": "tabby"
+ },
+ {
+  "query": "Implement a plugin system for the exporter",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add idempotency to the charge endpoint",
+  "expect": "tabby"
+ },
+ {
+  "query": "Fix the race condition in the cache refresh",
+  "expect": "tabby"
+ },
+ {
+  "query": "Review my changes before I open the PR",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Give me a code review of src/billing/",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Security review of the login and session code",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Is this PR ready to merge?",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Check my pull request for anything risky",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Take a look at what I changed and tell me what's wrong with it",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Review the GitHub Actions workflows for injection problems",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "audit the release process for supply-chain risks",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Go over my diff and flag anything that shouldn't be there",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Is the new upload handler safe?",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Review this diagram before it goes in the docs",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Anything wrong with this PR from a security viewpoint?",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "second pair of eyes on this refactor please",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Audit the repo and tell me what to clean up first",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Write a README for this package",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write the changelog for 1.4.0",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write a how-to for rotating the API keys",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write a tutorial for getting started with the library",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "commit message for these staged changes please",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Update the docs, they're out of date after the refactor",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write release notes for the new CLI flags",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write an ADR for choosing httpx over requests",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Reference documentation for the config options",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Explain in the docs how the retry logic works",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write numpydoc docstrings for the stats module",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Summarise this change as a good commit message",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write an explanation page about why we use event sourcing",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write the PR description for this change",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Draw an architecture diagram of the system",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Create an ER diagram of the database tables",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Diagram the state machine of an order",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "I need a picture of our deployment on Kubernetes",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Make an explainer animation of the retry logic",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Visualise which modules depend on which",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Create an SVG showing the three services and the database",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "A flowchart of the checkout process, please",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Show me the class relationships in a diagram",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "draw how the worker, redis and postgres talk to each other",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Diagram for the onboarding docs: how data gets from the app to the dashboard",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Make a picture of the sharding layout",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Build a dashboard page for the metrics",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add dark mode to the web UI",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Fix the layout of the login form",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Style the Django template for the invoice",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add a table with sorting to the orders page",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Redesign the landing page",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Customise the MkDocs theme with our brand colors",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add a chart of signups to the dashboard",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Create a simple internal tool UI to approve requests",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Improve the accessibility of the signup form",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Fix the CSS, the sidebar overlaps the content",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Create an HTML report page for the nightly results",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "What's the difference between a list and a tuple in Python?",
+  "expect": "none"
+ },
+ {
+  "query": "What does the walrus operator do?",
+  "expect": "none"
+ },
+ {
+  "query": "Give me a recipe for banana bread",
+  "expect": "none"
+ },
+ {
+  "query": "What's the capital of Australia?",
+  "expect": "none"
+ },
+ {
+  "query": "How do I center a div in CSS?",
+  "expect": "none"
+ },
+ {
+  "query": "Convert 72 Fahrenheit to Celsius",
+  "expect": "none"
+ },
+ {
+  "query": "What is the time complexity of quicksort?",
+  "expect": "none"
+ },
+ {
+  "query": "Write a SQL query to find duplicate emails",
+  "expect": "none"
+ },
+ {
+  "query": "How does TCP congestion control work?",
+  "expect": "none"
+ },
+ {
+  "query": "Write a bash one-liner to count lines in all .py files",
+  "expect": "none"
+ },
+ {
+  "query": "Which Python web framework should I learn first?",
+  "expect": "none"
+ },
+ {
+  "query": "What does the GIL do?",
+  "expect": "none"
+ },
+ {
+  "query": "Write a TypeScript function that debounces a callback",
+  "expect": "none"
+ },
+ {
+  "query": "List five good names for a pet hedgehog",
+  "expect": "none"
+ },
+ {
+  "query": "Help me plan a three-day trip to Lisbon",
+  "expect": "none"
+ }
+]

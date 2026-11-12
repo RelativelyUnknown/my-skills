@@ -1,6 +1,6 @@
 ---
 name: tabby
-description: "Rules for any code task in a Python project: fix a bug, add a feature, flag or endpoint, refactor, add types or tests, make code faster, add a dependency, set up CI, cut a release, bind Rust, C, C++ or Zig. Invoke before reading or editing code. Always invoke it, even when the task looks simple: the rules apply to every change, however small. Docs, reviews, diagrams and browser UI have their own skills (tabby-docs, tabby-review, tabby-diagrams, tabby-frontend)."
+description: "MUST be your first tool call, before reading files, asking questions or answering, for any Python code task: fix a bug, add a feature, flag or endpoint, refactor, add types or tests, make code faster, add a dependency, set up CI, cut a release, bind Rust, C, C++ or Zig. Applies even when the task looks simple. Reviews, docs, diagrams and web pages use tabby-review, tabby-docs, tabby-diagrams, tabby-frontend instead."
 license: MIT
 ---
 

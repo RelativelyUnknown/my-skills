@@ -25,7 +25,7 @@ def first_skill(events):
 def run(q, a):
     with tempfile.TemporaryDirectory() as d:
         p = subprocess.run(["claude", "-p", q, "--plugin-dir", a.plugin_dir, "--model", a.model, "--max-turns", str(a.turns),
-                            "--output-format", "stream-json", "--verbose"], cwd=d, capture_output=True, text=True)
+                            "--output-format", "stream-json", "--verbose"] + (["--settings", a.settings] if a.settings else []), cwd=d, capture_output=True, text=True)
     ev = []
     for l in p.stdout.splitlines():
         try:
@@ -45,6 +45,7 @@ def main():
     ap.add_argument("--plugin-dir", default=".")
     ap.add_argument("--turns", type=int, default=4)
     ap.add_argument("--jobs", type=int, default=6)
+    ap.add_argument("--settings", default="", help="a settings.json to pass to claude (for example one with a UserPromptSubmit hook)")
     a = ap.parse_args()
     a.plugin_dir = os.path.abspath(a.plugin_dir)
     qs = json.load(open(a.queries))
