@@ -56,6 +56,15 @@ Use after mapping the boundaries ([process.md](process.md)). For each class: whe
 
 Look for the place where a missing or broken setting switches protection off: an auth check skipped when an environment variable is unset, `except Exception: return True` around a permission check, a default password or key, `bind 0.0.0.0` by default, permissive CORS as the default, a feature flag that defaults to the unsafe side. A missing setting must stop the process or fall back to the strict behaviour.
 
+Fallback secrets are the commonest form: `os.environ.get("SECRET_KEY", "dev")`, `getenv("TOKEN") or "changeme"`, a seeded `admin`/`admin123` account, an `ACL = "public-read"`, files created `0o666`, a response that carries `traceback.format_exc()`.
+
+## Frameworks
+
+- **Django:** `DEBUG = True`, `ALLOWED_HOSTS = ["*"]`, a committed `SECRET_KEY`, `CSRF_COOKIE_SECURE`/`SESSION_COOKIE_SECURE` false, `SecurityMiddleware` or `CsrfViewMiddleware` missing; `.raw()`, `.extra()`, `RawSQL`; `|safe`, `mark_safe`, `{% autoescape off %}`; `@csrf_exempt`; DRF views without `permission_classes` when the project default is open; `ModelSerializer` with `fields = "__all__"`; `login_required` missing on a new view.
+- **Flask:** `app.secret_key` hard-coded or short, `debug=True`, `render_template_string` with user text, `Markup(user_text)`, no `CSRFProtect`, `send_file` with a user path, session cookies without the secure flags.
+- **FastAPI/Starlette:** a route without a `Depends` for auth when its siblings have one; a response model that returns the whole ORM object (extra fields leak); `CORSMiddleware` with `*` and credentials; `UploadFile` read whole into memory; `StaticFiles` over a directory that holds more than assets; no CSRF protection for cookie auth.
+- **Settings objects:** a `repr` or `/debug` endpoint that prints them; a `.env` in the image.
+
 ## Parsing and resource limits
 
 - XML from outside: `xml.etree`, `minidom` and `sax` are exposed to entity-expansion bombs; use `defusedxml`, or `lxml` with `resolve_entities=False, no_network=True`.

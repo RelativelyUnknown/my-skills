@@ -1,6 +1,6 @@
 # Shipping and reporting
 
-Done means the real problem is solved, verified by running the code, and explainable. Passing tests are evidence, not the goal. Before you report done (for a multi-part request, run the gates from `workflow/gates.md` first): run the full suite and the project's check command, read your own diff against [smells.md](../code/smells.md), and list every new dependency and every changed or removed test.
+Done means the real problem is solved, verified by running the code, and explainable. Passing tests are evidence, not the goal. Before you report done (for a multi-part request, run the gates from `workflow/gates.md` first): run the full suite and the project's check command, list every new dependency and every changed or removed test, and check the diff once for anything you did not mean to change (an unrelated edit, a scratch file, a leftover print). Write against [smells.md](../code/smells.md) as you go; do not rely on a cleanup pass.
 
 ## Report (`report`, default `normal`)
 

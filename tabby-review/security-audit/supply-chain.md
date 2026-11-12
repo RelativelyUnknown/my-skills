@@ -21,6 +21,16 @@ Read with [dependencies.md](../../tabby/development/dependencies/dependencies.md
 - Actions referenced by a branch (`@main`). A tag can also be moved; pin a commit SHA where the workflow holds secrets or publishes.
 - A self-hosted runner reachable from pull requests of a public repository.
 
+## AI agents in workflows
+
+A workflow that runs an AI agent (a code-review bot, an issue triager, `claude-code-action`, Gemini CLI, Codex) treats text as instructions. Text from a pull request, issue, comment, commit message or file is attacker-controlled when the author is an outsider, so the agent's prompt is an injection sink and its tools and token are what the attacker gets.
+
+- Which triggers expose it: `pull_request_target`, `issue_comment`, `issues` and `workflow_run` run for outsiders; "it only runs for maintainers" is true only if the workflow checks the author itself.
+- Data reaches the prompt without a visible `${{ }}` in the prompt: through `env:`, through a file the agent reads (the PR diff, `README`, an issue body fetched with `gh`), or through error logs. Follow `env:` into the prompt field, not only the prompt text.
+- Power the agent has: a write token or secrets in its environment, shell tools (an allowlist of `echo` still allows `echo $(env)`), a wildcard tool list (`Bash(*)`), flags that switch off the sandbox (`danger-full-access`, `--yolo`), the PR head checked out next to the base repository's secrets.
+- Its output used as code: `eval`, `bash -c` or a step that applies a patch the agent wrote without review.
+- Fix by removing power rather than filtering text: read-only token, no secrets in the job, no shell, outsiders' runs gated by a label a maintainer adds, the agent's output treated as untrusted input.
+
 ## Release
 
 - Publishing with a stored API token where trusted publishing is possible, or `id-token: write` granted to more than the publish job ([release.md](../../tabby/development/library/shared/release.md)).

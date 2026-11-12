@@ -8,15 +8,13 @@ license: MIT
 
 Defaults: read the `## Python defaults` section of AGENTS.md; its `report` value sets the format. Paths below are relative to this skill's folder; `../tabby/` is the tabby skill (the rules and smells files that a review checks against).
 
-- A diff, branch, pull request or your own change before you call it done: read `changes/self-review.md` and follow it.
+- A diff, branch or pull request someone asks you to review: read `changes/self-review.md` and follow it.
 - Hunting for bugs ("find bugs in", "what could break", "why might this fail"): read `bug-hunt.md`; it applies to a diff review and a repo audit too.
 - Implicit state machines ("find the state machines", a `status` or `state` field, flags that travel together, a required call order): read `state-machines.md`.
 - A change that crosses between Python and Rust, C or C++: also read `native-boundary.md`.
 - A security audit: read `security-audit/process.md`, `security-audit/checklist.md` and `security-audit/reporting.md`. Dependencies, CI workflows or the release path: also `security-audit/supply-chain.md`.
 - The whole repository (not a diff): read `repo-audit.md`.
 - A diagram, an animation, a page or a README picture: read `design.md` instead.
-
-Deeper third-party references (other authors' bug-hunting and security skills, unmodified, never loaded on their own): `vendor/README.md` says which to open. Use them when the user asks for a deep audit.
 
 Never miss:
 

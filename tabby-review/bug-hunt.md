@@ -22,6 +22,11 @@ Start by reading what the project says must always be true: AGENTS.md or CLAUDE.
 
 **Scale.** A query per item, quadratic work on caller-controlled input, an unbounded list, queue or cache, a whole file read into memory.
 
+## Probing with properties and mutations
+
+- Turn a hunch into a property and let a library search for the counter-example: a round trip (`decode(encode(x)) == x`), idempotence (`f(f(x)) == f(x)`), an invariant that must hold after every operation (totals match, no duplicates, sorted), or agreement with a slow obvious implementation (an oracle). Hypothesis shrinks a failure to the smallest input. Keep the property as a regular test when it finds something.
+- Check that the tests would notice: break the line you suspect (flip a comparison, drop a branch) and run the tests. If they still pass, they do not cover it, and any claim that the code is verified rests on nothing.
+
 ## Python traps worth probing
 
 - `is` against `==`; float equality; `round(2.5)` is 2 (banker's rounding); `//` and `%` with negatives; `Decimal` context precision.
@@ -29,6 +34,7 @@ Start by reading what the project says must always be true: AGENTS.md or CLAUDE.
 - `datetime.utcnow()` is naive; `sorted` with mixed types raises; `sort` is stable and `key=` is called once per item.
 - A class with `__eq__` and no `__hash__` is unhashable; `lru_cache` on a method keeps `self` alive; `copy` is shallow.
 - `asyncio.gather` without `return_exceptions=True` raises the first error and leaves the other tasks running; a blocking call inside `async def` stalls every task; a task with no reference can be garbage-collected.
+- A closure made in a loop sees the last loop value (`lambda i=i: i`); a file named `random.py` or `email.py` in the project shadows the standard module; `x is 257` is not `x == 257`.
 - `subprocess.run` without `check=True` ignores failure; `open` without `encoding`; `requests` and `urllib` calls with no timeout; sqlite3 `with` commits but does not close.
 - `except Exception` and a default return hide the real failure; `assert` is removed under `-O`.
 

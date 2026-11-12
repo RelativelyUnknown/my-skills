@@ -30,6 +30,8 @@ Then ask of every row:
 - A Python object kept past the call without `Py<T>`; GIL released while touching Python objects; a lock guard held across a call back into Python.
 - Errors mapped to the wrong exception or with the cause dropped.
 - `#[pymodule(gil_used = false)]` claimed with shared mutable state.
+- Slices built with `from_raw_parts` or `get_unchecked` from lengths that came from Python; arithmetic on lengths and offsets that wraps in release builds (`checked_add`, `try_from`).
+- Secrets (keys, tokens) held in native memory: cleared on drop (`zeroize`), not copied into logs or panic messages, compared in constant time (`subtle`) rather than with `==`.
 
 ## 4. C++ bindings (nanobind, pybind11)
 
