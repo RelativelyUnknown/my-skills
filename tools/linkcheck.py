@@ -1,7 +1,7 @@
 import pathlib, re
 FENCE = chr(96) * 3
 root = pathlib.Path('.'); bad = 0
-mds = [p for p in root.rglob('*.md') if '.git/' not in str(p) and 'node_modules' not in str(p)]
+mds = [p for p in root.rglob('*.md') if '.git/' not in str(p) and 'node_modules' not in str(p) and '/vendor/' not in str(p)]
 for p in mds:
     t = re.sub(FENCE + '.*?' + FENCE, '', p.read_text(), flags=re.S)
     for m in re.finditer(r'\]\(([^)#\s]+)(#[^)]*)?\)', t):

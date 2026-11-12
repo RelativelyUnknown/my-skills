@@ -115,3 +115,16 @@ Ideas restated for Tabby in its own words; no text copied. Read through summarie
 - stas00/the-art-of-debugging (distilled from Stas Bekman's book; the file states CC BY-SA 4.0): confirm the running code with a deliberate failure, script the debug loop, a symptom-to-tool table (`tabby/development/workflow/debugging.md`). The wording and table are our own.
 - joe-bell/cva `deslop` (Apache-2.0, Copyright 2022-present Joe Bell) and pedronauck/skills `deslop` (no licence found): a diff-scoped pass that removes accidental complexity, with a keep list for validation, error handling and deprecation shims (`tabby-review/changes/self-review.md`).
 - boraoztunc/skills `adversarial-review` (no licence found): assume the change is broken, project invariants count as bugs, open with the most likely production break, list what was not verified (`tabby-review/bug-hunt.md`).
+
+
+## Vendored reference copies in `tabby-review/vendor/` (12 November 2026)
+
+Unmodified copies of the markdown files (and two Python prompt files stored as `.txt`) of the skills below, kept for deep audits. The only change is that each `SKILL.md` is stored as `upstream-SKILL.md`. Scripts, JSON schemas and shell files were not copied. `tabby-review/vendor/README.md` lists what is there.
+
+- **getsentry/skills** (https://github.com/getsentry/skills): `find-bugs`, `security-review`, `django-access-review`, `gha-security-review`, `code-review`. Apache License 2.0, Copyright 2025 Functional Software, Inc. dba Sentry; the licence text is in `provenance/LICENSE.Apache-2.0`. The `security-review` reference pages state that they are based on the OWASP Cheat Sheet Series (CC BY-SA 4.0).
+- **joe-bell/cva** (https://github.com/joe-bell/cva), `.agents/skills/deslop`. Apache License 2.0, Copyright 2022-present Joe Bell; licence text in `provenance/LICENSE.Apache-2.0`.
+- **anthropics/claude-code-security-review** (https://github.com/anthropics/claude-code-security-review). MIT License, Copyright (c) 2025 Anthropic. Permission is granted, free of charge, to use, copy, modify, merge, publish, distribute, sublicense and sell copies of the software, subject to the inclusion of this copyright notice and the permission notice of the MIT License, whose standard text is at https://opensource.org/license/mit; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+- **trailofbits/skills** (https://github.com/trailofbits/skills), 24 plugins. Creative Commons Attribution-ShareAlike 4.0 International, by Trail of Bits (https://creativecommons.org/licenses/by-sa/4.0/). The copies are unchanged apart from the file rename above and the omission of non-markdown files; they remain under CC BY-SA 4.0.
+- **stas00/the-art-of-debugging** (https://github.com/stas00/the-art-of-debugging), `SKILL.md`, distilled from Stas Bekman's book "The Art of Debugging". The file states CC BY-SA 4.0; the repository's own licence file could not be fetched and is unverified. The copy is unchanged apart from the file rename.
+
+Not copied: `pedronauck/skills` `deslop` and `boraoztunc/skills` `adversarial-review`, which state no licence. Their ideas are restated in Tabby's own words (see the section above).
