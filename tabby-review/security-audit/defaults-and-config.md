@@ -1,6 +1,6 @@
 # Audit classes: defaults, configuration and exposure
 
-Every hit needs the trace from attacker-controlled input or a reachable deployment state to the decision it affects ([process.md](process.md)). Settings, environment variables and the project's own constants are server-controlled: they are not a path, URL or command source on their own, but what they default to is the question here. Fixes are in `tabby/development/code/security-basics.md`. Built from Trail of Bits' `insecure-defaults` and `sharp-edges` skills and the Sentry misconfiguration references (see `THIRD_PARTY_NOTICES.md`), with claims checked by running code where marked.
+Every hit needs the trace from attacker-controlled input or a reachable deployment state to the decision it affects ([process.md](process.md)). Settings, environment variables and the project's own constants are server-controlled: they are not a path, URL or command source on their own, but what they default to is the question here. Fixes are in `tabby/development/code/security-basics.md`.
 
 ## Fail-open defaults
 
@@ -17,9 +17,9 @@ A candidate becomes a finding when each step holds: the file is reachable in pro
 - **Weak cryptography:** the algorithm alone is never the finding; trace to the use. `hashlib.md5` over a cache key is fine, over a password is not. See [files-network-and-crypto.md](files-network-and-crypto.md).
 - **Permissive access:** ask who gains access, not how wide the value looks: `0o644` on a CDN asset is right, `0o666` on a key file is not; `os.umask(0)`; CORS `*` with credentials; a public bucket. Not: a deliberate public endpoint with a stated reason.
 - **Debug and diagnostics:** needs both halves, on by default and a path to a reader who should not see it: `app.run(debug=True)` (the Werkzeug debugger runs code), Django `DEBUG = True`, `ALLOWED_HOSTS = ["*"]`, a traceback or `str(e)` in a response, `/debug`, `/env`, `/config`, `/metrics`, `.git` or `.env` reachable, directory listing (`python -m http.server` is not a production server). A verbose log written to a file only an operator reads is neither.
-- **Exposure:** responses that return more fields than the caller may see; sensitive responses without `Cache-Control: no-store`; sensitive objects in a shared cache; passwords or tokens in logs, and whole request bodies logged on error.
+- **Exposure:** responses with more fields than the caller may see; sensitive responses without `Cache-Control: no-store`; passwords, tokens or whole request bodies in logs.
 
-Find the project's own configuration wrappers first (`get_setting("X", "default")`, a `Settings` class with defaults): a codebase that reads everything through one barely matches generic patterns. Say which patterns you searched. A search that matches nothing looks the same as a clean result, and in `grep -E` use `[[:space:]]` and `[0-9]` rather than `\s` and `\d`, which some builds silently ignore. Committed secrets are a job for a scanner such as gitleaks or trufflehog; a linter such as ruff's `S` rules is better than a hand search for fixed patterns.
+Find the project's own configuration wrappers first (`get_setting("X", "default")`, a `Settings` class with defaults): a codebase that reads everything through one barely matches generic patterns. Say which patterns you searched. A search that matches nothing looks the same as a clean result, and in `grep -E` use `[[:space:]]` and `[0-9]` rather than `\s` and `\d`, which some builds silently ignore.
 
 ## Security parameters and silent failure (API and configuration review)
 
@@ -30,20 +30,13 @@ When reviewing a library's API or a configuration schema, put yourself in three 
 - **Defaults are not validation.** A secure default protects only callers who omit the argument. A constructor or settings class takes `algorithm`, `mode`, `cipher`, a lifetime, a hostname or a URL from the caller: validate them against an allowlist and a range at construction, so an insecure value is refused when it is created, not when it is used.
 - **The caller picks the mechanism.** Any parameter that selects a security mechanism and can come from input (`alg` in a JWT header, a cipher or hash name) lets an attacker downgrade it. Fix the algorithm in code.
 - **Silent failure.** A verify function that returns `False` while a caller discards the result; one library raises on failure and another returns a bool, and developers mix them up; `except` blocks that log and carry on as if authentication succeeded; a parse error replaced by a default.
-- **Stringly typed security.** Roles or permissions kept as comma-separated strings (`perms += ",admin"`), matched by substring (`"admin" in role` matches `readonly_admin_viewer`) or with any-match logic. Use an `Enum` and `frozenset` equality.
-- **Primitive-typed secrets.** Keys, nonces and ciphertexts that are all `bytes` can be swapped without an error. Wrap them in distinct types, and generate the nonce inside the function.
-- **Severity for an API review:** critical when the default or obvious usage is insecure; high when an easy misconfiguration breaks security; medium when an unusual one does; low when only deliberate misuse does. Documentation lowers the severity but does not excuse the design.
+- **Stringly typed security.** Roles kept as comma-separated strings or matched by substring (`"admin" in role`). Use an `Enum` and `frozenset` equality.
+- **Severity for an API review:** critical when the default or obvious usage is insecure; high when an easy misconfiguration breaks it; medium when an unusual one does; low when only deliberate misuse does.
 
-## Frameworks
+## Frameworks, containers, limits
 
-- **Django:** `DEBUG`, `ALLOWED_HOSTS`, `SECRET_KEY` committed, `SESSION_COOKIE_SECURE` and `CSRF_COOKIE_SECURE` false, `SecurityMiddleware` or `CsrfViewMiddleware` missing; `.raw()`, `.extra()`, `RawSQL`; `|safe`, `mark_safe`, `{% autoescape off %}`; `@csrf_exempt`; `fields = "__all__"`.
-- **Flask:** short or hard-coded `secret_key`; `debug=True`; `render_template_string(user_text)`; `Markup(user_text)`; no `CSRFProtect`; session cookie flags.
-- **FastAPI/Starlette:** a route without the `Depends` its siblings have; a function behind `Depends(get_current_user)` whose dependency does not actually validate; a response that returns an ORM object or dict (extra fields leak); `CORSMiddleware` with `*` and credentials; an `UploadFile` read whole into memory; `StaticFiles` over a directory holding more than assets.
-
-## Containers (a service's Dockerfile, compose file, manifests)
-
-No `USER` (runs as root); `:latest` or an unpinned base image; secrets in `ARG`, `ENV` or `COPY .env` (all visible in `docker history`; build secrets belong in BuildKit `--mount=type=secret`); no `.dockerignore` excluding `.env`, keys and `.git`; at runtime `--privileged`, `--cap-add`, a mounted `/var/run/docker.sock` (root on the host), `-v /:/host`, `--network=host`.
-
-## Limits and parsing
-
-Unbounded request bodies, uploads, decompression, page sizes, or a regex with nested quantifiers on attacker input are findings only where a small input from a low-trust caller causes large amplification (an unauthenticated endpoint pinned by one request). Otherwise they are hardening notes, as are missing rate limits and missing security headers.
+- **Django:** `DEBUG`, `ALLOWED_HOSTS = ["*"]`, committed `SECRET_KEY`, cookie `Secure` flags false, `SecurityMiddleware` or `CsrfViewMiddleware` missing, `@csrf_exempt`, `fields = "__all__"`.
+- **Flask:** short or hard-coded `secret_key`, `debug=True`, `render_template_string(user_text)`, no `CSRFProtect`.
+- **FastAPI/Starlette:** a route missing the `Depends` its siblings have; a response that returns an ORM object (extra fields leak); `CORSMiddleware` with `*` and credentials; an `UploadFile` read whole into memory; `StaticFiles` over a directory holding more than assets.
+- **Dockerfile, compose, manifests:** no `USER`; `:latest`; secrets in `ARG`, `ENV` or `COPY .env` (visible in `docker history`); no `.dockerignore` for `.env`, keys and `.git`; `--privileged`, a mounted `/var/run/docker.sock`, `-v /:/host`.
+- **Limits:** unbounded bodies, uploads, decompression or a nested-quantifier regex are findings only where a small input from a low-trust caller causes large amplification; otherwise a hardening note, like missing rate limits and security headers.
