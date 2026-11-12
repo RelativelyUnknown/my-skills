@@ -391,3 +391,17 @@ Sonnet (`claude-sonnet-5-5`), effort requested as low through `CLAUDE_EFFORT` an
 Totals: with 29/30 defects and 20/24 look-alikes correct; without 22/30 and 16/24. The export job through the queue was missed in 3 of 3 runs without the skill and 0 of 3 with it. The `fetch_preview` look-alike was reported as a plain SSRF in 5 of 6 runs in both arms, so the skill did not fix that false positive. The report separated confirmed from unconfirmed in 1 of 3 runs with and 0 of 3 without.
 
 Reading: unlike section 10, this fixture separates the arms, mostly on recall of the cross-file defects, at about 45% more cost (the agent read more files: 6 to 8 turns against 2). Caveats: 3 runs per arm, one model, an LLM judge that is generous with partial credit, effort unverified, and the fixture was written by the same author as the content it tests. No page was edited to fit this fixture, so the result is a measurement and not a tuned score. Pages were not changed for it.
+
+## 12. Output length and the two-places page (12 November 2026)
+
+Question: are the audit reports token efficient? Before any change, the kept traces of `evals/seeded-audit-hard` (Sonnet, effort requested low) gave final reports of about 1,000 words in both arms (with skill 982, 1,043, 1,142; without 1,021, 953, 981), and one smoke run showed 1,342 against 890 words. The skill pages had no length or shape rule. Added: `tabby-review/two-places-agree.md` (a general page on checks and uses that disagree) and a "Report shape" paragraph in `security-audit/reporting.md`, designed from the caveman skills (answer first, no preamble or recap, each fact once, a floor that never drops negations, numbers or paths) and Tabby's own `report` levels. Words are counted from the last assistant message in kept traces; the token counts in the traces are not usable.
+
+| Version of the pages | With skill: words per report | Defects (of 30) | Look-alikes ok (of 24) | Cost per run |
+| --- | --- | --- | --- | --- |
+| before | 982, 1043, 1142 (mean 1056) | 27 | 20 | $0.16 |
+| report shape + two-places page | 1101, 1009, 1008 (mean 1039) | 28 | 20 | $0.17 |
+| plus a 50-word cap per finding, no sub-bullets | 1088, 842, 1027 (mean 986) | 26 | 20 | $0.15 |
+
+Reading: **the rules did not shorten the reports in any way that stands out from run-to-run spread** (a 2% and then a 7% drop, ranges of 150 to 250 words). The agent read the rule (the trace shows `reporting.md` loaded) and followed the verdict-first structure, but still wrote about 90 words per finding for 11 findings, plus a rejected list and a coverage block. Defects found were flat (27, 28, 26 of 30) and the missed ones moved between runs, so the new page did not measurably raise recall either; it was written after seeing the misses, so a gain would have been partly tuned anyway. Output words are also not what costs: the with-skill arm costs about 45% more than the bare arm because it reads more files (6 to 8 turns against 2), which a report-shape rule cannot change. The bare arm's reports are about as long (890 to 1,100 words) and, on this fixture, noisier (more look-alikes reported as findings).
+
+Not tried, and where I would look next: a fixed fill-in template for each finding instead of a prose budget, or making `report: terse` the default for audits. Both change the format, so they need the owner's decision. n is 3 runs per arm, one model, effort unverified.
