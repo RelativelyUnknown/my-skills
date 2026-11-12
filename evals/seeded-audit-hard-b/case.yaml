@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: seeded-audit-hard-b
+expected_outcome: |
+  A report that finds ten defects that each need two or more files read together (a report job that trusts a patient_id copied from the request body, an upload name checked before percent-decoding, a host suffix check for redirects, a voucher redeem race, an OTP limit keyed on a client cookie, a None == None one-time-code bypass, an allow-unsigned flag read as the truthy string "false", mass assignment through hasattr/setattr, an appointment status written by two jobs outside the transition table, and a per-path schedule cache of per-user data), and does not call the eight look-alikes vulnerabilities.
+context:
+  scaffold_script: fixture.sh
