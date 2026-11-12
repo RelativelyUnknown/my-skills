@@ -56,5 +56,5 @@ The default for every candidate is "refuted" until the evidence says otherwise; 
 
 - Static reading first. Run target code only with no network, a scrubbed environment, dummy secrets and writes limited to a scratch directory; if you cannot isolate it, say so and do not run it. Never install a tool to audit.
 - Facts outside the repository (proxy, identity provider, deployment) are not proof either way: a finding that depends on one is `needs validation`, with the question and who can answer it.
-- Dependencies, CI workflows, AI agents in workflows, the release path and triaging advisories or scanner alerts: [supply-chain.md](supply-chain.md).
+- CI workflows and AI agents in them: [ci-workflows.md](ci-workflows.md). Dependencies, the release path and triaging advisories or scanner alerts: [supply-chain.md](supply-chain.md).
 - Write-time rules and fixes: `tabby/development/code/security-basics.md`.
