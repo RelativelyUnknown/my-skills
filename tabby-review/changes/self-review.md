@@ -21,6 +21,13 @@ Find what is wrong with the diff, and say nothing else. A clean diff gets a shor
 7. **Dependencies and files.** A second library for a job one already does, a new dependency in the base install, scratch or summary files, unrelated reformatting, hand-edited generated files.
 8. **Security.** Anything `development/code/security-basics.md` prohibits, for example `shell=True` with interpolation, f-string SQL, secrets in code or fixtures.
 
+## Slop pass (your own change)
+
+Before you call your own change done, read its diff once for accidental complexity and remove it; on someone else's diff, report it as a finding instead. Scope is the diff, not the file. Behaviour stays the same and edits stay minimal.
+
+- Remove: comments that narrate or repeat the code, defensive `try`/`except` and `None` checks on data your own code produced, casts, `Any` and `# type: ignore` added only to get past the checker, a helper that duplicates one that exists (`git grep`), nesting that early returns flatten, a wrapper with one caller, leftover prints, scratch files, and a style that differs from the surrounding file.
+- Keep: validation where untrusted data enters, error handling that prevents data loss, security checks, a deprecation shim for a public name, a comment that says why, a test that can fail.
+
 ## Deferred shortcuts
 
 List the `# shortcut:` comments the change adds or touches (`git grep -nE "# ?shortcut:"` on the changed files). Each must name its limit and the trigger to revisit it; one that names neither is a finding. A shortcut that names both is a decision, not a finding, unless the expected load already crosses its limit.

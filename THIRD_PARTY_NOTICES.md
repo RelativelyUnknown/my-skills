@@ -105,3 +105,13 @@ The earlier entries for diagram-design, stack-diagram and impeccable said "nothi
 ## Icons
 
 The diagram icon set is Tabler Icons (MIT, Copyright (c) 2020-2026 Pawel Kuna; https://github.com/tabler/tabler-icons), outline style, vendored as one JSON file at `tabby/design/assets/icons/tabler-outline.json` with its licence in `tabby/design/assets/icons/LICENSE.tabler`.
+
+
+## Bug-hunt, debugging and slop-pass ideas (12 November 2026)
+
+Ideas restated for Tabby in its own words; no text copied. Read through summaries of the public files, not line by line, so this is attribution for the ideas, not a claim of a full review of each repository.
+
+- getsentry/skills `find-bugs` (Apache-2.0, Copyright 2025 Functional Software, Inc. dba Sentry): the idea of accounting, before concluding, for every checked area and what could not be verified (`tabby-review/bug-hunt.md`).
+- stas00/the-art-of-debugging (distilled from Stas Bekman's book; the file states CC BY-SA 4.0): confirm the running code with a deliberate failure, script the debug loop, a symptom-to-tool table (`tabby/development/workflow/debugging.md`). The wording and table are our own.
+- joe-bell/cva `deslop` (Apache-2.0, Copyright 2022-present Joe Bell) and pedronauck/skills `deslop` (no licence found): a diff-scoped pass that removes accidental complexity, with a keep list for validation, error handling and deprecation shims (`tabby-review/changes/self-review.md`).
+- boraoztunc/skills `adversarial-review` (no licence found): assume the change is broken, project invariants count as bugs, open with the most likely production break, list what was not verified (`tabby-review/bug-hunt.md`).

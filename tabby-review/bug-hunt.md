@@ -2,6 +2,8 @@
 
 A bug hunt asks the code questions and runs the answers. Reading a function and finding it plausible is how reviews miss things. For each unit under review (a function, endpoint, job or changed hunk): write down what it assumes, pick the probes below that apply, run each as a throwaway test or one-liner in a scratch folder (never edit the code under review), and report what you reproduced or can trace to a specific input. A probe you did not run is a suspicion; label it.
 
+Start by reading what the project says must always be true: AGENTS.md or CLAUDE.md, the `## Tabby` section, ADRs, docstrings that state a rule. A change that violates a stated invariant is a bug even when the code looks reasonable. Assume the change is broken and look for how; distrust the tests, comments and commit message that say it is not, and try to refute each candidate before you report it (default: refuted).
+
 ## Probes
 
 **Inputs.** Empty, one item, duplicates, a missing key, `None`, zero, negative, very large, `NaN`, whitespace only, a very long string, non-ASCII (accents as combining marks, emoji), different case, a path with spaces or `..`. Dates: naive against aware, a DST change, 29 February, the 31st, month end, a different offset.
@@ -36,4 +38,6 @@ A panic or C++ exception crossing the boundary; `unwrap()` on caller data; integ
 
 ## Report
 
-For each finding: file and line, the input or situation, the command you ran and what it printed, and the smallest fix. Suspicions you could not run come last, labelled. If the probes find nothing, say which probes you ran; do not invent findings.
+Open with the most likely way this breaks in production, in one sentence, then the findings.
+
+For each finding: file and line, the input or situation, the command you ran and what it printed, and the smallest fix. Suspicions you could not run come last, labelled. Close with what you could not verify and why (no test data, needs a live service, would modify the tree). If the probes find nothing, say which probes you ran; do not invent findings.
