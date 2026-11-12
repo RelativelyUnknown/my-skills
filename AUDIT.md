@@ -2,6 +2,15 @@
 
 Three audits of Tabby against its mission: an opinionated, token-efficient skill set for the whole development process of a Python project and its native languages (C, C++, Rust, Zig), selected by a router from an interview or the project's scope. Each section says what was checked, what was found, what changed and what was left.
 
+## Overall effect, in one place (12 November 2026)
+
+What is measured and what is not, across everything in this file:
+
+- **Habits and outcomes (91 cases, LLM-judged and regex graders):** Haiku, 3 runs: six skills 0.82 to 0.84 against 0.76 bare (+0.06 to +0.09), at about +27% to +35% cost and +50% turns. Sonnet, one run: 0.84 against 0.78. The gains are on things the bare agent skips (deprecate instead of delete, interview first, take the library); seven cases get worse. The cases were written next to the content and some graders use Tabby's vocabulary, so this overstates the lift to some degree (section 3).
+- **Audit quality (seeded fixtures, sections 11 to 13):** on two cross-file fixtures the skill finds about 28 of 30 planted defects against about 22 of 30 bare, with fewer look-alikes reported as bugs, at about +45% cost. Not evidence that the audit reference pages matter: the agent did not open the class pages (section 13).
+- **Code quality as such (section 14):** six small tasks scored by hidden tests, ruff and diff size. Hidden tests are at the ceiling in both arms; the skill arm adds fewer lint errors and slightly fewer lines, and costs about 38% more. Six tasks is a small sample.
+- **Not measured:** large or messy repositories, multi-turn work, long-run maintainability, other models, and anything a user actually does with the output.
+
 ## 1. Third-party sources
 
 Every listed source was cloned at its current commit and read for ideas Tabby did not yet use. An idea was adopted only when it closed a gap that could be named; it was restated in Tabby's words, principle first. No text was copied. Commits and licences are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
@@ -420,3 +429,21 @@ Sonnet (`claude-sonnet-5-5`, effort requested low, unverified), 3 runs, plugin a
 | hard-b | sharpened | 28 | 22 | 1,080 (1,031, 1,129, 1,079) | $0.165 | 0 of 3 |
 
 Reading: the sharpened pages did **not** change what the agent reads: still no class page in any of the six runs, and the "Read next" table was not followed (`two-places-agree.md` was opened in 2 of 6 runs, `bug-hunt.md` in 1). Defects found are flat to slightly up (29 against 26 to 29 on the tuned fixture; 28 against 27 on the hold-out), look-alike precision is up on both (21 and 22 of 24 against 20 and 17), report length and cost did not move. With 3 runs per cell and the run-to-run spread seen above (a fixture swings by two or three defects between identical runs), none of these differences is established. The smaller front door may help the agent read less noise, but the evidence is that the lift of the skill over bare comes from loading it and `process.md` and from doing more reading, not from the class pages. The hold-out behaves like the tuned fixture, which is some evidence the lift is not specific to the fixture the pages were written beside.
+
+## 14. Code quality: hidden tests and static metrics (12 November 2026)
+
+Six tasks from the existing eval fixtures (`bug-fix-starts-red`, `batches-and-utc`, `bounded-fan-out-with-deadline`, `dedupe-lines-script`, `import-rows-some-fail`, `tiny-fix-stays-tiny`). The agent's final working directory was kept (`--keep-temp`); `tools/eval/quality.py` copies it, adds a hidden test file the agent never saw (`evals/quality/hidden/<case>/test_hidden.py`, checked to fail on the untouched fixture and pass on a solution I wrote), and runs pytest, `ruff check --select E,F,B,UP` (errors added against the base commit), and `git diff` for lines, files and dependencies. No LLM judge. Sonnet (`claude-sonnet-5-5`, effort requested low, unverified), 3 runs per arm and case, 18 per arm, no run errored. Raw rows: `tools/eval/results/2026-11-12-quality-sonnet-low.csv`.
+
+| Metric (mean per run) | With six skills | Bare |
+| --- | --- | --- |
+| Hidden tests passed | 0.958 | 1.000 |
+| Project suite green | 18 of 18 | 18 of 18 |
+| Ruff errors added | 0.28 | 1.44 |
+| Lines added | 48 | 54 |
+| New dependency lines, suppressions added | 0.11, 0 | 0, 0 |
+| Cost per run | $0.101 | $0.073 |
+| Turns | 9.7 | 7.0 |
+
+By case (with / bare): ruff errors added `batches-and-utc` 0.3 / 5.7, `dedupe-lines-script` 1.3 / 2.7, others 0 to 0.3 in both; lines added `import-rows-some-fail` 48 / 74, `bounded-fan-out-with-deadline` 97 / 108, `bug-fix-starts-red` 10 / 5 (the skill adds a regression test; the bare agent mostly edited the function only).
+
+Reading: **correctness did not separate the arms**: both pass every hidden test on five of six tasks. The one difference, `import-rows-some-fail` (0.75 with the skill in 3 of 3 runs), is a test I wrote that expects an unexpected `KeyError` from the store not to stop the batch; the skill arm caught only `ValueError`, which is the store's documented error and arguably the better design, while the bare arm caught `Exception`. Reasonable people disagree, so I did not change the test after seeing it; read the 0.958 as a design difference, not a bug. **Lint hygiene and diff size favoured the skill**: about a fifth of the lint errors, most of them in one case (the bare arm used `timezone.utc` where `UP` prefers `datetime.UTC`, a rule set I chose), and about 11% fewer lines added. **It costs more**: +38% cost and turns, consistent with section 3. n is 18 per arm over six tasks I picked, one model, effort unverified, tests written by me.
