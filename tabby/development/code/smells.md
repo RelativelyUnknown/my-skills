@@ -36,6 +36,7 @@ A smell is a habit that looks fine and makes the next reader stop: the code runs
 ## Structure
 
 - A class with no state and one method; a one-line wrapper around an expression; a base class, factory or registry with one implementation; `utils.py` or `helpers.py` → a function; the expression; the concrete type; a module named for what it holds
+- Booleans that must not all be true together, a `status` string compared in many places, or a nullable timestamp standing for a state → an `Enum`, one function that is the only writer, and the allowed transitions in one table; a database update guards the old state (`WHERE status = 'pending'`)
 - Module-level mutable state; `dict[str, Any]` passed around → pass it in; a dataclass or `TypedDict`
 - Names like `data`, `result`, `info`, `manager`, `new_`, `v2`; a number that carries meaning → say what the thing is; name the constant
 - Defensive code for a case that cannot happen → delete it; search for an existing helper before writing one

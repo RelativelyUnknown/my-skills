@@ -10,6 +10,8 @@ A bug hunt asks the code questions and runs the answers. Reading a function and 
 
 **State and order.** Called twice; called in another order; run again after a half-finished first run; the argument mutated by the callee; a mutable default; a module-level cache that outlives the test; an iterator or generator consumed twice; a closure created in a loop that sees the last value.
 
+**State machines.** A status, a pair of booleans or a nullable timestamp that stands for a state is a state machine nobody drew; probe its illegal combinations, repeated events and stuck states with [state-machines.md](state-machines.md).
+
 **Failure halfway.** What if the third of five calls raises? Partial writes, a transaction that spans too little or too much, a resource not closed on the error path, a retry that repeats a side effect, an error swallowed into a default value, a timeout that stops waiting but not the work.
 
 **Contracts.** What do callers rely on that this change alters: the return on empty input (`None` against `[]`), ordering, the exception type, a default, sync against async, a removed or renamed name? Open the callers (`git grep`), do not assume.

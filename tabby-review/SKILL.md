@@ -1,6 +1,6 @@
 ---
 name: tabby-review
-description: "MUST be your first tool call, before reading files or giving any finding, when asked to review: a diff, branch or pull request ('is this PR ready', 'look over my changes'), audit a repository, security-audit code, dependencies, CI workflows or a release, hunt for bugs, or check a diagram, animation or page before it ships."
+description: "MUST be your first tool call, before reading files or giving any finding, when asked to review: a diff, branch or pull request ('is this PR ready', 'look over my changes'), audit a repository, security-audit code, dependencies, CI workflows or a release, hunt for bugs or implicit state machines, or check a diagram, animation or page before it ships."
 license: MIT
 ---
 
@@ -10,6 +10,7 @@ Defaults: read the `## Python defaults` section of AGENTS.md; its `report` value
 
 - A diff, branch, pull request or your own change before you call it done: read `changes/self-review.md` and follow it.
 - Hunting for bugs ("find bugs in", "what could break", "why might this fail"): read `bug-hunt.md`; it applies to a diff review and a repo audit too.
+- Implicit state machines ("find the state machines", a `status` or `state` field, flags that travel together, a required call order): read `state-machines.md`.
 - A change that crosses between Python and Rust, C or C++: also read `native-boundary.md`.
 - A security audit: read `security-audit/process.md` and `security-audit/reporting.md`. Dependencies, CI workflows or the release path: also `security-audit/supply-chain.md`.
 - The whole repository (not a diff): read `repo-audit.md`.
