@@ -11,12 +11,12 @@ Tabby: a plugin of six Claude Code skills for Python projects, with Rust, C, C++
 | Path | Role |
 | --- | --- |
 | `tabby/` | Core skill. `SKILL.md` has the "Never miss" rules, on-demand leaf pointers, the native pointer and the project-memory rules. `development/` holds the leaves (code, testing, architecture, workflow, dependencies, performance, library incl. `native/`, application, `ecosystem.md`, `which-type.md`, `assets/` templates). `references/growth.md`: options and seams. |
-| `tabby-review/` | Diff review, repo audit, security audit, native boundary review, design review (`design.md`). Calls the checkers in the diagrams and frontend skills. |
+| `tabby-review/` | Diff review (`changes/self-review.md`), repo audit, bug hunt (`bug-hunt.md`, `python-traps.md`, `state-machines.md`), security audit (`security-audit/`: process, reporting, six class pages, `supply-chain.md`, `ci-workflows.md`, `ci-agents.md`), native boundary review, design review (`design.md`). Calls the checkers in the diagrams and frontend skills. The audit pages were rewritten from the full text of the sources listed in `THIRD_PARTY_NOTICES.md`; Python, C and Rust claims on them were run (marked "checked"), GitHub Actions claims were not. |
 | `tabby-docs/` | Diátaxis page types, ADR, runbook, changelog, commit messages, docs drift, style. |
 | `tabby-diagrams/` | Diagrams and explainer animations. `diagrams/` and `animation/` hold pages (`quickstart.md` first). `assets/diagram/` is the builder `make.mjs`, `check.py`, `render.mjs`, `selftest.py`; `assets/animation/` is `animate.mjs`, `check-motion.mjs`, `selftest-motion.mjs`; `assets/icons/` is the vendored Tabler set. `SOURCE.md` says what came from where. |
 | `tabby-frontend/` | Web UI: method, tokens, `refuse.md`, server-rendered, data apps, docs and README visuals. `assets/interfaces/` is `ui-check.mjs`, `selftest-ui.mjs`, `fixtures/`. |
 | `interview/` | `/tabby:interview`. A plain skill (not `disable-model-invocation`: that returned no body when run as a command). `references/start.md`, `references/research.md`. |
-| `evals/` | 91 cases plus `tabby.triggers.json`, `triggers.skills.json` (88 queries with the expected skill) and `triggers.heldout.json` (25 queries written after tuning). |
+| `evals/` | 92 cases plus `tabby.triggers.json`, `triggers.skills.json` (88 queries with the expected skill) and `triggers.heldout.json` (25 queries written after tuning). |
 | `tools/` | `eval/run.py` (batch runner, stops on the first usage-limit error, exit 3, resumable), `summarise.py` (paired tables, `--csv`, `--compare`), `traces.py`, `triggers.py` (skill-level trigger test with a confusion matrix), `variants/`, `results/*.csv`; `linkcheck.py`. |
 | `AUDIT.md`, `THIRD_PARTY_NOTICES.md` | Audits and results; what was taken from other repositories. |
 
@@ -61,7 +61,7 @@ A case is `case.yaml`, `prompt.md`, `fixture.sh`, `graders/*.md`. Run from the r
 - **Latest numbers (Haiku, 91 cases, 3 runs):** bare 0.754, one skill 0.812, six skills 0.840 (turns 17.1, cost +27% over bare). Sonnet check of the six skills: see `AUDIT.md` section 7. No held-out set yet; the cases were written next to the content.
 - **Loading is the weak point.** On queries not used for tuning the skills load about 35% of the time on Haiku (68% on the tuned ones), and `tabby-frontend` is sometimes pre-empted by `tabby`. Next: tune the descriptions with a 60/40 split and a confusion matrix.
 - **Cost.** Still +27% over bare, above the +10% target. The rules fire on the 36 cases the bare agent already passes. Scoping rules to the tasks that need them is untried.
-- **Not built:** the opt-in hooks (`/tabby:hooks on`), a `detect` script, a hold-out set of about 15 new cases, five-run decisions, a leaf-ablation helper.
+- **Not built:** five-run decisions, a leaf-ablation helper. (The opt-in hooks skill, `detect.py` and the held-out trigger sets exist.) `evals/seeded-audit-python` (12 planted defects, 8 look-alikes, 20 graders) measures the audit content; see `AUDIT.md` for the recall and precision it gave.
 - **Worst current cases:** `three-pages`, `ci-job-for-a-uv-project`, `import-rows-some-fail`, `agents-md-for-a-repo` (all -0.2 to -0.36 against the one-skill plugin); `timeout-is-not-the-fix` stays near 0.2 in every arm.
 - **Confidential content in git history.** An example animation scene from another project was in an earlier commit; it is gone from the tree but 6 commits still contain it. The owner will handle the history; do not rewrite history or force-push.
 - **Not run:** the nanobind templates, long full-size video encodes. One model family, small single-turn fixtures.
