@@ -12,6 +12,7 @@ changes/self-review.md                silenced checks, weakened tests, smells, A
 security-audit/process.md             name the boundary, trace input to sink, try to disprove each candidate
 security-audit/reporting.md           confirmed / needs-validation / rejected; severity only for confirmed; a fix with a regression test
 repo-audit.md                        whole-repository audit: bugs, risk, load, missing tests, what to delete
+two-places-agree.md                 checked in one form and used in another, identities copied across a queue, a default that turns a check off, state with several writers, a cache key missing a dimension
 security-audit/supply-chain.md        package sources, measuring dependency risk, triaging advisories, the release path
 security-audit/ci-workflows.md        workflows as authorization code: pwn requests, injection, credentials, runners
 security-audit/ci-agents.md           AI agents in workflows: what reaches the prompt, what the agent can do

@@ -10,6 +10,8 @@ A bug hunt asks the code questions and runs the answers. Reading a function and 
 - Run what you can as a throwaway test or one-liner in a scratch folder; never edit the code under review. A probe you did not run is a suspicion, and is labelled.
 - Try to refute each candidate before you report it; the default is refuted. Say "traced" or "ran", not "probably" or "likely"; where you cannot tell, say so and what would settle it.
 
+Bugs that span two places (a check in one file, the use in another) are listed in [two-places-agree.md](two-places-agree.md); look for them before you stop.
+
 ## Follow the calls (the assumption audit)
 
 For each function under review write down what must be true on entry (the argument's trust level, state read, who the caller is, the clock), what it promises on every path, and what it calls. Then read each callee in full and follow every path through it, not only the one that succeeds. A name is not a check: `session_lookup` suggests the session is live while it compares only the ID. For each assumption say what makes it true; if nothing does, write **nothing enforces it**. Those are the best leads. Keep a list of open questions instead of guessing.

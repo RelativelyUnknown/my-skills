@@ -16,6 +16,10 @@ Rate **severity** (the damage if it is real) and **likelihood** (how easily it t
 
 Do not pad: a missing header or rate limit with no victim is a note at the end, not a finding. A clean audit says what was checked and found nothing.
 
+## Report shape
+
+Short means no filler, never a missing fact. Verdict first, in one line. Then one entry per finding: `file:line`, the path from entry to sink in at most two sentences, the fix in one. No preamble, no restating the task, no announcing what you will do, no closing recap or offer, and no mention of this guide or of checks you skipped. Say each thing once; related observations go in one trailing line. Leave out clean code, stubs, style and "no tests"; a hardening note is one line each at the end. Coverage is three lines: read, ran, not checked. Never cut `not`, `never`, `no`, `only`, numbers, paths, function names or a quoted error; use full sentences for a warning about something irreversible. With `report: terse`, give only the verdict and one line per finding.
+
 ## An independent check before you report
 
 Disproving your own candidate in the context that produced it is weak. When you can run a subagent, give each confirmed candidate to a fresh one with only the candidate (trace, files, claimed effect) and this prompt, then keep what survives:
