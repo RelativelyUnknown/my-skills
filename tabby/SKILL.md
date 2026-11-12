@@ -9,11 +9,9 @@ allowed-tools: Bash(python3 *detect.py*)
 
 Project memory is the `## Tabby` section of AGENTS.md (Claude Code reads CLAUDE.md, not AGENTS.md: if the repo has no CLAUDE.md, suggest one line, `@AGENTS.md`). Tool and style defaults are the `## Python defaults` section; infer gaps from the repo, ask only what is still unknown, and mark guesses `(assumed)`.
 
-## Detected in this repo
+## First command
 
-Use these instead of searching for them; they come from files only.
-
-!`python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"`
+Run `python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"` once before reading project files. It lists the runner, Python target, test, format, lint and type tools, the check command, CI and native parts from files only, so you do not search for them one by one. If it fails, read the repo instead.
 
 ## Never miss
 
