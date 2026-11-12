@@ -328,7 +328,7 @@ Question: why do the skills load on only a third of unseen prompts, and what rai
 - Descriptions that say "MUST be your first tool call, before reading files, asking questions or answering" raise loading on unseen prompts from 46% to 69% (hold-out). The dev figure is inflated because the wording of three descriptions was adjusted after reading its misses.
 - A `UserPromptSubmit` hook that prints a 120-word reminder naming the skill for each kind of task raises loading to 91% to 95% on the hold-out, including 30 of 30 correct "no skill" prompts. A weaker, descriptive reminder ("invoke the Skill ...") gave 66% on dev; the imperative form with a bullet per skill gave 93%. With the hook the description wording matters little (95% old vs 91% new, inside the noise of 3 runs).
 - This mechanism is the one the popular packs use (superpowers injects its bootstrap at session start). Here it ships **off by default**: `/tabby:hooks on` shows the reminder text and the settings entry, then writes it to `.claude/settings.json` on a yes; `/tabby:hooks off` removes it. It runs one `cat` and nothing else.
-- Limits: empty-folder prompts, Haiku only, one prompt per run, so a real session with a repository and a saved `## Tabby` section may load more often; the hook result is the loading rate, not yet the task score (see below).
+- Limits: empty-folder prompts, Haiku only, one prompt per run, so a real session with a repository and a saved `## Tabby` section may load more often; the hook result is the loading rate; the task score is in the next paragraph.
 
 
 ## 9. Worst-case fixes and the detect script (12 November; Haiku, 14 cases, 3 runs, plugin arm only)
@@ -350,3 +350,14 @@ Result with the final core (hook on in the test plugin; `tools/eval/results/` ha
 Turns fell on 12 of the 14 (for example `new-package-one-check-command` 33.3 to 20.7, `bug-fix-starts-red` 15.7 to 11.7); `detect.py` was run in 3 of 3 runs on 12 of the 14 cases. `speed-up-matcher` is not comparable, `timeout-is-not-the-fix` is unchanged (loading), `bug-fix-starts-red` 0.44 against 0.74 in the hook run (noise or a real loss; 3 runs cannot tell).
 
 **What the agent reads** (165 kept traces of the hook run and this run): `development/code/smells.md` 74, `scripts/detect.py` 36, `development/which-type.md` 30, `development/code/reuse.md` 20, `development/testing/testing.md` 16, `interview/references/start.md` 9, `tabby-diagrams/diagrams/quickstart.md` 9, then 7 or fewer for everything else; 58 distinct files in all. No leaf was demoted or deleted: unread leaves cost nothing until opened, the single-turn cases cannot show what a rarely read leaf is worth, and the only place leaves cost tokens is the core's reading list, which was left as it is until an ablation shows a line can go.
+
+
+**Full run with the new descriptions and the hook** (Haiku, 91 cases, 3 runs, plugin arm only, no errored runs, `tools/eval/results/2026-11-12-haiku-hook-descriptions.csv`; compared on the 90 cases whose fixture did not change):
+
+| Arm | Score | Turns | Cost per run | Skill loaded |
+| --- | --- | --- | --- | --- |
+| Bare | 0.760 | 11.2 | $0.0118 | |
+| Six skills, old descriptions, no hook | 0.844 | 17.2 | $0.0152 | about 77% (earlier trace sample) |
+| Six skills, new descriptions + hook | 0.822 | 16.7 | $0.0160 | 96% (259 of 270 runs) |
+
+Loading went up, the score did not: 7 cases better and 14 worse by 0.10 or more than the old six-skill run. The biggest drops are `vague-ask-clarifies-briefly` (-0.42) and `vague-feature-gets-a-short-spec` (-0.40), which were the biggest gains in the previous run, so part of this is regression to the mean; the difference of 0.02 is inside the noise of three runs. Reading: on cases that run inside a repository the skill already loaded most of the time, so a reminder buys little there; its value is for short prompts in real sessions, which is what the trigger test measures (46% to 95%). It stays **opt-in**; it is not a score lever. These two arms also differ in the rewritten descriptions, so the run cannot separate the two changes. The new core (section 9) was measured on 14 cases only.
