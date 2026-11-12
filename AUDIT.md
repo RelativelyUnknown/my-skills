@@ -347,6 +347,6 @@ Result with the final core (hook on in the test plugin; `tools/eval/results/` ha
 | --- | --- | --- | --- | --- |
 | Mean score | 0.699 | | 0.785 | **0.824** |
 
-Turns fell on 12 of the 14 (for example `new-package-one-check-command` 33.3 to 20.7, `bug-fix-starts-red` 15.7 to 11.7); the detect script ran in 36 of the first 56 loads in the full hook run. `speed-up-matcher` is not comparable, `timeout-is-not-the-fix` is unchanged (loading), `bug-fix-starts-red` 0.44 against 0.74 in the hook run (noise or a real loss; 3 runs cannot tell).
+Turns fell on 12 of the 14 (for example `new-package-one-check-command` 33.3 to 20.7, `bug-fix-starts-red` 15.7 to 11.7); `detect.py` was run in 3 of 3 runs on 12 of the 14 cases. `speed-up-matcher` is not comparable, `timeout-is-not-the-fix` is unchanged (loading), `bug-fix-starts-red` 0.44 against 0.74 in the hook run (noise or a real loss; 3 runs cannot tell).
 
 **What the agent reads** (165 kept traces of the hook run and this run): `development/code/smells.md` 74, `scripts/detect.py` 36, `development/which-type.md` 30, `development/code/reuse.md` 20, `development/testing/testing.md` 16, `interview/references/start.md` 9, `tabby-diagrams/diagrams/quickstart.md` 9, then 7 or fewer for everything else; 58 distinct files in all. No leaf was demoted or deleted: unread leaves cost nothing until opened, the single-turn cases cannot show what a rarely read leaf is worth, and the only place leaves cost tokens is the core's reading list, which was left as it is until an ablation shows a line can go.
