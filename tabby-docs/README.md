@@ -19,7 +19,7 @@ troubleshooting/  symptom-fix-matrix.md                      fast fault isolatio
 governance/     contributing.md                              rules for collaborators
 ```
 
-Every folder has an `index.md`. Docstring content rules (no conversation residue, no restated signatures) live in [`../tabby/development/code/comments.md`](../tabby/development/code/comments.md).
+Docstring content rules (no conversation residue, no restated signatures) live in [`../tabby/development/code/comments.md`](../tabby/development/code/comments.md).
 
 ## Evals
 

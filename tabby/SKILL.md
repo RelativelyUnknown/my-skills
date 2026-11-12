@@ -28,21 +28,26 @@ Run `python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"` once before reading projec
 
 ## Read on demand
 
+Open leaves with Read at the path given; do not search for them. Read `development/code/smells.md` first, then only the leaf for the main thing the task does (a second only if clearly needed); the rest when you reach a situation they cover. Paths start at `development/`.
 
-Read `development/code/smells.md` first, then only the leaf for the main thing the task does (a second only if clearly needed); others when you reach a situation they cover. `development/workflow/shipping.md` when about to report. Paths start at `development/`. Open each with Read; do not search.
+- new function, class, option, constant, name: `code/minimalism.md`
+- what exists for a job: `ecosystem.md`; hand-rolled utility, new package: `code/reuse.md`, `dependencies/dependencies.md` (the runner is uv: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`)
+- errors: `code/errors.md`; parsing input: `code/validation.md`; annotations: `code/typing.md`
+- files, connections, locks, subprocesses, streams: `code/resources.md`
+- feature newer than the Python target: `code/python-versions.md`; docstring, comment: `code/comments.md`
+- logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`; script or CLI: `code/scripts.md`
+- data frames, arrays, models, notebooks, large files: `code/data.md`
+- tests: `testing/testing.md`, `testing/smells.md` (mocks `testing/mocking.md`, fixtures `testing/fixtures.md`, property-based or release-grade `testing/rigor.md`); slow code: `performance/index.md`
+- bug, failing test, race, flaky test: `workflow/debugging.md`
+- scope: `workflow/planning.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; three or more outcomes, or "all"/"every": `workflow/gates.md` (a short list, then start); several readings: `workflow/specs-and-slices.md`; removing or replacing: `workflow/deprecation-and-migration.md`; about to report: `workflow/shipping.md`
+- pattern, layers: `architecture/design-patterns.md`; data structure or algorithm: `architecture/fit.md` (worked examples `fit-examples.md`); design under real limits, `unsafe`: `architecture/senior-engineering.md`
 
-- new function, class, option, constant, name: `development/code/minimalism.md`
-- what exists for a job: `development/ecosystem.md`; hand-rolled utility, new package: `development/code/reuse.md`, `development/dependencies/dependencies.md`
-- errors: `development/code/errors.md`; parsing input: `development/code/validation.md`; annotations: `development/code/typing.md`
-- files, connections, locks, subprocesses, streams: `development/code/resources.md`
-- feature newer than the Python target: `development/code/python-versions.md`; docstring, comment: `development/code/comments.md`
-- logging, secrets, SQL, `eval`, `pickle`: `development/code/logging.md`, `development/code/security-basics.md`; script or CLI: `development/code/scripts.md`
-- tests: `development/testing/testing.md`, `development/testing/smells.md`; slow code: `development/performance/index.md`
-- retries, timeouts, circuit breakers: `development/application/shared/resilience.md`
-- scope: `development/workflow/planning.md`; bug: `development/workflow/debugging.md`; restructuring: `development/workflow/refactoring.md`; unsure API: `development/workflow/checking-apis.md`; three or more outcomes, or "all"/"every": `development/workflow/gates.md` (a short list, then start); several readings: `development/workflow/specs-and-slices.md`; removing or replacing: `development/workflow/deprecation-and-migration.md`
-- pattern, layers: `development/architecture/design-patterns.md`; data structure or algorithm: `development/architecture/fit.md`; design under real limits, `unsafe`: `development/architecture/senior-engineering.md`
+By kind of project (`which-type.md` names it; read only the line for the kind, and `smells.md` of that kind before finishing):
 
-The project's kind adds one index (`development/which-type.md` names it: library, service, worker, native). Read it and only it. A Rust, C, C++ or Zig extension is the `native` kind: `development/library/native/index.md`, then only the language page the task touches.
+- **library** others import: `library/smells.md`, `library/shared/api-design.md` for any public name, `package-setup.md`, `layout.md`, `tooling.md`, `entry-points.md`, `versioning.md`, `release.md` (all in `library/shared/`; templates in `development/assets/`)
+- **native extension** (Rust, C, C++ or Zig behind Python): `library/native/index.md`, then only the language page the task touches, `architecture.md` to decide whether and where, `porting.md` to move a function, `ci-wheels.md` for wheels, `smells.md` before finishing
+- **HTTP service**: `application/smells.md`, `application/apis/http/services.md`, then `fastapi.md` or `django.md`; `application/apis/shared/security.md`; `application/shared/` for `async.md`, `async-patterns.md`, `configuration.md`, `observability.md`, `persistence.md`, `deployment.md`, `resilience.md` (retries, timeouts, circuit breakers)
+- **worker or scheduler**: `application/workers/background-jobs.md`, `background-jobs-patterns.md`, and `application/shared/resilience.md`
 
 ## Other skills in this plugin
 

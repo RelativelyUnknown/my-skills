@@ -1,6 +1,6 @@
 # Native extensions: Python with Rust, C or C++
 
-A library whose hot or low-level part is written in Rust, C, C++ or (rarely) Zig and called from Python. Read `../shared/index.md` too: everything for a pure-Python library still applies.
+A library whose hot or low-level part is written in Rust, C, C++ or (rarely) Zig and called from Python. Everything for a pure-Python library (`../shared/`) still applies.
 
 - architecture.md: whether to go native, which layer, the layout, the seam, how the two sides are tested.
 - rust.md: PyO3 and maturin: errors, the GIL, ownership, stubs, lints, `unsafe`.

@@ -50,7 +50,7 @@ Callers come to depend on everything they can observe, promised or not: the orde
 
 ## Changing a public name
 
-Every change to a public name still needs the ask-first approval the front door requires, whether additive or breaking; "safe" below is about what a caller's existing code survives, not about permission.
+Every change to a public name still needs the ask-first approval the core skill requires, whether additive or breaking; "safe" below is about what a caller's existing code survives, not about permission.
 
 - New options: keyword-only with defaults (compatible with a minor release, since no existing call breaks). Never change a return type in a minor release (`list` to `Iterator`, `T` to `T | None`).
 - Rename or remove: keep the old name for at least one minor release as a deprecated alias with `warnings.warn(..., DeprecationWarning, stacklevel=2)` naming the replacement. Update every caller, test, doc, the README and the changelog; the changelog says what users must change.

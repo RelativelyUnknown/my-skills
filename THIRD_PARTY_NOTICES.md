@@ -1,6 +1,6 @@
 # Third-party notices
 
-Skills in this repository were adapted from the work of other authors. The adapted wshobson material keeps the upstream licence as `tabby/development/LICENSE.wshobson` and a `tabby/development/SOURCE.md` (upstream URL, pinned commit, what changed); other adapted material keeps its licence and `SOURCE.md` next to it. Everything below is MIT-licensed; the MIT licence requires its copyright and permission notice to travel with every copy or substantial portion, which is why the licence text sits next to each adapted skill.
+Skills in this repository were adapted from the work of other authors. The adapted wshobson material keeps the upstream licence as `provenance/LICENSE.wshobson` and a `provenance/development-SOURCE.md` (upstream URL, pinned commit, what changed); other adapted material keeps its licence and `SOURCE.md` next to it. Everything below is MIT-licensed; the MIT licence requires its copyright and permission notice to travel with every copy or substantial portion, which is why the licence text sits next to each adapted skill.
 
 The rest of this repository is MIT (see `LICENSE`).
 
@@ -22,10 +22,10 @@ The rest of this repository is MIT (see `LICENSE`).
 | `python-resilience` | `tabby/development/application/shared/resilience.md` |
 | `python-error-handling` | `tabby/development/code/errors.md`, `validation.md` |
 | `python-design-patterns` | `tabby/development/architecture/design-patterns.md` (three principles) |
-| `python-testing-patterns` | one section of `tabby/development/testing/mocking.md`; the rest was already covered (see `tabby/development/SOURCE.md`) |
-| `python-performance-optimization` | `tabby/development/performance/index.md`; the profiler tutorial was not copied (see `tabby/development/SOURCE.md`) |
-| `python-packaging`, `python-project-structure` | `tabby/development/library/shared/versioning.md`, `entry-points.md`, `tooling.md`; the rest was already covered (see `tabby/development/SOURCE.md`) |
-| `python-code-style` | pointer only; nothing copied (see `tabby/development/SOURCE.md`) |
+| `python-testing-patterns` | one section of `tabby/development/testing/mocking.md`; the rest was already covered (see `provenance/development-SOURCE.md`) |
+| `python-performance-optimization` | `tabby/development/performance/index.md`; the profiler tutorial was not copied (see `provenance/development-SOURCE.md`) |
+| `python-packaging`, `python-project-structure` | `tabby/development/library/shared/versioning.md`, `entry-points.md`, `tooling.md`; the rest was already covered (see `provenance/development-SOURCE.md`) |
+| `python-code-style` | pointer only; nothing copied (see `provenance/development-SOURCE.md`) |
 
 ## cloudflare/security-audit-skill
 
@@ -78,7 +78,7 @@ The C++ leaf (`development/library/native/cpp.md`) was written from the document
 
 ## Gap fill (2026-11-10)
 
-Ideas restated for Tabby; no text copied. `development/SOURCE.md` lists the leaves.
+Ideas restated for Tabby; no text copied. `provenance/development-SOURCE.md` lists the leaves.
 
 | Source (commit) | Licence | Idea taken | Where it went |
 | --- | --- | --- | --- |
