@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: diagram-state-machine
+expected_outcome: |
+  One SVG at docs/order-states.svg showing the states an order can be in and exactly the transitions the code allows, with real text labels, a title and description, right-angle connectors and no gradients or shadows.
+context:
+  scaffold_script: fixture.sh

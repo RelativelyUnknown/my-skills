@@ -1,6 +1,6 @@
 # Native extensions: Python with Rust, C or C++
 
-A library whose hot or low-level part is written in Rust, C, C++ or (rarely) Zig and called from Python. Read `../shared/index.md` too: everything for a pure-Python library still applies.
+A library whose hot or low-level part is written in Rust, C, C++ or (rarely) Zig and called from Python. Everything for a pure-Python library (`../shared/`) still applies.
 
 - architecture.md: whether to go native, which layer, the layout, the seam, how the two sides are tested.
 - rust.md: PyO3 and maturin: errors, the GIL, ownership, stubs, lints, `unsafe`.
@@ -18,4 +18,4 @@ Formatters and linters (the project's own config wins):
 - C and C++: `clang-format` with the project's `.clang-format`, `-Wall -Wextra -Werror` in CI, `clang-tidy` if configured.
 - Zig: `zig fmt --check`, `zig build test`.
 
-Reviewing a native change: the `review` module has a boundary checklist (`review/native-boundary.md`).
+Reviewing a native change: the `tabby-review` skill has a boundary checklist (`native-boundary.md`).

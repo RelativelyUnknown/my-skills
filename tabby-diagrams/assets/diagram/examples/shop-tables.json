@@ -1,0 +1,78 @@
+{
+  "id": "shop",
+  "title": "Orders and who places them",
+  "subtitle": "One user places many orders; each order holds many items.",
+  "nodes": [
+    {
+      "id": "users",
+      "name": "users",
+      "x": 40,
+      "y": 140,
+      "rows": [
+        [
+          "id",
+          "uuid"
+        ],
+        [
+          "email",
+          "text"
+        ]
+      ]
+    },
+    {
+      "id": "orders",
+      "name": "orders",
+      "x": 332,
+      "y": 128,
+      "focal": true,
+      "rows": [
+        [
+          "id",
+          "uuid"
+        ],
+        [
+          "user_id",
+          "uuid"
+        ],
+        [
+          "status",
+          "text"
+        ]
+      ]
+    },
+    {
+      "id": "items",
+      "name": "order_items",
+      "x": 624,
+      "y": 128,
+      "rows": [
+        [
+          "order_id",
+          "uuid"
+        ],
+        [
+          "sku",
+          "text"
+        ],
+        [
+          "qty",
+          "int"
+        ]
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "users",
+      "to": "orders",
+      "label": "1 : N",
+      "kind": "main"
+    },
+    {
+      "from": "orders",
+      "to": "items",
+      "label": "1 : N",
+      "kind": "main"
+    }
+  ]
+}

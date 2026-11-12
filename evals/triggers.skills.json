@@ -1,0 +1,363 @@
+[
+ {
+  "query": "Write a function that retries an HTTP call three times",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add a --verbose flag to the CLI",
+  "expect": "tabby"
+ },
+ {
+  "query": "Fix the KeyError when a profile has no email",
+  "expect": "tabby"
+ },
+ {
+  "query": "Refactor parse_config to be simpler without changing behaviour",
+  "expect": "tabby"
+ },
+ {
+  "query": "Create a small module that loads a CSV and totals the amounts",
+  "expect": "tabby"
+ },
+ {
+  "query": "Use the strategy pattern to remove this if/elif chain",
+  "expect": "tabby"
+ },
+ {
+  "query": "add type hints to src/pkg/io.py",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add a test for the empty-input case",
+  "expect": "tabby"
+ },
+ {
+  "query": "This job is too slow on 200k rows, make it faster",
+  "expect": "tabby"
+ },
+ {
+  "query": "Set up a new Python library called geomkit",
+  "expect": "tabby"
+ },
+ {
+  "query": "add the pyjson-turbo-schema package and use it in config.py",
+  "expect": "tabby"
+ },
+ {
+  "query": "dependabot says urllib3 has a CVE, what do we do",
+  "expect": "tabby"
+ },
+ {
+  "query": "review my branch against main before I open the PR",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "audit this FastAPI service for security problems",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Write a README for the package",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "write release notes for 1.4.0",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "add docstrings to the public functions in stats.py",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "write an ADR for moving the queue to Postgres",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "draw an architecture diagram of our services",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "the PyO3 function panics on empty input, fix it",
+  "expect": "tabby"
+ },
+ {
+  "query": "add a checksum function to the Rust extension and export it from Python",
+  "expect": "tabby"
+ },
+ {
+  "query": "our C extension leaks memory in parse(), find it",
+  "expect": "tabby"
+ },
+ {
+  "query": "bind this C++ class to Python with nanobind",
+  "expect": "tabby"
+ },
+ {
+  "query": "add a function to our Zig extension next to fibonacci",
+  "expect": "tabby"
+ },
+ {
+  "query": "set up GitHub Actions to run our checks on pull requests",
+  "expect": "tabby"
+ },
+ {
+  "query": "prepare release 0.4.0, don't publish",
+  "expect": "tabby"
+ },
+ {
+  "query": "the test_login test is flaky, figure out why",
+  "expect": "tabby"
+ },
+ {
+  "query": "add an endpoint GET /orders/{id} to the FastAPI app",
+  "expect": "tabby"
+ },
+ {
+  "query": "make this pandas script faster",
+  "expect": "tabby"
+ },
+ {
+  "query": "write a CLI with typer that converts csv to parquet",
+  "expect": "tabby"
+ },
+ {
+  "query": "Explain how Python decorators work",
+  "expect": "none"
+ },
+ {
+  "query": "Explain what __all__ does in Python",
+  "expect": "none"
+ },
+ {
+  "query": "Write a SQL query for the top 10 customers by revenue",
+  "expect": "none"
+ },
+ {
+  "query": "What's the difference between a list and a tuple?",
+  "expect": "none"
+ },
+ {
+  "query": "Add a dark mode toggle to our React app",
+  "expect": "none"
+ },
+ {
+  "query": "Fix the TypeScript error in src/components/Table.tsx",
+  "expect": "none"
+ },
+ {
+  "query": "Write a Terraform module for an S3 bucket",
+  "expect": "none"
+ },
+ {
+  "query": "Translate this paragraph into German",
+  "expect": "none"
+ },
+ {
+  "query": "Summarise this meeting transcript",
+  "expect": "none"
+ },
+ {
+  "query": "Write a bash one-liner to count lines in all .log files",
+  "expect": "none"
+ },
+ {
+  "query": "Set up a Go HTTP server with graceful shutdown",
+  "expect": "none"
+ },
+ {
+  "query": "Create a Kubernetes deployment manifest for nginx",
+  "expect": "none"
+ },
+ {
+  "query": "Help me write a cover letter",
+  "expect": "none"
+ },
+ {
+  "query": "What is the capital of Australia?",
+  "expect": "none"
+ },
+ {
+  "query": "Write a regex that matches a UK postcode",
+  "expect": "none"
+ },
+ {
+  "query": "Convert this Excel formula to Google Sheets",
+  "expect": "none"
+ },
+ {
+  "query": "Write a Dockerfile for our Node.js service",
+  "expect": "none"
+ },
+ {
+  "query": "Design a logo for my bakery",
+  "expect": "none"
+ },
+ {
+  "query": "Fix the CSS so the footer sticks to the bottom",
+  "expect": "none"
+ },
+ {
+  "query": "Write a Kotlin data class for a user profile",
+  "expect": "none"
+ },
+ {
+  "query": "Plan a three-day trip to Lisbon",
+  "expect": "none"
+ },
+ {
+  "query": "Write unit tests for this Java service class",
+  "expect": "none"
+ },
+ {
+  "query": "Explain the CAP theorem",
+  "expect": "none"
+ },
+ {
+  "query": "Add an index to the orders table in this Postgres migration file",
+  "expect": "none"
+ },
+ {
+  "query": "Rename the Swift view model and update its callers",
+  "expect": "none"
+ },
+ {
+  "query": "Write a standalone Rust CLI that greps files",
+  "expect": "none"
+ },
+ {
+  "query": "Draft a tweet announcing our launch",
+  "expect": "none"
+ },
+ {
+  "query": "Which is faster in general, Rust or C++?",
+  "expect": "none"
+ },
+ {
+  "query": "Proofread my essay",
+  "expect": "none"
+ },
+ {
+  "query": "Set up ESLint and Prettier for this repo",
+  "expect": "none"
+ },
+ {
+  "query": "Draw an architecture diagram of the checkout flow for the docs",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Make a short animation of how a request travels through the service",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Fix the accessibility problems on the orders page",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Review this dashboard before we ship it",
+  "expect": [
+   "tabby-review",
+   "tabby-frontend"
+  ]
+ },
+ {
+  "query": "Add a light and dark mode switch to the MkDocs site",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Update every caller of get_user to the new signature and fix all the failing tests",
+  "expect": "tabby"
+ },
+ {
+  "query": "Draw the states a job can be in as a diagram",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Design a README header image for this Python library",
+  "expect": [
+   "tabby-diagrams",
+   "tabby-frontend"
+  ]
+ },
+ {
+  "query": "Write a poem about spring",
+  "expect": "none"
+ },
+ {
+  "query": "Translate this paragraph into Spanish",
+  "expect": "none"
+ },
+ {
+  "query": "Turn this list of recipes into a weekly meal plan",
+  "expect": "none"
+ },
+ {
+  "query": "Build a Streamlit page that shows signups per day",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Make the Jinja order template look better on mobile",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add a status dashboard page to the Django admin",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add a landing page for the library to the docs site",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add a bar chart of monthly revenue to the Dash app",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Draw an ER diagram of the database tables",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Make a sequence diagram of the login flow",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Animate how the queue and the worker interact",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Draw the deployment of our service on AWS",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Check this diagram I made before I put it in the README",
+  "expect": [
+   "tabby-review",
+   "tabby-diagrams"
+  ]
+ },
+ {
+  "query": "Audit our GitHub workflows and the release path",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Review the PR diff for noise and silenced tests",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Write the commit message for this change",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Does the README still match the code?",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write a runbook for the nightly import job",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Add retries to the Slack notifier",
+  "expect": "tabby"
+ },
+ {
+  "query": "Port this hot loop to Rust",
+  "expect": "tabby"
+ }
+]

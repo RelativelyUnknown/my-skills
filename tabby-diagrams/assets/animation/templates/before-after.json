@@ -1,0 +1,104 @@
+{
+  "id": "ba",
+  "title": "Adding a queue between the API and the worker",
+  "subtitle": "Before, the API called the worker directly and waited. After, it hands work to a queue and returns.",
+  "zones": [
+    {
+      "label": "Your service",
+      "x": 244,
+      "y": 152,
+      "w": 772,
+      "h": 216
+    }
+  ],
+  "nodes": [
+    {
+      "id": "client",
+      "name": "Client",
+      "role": "browser",
+      "icon": "device-desktop",
+      "x": 40,
+      "y": 212
+    },
+    {
+      "id": "api",
+      "name": "API",
+      "role": "http server",
+      "icon": "server",
+      "x": 292,
+      "y": 212
+    },
+    {
+      "id": "queue",
+      "name": "Queue",
+      "role": "redis list",
+      "icon": "stack-2",
+      "x": 552,
+      "y": 212,
+      "focal": true
+    },
+    {
+      "id": "worker",
+      "name": "Worker",
+      "role": "python process",
+      "icon": "cpu",
+      "x": 804,
+      "y": 212
+    }
+  ],
+  "edges": [
+    {
+      "from": "client",
+      "to": "api",
+      "label": "POST",
+      "kind": "main"
+    },
+    {
+      "from": "api",
+      "to": "worker",
+      "label": "CALL",
+      "kind": "secondary",
+      "ghost": true,
+      "route": "below"
+    },
+    {
+      "from": "api",
+      "to": "queue",
+      "label": "ENQUEUE",
+      "kind": "main"
+    },
+    {
+      "from": "queue",
+      "to": "worker",
+      "label": "CONSUME",
+      "kind": "main"
+    }
+  ],
+  "story": [
+    {
+      "t": 2.2,
+      "hide": "api>worker",
+      "why": "the direct call goes away"
+    },
+    {
+      "t": 2.7,
+      "reveal": "queue",
+      "why": "a queue takes its place"
+    },
+    {
+      "t": 3.2,
+      "draw": "api>queue",
+      "why": "the API hands work to the queue and the worker takes it from there"
+    },
+    {
+      "t": 3.7,
+      "draw": "queue>worker",
+      "why": "the API hands work to the queue and the worker takes it from there"
+    },
+    {
+      "t": 4.4,
+      "pulse": "queue",
+      "why": "the queue is the new part"
+    }
+  ]
+}

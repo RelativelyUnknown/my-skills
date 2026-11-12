@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 992 456" width="992" height="456" role="img" aria-labelledby="ord-title ord-desc" data-diagram="1">
+<title id="ord-title">The life of an order</title>
+<desc id="ord-desc">An order is paid before it ships, and can be cancelled until then.</desc>
+<defs><style>:root{--surface:#FFFFFF;--zone:#F5F6F9;--node:#FFFFFF;--hair:#DADEE6;--ink:#14171F;--label:#5B6270;--accent:#2F5BEA;--accent-text:#2F5BEA;--accent-tint:#E8EEFF;--tile:#EEF0F5;--tile-ink:#3A4152;--line:#7A8294;--on-accent:#FFFFFF;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--surface:#0E1016;--zone:#151824;--node:#171B28;--hair:#2A3042;--ink:#F1F3F8;--label:#9BA3B4;--accent:#7C9BFF;--accent-text:#7C9BFF;--accent-tint:#1C2547;--tile:#20263A;--tile-ink:#C7CEDF;--line:#6A748C;--on-accent:#0E1016}}
+text{font-family:var(--sans);fill:var(--ink)}
+.m{font-family:var(--mono)}.l{fill:var(--label)}.a{fill:var(--accent-text)}.on{fill:var(--on-accent)}
+.mka{fill:none;stroke:var(--accent)}.mkl{fill:none;stroke:var(--line)}</style>
+<marker id="ord-ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path class="mka" d="M1 1 L9 5 L1 9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="ord-ml" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path class="mkl" d="M1 1 L9 5 L1 9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="992" height="456" fill="var(--surface)"/>
+<text x="40" y="64" font-size="28" font-weight="650" letter-spacing="-0.4">The life of an order</text>
+<text class="l" x="40" y="92" font-size="15">An order is paid before it ships, and can be cancelled until then.</text>
+<path data-edge="created&gt;paid" data-kind="main" d="M188,196 H292" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ord-ma)"/>
+<path data-edge="paid&gt;shipped" data-kind="main" d="M428,196 H532" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ord-ma)"/>
+<path data-edge="shipped&gt;delivered" data-kind="main" d="M688,196 H788" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ord-ma)"/>
+<path data-edge="created&gt;cancelled" data-kind="optional" d="M112,236 V360 Q112,372 124,372 H260" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ord-ml)"/>
+<path data-edge="paid&gt;cancelled" data-kind="optional" d="M360,236 V332" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ord-ml)"/>
+<g data-pill="created&gt;paid"><rect x="224" y="184" width="36" height="24" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><text class="a" x="242" y="200" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">PAY</text></g>
+<g data-pill="paid&gt;shipped"><rect x="460" y="184" width="44" height="24" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><text class="a" x="482" y="200" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">SHIP</text></g>
+<g data-pill="shipped&gt;delivered"><rect x="712" y="184" width="56" height="24" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><text class="a" x="740" y="200" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">ARRIVE</text></g>
+<g data-pill="created&gt;cancelled"><rect x="164" y="360" width="56" height="24" rx="12" fill="var(--surface)" stroke="var(--hair)" stroke-width="1"/><text class="l" x="192" y="376" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">CANCEL</text></g>
+<g data-pill="paid&gt;cancelled"><rect x="332" y="272" width="56" height="24" rx="12" fill="var(--surface)" stroke="var(--hair)" stroke-width="1"/><text class="l" x="360" y="288" font-size="10.5" font-weight="600" letter-spacing="0.5" text-anchor="middle">REFUND</text></g>
+<g data-node="created"><rect data-box="1" x="40" y="160" width="144" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="52" y="176" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(60,184) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2"/><path d="M12 11l0 6"/><path d="M9 14l6 0"/></g>
+<text x="104" y="192" font-size="15" font-weight="650">Created</text>
+<text class="l" x="104" y="211" font-size="11.5">unpaid</text>
+</g>
+<g data-node="paid" data-focal="1"><rect data-box="1" x="296" y="160" width="128" height="72" rx="14" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.75"/>
+<rect x="308" y="176" width="40" height="40" rx="10" fill="var(--accent)"/>
+<g transform="translate(316,184) scale(0.6667)" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -8"/><path d="M3 10l18 0"/><path d="M7 15l.01 0"/><path d="M11 15l2 0"/></g>
+<text x="360" y="192" font-size="15" font-weight="650">Paid</text>
+<text class="l" x="360" y="211" font-size="11.5">packing</text>
+</g>
+<g data-node="shipped"><rect data-box="1" x="536" y="160" width="148" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="548" y="176" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(556,184) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5"/><path d="M3 9l4 0"/></g>
+<text x="600" y="192" font-size="15" font-weight="650">Shipped</text>
+<text class="l" x="600" y="211" font-size="11.5">in transit</text>
+</g>
+<g data-node="delivered"><rect data-box="1" x="792" y="160" width="160" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="804" y="176" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(812,184) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"/><path d="M12 12l8 -4.5"/><path d="M12 12l0 9"/><path d="M12 12l-8 -4.5"/><path d="M16 5.25l-8 4.5"/></g>
+<text x="856" y="192" font-size="15" font-weight="650">Delivered</text>
+<text class="l" x="856" y="211" font-size="11.5">closed</text>
+</g>
+<g data-node="cancelled"><rect data-box="1" x="264" y="336" width="188" height="72" rx="14" fill="var(--node)" stroke="var(--hair)" stroke-width="1.25"/>
+<rect x="276" y="352" width="40" height="40" rx="10" fill="var(--tile)"/>
+<g transform="translate(284,360) scale(0.6667)" fill="none" stroke="var(--tile-ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M10 10l4 4m0 -4l-4 4"/></g>
+<text x="328" y="368" font-size="15" font-weight="650">Cancelled</text>
+<text class="l" x="328" y="387" font-size="11.5">refunded if paid</text>
+</g>
+</svg>

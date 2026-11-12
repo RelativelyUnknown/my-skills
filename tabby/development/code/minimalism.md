@@ -18,4 +18,15 @@ The question for every piece you add: what does the reader lose if this is gone?
 - Core logic takes values and returns values; I/O and state stay at the edges. No module-level mutable state, singletons or global clients; pass dependencies in. Early returns over nesting. `with` for resources. Sets for membership checks in loops; batch queries and HTTP calls. Async code never calls blocking I/O, and a function that never awaits is not `async`.
 - A shortcut with a known limit gets one comment: `# shortcut: <the limit>, <when to upgrade>` (for example `# shortcut: linear scan, move to an index past 10k rows`). A shortcut without a named trigger is a smell. The review lists them with `git grep -nE "# ?shortcut:"`.
 
+## Write it right the first time
+
+Slop is easier to avoid than to remove. While you write, not after:
+
+- Before a helper, a constant or a class: `git grep` for the thing that already does it, and use that.
+- A comment only for why; never for what the next line does. No "Step 1" or "now we...".
+- Check inputs where untrusted data enters (a request, a file, a queue message). Code that only receives the project's own values does not re-check them; no `try`/`except` around a call that cannot fail in a way you can handle.
+- If the type checker complains, fix the type. A cast, `Any` or `# type: ignore` to get past it is a smell of its own ([smells.md](smells.md)).
+- Match the file you are in: its naming, its error style, its test layout. No reformatting of lines you did not change.
+- Leave no scratch files, prints, commented-out code or half-finished branches behind.
+
 Minimal applies to the solution, never to the job. Never cut: validation where untrusted data enters, error handling that prevents data loss, security checks, a test for new logic that can fail, anything the user asked for.

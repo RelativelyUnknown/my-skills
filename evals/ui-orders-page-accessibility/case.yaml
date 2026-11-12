@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: ui-orders-page-accessibility
+expected_outcome: |
+  The orders page template and stylesheet keep their sections and form but the accessibility problems an audit found are fixed: page language, a label on the search field, alt text, heading order, visible keyboard focus, readable contrast and text size, no gradient-filled headline.
+context:
+  scaffold_script: fixture.sh

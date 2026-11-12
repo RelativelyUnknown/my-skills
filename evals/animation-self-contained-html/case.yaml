@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: animation-self-contained-html
+expected_outcome: |
+  One self-contained HTML file at docs/webhook-flow.html that animates a payment webhook entering the API, being queued, consumed by the worker and written to Postgres, with a complete static end state, reduced-motion handling, no network references and no video encoding.
+context:
+  scaffold_script: fixture.sh

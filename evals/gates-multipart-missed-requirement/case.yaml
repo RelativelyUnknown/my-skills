@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: gates-multipart-missed-requirement
+expected_outcome: |
+  Every outbound HTTP call (requests, httpx, urllib and the backfill script) gets a 10 second default timeout configurable through HTTP_TIMEOUT, the README mentions the variable, and a test covers the default. None of the four call sites is missed.
+context:
+  scaffold_script: fixture.sh

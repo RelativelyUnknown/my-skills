@@ -1,0 +1,250 @@
+[
+ {
+  "query": "the importer crashes when a row has no email, can you fix that",
+  "expect": "tabby"
+ },
+ {
+  "query": "Refactor the billing module, it's a mess",
+  "expect": "tabby"
+ },
+ {
+  "query": "write unit tests for parse_duration",
+  "expect": "tabby"
+ },
+ {
+  "query": "bump pydantic to v2 and fix whatever breaks",
+  "expect": "tabby"
+ },
+ {
+  "query": "switch this project from setup.py to pyproject.toml",
+  "expect": "tabby"
+ },
+ {
+  "query": "Rewrite this slow inner loop in Rust and expose it with PyO3",
+  "expect": "tabby"
+ },
+ {
+  "query": "remove the unused old_client module",
+  "expect": "tabby"
+ },
+ {
+  "query": "Implement rate limiting for the public API",
+  "expect": "tabby"
+ },
+ {
+  "query": "turn this script into an installable CLI package",
+  "expect": "tabby"
+ },
+ {
+  "query": "Release 2.3.0",
+  "expect": "tabby"
+ },
+ {
+  "query": "Add a CSV export option to the orders command",
+  "expect": "tabby"
+ },
+ {
+  "query": "fix mypy errors in src/",
+  "expect": "tabby"
+ },
+ {
+  "query": "Make the tests not depend on the network",
+  "expect": "tabby"
+ },
+ {
+  "query": "Why is import time so slow? Find and fix",
+  "expect": "tabby"
+ },
+ {
+  "query": "Store the API token in settings rather than hardcoding it",
+  "expect": "tabby"
+ },
+ {
+  "query": "Write a function that merges overlapping time ranges",
+  "expect": "tabby"
+ },
+ {
+  "query": "can you review the diff on this branch",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Audit this repo for dead code and bloat",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Look through the last 3 commits for mistakes",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Do a security audit of our dependencies and CI",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Does this change break the Rust/Python boundary?",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Please critique this implementation before I merge",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Check the PyO3 bindings for unsound unsafe blocks",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Evaluate the animation I made, does it work?",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Review PR 214",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Check whether my tests were weakened in this change",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Add docstrings to the public functions in client.py",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Document the architecture decision to use Postgres",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Create a CONTRIBUTING.md",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Write a runbook for the queue backing up",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Is the README still accurate?",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Draft a troubleshooting page for the common install errors",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Fix the typos and make the README clearer",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Document how to run the project locally",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "add an upgrade guide for v2",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Document the environment variables the service reads",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Make a diagram of how a request flows through the API",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Sketch a sequence diagram for the login flow",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "animate how a message travels through the queue",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Draw the data flow from ingest to warehouse",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "turn this description of the pipeline into a diagram",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Make an animated diagram for the README that shows the cache",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Illustrate the deploy pipeline as a picture",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "build an animated HTML explainer of the event loop",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "Make the admin page responsive on mobile",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Create a Streamlit app to explore the dataset",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "The Jinja page has contrast problems, fix them",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Build a Gradio demo for the model",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "the buttons on the settings page are too small on phones",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Make the Sphinx docs look better",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Add a hero section to the project website",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Build a Dash app with a filter and a graph",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Explain how decorators work",
+  "expect": "none"
+ },
+ {
+  "query": "Translate this sentence to French: the cat is on the table",
+  "expect": "none"
+ },
+ {
+  "query": "Summarise the plot of Hamlet in three sentences",
+  "expect": "none"
+ },
+ {
+  "query": "Write a haiku about Mondays",
+  "expect": "none"
+ },
+ {
+  "query": "Explain git rebase versus merge",
+  "expect": "none"
+ },
+ {
+  "query": "What's the best way to learn Rust?",
+  "expect": "none"
+ },
+ {
+  "query": "Fix this JavaScript: const x = [1,2,3].map(n => n*2",
+  "expect": "none"
+ },
+ {
+  "query": "Draft an email asking my landlord to fix the heating",
+  "expect": "none"
+ },
+ {
+  "query": "Explain what a monad is",
+  "expect": "none"
+ },
+ {
+  "query": "What does HTTP status 418 mean?",
+  "expect": "none"
+ }
+]

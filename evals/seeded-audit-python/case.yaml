@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: seeded-audit-python
+expected_outcome: |
+  A security and bug report that names the twelve planted defects (SQL string building in search_users, a missing owner check in get_invoice, mass assignment in update_profile, pickle on uploaded preferences, SSRF in fetch_avatar, a JWT algorithm taken from the token header, tar extraction of an uploaded archive, a read-then-write race in withdraw, a fail-open empty API key, an unsigned payment webhook, an order that can ship without being paid, and a non-constant-time token comparison) and does not call the eight look-alikes vulnerabilities (a parameterised query, a fetch of a fixed URL from settings, an auto-escaped template, an md5 cache key, test-only helpers, yaml.safe_load, a constant subprocess argument list, and random.choice for a banner message).
+context:
+  scaffold_script: fixture.sh

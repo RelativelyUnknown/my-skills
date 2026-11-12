@@ -33,4 +33,4 @@ See also [senior-engineering.md](../../architecture/senior-engineering.md) for h
 - Fuzz parsers of untrusted bytes (libFuzzer or AFL++). Test every error path, not only success.
 - Run the same inputs through the pure-Python reference and compare.
 
-Reviewing someone else's C extension: `review/native-boundary.md`.
+Reviewing someone else's C extension: `native-boundary.md` in the `tabby-review` skill (`../tabby-review/`).

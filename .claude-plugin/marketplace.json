@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "tabby",
-  "description": "Skills that make an AI agent build, review and explain a Python project properly.",
+  "description": "Skills that make Claude Code build, review and explain a Python project properly.",
   "owner": {
     "name": "RelativelyUnknown",
     "url": "https://github.com/RelativelyUnknown"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "tabby",
-      "description": "A router and four modules (development, review, documentation, design) for Python projects, with Rust, C, C++ and Zig extensions as first-class partners.",
+      "description": "Six skills for Python projects: tabby (development, with Rust, C, C++ and Zig extensions), tabby-review, tabby-docs, tabby-diagrams, tabby-frontend and interview (only when asked).",
       "source": "./",
       "category": "development"
     }

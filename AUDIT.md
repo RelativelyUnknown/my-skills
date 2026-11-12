@@ -2,6 +2,15 @@
 
 Three audits of Tabby against its mission: an opinionated, token-efficient skill set for the whole development process of a Python project and its native languages (C, C++, Rust, Zig), selected by a router from an interview or the project's scope. Each section says what was checked, what was found, what changed and what was left.
 
+## Overall effect, in one place (12 November 2026)
+
+What is measured and what is not, across everything in this file:
+
+- **Habits and outcomes (91 cases, LLM-judged and regex graders):** Haiku, 3 runs: six skills 0.82 to 0.84 against 0.76 bare (+0.06 to +0.09), at about +27% to +35% cost and +50% turns. Sonnet, one run: 0.84 against 0.78. The gains are on things the bare agent skips (deprecate instead of delete, interview first, take the library); seven cases get worse. The cases were written next to the content and some graders use Tabby's vocabulary, so this overstates the lift to some degree (section 3).
+- **Audit quality (seeded fixtures, sections 11 to 13):** on two cross-file fixtures the skill finds about 28 of 30 planted defects against about 22 of 30 bare, with fewer look-alikes reported as bugs, at about +45% cost. Not evidence that the audit reference pages matter: the agent did not open the class pages (section 13).
+- **Code quality as such (section 14):** six small tasks scored by hidden tests, ruff and diff size. Hidden tests are at the ceiling in both arms; the skill arm adds fewer lint errors and slightly fewer lines, and costs about 38% more. Six tasks is a small sample.
+- **Not measured:** large or messy repositories, multi-turn work, long-run maintainability, other models, and anything a user actually does with the output.
+
 ## 1. Third-party sources
 
 Every listed source was cloned at its current commit and read for ideas Tabby did not yet use. An idea was adopted only when it closed a gap that could be named; it was restated in Tabby's words, principle first. No text was copied. Commits and licences are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
@@ -205,3 +214,236 @@ By how much Tabby changed each case:
 | `dev-tool-and-script-dependency` | 0.79 | 1.00 | -0.21 |
 | `vague-feature-gets-a-short-spec` | 0.15 | 0.41 | -0.26 |
 | `speed-up-matcher` | 0.08 | 0.42 | -0.33 |
+
+## 4. Design redesign and the 11 November run
+
+What changed (all on branch `ccr-fafc7af6-jyh8oc`): one quiet look for diagrams, animations and interfaces; a spec-to-SVG builder; a vendored icon set (Tabler, MIT); animations as one self-contained HTML file; interface checks; a design review; completion gates for multi-part coding work; a reworded router description. The three checkers are tested by their own self-tests (nine, eight and fourteen seeded defects). Sources and what was taken from each: `THIRD_PARTY_NOTICES.md` and `tabby/design/SOURCE.md`.
+
+### The run is incomplete
+
+The full run (91 cases, 3 runs per arm, Haiku) was cut off by the account's usage limit: from about 10:14 UTC every run ended with `exit 1: You've hit your weekly limit · resets Nov 15, 5pm (UTC)` and scored 0 without being graded. **252 of 546 runs errored; 45 of 91 cases have at least one such run, 39 of them all six.** A mean over all cases (0.44 with Tabby, 0.40 without) would be an artefact of the limit and is not a result. The limit was spent by router tests, case development and this run.
+
+### What the 46 fully valid cases show
+
+No errored run in either arm. Mean score **0.80 with Tabby, 0.73 without**; 10 cases improve by 0.10 or more, 4 get worse by 0.10 or more, 32 tie; turns +49%, cost per run +27%.
+
+On the 41 of them that also have a 10 November score: 0.86 then and 0.82 now with Tabby, 0.74 then and 0.72 now without. The lift went from +0.12 to +0.09. With three runs per case (about 0.15 of noise on one case, about 0.03 on the mean of 41) this is a signal to confirm after the re-run, not a finding; the router description, the larger front door and the new modules are the suspects.
+
+### New and changed cases (valid runs only)
+
+| Case | With Tabby | Without | Turns with | Turns without |
+| --- | --- | --- | --- | --- |
+| `diagram-of-a-small-service` | 0.67 | 0.96 | [23, 26, 30] | [8, 11, 9] |
+| `diagram-state-machine` | 0.67 | 0.63 | [25, 18, 19] | [8, 10, 11] |
+| `animation-self-contained-html` | 0.22 | 0.69 | [32, 27, 25] | [11, 7, 10] |
+| `docs-site-brand-and-dark-mode` | 1.00 | 1.00 | [17, 16, 18] | [12, 11, 10] |
+| `gates-multipart-missed-requirement` | 0.61 | 0.94 | [26, 28, 26] | [18, 17, 18] |
+| `gates-trivial-no-ceremony` | 0.70 | 0.70 | [4, 5, 4] | [4, 4, 4] |
+
+`ui-orders-page-accessibility`, `review-a-page-before-shipping` and `diagram-honours-design-md` had errored runs and are not measured.
+
+**The three that score worse with Tabby are a turns problem, not a content problem.** The `with` runs used 23 to 32 turns against 7 to 18 for the bare agent, the cap is 30 for the design cases, and each of the three has at least one run that scored 0 because the deliverable was never written: the agent read five or six design pages, built, checked and rendered before saving the first file. Where a file was written, the Tabby-specific graders pass (the checker was run, every step has a purpose, the final message accounts for every part of the request: 3 of 3 against 0 of 3 for the bare agent on the gates case). The traces are deleted without `--keep-temp`, so the exact turn at which the file is written is not yet known. Fix applied (not yet measured): one quickstart per kind that contains everything needed for the first file (`design/diagrams/quickstart.md`, `design/animation/quickstart.md`), the deeper pages read only on need, and a missing tool reported instead of installed.
+
+### Router wording (no baseline arm, 14 cases)
+
+Metric: how often the skill is invoked, which is what the description controls. Identical wording gave 16 and 11 loads out of 28 runs, so two runs per case are too noisy to compare and four were used. Original wording: 27 of 56 (two runs of 28). "Code or page reviews, … docs sites, … animations" wording: 31 and 28 of 56 in two runs at four per case. Other wordings, four runs per case: one that replaced the original verbs ("use before writing, changing, reviewing, auditing or drawing") loaded 27 of 56; one that kept the original verbs and added "animations, web pages, dashboards" but not "page reviews" or "docs sites" loaded 21 and 19 of 56 (two measurements of the same text); one that kept the verbs and added "code or page reviews, docs sites, animations" but dropped "starting or joining a project" loaded 33 of 56. The final wording loads for the page review, docs-site and UI cases that the original never loaded for (0 of 4 to 3 or 4 of 4); the overall rate is about the same. Review and audit prompts about code (`audit-repo-bloat-and-load`, `clean-diff-no-noise`) are the ones that vary most between wordings.
+
+### To re-run after the limit resets (Nov 15, 17:00 UTC)
+
+Re-run only these, `--case <name>` one at a time, three at a time at most, stopping on the first limit error: `load-settings-house-rules`, `local-development-env-file`, `ml-leaky-validation`, `native-free-threaded`, `native-gil-checksum`, `native-pyclass-by-value`, `new-package-one-check-command`, `niche-library-or-five-lines`, `numpydoc-docstrings`, `one-settings-object`, `optional-parquet-dependency`, `payment-strategy`, `pick-a-set-representation`, `pip-requirements-project-keeps-its-tools`, `poetry-black-unittest-keeps-its-tools`, `port-hot-path-to-rust`, `readme-for-small-package`, `repo-text-addressed-to-the-agent`, `request-id-on-every-log-line`, `request-metrics-bounded-labels`, `retry-a-flaky-http-call`, `review-a-page-before-shipping`, `saved-section-conflicts-with-task`, `scout-reports-what-it-noticed`, `seeded-audit`, `settings-loaded-at-startup`, `single-source-version`, `speed-up-matcher`, `stop-calling-a-failing-dependency`, `stop-early-from-an-async-generator`, `stream-command-output-with-limit`, `three-pages`, `timeout-is-not-the-fix`, `tiny-fix-stays-tiny`, `typed-decorator-keeps-signature`, `ui-orders-page-accessibility`, `vague-ask-clarifies-briefly`, `vague-feature-gets-a-short-spec`, `vague-request-larger-repo`, `validate-one-function-stdlib`, `validate-with-existing-pydantic`, `vet-before-adding`, `welcome-email-exactly-once`, `write-small-service-module`, `zig-extension-review`. Then the three worse cases again with `--keep-temp` and read their traces.
+
+## 5. Evidence map for the restructure (12 November; plan in the session's plan file)
+
+Data: the complete Haiku run (91 cases, 3 runs per arm, no errored run: `tools/eval/results/2026-11-11-haiku-3runs.csv`), a Sonnet run (91 cases, one run per arm: `...-sonnet-1run.csv`) and one kept-trace Haiku run per case with the skill (read with `tools/eval/traces.py`). Re-running the 45 cases that the usage limit cut off on 11 November completed the picture.
+
+| Model | With Tabby | Without | Lift | Improve / worse / tie | Turns | Cost per run |
+| --- | --- | --- | --- | --- | --- | --- |
+| Haiku, 3 runs | 0.812 | 0.754 | +0.057 | 17 / 7 / 67 | +46% | +24% |
+| Sonnet, 1 run | 0.865 | 0.782 | +0.083 | 22 / 6 / 63 | +61% | +37% |
+
+Tabby does not hurt the stronger model, but its overhead is larger there. The 10 November lift (+0.09 on Haiku) shrank to +0.057 on the same kind of cases; with three runs per case this is within noise of an unchanged skill, not proof of a regression.
+
+**Where the extra cost goes (Haiku).** 36 cases where both arms score 0.9 or more take 30% of the extra cost; 17 where both score under 0.7, 16%; 12 middling ties, 12%; 7 cases where Tabby is worse, 17%; the 19 lift cases, 25%. Three quarters of the extra cost buys nothing measurable.
+
+**What the agent actually reads (91 traces).** The skill loaded in 70 of 91 runs. Per run the agent opened a mean of 1.8 skill files (median 1, maximum 8) and the first file was written at turn 5.1 on average. Of 154 Markdown files only **38 were ever opened**. Most read: `development/index.md` (60 runs), `development/code/smells.md` (21), `development/testing/testing.md` (9), `development/which-type.md` (7), `development/code/validation.md` (5), `references/start.md` (5). The router and the front door are the effective skill; the hierarchy below them is almost never walked.
+
+**Where the lift comes from.** 10 of the 19 lift cases read nothing beyond `development/index.md`, and the largest, `deprecate-instead-of-delete` (+0.82, the deprecation leaf never opened) and `payment-strategy` (+0.73), came from lines in the front door or the router: the "Never miss" list (deprecate a public name, climb the reuse ladder, never loosen a test, ask when the request is vague, use the project's own tools) and the router's "Section exists" rules. Two lift cases came from `references/start.md` (the interview and joining a project) and one from the documentation module. The cases that read the most (`adr-runbook-troubleshooting`, six documentation files) also lift, so reading is not harmful where the task matches the leaf.
+
+**What probably costs turns.** Steps 2, 3, 6 and 7 of the front door's method (map the project in five commands, state the want in one line, scout and list `Noticed:`, offer what was learned) and the mandatory `Noticed:` closing line are instructions the agent follows (the AGENTS.md study found the same: agents follow context-file instructions and spend more steps and cost). This is a hypothesis to test by ablation, not a finding.
+
+**Worse cases are still the design and gates cases** (`animation-self-contained-html` -0.46, `gates-multipart-missed-requirement` -0.33, `diagram-of-a-small-service` -0.29) plus two resource and resilience cases (`stream-command-output-with-limit` -0.33, `stop-calling-a-failing-dependency` -0.30). In the traces the design cases read the index and the quickstart and wrote their first file at turn 5 to 6, so the quickstarts worked on reading volume; the remaining gap on those cases is in the work itself (build, check, render loops) and in graders that need the checker to run, which the bare agent never does.
+
+**Caveat.** The eval cases are small, single-turn fixtures. A leaf that is never opened here may matter in a large real task, so the 116 unread files are candidates to demote into a skill's on-demand reference folder, not to delete.
+
+
+## 6. Flattening experiment (12 November; Haiku, 3 runs, all 91 cases, with-arm only, bare arm reused from section 5)
+
+Question: does removing the router, the front-door method and the `Noticed:` rule cut turns and cost without losing lift (hypothesis H1)? Variants are in `tools/eval/variants/`: V1 = router text plus the "Never miss" list with direct leaf pointers, no method steps, no `Noticed:` (7.9 KB); V2 = V1 plus the seven-step method and `Noticed:` (10.0 KB). Same 298-character description; rest of the plugin unchanged.
+
+| Arm | Score | Turns | Cost per run | Improve / worse vs bare (±0.10) |
+| --- | --- | --- | --- | --- |
+| Bare | 0.755 | 11.1 | $0.0119 | |
+| Current plugin | 0.818 | 16.1 | $0.0147 | 17 / 6 |
+| V1 flat, lean | 0.813 | 15.0 | $0.0145 | 24 / 16 |
+| V2 flat, method | 0.802 | 14.3 | $0.0140 | 22 / 17 |
+
+V2 had one errored case (`animation-self-contained-html`), excluded from its means (90 cases).
+
+Reading: **the score does not change** (0.813 vs 0.818 is inside the noise of three runs), **turns fall 7% to 11% and cost 1% to 5%**, and the plugin still costs about +22% over bare. The gate (cost at most +10%) is not met. So the router and the method are not where the cost comes from; the cost is the agent following the "Never miss" rules (verify by running, read before writing, report). Per-case results move a lot (worse count 6 vs 16 with the same mean): `payment-strategy` 1.00 to 0.61, `community-standard-over-handrolled` 0.50 to 0.94, `hard-problem-take-a-library` 0.50 to 0.91, `timeout-is-not-the-fix` stays at 0.15 to 0.25 in every arm. With three runs, per-case differences under 0.3 should not be read.
+
+Decision: flattening is **safe and slightly cheaper but not a lever**. It is adopted as part of the split (a router no longer exists once each module is its own skill), not as a cost fix. The cost lever that remains is making the rules fire only where they help (the 36 cases bare already passes), which is a hold-out and rule-scoping question for the next phase, not a structure question.
+
+
+## 7. Split into six skills (12 November; Haiku, 3 runs, all 91 cases, with-arm only, bare arm reused from section 5)
+
+The plugin was split into `tabby` (core, native fused in), `tabby-review`, `tabby-docs`, `tabby-diagrams`, `tabby-frontend` and `interview`, each with its own description. Two defects found in the first split run were fixed before this one: the `interview` skill returned no body while it was a command with `disable-model-invocation` (now a plain skill named `interview`), and the diagram quickstart failed in a read-only shell (it now says to print the SVG to stdout and save it with the Write tool). Results: `tools/eval/results/2026-11-11-haiku-split-6skills.csv`; no errored runs.
+
+| Arm | Score | Turns | Cost per run |
+| --- | --- | --- | --- |
+| Bare | 0.754 | 11.1 | $0.0120 |
+| Current plugin (one skill) | 0.812 | 16.2 | $0.0149 |
+| V1 flat | 0.812 | 15.1 | $0.0147 |
+| **Six skills** | **0.840** | 17.1 | $0.0153 |
+
+Against the current plugin: 18 cases improve and 9 get worse by 0.10 or more. Biggest gains: `vague-ask-clarifies-briefly` +0.62, `hard-problem-take-a-library` +0.50, `interview-saves-after-yes` +0.48, `community-standard-over-handrolled` +0.35, `vague-feature-gets-a-short-spec` +0.32. Biggest losses: `three-pages` -0.36, `ci-job-for-a-uv-project` -0.30, `import-rows-some-fail` -0.30, `agents-md-for-a-repo` -0.21.
+
+Reading: the split gives **+0.03 score over the current plugin and +0.09 over bare, at +2.7% cost over the current plugin (+27% over bare)**. The gain is real in size (more than the 0.01 noise between the two earlier arms) but not yet proven: three runs, no hold-out, and the cases were written next to the content. Cost is still above the +10% gate. Skill loading on unseen phrasings stays at about 35% on Haiku (see the trigger tests), so the next steps are description tuning with a held-out split and a Sonnet check.
+
+**Sonnet 5.5, one run per case, all 91 cases, plugin arm only** (`tools/eval/results/2026-11-12-sonnet-split-6skills.csv`; the one-skill and bare figures are from the Sonnet run in section 5):
+
+| Arm | Score | Turns | Cost per run |
+| --- | --- | --- | --- |
+| Bare | 0.782 | 7.7 | $0.085 |
+| One skill | 0.865 | 12.5 | $0.117 |
+| Six skills | 0.840 | 10.9 | $0.111 |
+
+On Sonnet the split is 0.025 below the one-skill plugin (10 cases better, 17 worse by 0.10 or more; one run, so per-case moves are noise) and 6% cheaper. Two cases explain most of the gap: `diagram-of-a-small-service` (1.00 to 0.00) and `animation-self-contained-html` (0.78 to 0.09). The trace of the animation case shows why: the builder and checker wrote to the project from Bash, which was read-only in the sandbox, and the agent retried other paths until it gave up without writing the file. The diagram case scored 0.95 on a repeat, so it is flaky. The animation quickstart now says to print to stdout and save with Write (as the diagrams quickstart already did). That fix is **not yet measured**: the re-test hit the 5-hour usage limit (resets 01:30 UTC) and both runs errored, so they are not counted. Without those two cases the Sonnet means are within about 0.01 of each other.
+
+**Re-test of the two Sonnet failures, after the stdout note** (the six-skill plugin, 3 runs each, plugin arm only, no errored runs): `diagram-of-a-small-service` 0.95, 0.95, 0.95 (was 0.00 in the full run); `animation-self-contained-html` 0.68, 0.68, 0.09 (was 0.09). The remaining 0.09 run again found the shell read-only, printed the 20 KB page to stdout, and stopped instead of copying it into the Write tool. The read-only shell is a property of the eval sandbox, so this costs score here but should not occur in a normal project; the animation quickstart still depends on the agent copying the printed page, which is the weak step. With these re-test means (0.95 and 0.49) the Sonnet total for the six skills moves from 0.840 to about 0.85, near the one-skill plugin's 0.865; this is an estimate, not a full run.
+
+
+## 8. Skill loading: descriptions and an optional reminder hook (12 November; Haiku 5.5)
+
+Question: why do the skills load on only a third of unseen prompts, and what raises it? The test is `tools/eval/triggers.py`: each prompt runs once per run with `claude -p` in an empty folder, with the plugin loaded, and the first `Skill` call decides the result (`none` if the run ends or writes a file first). 153 new prompts were written for this (`evals/triggers.dev.json`, 91, used while tuning; `evals/triggers.holdout2.json`, 62, run only to report), covering the five task skills and 25 prompts that need no skill. 3 runs per prompt, cost about $0.80 to $1.25 per run of a set.
+
+| Arm | Dev (273 runs) | Hold-out (186 runs) |
+| --- | --- | --- |
+| Old descriptions ("Invoke before ..."), no hook | 116 (42%) | 86 (46%) |
+| Old descriptions + reminder hook | 179 (66%, first wording) | 176 (95%, final wording) |
+| New imperative descriptions, no hook | 209 (77%) | 129 (69%) |
+| New descriptions + reminder hook | not run | 170 (91%) |
+
+- The failure is almost never a wrong skill: the confusion matrix is nearly empty off the diagonal. It is **no skill at all** (on the hold-out, 56 of 156 task prompts loaded nothing with the old descriptions). The one real confusion is `tabby-frontend` prompts that load `tabby` (9 of 24 on the hold-out, no hook).
+- Descriptions that say "MUST be your first tool call, before reading files, asking questions or answering" raise loading on unseen prompts from 46% to 69% (hold-out). The dev figure is inflated because the wording of three descriptions was adjusted after reading its misses.
+- A `UserPromptSubmit` hook that prints a 120-word reminder naming the skill for each kind of task raises loading to 91% to 95% on the hold-out, including 30 of 30 correct "no skill" prompts. A weaker, descriptive reminder ("invoke the Skill ...") gave 66% on dev; the imperative form with a bullet per skill gave 93%. With the hook the description wording matters little (95% old vs 91% new, inside the noise of 3 runs).
+- This mechanism is the one the popular packs use (superpowers injects its bootstrap at session start). Here it ships **off by default**: `/tabby:hooks on` shows the reminder text and the settings entry, then writes it to `.claude/settings.json` on a yes; `/tabby:hooks off` removes it. It runs one `cat` and nothing else.
+- Limits: empty-folder prompts, Haiku only, one prompt per run, so a real session with a repository and a saved `## Tabby` section may load more often; the hook result is the loading rate; the task score is in the next paragraph.
+
+
+## 9. Worst-case fixes and the detect script (12 November; Haiku, 14 cases, 3 runs, plugin arm only)
+
+What the traces of the cases that scored worst said, and what was changed:
+
+- `speed-up-matcher` (0.25 in every arm): a **broken case**. The prompt names `matcher.py` and `test_matcher.py`, but the case had no fixture, so the agent searched for files that did not exist (once it read Tabby's own eval folder). The case now has a fixture. Its earlier scores are not comparable.
+- `dev-tool-and-script-dependency`, `import-rows-some-fail` (one of two runs 0 or 0.38): the shell was read-only (`mount` showed `ro`), `Write` still worked, and the agent gave up and pasted code into its reply. New core rule: on `Read-only file system`, make the change with Write and Edit, run what can run, and say which command could not.
+- `timeout-is-not-the-fix` (0.25 in every arm): the skill did not load in either traced run, so no rule could apply. New core rule: asked to raise a timeout, limit or retry count, first read what the failing code does; name and fix or offer a fixable cause, then do what was asked. **Not shown to work**: the skill still did not load in 3 of 3 runs of the re-test inside `plugin eval` (it did load in 2 of 3 under `claude -p` with the hook).
+- `agents-md-for-a-repo`, `ci-job-for-a-uv-project`: 1.0 in both arms on repeat. The earlier drops were noise.
+- Added `tabby/scripts/detect.py` (files only; runner, Python target, tests, format and lint, types, check command, CI, docs, native, project memory). First attempt: injecting its output into the skill with `` !`...` `` made the whole skill body vanish in a read-only shell (the shell wrapper failed writing its own state file, and Claude Code treated that as a failed command), which dropped `deprecate-instead-of-delete` from 1.00 to 0.22 and `hard-problem-take-a-library` from 1.00 to 0.52 in that run. The skill now tells the agent to run the script as its first command, so a failure costs one line, not the skill. Lesson: never make a skill's body depend on a command that can fail.
+
+Result with the final core (hook on in the test plugin; `tools/eval/results/` has the CSV):
+
+| Cases (14) | Bare | One skill | Six skills (old) | Six skills + new core |
+| --- | --- | --- | --- | --- |
+| Mean score | 0.699 | | 0.785 | **0.824** |
+
+Turns fell on 12 of the 14 (for example `new-package-one-check-command` 33.3 to 20.7, `bug-fix-starts-red` 15.7 to 11.7); `detect.py` was run in 3 of 3 runs on 12 of the 14 cases. `speed-up-matcher` is not comparable, `timeout-is-not-the-fix` is unchanged (loading), `bug-fix-starts-red` 0.44 against 0.74 in the hook run (noise or a real loss; 3 runs cannot tell).
+
+**What the agent reads** (165 kept traces of the hook run and this run): `development/code/smells.md` 74, `scripts/detect.py` 36, `development/which-type.md` 30, `development/code/reuse.md` 20, `development/testing/testing.md` 16, `interview/references/start.md` 9, `tabby-diagrams/diagrams/quickstart.md` 9, then 7 or fewer for everything else; 58 distinct files in all. No leaf was demoted or deleted: unread leaves cost nothing until opened, the single-turn cases cannot show what a rarely read leaf is worth, and the only place leaves cost tokens is the core's reading list, which was left as it is until an ablation shows a line can go.
+
+
+**Full run with the new descriptions and the hook** (Haiku, 91 cases, 3 runs, plugin arm only, no errored runs, `tools/eval/results/2026-11-12-haiku-hook-descriptions.csv`; compared on the 90 cases whose fixture did not change):
+
+| Arm | Score | Turns | Cost per run | Skill loaded |
+| --- | --- | --- | --- | --- |
+| Bare | 0.760 | 11.2 | $0.0118 | |
+| Six skills, old descriptions, no hook | 0.844 | 17.2 | $0.0152 | about 77% (earlier trace sample) |
+| Six skills, new descriptions + hook | 0.822 | 16.7 | $0.0160 | 96% (259 of 270 runs) |
+
+Loading went up, the score did not: 7 cases better and 14 worse by 0.10 or more than the old six-skill run. The biggest drops are `vague-ask-clarifies-briefly` (-0.42) and `vague-feature-gets-a-short-spec` (-0.40), which were the biggest gains in the previous run, so part of this is regression to the mean; the difference of 0.02 is inside the noise of three runs. Reading: on cases that run inside a repository the skill already loaded most of the time, so a reminder buys little there; its value is for short prompts in real sessions, which is what the trigger test measures (46% to 95%). It stays **opt-in**; it is not a score lever. These two arms also differ in the rewritten descriptions, so the run cannot separate the two changes. The new core (section 9) was measured on 14 cases only.
+
+## 10. Seeded-defect fixture for the rebuilt audit content (12 November 2026)
+
+Case `evals/seeded-audit-python`: a small shop backend with 12 planted defects (SQL string building, missing owner check, mass assignment, pickle upload, SSRF, JWT algorithm from the header, tar extraction, read-then-write race, fail-open empty key, unsigned webhook, order shipped unpaid, non-constant-time compare) and 8 look-alikes (parameterised query, fixed-URL fetch, auto-escaped template, md5 cache key, test-only helpers, `yaml.safe_load`, constant subprocess list, `random.choice` for a banner). 12 regex graders score recall (a defect counts when the report names its function, route or class), 8 LLM graders score the look-alikes. Haiku, 3 runs per arm, with and without the plugin, no run errored.
+
+| Arm | Recall (per run) | Look-alikes not flagged (per run) |
+| --- | --- | --- |
+| with plugin | 12/12, 12/12, 12/12 | 8/8, 5/8, 8/8 (21/24) |
+| without | 12/12, 12/12, 12/12 | 7/8, 7/8, 6/8 (20/24) |
+
+Reading: this fixture does not separate the arms. Recall is at the ceiling in both, and the regex graders credit any mention of the function name, so a bare agent that lists the files scores full recall; it measures naming, not a correct explanation. The precision gap (87.5% against 83.3%) is one look-alike in 24 and inside the run-to-run spread (the plugin's own runs range from 5/8 to 8/8). It is not evidence that the rebuilt content helps. A harder fixture is needed before claiming a gain: subtler defects, graders that require the cause and the entry point in the same finding, and more runs. Not done here.
+
+## 11. Harder seeded-defect fixture (12 November 2026)
+
+Case `evals/seeded-audit-hard`: a small ledger service of 12 modules with 10 defects that each need two or more files read together, 8 look-alikes, and 19 LLM graders (a defect counts only when the report gives the cause and how it is reached). Planted: an export job trusting a `user_id` copied from the request body; a path check on the raw name while the NFKC-normalised name is opened; a string-prefix directory check; a refund check-then-act race; a login rate limit keyed on `X-Forwarded-For`; a `None == None` password-reset bypass; a signature check skipped by the truthy string `"0"`; mass assignment from `vars(user)`; an order status written outside the transition table by the webhook and a nightly job; a per-user response cached under the path. The prompt names no bug class, and hints in the first draft (an "untrusted" docstring, a comment on the skip flag, a function called `safe_call`) were removed before any run. Several defects were run by hand (fullwidth dots through the check, the prefix, `None == None`, `bool("0")`, `vars`).
+
+Sonnet (`claude-sonnet-5-5`), effort requested as low through `CLAUDE_EFFORT` and `CLAUDE_CODE_EFFORT_LEVEL` (the eval command has no effort option and the traces do not record it, so low is not verified), 3 runs per arm, no run errored, Haiku as the judge.
+
+| Run | Defects found (of 10) | Look-alikes not flagged (of 8) | Turns | Cost |
+| --- | --- | --- | --- | --- |
+| with 1 | 9 (missed the normalised path) | 7 | 6 | $0.159 |
+| with 2 | 10 | 6 | 8 | $0.181 |
+| with 3 | 10 | 7 | 8 | $0.171 |
+| without 1 | 8 (missed export job, normalised path) | 7 | 2 | $0.125 |
+| without 2 | 6 (missed export job, refund race, reset bypass, status writers) | 4 | 2 | $0.117 |
+| without 3 | 8 (missed export job, skipped signature) | 5 | 2 | $0.116 |
+
+Totals: with 29/30 defects and 20/24 look-alikes correct; without 22/30 and 16/24. The export job through the queue was missed in 3 of 3 runs without the skill and 0 of 3 with it. The `fetch_preview` look-alike was reported as a plain SSRF in 5 of 6 runs in both arms, so the skill did not fix that false positive. The report separated confirmed from unconfirmed in 1 of 3 runs with and 0 of 3 without.
+
+Reading: unlike section 10, this fixture separates the arms, mostly on recall of the cross-file defects, at about 45% more cost (the agent read more files: 6 to 8 turns against 2). Caveats: 3 runs per arm, one model, an LLM judge that is generous with partial credit, effort unverified, and the fixture was written by the same author as the content it tests. No page was edited to fit this fixture, so the result is a measurement and not a tuned score. Pages were not changed for it.
+
+## 12. Output length and the two-places page (12 November 2026)
+
+Question: are the audit reports token efficient? Before any change, the kept traces of `evals/seeded-audit-hard` (Sonnet, effort requested low) gave final reports of about 1,000 words in both arms (with skill 982, 1,043, 1,142; without 1,021, 953, 981), and one smoke run showed 1,342 against 890 words. The skill pages had no length or shape rule. Added: `tabby-review/two-places-agree.md` (a general page on checks and uses that disagree) and a "Report shape" paragraph in `security-audit/reporting.md`, designed from the caveman skills (answer first, no preamble or recap, each fact once, a floor that never drops negations, numbers or paths) and Tabby's own `report` levels. Words are counted from the last assistant message in kept traces; the token counts in the traces are not usable.
+
+| Version of the pages | With skill: words per report | Defects (of 30) | Look-alikes ok (of 24) | Cost per run |
+| --- | --- | --- | --- | --- |
+| before | 982, 1043, 1142 (mean 1056) | 27 | 20 | $0.16 |
+| report shape + two-places page | 1101, 1009, 1008 (mean 1039) | 28 | 20 | $0.17 |
+| plus a 50-word cap per finding, no sub-bullets | 1088, 842, 1027 (mean 986) | 26 | 20 | $0.15 |
+
+Reading: **the rules did not shorten the reports in any way that stands out from run-to-run spread** (a 2% and then a 7% drop, ranges of 150 to 250 words). The agent read the rule (the trace shows `reporting.md` loaded) and followed the verdict-first structure, but still wrote about 90 words per finding for 11 findings, plus a rejected list and a coverage block. Defects found were flat (27, 28, 26 of 30) and the missed ones moved between runs, so the new page did not measurably raise recall either; it was written after seeing the misses, so a gain would have been partly tuned anyway. Output words are also not what costs: the with-skill arm costs about 45% more than the bare arm because it reads more files (6 to 8 turns against 2), which a report-shape rule cannot change. The bare arm's reports are about as long (890 to 1,100 words) and, on this fixture, noisier (more look-alikes reported as findings).
+
+Not tried, and where I would look next: a fixed fill-in template for each finding instead of a prose budget, or making `report: terse` the default for audits. Both change the format, so they need the owner's decision. n is 3 runs per arm, one model, effort unverified.
+
+## 13. Sharpening the audit references, and a hold-out fixture (12 November 2026)
+
+Why: in the nine with-skill runs of `seeded-audit-hard` so far, the agent opened `security-audit/process.md` in 6, `repo-audit.md` in 5, `reporting.md` in 2, and **never** any class page, `bug-hunt.md` or `two-places-agree.md`; so about 8,000 of the 14,000 words in `tabby-review` were not reaching an audit. Changes: the 50-word cap was reverted; `process.md` was cut from 1,842 to 1,188 words and gained a "Read next" table that maps what the code shows (`startswith`, a `user_id` copied into a queue, a flag read from the environment, `setattr` on request data, and so on) to the page to open, with the rule to open every page whose trigger appears and name it in the coverage line; the four class pages were trimmed by 7% to 22% (`defaults-and-config` 1,396 to 1,215, `identity-and-access` 1,159 to 968, `files-network-and-crypto` 915 to 804, `injection-and-output` 704 to 657); `SKILL.md` points the audit branch at the table. A second fixture, `seeded-audit-hard-b` (a clinic booking service, same ten defect families, different code), was written and run once on the old pages before any edit, and was not read while editing, so it is a hold-out.
+
+Sonnet (`claude-sonnet-5-5`, effort requested low, unverified), 3 runs, plugin arm only for the new pages; the old-page figures are from the earlier runs (hard: three runs each of sections 11 and 12; hard-b: one run of 3).
+
+| Fixture | Pages | Defects (of 30) | Look-alikes ok (of 24) | Words per report | Cost per run | Class pages opened |
+| --- | --- | --- | --- | --- | --- | --- |
+| hard (tuned on) | old (3 runs of sec. 11, 12 and 12b) | 29, 27, 28, 26 | 20 to 21 | about 1,000 | $0.16 to $0.17 | 0 of 9 |
+| hard | sharpened | 29 | 21 | 1,043 (1,122, 917, 1,091) | $0.172 | 0 of 3 |
+| hard-b (hold-out) | old | 27 | 17 | 1,095 (903, 1,147, 1,234) | $0.149 | not counted |
+| hard-b | sharpened | 28 | 22 | 1,080 (1,031, 1,129, 1,079) | $0.165 | 0 of 3 |
+
+Reading: the sharpened pages did **not** change what the agent reads: still no class page in any of the six runs, and the "Read next" table was not followed (`two-places-agree.md` was opened in 2 of 6 runs, `bug-hunt.md` in 1). Defects found are flat to slightly up (29 against 26 to 29 on the tuned fixture; 28 against 27 on the hold-out), look-alike precision is up on both (21 and 22 of 24 against 20 and 17), report length and cost did not move. With 3 runs per cell and the run-to-run spread seen above (a fixture swings by two or three defects between identical runs), none of these differences is established. The smaller front door may help the agent read less noise, but the evidence is that the lift of the skill over bare comes from loading it and `process.md` and from doing more reading, not from the class pages. The hold-out behaves like the tuned fixture, which is some evidence the lift is not specific to the fixture the pages were written beside.
+
+## 14. Code quality: hidden tests and static metrics (12 November 2026)
+
+Six tasks from the existing eval fixtures (`bug-fix-starts-red`, `batches-and-utc`, `bounded-fan-out-with-deadline`, `dedupe-lines-script`, `import-rows-some-fail`, `tiny-fix-stays-tiny`). The agent's final working directory was kept (`--keep-temp`); `tools/eval/quality.py` copies it, adds a hidden test file the agent never saw (`evals/quality/hidden/<case>/test_hidden.py`, checked to fail on the untouched fixture and pass on a solution I wrote), and runs pytest, `ruff check --select E,F,B,UP` (errors added against the base commit), and `git diff` for lines, files and dependencies. No LLM judge. Sonnet (`claude-sonnet-5-5`, effort requested low, unverified), 3 runs per arm and case, 18 per arm, no run errored. Raw rows: `tools/eval/results/2026-11-12-quality-sonnet-low.csv`.
+
+| Metric (mean per run) | With six skills | Bare |
+| --- | --- | --- |
+| Hidden tests passed | 0.958 | 1.000 |
+| Project suite green | 18 of 18 | 18 of 18 |
+| Ruff errors added | 0.28 | 1.44 |
+| Lines added | 48 | 54 |
+| New dependency lines, suppressions added | 0.11, 0 | 0, 0 |
+| Cost per run | $0.101 | $0.073 |
+| Turns | 9.7 | 7.0 |
+
+By case (with / bare): ruff errors added `batches-and-utc` 0.3 / 5.7, `dedupe-lines-script` 1.3 / 2.7, others 0 to 0.3 in both; lines added `import-rows-some-fail` 48 / 74, `bounded-fan-out-with-deadline` 97 / 108, `bug-fix-starts-red` 10 / 5 (the skill adds a regression test; the bare agent mostly edited the function only).
+
+Reading: **correctness did not separate the arms**: both pass every hidden test on five of six tasks. The one difference, `import-rows-some-fail` (0.75 with the skill in 3 of 3 runs), is a test I wrote that expects an unexpected `KeyError` from the store not to stop the batch; the skill arm caught only `ValueError`, which is the store's documented error and arguably the better design, while the bare arm caught `Exception`. Reasonable people disagree, so I did not change the test after seeing it; read the 0.958 as a design difference, not a bug. **Lint hygiene and diff size favoured the skill**: about a fifth of the lint errors, most of them in one case (the bare arm used `timezone.utc` where `UP` prefers `datetime.UTC`, a rule set I chose), and about 11% fewer lines added. **It costs more**: +38% cost and turns, consistent with section 3. n is 18 per arm over six tasks I picked, one model, effort unverified, tests written by me.

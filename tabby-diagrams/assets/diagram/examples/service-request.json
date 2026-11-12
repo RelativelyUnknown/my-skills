@@ -1,0 +1,89 @@
+{
+  "id": "svc",
+  "title": "A request through the service",
+  "subtitle": "Work is queued, consumed once, and retried if it fails.",
+  "zones": [
+    {
+      "label": "Your service",
+      "x": 244,
+      "y": 156,
+      "w": 756,
+      "h": 348
+    }
+  ],
+  "nodes": [
+    {
+      "id": "client",
+      "name": "Client",
+      "role": "browser",
+      "icon": "device-desktop",
+      "x": 40,
+      "y": 236
+    },
+    {
+      "id": "api",
+      "name": "API",
+      "role": "http server",
+      "icon": "server",
+      "x": 288,
+      "y": 236
+    },
+    {
+      "id": "queue",
+      "name": "Queue",
+      "role": "redis list",
+      "icon": "stack-2",
+      "x": 548,
+      "y": 236,
+      "focal": true
+    },
+    {
+      "id": "worker",
+      "name": "Worker",
+      "role": "python process",
+      "icon": "cpu",
+      "x": 800,
+      "y": 236
+    },
+    {
+      "id": "db",
+      "name": "Database",
+      "role": "postgres",
+      "icon": "database",
+      "x": 812,
+      "y": 396
+    }
+  ],
+  "edges": [
+    {
+      "from": "client",
+      "to": "api",
+      "label": "POST",
+      "kind": "main"
+    },
+    {
+      "from": "api",
+      "to": "queue",
+      "label": "ENQUEUE",
+      "kind": "main"
+    },
+    {
+      "from": "queue",
+      "to": "worker",
+      "label": "CONSUME",
+      "kind": "main"
+    },
+    {
+      "from": "worker",
+      "to": "db",
+      "label": "WRITE"
+    },
+    {
+      "from": "worker",
+      "to": "queue",
+      "label": "RETRY",
+      "kind": "optional",
+      "route": "below"
+    }
+  ]
+}

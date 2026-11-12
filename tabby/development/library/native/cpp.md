@@ -46,4 +46,4 @@ Checked against the nanobind documentation (3.2 development branch) and the pybi
 - nanobind reports leaked instances, types and functions at interpreter exit. Treat a report as a failing test; do not call `nb::set_leak_warnings(false)` to quiet it.
 - The same inputs through the pure-Python reference, compared. Every error path, and empty, maximum and negative sizes.
 
-Mistakes to check before finishing: [smells.md](smells.md). Reviewing someone else's bindings: `review/native-boundary.md`.
+Mistakes to check before finishing: [smells.md](smells.md). Reviewing someone else's bindings: `native-boundary.md` in the `tabby-review` skill (`../tabby-review/`).
