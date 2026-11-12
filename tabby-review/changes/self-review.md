@@ -10,6 +10,10 @@ Find what is wrong with the diff, and say nothing else. A clean diff gets a shor
 2. List added suppressions: `git diff <base>...<head> -U0 -- '*.py' | grep -nE '^\+[^+].*(pytest\.mark\.(skip|xfail)|type: ignore|noqa|except Exception|except:)'`. Each hit needs a stated reason or is a finding.
 3. Run the project's check command only in a way that writes nothing into the work tree (for example `pytest -p no:cacheprovider`) and does not modify files. Do not modify the code under review.
 
+Learn the project's own rules before judging: `CLAUDE.md`, `AGENTS.md`, the README and the recent commit messages name invariants and past bugs ("this was the bug, keep it"). A diff that violates a documented invariant is a finding even when it compiles and the tests pass; cite the rule. Do not invent generic ones.
+
+Distrust the tests and the comments. A passing suite proves the tested paths, so look for assertions that would still pass if the code were wrong, tests weakened to make the diff green, and paths with no test. Review what the code does, not what a comment or commit message says it does ("killed on exit": check that the kill fires).
+
 Read the commit messages and the pull request text too: they say what the author meant, and a change that does something else is the lead. Compare against the merge base, not the tip of the target branch.
 
 ## What to look for, in this order
@@ -33,6 +37,10 @@ Slop is accidental complexity that came in with the change. Report it as a findi
 - Not slop: validation where untrusted data enters, error handling that prevents data loss, security checks, a deprecation shim for a public name, a comment that says why, a test that can fail.
 
 If you wrote the change yourself, none of this is cleaned up afterwards: it is prevented while writing ([minimalism.md](../../tabby/development/code/minimalism.md)). A review of your own work finds what you could not see while writing.
+
+## Closing the review
+
+Give the single most likely thing to break on the most common path, even if it is not the most severe finding. End with what you did not verify: paths you could not reproduce, anything that needs the app or a service running, lines you could not confirm. Never imply you checked more than you opened. Findings that were refuted on a second look ("it is guarded at line N") are worth one line, because they save the next reviewer the same check.
 
 ## Deferred shortcuts
 
