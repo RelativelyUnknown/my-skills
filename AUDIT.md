@@ -361,3 +361,14 @@ Turns fell on 12 of the 14 (for example `new-package-one-check-command` 33.3 to 
 | Six skills, new descriptions + hook | 0.822 | 16.7 | $0.0160 | 96% (259 of 270 runs) |
 
 Loading went up, the score did not: 7 cases better and 14 worse by 0.10 or more than the old six-skill run. The biggest drops are `vague-ask-clarifies-briefly` (-0.42) and `vague-feature-gets-a-short-spec` (-0.40), which were the biggest gains in the previous run, so part of this is regression to the mean; the difference of 0.02 is inside the noise of three runs. Reading: on cases that run inside a repository the skill already loaded most of the time, so a reminder buys little there; its value is for short prompts in real sessions, which is what the trigger test measures (46% to 95%). It stays **opt-in**; it is not a score lever. These two arms also differ in the rewritten descriptions, so the run cannot separate the two changes. The new core (section 9) was measured on 14 cases only.
+
+## 10. Seeded-defect fixture for the rebuilt audit content (12 November 2026)
+
+Case `evals/seeded-audit-python`: a small shop backend with 12 planted defects (SQL string building, missing owner check, mass assignment, pickle upload, SSRF, JWT algorithm from the header, tar extraction, read-then-write race, fail-open empty key, unsigned webhook, order shipped unpaid, non-constant-time compare) and 8 look-alikes (parameterised query, fixed-URL fetch, auto-escaped template, md5 cache key, test-only helpers, `yaml.safe_load`, constant subprocess list, `random.choice` for a banner). 12 regex graders score recall (a defect counts when the report names its function, route or class), 8 LLM graders score the look-alikes. Haiku, 3 runs per arm, with and without the plugin, no run errored.
+
+| Arm | Recall (per run) | Look-alikes not flagged (per run) |
+| --- | --- | --- |
+| with plugin | 12/12, 12/12, 12/12 | 8/8, 5/8, 8/8 (21/24) |
+| without | 12/12, 12/12, 12/12 | 7/8, 7/8, 6/8 (20/24) |
+
+Reading: this fixture does not separate the arms. Recall is at the ceiling in both, and the regex graders credit any mention of the function name, so a bare agent that lists the files scores full recall; it measures naming, not a correct explanation. The precision gap (87.5% against 83.3%) is one look-alike in 24 and inside the run-to-run spread (the plugin's own runs range from 5/8 to 8/8). It is not evidence that the rebuilt content helps. A harder fixture is needed before claiming a gain: subtler defects, graders that require the cause and the entry point in the same finding, and more runs. Not done here.
