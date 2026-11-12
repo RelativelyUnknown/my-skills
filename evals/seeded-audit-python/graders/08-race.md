@@ -1,7 +1,7 @@
 ---
 type: regex
 target: "last_message"
-pattern: "withdraw|\brace\b|toctou|double.?spend"
+pattern: "withdraw|\\brace\\b|toctou|double.?spend"
 flags: i
 weight: 3
 ---

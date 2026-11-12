@@ -1,7 +1,7 @@
 ---
 type: regex
 target: "last_message"
-pattern: "whoami|get_unverified_header|\bjwt\b"
+pattern: "whoami|get_unverified_header|\\bjwt\\b"
 flags: i
 weight: 3
 ---
