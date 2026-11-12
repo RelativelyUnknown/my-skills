@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: seeded-audit-hard
+expected_outcome: |
+  A report that finds ten defects that each need two or more files read together (an export job that trusts a user_id copied from the request body, a path check made on the raw value while the normalised value is opened, a string-prefix directory check, a refund race, a rate limit keyed on a client header, a None == None reset-token bypass, a signature check skipped by the truthy string "0", mass assignment from the object's own attributes, an order status written by a second path outside the transition table, and a per-path cache of a per-user response), and that does not call the eight look-alikes vulnerabilities.
+context:
+  scaffold_script: fixture.sh
