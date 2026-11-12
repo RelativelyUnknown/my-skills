@@ -372,3 +372,22 @@ Case `evals/seeded-audit-python`: a small shop backend with 12 planted defects (
 | without | 12/12, 12/12, 12/12 | 7/8, 7/8, 6/8 (20/24) |
 
 Reading: this fixture does not separate the arms. Recall is at the ceiling in both, and the regex graders credit any mention of the function name, so a bare agent that lists the files scores full recall; it measures naming, not a correct explanation. The precision gap (87.5% against 83.3%) is one look-alike in 24 and inside the run-to-run spread (the plugin's own runs range from 5/8 to 8/8). It is not evidence that the rebuilt content helps. A harder fixture is needed before claiming a gain: subtler defects, graders that require the cause and the entry point in the same finding, and more runs. Not done here.
+
+## 11. Harder seeded-defect fixture (12 November 2026)
+
+Case `evals/seeded-audit-hard`: a small ledger service of 12 modules with 10 defects that each need two or more files read together, 8 look-alikes, and 19 LLM graders (a defect counts only when the report gives the cause and how it is reached). Planted: an export job trusting a `user_id` copied from the request body; a path check on the raw name while the NFKC-normalised name is opened; a string-prefix directory check; a refund check-then-act race; a login rate limit keyed on `X-Forwarded-For`; a `None == None` password-reset bypass; a signature check skipped by the truthy string `"0"`; mass assignment from `vars(user)`; an order status written outside the transition table by the webhook and a nightly job; a per-user response cached under the path. The prompt names no bug class, and hints in the first draft (an "untrusted" docstring, a comment on the skip flag, a function called `safe_call`) were removed before any run. Several defects were run by hand (fullwidth dots through the check, the prefix, `None == None`, `bool("0")`, `vars`).
+
+Sonnet (`claude-sonnet-5-5`), effort requested as low through `CLAUDE_EFFORT` and `CLAUDE_CODE_EFFORT_LEVEL` (the eval command has no effort option and the traces do not record it, so low is not verified), 3 runs per arm, no run errored, Haiku as the judge.
+
+| Run | Defects found (of 10) | Look-alikes not flagged (of 8) | Turns | Cost |
+| --- | --- | --- | --- | --- |
+| with 1 | 9 (missed the normalised path) | 7 | 6 | $0.159 |
+| with 2 | 10 | 6 | 8 | $0.181 |
+| with 3 | 10 | 7 | 8 | $0.171 |
+| without 1 | 8 (missed export job, normalised path) | 7 | 2 | $0.125 |
+| without 2 | 6 (missed export job, refund race, reset bypass, status writers) | 4 | 2 | $0.117 |
+| without 3 | 8 (missed export job, skipped signature) | 5 | 2 | $0.116 |
+
+Totals: with 29/30 defects and 20/24 look-alikes correct; without 22/30 and 16/24. The export job through the queue was missed in 3 of 3 runs without the skill and 0 of 3 with it. The `fetch_preview` look-alike was reported as a plain SSRF in 5 of 6 runs in both arms, so the skill did not fix that false positive. The report separated confirmed from unconfirmed in 1 of 3 runs with and 0 of 3 without.
+
+Reading: unlike section 10, this fixture separates the arms, mostly on recall of the cross-file defects, at about 45% more cost (the agent read more files: 6 to 8 turns against 2). Caveats: 3 runs per arm, one model, an LLM judge that is generous with partial credit, effort unverified, and the fixture was written by the same author as the content it tests. No page was edited to fit this fixture, so the result is a measurement and not a tuned score. Pages were not changed for it.
