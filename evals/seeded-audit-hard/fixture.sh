@@ -18,9 +18,8 @@ DATA_DIR = "/srv/data"
 REPORT_DIR = "/srv/reports"
 SIGNING_KEY = os.environ["LEDGER_SIGNING_KEY"].encode()
 WEBHOOK_SECRET = os.environ["LEDGER_WEBHOOK_SECRET"].encode()
-# Set to 1 in local development to skip webhook signature checks.
+# Development flag.
 SKIP_SIG = os.environ.get("LEDGER_SKIP_SIG", "0")
-PREVIEW_HOSTS_ONLY_PUBLIC = True
 __FIXTURE_EOF__
 cat > ledger/models.py <<'__FIXTURE_EOF__'
 class User:
@@ -60,7 +59,6 @@ def require_login(handler):
 
 
 def rate_limited(request):
-    """At most 5 login attempts per minute per client address."""
     key = request.headers.get("X-Forwarded-For", request.remote_addr)
     now = time.time()
     recent = [t for t in _attempts.get(key, []) if now - t < 60]
@@ -89,7 +87,7 @@ def confirm_reset(request):
     return 403
 __FIXTURE_EOF__
 cat > ledger/routes.py <<'__FIXTURE_EOF__'
-"""Entry points. Everything in request.args, request.json and request.headers is untrusted."""
+"""Entry points."""
 from ledger import accounts, auth, billing, files, jobs, orders, views, webhooks
 from ledger.auth import require_login
 
@@ -343,7 +341,7 @@ def etag(body):
     return hashlib.md5(body).hexdigest()
 
 
-def safe_call(fn):
+def call_logged(fn):
     try:
         return fn()
     except Exception:
@@ -368,7 +366,7 @@ def refund(reference, amount): ...
 __FIXTURE_EOF__
 cat > tests/helpers.py <<'__FIXTURE_EOF__'
 def expected_total(expr):
-    return eval(expr)  # expr is a literal arithmetic string written in the tests
+    return eval(expr)
 __FIXTURE_EOF__
 git init -q -b main
 git add -A
