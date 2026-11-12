@@ -36,7 +36,7 @@ Open leaves with Read at the path given; do not search for them. Read `developme
 - files, connections, locks, subprocesses, streams: `code/resources.md`
 - feature newer than the Python target: `code/python-versions.md`; docstring, comment: `code/comments.md`
 - logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`; script or CLI: `code/scripts.md`
-- data frames, arrays, models, notebooks, large files: `code/data.md`
+- data frames, arrays, models, notebooks, large files: `code/data.md`; threads, processes, pools: `code/concurrency.md`
 - tests: `testing/testing.md`, `testing/smells.md` (mocks `testing/mocking.md`, fixtures `testing/fixtures.md`, property-based or release-grade `testing/rigor.md`); slow code: `performance/index.md`
 - bug, failing test, race, flaky test: `workflow/debugging.md`
 - scope: `workflow/planning.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; three or more outcomes, or "all"/"every": `workflow/gates.md` (a short list, then start); several readings: `workflow/specs-and-slices.md`; removing or replacing: `workflow/deprecation-and-migration.md`; about to report: `workflow/shipping.md`

@@ -12,7 +12,7 @@ Data code rarely raises; it returns plausible wrong numbers. So check the data a
 
 - A join can silently multiply rows when a key is duplicated. Check the row count before and after, and say what you expect: `pandas.merge(..., validate="many_to_one")`, `polars` `join(..., validate="m:1")`.
 - Nulls: `NaN != NaN`; a group-by drops null keys unless told otherwise (`dropna=False` in pandas); `fillna(0)` turns "unknown" into "zero"; sums and means of empty groups differ between libraries. Decide what a missing value means before filling it.
-- Do not loop over rows (`iterrows`, `apply(axis=1)`) for work a vectorised or expression operation does; the loop is 10 to 1000 times slower. Measure before you tune ([performance](../performance/index.md)).
+- Do not loop over rows (`iterrows`, `apply(axis=1)`) for work a vectorised or expression operation does; the loop is far slower. Measure before you tune ([performance](../performance/index.md)).
 - pandas: assign with `.loc` (chained assignment may write to a copy), remember that assigning a Series aligns on the index, and check `pd.__version__` before relying on copy-on-write behaviour. In polars prefer expressions over `map_elements`, which runs Python per row.
 
 ## Models

@@ -22,6 +22,14 @@ A script is code someone will run again. Make it safe to rerun and honest about 
 - Rewrite files atomically: write a temporary file in the same directory, then `os.replace` it over the original. Never truncate the original first.
 - Running twice is safe and gives the same result.
 
+## When people run it by hand
+
+- `--help` says what it does and shows one example. Options are named and have defaults; a positional argument is for the one thing the command is about.
+- A machine-readable output (`--json`, one object per line) when another program may read it; no colour or progress bars when stdout is not a terminal (`sys.stdout.isatty()`); progress goes to stderr.
+- Never prompt when stdin is not a terminal; take `--yes` or fail with the exact flag to pass.
+- Settings come from, in order of priority: flags, environment variables, a config file, defaults. Say so in `--help`.
+- Ctrl-C ends the run without a traceback (exit code 130) and leaves no half-written file.
+
 ## Tests
 
 Call `main([...])` directly; use `tmp_path` for files and `capsys` for output; assert on the exit code.
