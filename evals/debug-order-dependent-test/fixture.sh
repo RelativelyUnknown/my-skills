@@ -12,10 +12,6 @@ name = "rates"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = []
-
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
 __F__
 cat > src/rates/__init__.py <<'__F__'
 from rates.core import convert, load_rates
@@ -39,22 +35,28 @@ def load_rates(overrides=None):
 def convert(amount, currency, overrides=None):
     return round(amount * load_rates(overrides)[currency], 2)
 __F__
+touch tests/__init__.py
 cat > tests/test_convert.py <<'__F__'
+import unittest
+
 from rates import convert
 
 
-def test_convert_with_override():
-    assert convert(10, "USD", {"USD": 2.0}) == 20.0
+class ConvertTest(unittest.TestCase):
+    def test_convert_with_override(self):
+        self.assertEqual(convert(10, "USD", {"USD": 2.0}), 20.0)
 
-
-def test_convert_gbp():
-    assert convert(100, "GBP") == 85.0
+    def test_convert_gbp(self):
+        self.assertEqual(convert(100, "GBP"), 85.0)
 __F__
 cat > tests/test_defaults.py <<'__F__'
+import unittest
+
 from rates import load_rates
 
 
-def test_default_usd_rate():
-    assert load_rates()["USD"] == 1.1
+class DefaultsTest(unittest.TestCase):
+    def test_default_usd_rate(self):
+        self.assertEqual(load_rates()["USD"], 1.1)
 __F__
 git init -q && git add -A && git -c user.name=t -c user.email=t@t commit -q -m "rates"

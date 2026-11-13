@@ -1,0 +1,98 @@
+[
+ {
+  "query": "tests/test_defaults.py::test_default_usd_rate passes on its own but fails when I run the whole suite. CI is red because of it. Please sort it out.",
+  "expect": "tabby"
+ },
+ {
+  "query": "CI is red on main since yesterday, the test_export job fails with a KeyError. Can you take a look?",
+  "expect": "tabby"
+ },
+ {
+  "query": "the importer crashes when a row has no email",
+  "expect": "tabby"
+ },
+ {
+  "query": "this endpoint returns 500 when the name has an accent in it",
+  "expect": "tabby"
+ },
+ {
+  "query": "our nightly job sometimes processes the same order twice, no idea why",
+  "expect": "tabby"
+ },
+ {
+  "query": "test_retry is flaky, it fails about one run in five",
+  "expect": "tabby"
+ },
+ {
+  "query": "parse_date gives the wrong day for dates in December",
+  "expect": "tabby"
+ },
+ {
+  "query": "pytest hangs forever on test_worker when I run it locally",
+  "expect": "tabby"
+ },
+ {
+  "query": "users report the totals are off by a cent on big invoices",
+  "expect": "tabby"
+ },
+ {
+  "query": "memory keeps growing in the worker until it gets OOM killed",
+  "expect": "tabby"
+ },
+ {
+  "query": "why does load_config return an empty dict when the file has a trailing newline? it used to work",
+  "expect": "tabby"
+ },
+ {
+  "query": "the CLI exits 0 even when the upload fails",
+  "expect": "tabby"
+ },
+ {
+  "query": "after the last merge two tests started failing in test_billing.py, make them pass",
+  "expect": "tabby"
+ },
+ {
+  "query": "mypy is failing on the new module and I can't see why, can you get it clean",
+  "expect": "tabby"
+ },
+ {
+  "query": "the app is slow when the list has more than a few thousand items",
+  "expect": "tabby"
+ },
+ {
+  "query": "my script works on my machine but breaks in CI with ModuleNotFoundError",
+  "expect": "tabby"
+ },
+ {
+  "query": "Review this diff before I merge it: git diff main...feature",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Write a README for this package",
+  "expect": "tabby-docs"
+ },
+ {
+  "query": "Draw a diagram of how our services talk to each other",
+  "expect": "tabby-diagrams"
+ },
+ {
+  "query": "What is the difference between a list and a tuple in Python?",
+  "expect": "none"
+ },
+ {
+  "query": "Build a landing page for the project with a dark mode toggle",
+  "expect": "tabby-frontend"
+ },
+ {
+  "query": "Explain what this traceback means: TypeError: 'NoneType' object is not subscriptable",
+  "expect": "none"
+ },
+ {
+  "query": "Audit this repo for security problems",
+  "expect": "tabby-review"
+ },
+ {
+  "query": "Summarise the last five commits for the changelog",
+  "expect": "tabby-docs"
+ }
+]

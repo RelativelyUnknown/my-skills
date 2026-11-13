@@ -1,6 +1,6 @@
 ---
 name: tabby
-description: "MUST be your first tool call, before reading files, asking questions or answering, for any Python code task: fix a bug, add a feature, flag or endpoint, refactor, add types or tests, make code faster, add a dependency, set up CI, cut a release, bind Rust, C, C++ or Zig. Applies even when the task looks simple. Reviews, docs, diagrams and web pages use tabby-review, tabby-docs, tabby-diagrams, tabby-frontend instead."
+description: "MUST be your first tool call, before reading files, asking questions or answering, for any Python code task, including a bug report that only describes a symptom (a failing or flaky test, red CI, a crash, a 500, wrong output, a hang, a leak, a slowdown, a duplicate run): fix a bug, add a feature, flag or endpoint, refactor, add types or tests, make code faster, add a dependency, set up CI, cut a release, bind Rust, C, C++ or Zig. Applies even when the task looks simple. Reviews, docs, diagrams and web pages use tabby-review, tabby-docs, tabby-diagrams, tabby-frontend instead."
 allowed-tools: Bash(python3 *detect.py*)
 ---
 
