@@ -36,6 +36,7 @@ Open leaves with Read at the path given; do not search for them. A one-line fix,
 - a new function, class, option, constant or name: `code/minimalism.md`
 - a hand-rolled utility, a new package, or a job a library may already do: `code/reuse.md`, `ecosystem.md`, `dependencies/dependencies.md` (the runner is uv: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`)
 - raises, catches or retries an error: `code/errors.md`; parses input: `code/validation.md`; adds annotations: `code/typing.md`
+- Rust, C, C++ or Zig behind a Python API, including moving a function into one: `library/native/index.md`, then the language page it names (`rust.md`, `c.md`, `cpp.md`, `zig.md`), and `library/native/porting.md` to move a function
 - opens files, connections, locks, subprocesses or streams: `code/resources.md`
 - writes or changes tests: `testing/testing.md`, `testing/smells.md`; with mocks `testing/mocking.md`, fixtures `testing/fixtures.md`, property-based or release-grade `testing/rigor.md`
 - three or more outcomes, or "all"/"every": `workflow/gates.md` (a short list, then start); several readings: `workflow/specs-and-slices.md`
