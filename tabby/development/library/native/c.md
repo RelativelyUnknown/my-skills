@@ -26,6 +26,16 @@ Prefer something else first ([architecture.md](architecture.md)): Rust, Cython, 
 
 See also [senior-engineering.md](../../architecture/senior-engineering.md) for how large C and Rust codebases confine unsafe memory access.
 
+## The C core behind the binding
+
+Keep the logic in plain C with no Python headers, and make the binding a thin layer over it, so the core is testable on its own. A working example with tests is in [assets/native/c_core/](../../assets/native/c_core/) (`make test` builds it under ASan and UBSan).
+
+- Every allocation has one owner and one place that frees it. Work whose results share a lifetime allocates from an arena and frees it once; a fixed-capacity arena keeps handed-out pointers valid.
+- Bytes travel as pointer plus length (a span). Never depend on a terminating NUL: input can contain one, and a view needs no copy.
+- Check a size multiplication and an alignment round-up for overflow before trusting either, and report overflow differently from out-of-memory.
+- Return a status and write results through out-parameters; a library never calls `abort` or `exit`. The binding turns the status into an exception.
+- Compile the core with `-Wall -Wextra -Werror`; run its tests under the sanitizers.
+
 ## Testing
 
 - Build with ASan and UBSan (`-fsanitize=address,undefined`) and run the suite; a Python debug build (`--with-pydebug`) or `python -X dev` with `PYTHONMALLOC=debug` catches refcount and allocator misuse.
