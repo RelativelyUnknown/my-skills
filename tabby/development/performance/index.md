@@ -13,7 +13,7 @@ Optimizing without a profile is guessing. Find the one place that dominates, fix
 
 ## Fix in order of leverage
 
-1. **Do less work.** A `set` or `dict` built once for membership tests (500 times faster than `x in list` over 5,000 items), `collections.deque` with `popleft()` instead of `list.pop(0)`, index once and loop once, one query instead of N, built-ins or NumPy instead of manual loops.
+1. **Do less work, and in batches.** One Python call per row costs interpreter time on every item; process a chunk (hundreds to a few thousand values) per call, in columns (NumPy, Arrow), and test for the all-valid or empty case once per chunk. Measure the chunk size on your data. Also: A `set` or `dict` built once for membership tests (500 times faster than `x in list` over 5,000 items), `collections.deque` with `popleft()` instead of `list.pop(0)`, index once and loop once, one query instead of N, built-ins or NumPy instead of manual loops.
 2. **Cache a pure function** with `functools.cache` or `lru_cache(maxsize=n)`. Arguments must be hashable; `cache` has no bound. `lru_cache` on a method keeps `self` alive: cache a module-level function keyed by value, or use `cached_property`.
 3. **Memory.** A generator expression instead of a list when you only iterate; `__slots__` or `@dataclass(slots=True)` for many small objects; `array.array` or NumPy for large numeric data.
 4. **Strings.** `"".join(parts)`, not `s += x` in a loop.

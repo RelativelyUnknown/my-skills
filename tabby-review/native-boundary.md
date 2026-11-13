@@ -65,7 +65,7 @@ For each size, index or length that crosses from Python, count the sites that us
 
 ## 6. Tests and tools to ask for
 
-- Sanitizer run (ASan, UBSan, TSan for threads), Miri for Rust `unsafe`, a Python debug build, a 10,000-call leak loop.
+- Sanitizer run (ASan, UBSan, TSan for threads), Miri for Rust `unsafe` (and loom where it shares state between threads), a Python debug build, a 10,000-call leak loop.
 - A test for each error path, and for empty, maximum and negative sizes.
 - A fuzz target for any parser of untrusted bytes.
 - The pure-Python reference compared against the native result.
