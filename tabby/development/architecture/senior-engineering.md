@@ -6,6 +6,8 @@ Each section is a question to apply to a design you have not seen before; that i
 
 Before trusting a value, ask: what must be true here for what follows to be correct? Turn the answer into a check, not a comment: a comment goes stale silently, a check fails loudly. Check it where the value enters your control, and again where its violation would do damage; the gap between the two is where a corrupted value travels unnoticed. State what must hold, not what must not ("if `index < count`" reads faster than its negation), and split a check that tests two things into two, so a failure says which one broke.
 
+Check a property at two code paths (a pair assertion): validate an argument before it crosses into native code and check what comes back, or assert before a write and again after the read. Bound everything that can grow (queues, batches, retries, loops) so overload fails fast, and give names their unit last (`latency_ms_max`).
+
 In Python this is `assert` for invariants a caller cannot violate ([errors.md](../code/errors.md) draws that line); in Rust, `debug_assert!` plus a real `assert!` where a release build must still catch it; in C, `assert()`, compiled out by `NDEBUG`, so a caller-triggerable violation needs a real error path, not just a check.
 
 ## Know every limit before you can measure one

@@ -8,6 +8,10 @@ Prefer something else first ([architecture.md](architecture.md)): Rust, Cython, 
 - Know for each API call whether it returns a new or a borrowed reference. A borrowed reference (from `PyList_GetItem`, `PyTuple_GetItem`, `PyDict_GetItem`) can dangle after any call that may run Python code. Take a strong reference at once with `Py_INCREF`, or use `PyList_GetItemRef` and `PyDict_GetItemRef` (3.13+).
 - Check every fallible call: allocations, `PyUnicode_AsUTF8AndSize`, `PyObject_GetAttr*`, item getters. After `PyLong_As*`, a result of `-1` needs `PyErr_Occurred()`.
 - One cleanup path: initialise every owned local to `NULL`, `goto error` on failure, release with `Py_XDECREF` or `Py_CLEAR`.
+- `Python.h` comes first in every file (after `#define PY_SSIZE_T_CLEAN`), before any system header. Name cleanup labels for what they do (`out_free_buf`), and set every owned local to `NULL` before the first `goto`: a shared label that frees an uninitialised pointer is the classic one-label bug. Force each allocation to fail in a test so every error path runs.
+- Grow a buffer by computing the final capacity once, checking it for overflow, and calling `realloc` into a temporary; on failure the old buffer is still yours to free. A parser that owns its buffers keeps its error text in a fixed buffer inside its own struct, so an error path never allocates.
+- A function that does something returns 0 or an error; a predicate returns a bool. Do not mix them. No `strcpy`, `strncpy` or variable-length arrays; mark deliberate fall-through; do not `abort` in a library.
+- Lint for the risky calls in CI rather than relying on review (NumPy bans the borrowed-reference getters unless the line carries a `noqa` marker, and checks `Python.h`-first with a script).
 - Sizes are `Py_ssize_t`. Reject negatives before casting to `size_t`, and check for overflow before multiplying or adding sizes that come from input.
 
 ## Types and the garbage collector
@@ -39,6 +43,7 @@ Keep the logic in plain C with no Python headers, and make the binding a thin la
 
 ## Testing
 
+- CI that catches what review misses (NumPy and pandas both run it): `-Werror` on every build; a strict UBSan job on hand-written C only (implicit integer truncation, sign change, local bounds), never on generated Cython output; a separate ASan plus LeakSanitizer job on a CPython built with ASan; ThreadSanitizer on a free-threaded build; leak tests with `tracemalloc`; and C helpers exercised through a small Python test module.
 - Build with ASan and UBSan (`-fsanitize=address,undefined`) and run the suite; a Python debug build (`--with-pydebug`) or `python -X dev` with `PYTHONMALLOC=debug` catches refcount and allocator misuse.
 - Leak test: call the function 10,000 times and compare memory (`tracemalloc`) or `sys.getrefcount` of an argument before and after.
 - Fuzz parsers of untrusted bytes (libFuzzer or AFL++). Test every error path, not only success.
