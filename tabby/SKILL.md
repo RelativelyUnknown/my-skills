@@ -28,7 +28,7 @@ Run `python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"` once before reading projec
 
 ## Read on demand
 
-Open leaves with Read at the path given; do not search for them. Read `development/code/smells.md` first, then only the leaf for the main thing the task does (a second only if clearly needed); the rest when you reach a situation they cover. Paths start at `development/`.
+Open leaves with Read at the path given; do not search for them. Skip leaves for a one-line fix, a question or a command to run. For anything larger, read `development/code/smells.md` first, then only the leaf for the main thing the task does (a second only if clearly needed); the rest when you reach a situation they cover. Paths start at `development/`.
 
 - new function, class, option, constant, name: `code/minimalism.md`
 - what exists for a job: `ecosystem.md`; hand-rolled utility, new package: `code/reuse.md`, `dependencies/dependencies.md` (the runner is uv: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`)
@@ -55,7 +55,7 @@ Review or audit: `tabby-review`. README, docstrings, changelog, ADR, commit mess
 
 ## Project memory
 
-If AGENTS.md has a `## Tabby` section, read it and follow `kind:`, `always:`, `ask-first:` and `never:`; respect `out-of-scope:`. If the task contradicts `goals:` or `out-of-scope:`, ask whether the section still fits, then update it. For new work (a feature, a refactor, a release) rather than a small fix, compare the section with the code first: commits since `reviewed:` (`git rev-list --count <sha>..HEAD`) and whether `pyproject.toml`, `Cargo.toml`, `Makefile` or `.github` changed (`git diff --stat <sha>..HEAD -- ...`); report the evidence and ask only about changed facts. A task that makes a `growth:` item real (a first Rust module, a first public API, a first endpoint): read `references/growth.md` before designing it. A task that needs an `open:` item: ask it now.
+If AGENTS.md has a `## Tabby` section, read it and follow `kind:`, `always:`, `ask-first:` and `never:`; respect `out-of-scope:`. If the task contradicts `goals:` or `out-of-scope:`, ask whether the section still fits, then update it. For new work (a feature, a refactor, a release) rather than a small fix, read `references/memory-check.md` first. A task that makes a `growth:` item real (a first Rust module, a first public API, a first endpoint): read `references/growth.md` before designing it. A task that needs an `open:` item: ask it now.
 
 If there is no section, do the task; missing project memory is not a reason to interview. Infer the scope and stack from the request and the repo (`development/which-type.md`), say it in one line (`Treating this as: library/native; stack: poetry, black, pytest`), and label guesses `(assumed)`. After the first task in a session add one line, once: "To save purpose, growth and limits for later tasks, run `/tabby:interview`." The interview itself (`/tabby:interview`) is a separate skill and never a condition for the work.
 
