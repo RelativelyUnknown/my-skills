@@ -6,11 +6,11 @@ allowed-tools: Bash(python3 *detect.py*)
 
 # Tabby
 
-Project memory is the `## Tabby` section of AGENTS.md (Claude Code reads CLAUDE.md, not AGENTS.md: if the repo has no CLAUDE.md, suggest one line, `@AGENTS.md`). Tool and style defaults are the `## Python defaults` section; infer gaps from the repo, ask only what is still unknown, and mark guesses `(assumed)`.
+Project memory is the `## Tabby` section of AGENTS.md (OpenCode and Copilot read AGENTS.md; Claude Code reads CLAUDE.md instead, so if the repo has no CLAUDE.md and the user works in Claude Code, suggest one line, `@AGENTS.md`). Tool and style defaults are the `## Python defaults` section; infer gaps from the repo, ask only what is still unknown, and mark guesses `(assumed)`.
 
 ## First command
 
-Run `python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"` once before reading project files. It lists the runner, Python target, test, format, lint and type tools, the check command, CI and native parts from files only, so you do not search for them one by one. If it fails, read the repo instead.
+Run `python3 scripts/detect.py` from this skill's folder (the harness names the folder when it loads the skill; use its full path) once before reading project files. It lists the runner, Python target, test, format, lint and type tools, the check command, CI and native parts from files only, so you do not search for them one by one. If it fails, read the repo instead.
 
 ## Never miss
 
@@ -56,7 +56,7 @@ By kind of project (`which-type.md` names it; read only the line for the kind, a
 - **HTTP service**: `application/smells.md`, `application/apis/http/services.md`, then `fastapi.md` or `django.md`; `application/apis/shared/security.md`; `application/shared/` for `async.md`, `async-patterns.md`, `configuration.md`, `observability.md`, `persistence.md`, `deployment.md`, `resilience.md` (retries, timeouts, circuit breakers)
 - **worker or scheduler**: `application/workers/background-jobs.md`, `background-jobs-patterns.md`, and `application/shared/resilience.md`
 
-## Other skills in this plugin
+## Other Tabby skills
 
 Review or audit: `tabby-review`. README, docstrings, changelog, ADR, commit message: `tabby-docs`. A diagram or animation: `tabby-diagrams`. A page, dashboard or docs site: `tabby-frontend`. Each loads on its own; use it instead of improvising.
 
@@ -64,7 +64,7 @@ Review or audit: `tabby-review`. README, docstrings, changelog, ADR, commit mess
 
 If AGENTS.md has a `## Tabby` section, read it and follow `kind:`, `always:`, `ask-first:` and `never:`; respect `out-of-scope:`. If the task contradicts `goals:` or `out-of-scope:`, ask whether the section still fits, then update it. For new work (a feature, a refactor, a release) rather than a small fix, read `references/memory-check.md` first. A task that makes a `growth:` item real (a first Rust module, a first public API, a first endpoint): read `references/growth.md` before designing it. A task that needs an `open:` item: ask it now.
 
-If there is no section, do the task; missing project memory is not a reason to interview. Infer the scope and stack from the request and the repo (`development/which-type.md`), say it in one line (`Treating this as: library/native; stack: poetry, black, pytest`), and label guesses `(assumed)`. After the first task in a session add one line, once: "To save purpose, growth and limits for later tasks, run `/tabby:interview`." The interview itself (`/tabby:interview`) is a separate skill and never a condition for the work.
+If there is no section, do the task; missing project memory is not a reason to interview. Infer the scope and stack from the request and the repo (`development/which-type.md`), say it in one line (`Treating this as: library/native; stack: poetry, black, pytest`), and label guesses `(assumed)`. After the first task in a session add one line, once: "To save purpose, growth and limits for later tasks, run the interview skill." (`/tabby:interview` in Claude Code, `/interview` in Copilot, `@interview` in OpenCode.) The interview itself is a separate skill and never a condition for the work.
 
 ## Never
 
