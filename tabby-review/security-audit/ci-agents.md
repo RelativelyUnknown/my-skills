@@ -30,4 +30,4 @@ A workflow that runs a model-driven agent (a review bot, an issue triager; `clau
 
 ## Report
 
-Per finding: workflow and line, trigger, confidence, the numbered attack (attacker action first, each hop with its line, the consequence last), impact with the token's permissions, fix. Add the closest real precedent when one fits: branch-name injection (`${IFS}` payload) against a Microsoft repository, file-name injection against a security scanner, `init()` injection and a local-action override against two popular projects (the second stole a classic personal access token and was used to delete releases), an unauthenticated `/version` comment command against a CNCF project, and the `CLAUDE.md` attempt above, all described in StepSecurity's account of one campaign (cited in the third-party notices). List workflows you read and cleared. Zero findings is a valid result: say what you read. More in [reporting.md](reporting.md).
+Report each finding in the per-finding form in [ci-workflows.md](ci-workflows.md), with the agent's tool permissions as the impact.
