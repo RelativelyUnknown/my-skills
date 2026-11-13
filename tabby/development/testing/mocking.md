@@ -11,6 +11,28 @@ A mock checks what you believe the dependency does; only the real thing checks w
 
 Rules that follow:
 
+- **Tests of a fake alone prove nothing; they check the fake against itself.** Write one test body that takes the client as a parameter and run it against the fake and the real client. The real one is skipped when its credentials are not in the environment, so the suite still needs no secrets, and it runs in CI or before release. When asked for a fake, write this contract test with it, and say in the report whether the real leg ran.
+
+```python
+import os
+
+import pytest
+
+from fakes import FakePaymentGateway
+from shop import PaymentGateway
+
+needs_sandbox = pytest.mark.skipif("PAYMENT_SANDBOX_TOKEN" not in os.environ, reason="no sandbox credentials")
+
+@pytest.fixture(params=["fake", pytest.param("real", marks=needs_sandbox)])
+def gateway(request):
+    if request.param == "fake":
+        return FakePaymentGateway()
+    return PaymentGateway("https://sandbox.example.test", os.environ["PAYMENT_SANDBOX_TOKEN"])
+
+def test_charge_returns_an_id(gateway):
+    assert gateway.charge(1000, "tok_visa") != ""
+```
+
 - Every integration has at least one test against the real thing (marked `integration`, skipped without credentials but run in CI or before release). All-mock suites go green while production breaks.
 - Mock at the outermost edge (the HTTP client, the clock), never in the middle of your own code. More than two patches in one test means the design needs the dependency passed in.
 - Recorded responses (`vcrpy`) go stale: re-record on a schedule and fail the build when a cassette is older than the limit.
