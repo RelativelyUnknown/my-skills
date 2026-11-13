@@ -4,7 +4,8 @@
 #define CORE_H
 #include <stddef.h>
 
-typedef enum { CORE_OK = 0, CORE_ERR_NOMEM, CORE_ERR_OVERFLOW, CORE_ERR_RANGE } core_status;
+/* Values never change once released; CORE_OK is 0. A NULL handle or out-parameter returns CORE_ERR_INVALID. */
+typedef enum { CORE_OK = 0, CORE_ERR_INVALID, CORE_ERR_NOMEM, CORE_ERR_OVERFLOW, CORE_ERR_RANGE, CORE_STATUS_MAX_VALUE = 0x7fffffff } core_status;
 
 /* Bytes you do not own. The length travels with the pointer; never depend on a terminating NUL. */
 typedef struct { const unsigned char *ptr; size_t len; } span;

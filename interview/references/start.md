@@ -56,7 +56,7 @@ never: commit secrets, edit generated files
 kind: library/native
 modules: development, review, documentation
 docs: README, reference, ADR
-commands: one canonical check command
+commands: one canonical check command, plus the targeted form (one test or file) when the suite is slow
 open: release process
 ```
 

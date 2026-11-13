@@ -35,6 +35,7 @@ Keep the logic in plain C with no Python headers, and make the binding a thin la
 - Check a size multiplication and an alignment round-up for overflow before trusting either, and report overflow differently from out-of-memory.
 - Return a status and write results through out-parameters; a library never calls `abort` or `exit`. The binding turns the status into an exception.
 - Compile the core with `-Wall -Wextra -Werror`; run its tests under the sanitizers.
+- A public C surface stays uniform (the pattern in Ghostty's `libghostty-vt`): every fallible function returns a result code and writes through an out-parameter; a NULL handle returns an error status instead of crashing; an optional allocator argument accepts NULL for the default; the zero value of an enum means "none", so a zeroed struct is safe; enum values never change once released, and a final `_MAX_VALUE` sentinel forces `int` sizing on pre-C23 compilers.
 
 ## Testing
 

@@ -18,6 +18,7 @@ int main(void) {
     CHECK(arena_alloc(a, SIZE_MAX / 2, 4, &st) == NULL && st == CORE_ERR_OVERFLOW);  /* overflow is not out-of-memory */
     CHECK(arena_alloc(a, 1000, 1, &st) == NULL && st == CORE_ERR_NOMEM);
     CHECK(arena_alloc(a, 0, 8, &st) != NULL && st == CORE_OK);                       /* zero-size is fine */
+    CHECK(arena_alloc(NULL, 1, 1, &st) == NULL && st == CORE_ERR_INVALID);          /* NULL handle: an error, not a crash */
     arena_free(a);
     arena_free(NULL);
 
@@ -30,6 +31,8 @@ int main(void) {
     CHECK(span_split(none, '=', &l, &r) == CORE_ERR_RANGE);
     span noeq = {raw, 3};
     CHECK(span_split(noeq, '=', &l, &r) == CORE_ERR_RANGE);
+
+    CHECK(span_split(in, '=', NULL, &r) == CORE_ERR_INVALID);
 
     if (failures) return 1;
     puts("core: ok");

@@ -18,6 +18,7 @@ arena *arena_new(size_t capacity) {
 }
 
 void *arena_alloc(arena *a, size_t count, size_t size, core_status *st) {
+    if (!a || !st) { if (st) *st = CORE_ERR_INVALID; return NULL; }
     /* Check the multiplication and the alignment padding before trusting either: sizes may come from input. */
     if (size != 0 && count > SIZE_MAX / size) { *st = CORE_ERR_OVERFLOW; return NULL; }
     size_t bytes = count * size;
@@ -35,6 +36,7 @@ void arena_free(arena *a) {
 }
 
 core_status span_split(span in, unsigned char sep, span *left, span *right) {
+    if (!left || !right) return CORE_ERR_INVALID;
     const unsigned char *hit = in.len ? memchr(in.ptr, sep, in.len) : NULL;
     if (!hit) return CORE_ERR_RANGE;
     size_t n = (size_t)(hit - in.ptr);
