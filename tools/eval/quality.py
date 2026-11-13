@@ -6,7 +6,8 @@
 RESULT_DIR holds <case>.json written by tools/eval/run.py with --keep-temp. For every run the agent's final working
 directory (<trace dir>/../home/cwd) is copied to a scratch folder; evals/quality/hidden/<case>/test_hidden.py is added and
 run with pytest (never present while the agent worked). Per run it reports the fraction of hidden tests that pass, whether
-the whole project's own suite is green, ruff errors added, lines added and removed against the base commit, files touched,
+the whole project's own suite is green, ruff errors added, extra smell-rule violations added (B, SIM, TRY, BLE, ERA, PERF, RET, C4, PLR),
+comment lines added, lines added and removed against the base commit, files touched,
 new files, new dependencies, suppressions added (noqa, type: ignore, skip, xfail), plus the run's cost and turns.
 No LLM judge. Needs pytest and ruff on PATH.
 """
@@ -50,6 +51,7 @@ def score_dir(case, src):
     _, diff = sh(["git", "diff", "HEAD", "-U0"], cwd)
     plus = [l[1:] for l in diff.splitlines() if l.startswith("+") and not l.startswith("+++")]
     suppress = sum(1 for l in plus if SUPPRESS.search(l))
+    comments = sum(1 for l in plus if re.match(r"\s*#(?!!)", l) and not SUPPRESS.search(l))
     deps = 0
     in_deps = False
     for l in plus:
@@ -61,8 +63,8 @@ def score_dir(case, src):
     os.remove(os.path.join(cwd, "test_hidden.py"))
     rc2, out2 = sh(["pytest", "-q", "-p", "no:cacheprovider", "--tb=no"], cwd, env)
     suite_green = rc2 == 0 or "no tests ran" in out2
-    def ruff_count(path):
-        _, o = sh(["ruff", "check", "--select", "E,F,B,UP", "--output-format", "concise", "--no-cache", "."], path)
+    def ruff_count(path, rules="E,F,B,UP"):
+        _, o = sh(["ruff", "check", "--select", rules, "--ignore", "PLR2004", "--output-format", "concise", "--no-cache", "."], path)
         return len([l for l in o.splitlines() if re.match(r".+:\d+:\d+:", l)])
 
     base = os.path.join(work, "base")
@@ -70,9 +72,12 @@ def score_dir(case, src):
     p1 = subprocess.run(["git", "archive", "HEAD"], cwd=cwd, capture_output=True)
     subprocess.run(["tar", "-x", "-C", base], input=p1.stdout, capture_output=True)
     ruff_errs = max(0, ruff_count(cwd) - ruff_count(base))
+    # established smell catalogs as ruff implements them; PLR2004 (magic values) is left out as noise in small fixtures
+    smell = "B,SIM,TRY,BLE,ERA,PERF,RET,C4,PLR"
+    smells_added = max(0, ruff_count(cwd, smell) - ruff_count(base, smell))
     shutil.rmtree(work, ignore_errors=True)
     return dict(hidden=round(hidden, 3), suite_green=int(suite_green), ruff=ruff_errs, added=added, removed=removed,
-                files=files, new_files=new_files, suppressions=suppress, dep_lines=deps)
+                files=files, new_files=new_files, suppressions=suppress, dep_lines=deps, smells=smells_added, comments=comments)
 
 
 def main():
@@ -106,7 +111,7 @@ def main():
             w.writeheader(); w.writerows(rows)
     # per-arm means
     arms = sorted({r["arm"] for r in rows})
-    keys = ["hidden", "suite_green", "ruff", "added", "removed", "files", "new_files", "suppressions", "dep_lines", "cost", "turns"]
+    keys = ["hidden", "suite_green", "ruff", "added", "removed", "files", "new_files", "suppressions", "dep_lines", "smells", "comments", "cost", "turns"]
     print("\narm    n  " + "  ".join(f"{k:>11}" for k in keys))
     for arm in arms:
         rs = [r for r in rows if r["arm"] == arm]
