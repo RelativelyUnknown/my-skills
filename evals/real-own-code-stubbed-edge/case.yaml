@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: real-own-code-stubbed-edge
+expected_outcome: |
+  Writes tests/test_orders.py for place_order using a real Inventory and a stubbed payment gateway only to provoke the payment failure, asserts the stock is restored by reading the Inventory (not by a mock call), does not patch Inventory, and runs the suite.
+context:
+  scaffold_script: fixture.sh
