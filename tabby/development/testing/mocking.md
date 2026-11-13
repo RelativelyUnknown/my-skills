@@ -11,26 +11,27 @@ A mock checks what you believe the dependency does; only the real thing checks w
 
 Rules that follow:
 
-- **Tests of a fake alone prove nothing; they check the fake against itself.** Write one test body that takes the client as a parameter and run it against the fake and the real client. The real one is skipped when its credentials are not in the environment, so the suite still needs no secrets, and it runs in CI or before release. When asked for a fake, write this contract test with it, and say in the report whether the real leg ran.
+- **Tests of a fake alone prove nothing; they check the fake against itself.** Write one test body that takes the client as a parameter and run it against the fake and the real client class. The real leg is either the provider's sandbox, skipped when its credentials are not in the environment, or a local server that speaks the provider's protocol (`http.server` on port 0). Either way the suite needs no secrets. Say in the report which real leg ran and what the other leaves unchecked. A fake whose real leg never runs is still unverified.
 
 ```python
-import os
-
 import pytest
 
-from fakes import FakePaymentGateway
-from shop import PaymentGateway
+from notes.client import NotesClient
+from tests.fakes import InMemoryNotes
 
-needs_sandbox = pytest.mark.skipif("PAYMENT_SANDBOX_TOKEN" not in os.environ, reason="no sandbox credentials")
-
-@pytest.fixture(params=["fake", pytest.param("real", marks=needs_sandbox)])
-def gateway(request):
+@pytest.fixture(params=["fake", "real"])
+def notes(request, notes_server_url):  # notes_server_url: a local server, or a sandbox URL
     if request.param == "fake":
-        return FakePaymentGateway()
-    return PaymentGateway("https://sandbox.example.test", os.environ["PAYMENT_SANDBOX_TOKEN"])
+        return InMemoryNotes()
+    return NotesClient(notes_server_url)
 
-def test_charge_returns_an_id(gateway):
-    assert gateway.charge(1000, "tok_visa") != ""
+def test_a_saved_note_can_be_read_back(notes):
+    note_id = notes.save("milk")
+    assert notes.read(note_id) == "milk"
+
+def test_reading_a_missing_note_raises(notes):
+    with pytest.raises(KeyError):
+        notes.read("missing")
 ```
 
 - Every integration has at least one test against the real thing (marked `integration`, skipped without credentials but run in CI or before release). All-mock suites go green while production breaks.
