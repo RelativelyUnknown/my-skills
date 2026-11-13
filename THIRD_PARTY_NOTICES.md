@@ -59,7 +59,7 @@ The Tabby title image is rendered from "Pizza is my FAVORITE Font" by Kimberly G
 
 ## Second review (2026-11-10)
 
-Every source was cloned again at the commit below and read for ideas Tabby did not yet use. No text was copied; each idea is restated for Python and its native languages. The per-source findings are in `AUDIT.md`.
+Every source was cloned again at the commit below and read for ideas Tabby did not yet use. No text was copied; each idea is restated for Python and its native languages. The table below records, per source, what was found and what was adopted.
 
 | Source (commit) | Licence | Idea taken | Where it went |
 | --- | --- | --- | --- |
@@ -125,7 +125,7 @@ Verification in this repository: the Python, C and Rust behaviours cited on the 
 
 ## Skill-authoring guidance (13 November 2026)
 
-Ideas only, no text copied: pointers written as conditions ("before the first edit, read X when the task does Y") instead of a topic menu, and no hedged "if needed" wording. From Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) and community guides ([skills.sh load tips](https://www.skills.sh/pedronauck/skills/skill-load-tips), [mdskills](https://www.mdskills.ai/docs/skill-best-practices)). Their effect on Tabby was measured here, not assumed (HANDOVER.md).
+Ideas only, no text copied: pointers written as conditions ("before the first edit, read X when the task does Y") instead of a topic menu, and no hedged "if needed" wording. From Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) and community guides ([skills.sh load tips](https://www.skills.sh/pedronauck/skills/skill-load-tips), [mdskills](https://www.mdskills.ai/docs/skill-best-practices)).
 
 ## CodeAesthetic and ArjanCodes videos (13 November 2026)
 
