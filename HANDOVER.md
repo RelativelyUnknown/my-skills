@@ -36,6 +36,7 @@ Project memory is the `## Tabby` section of the user's AGENTS.md (template in `i
 - Hard seeded audit: about 28 to 29 of 30 defects vs 22 bare, at about +45% cost. The agent never opened the class pages; the lift comes from loading the skill and reading `process.md`.
 - Code quality (6 tasks): hidden tests at ceiling in both arms; fewer lint errors added with the skill; +38% cost.
 - 13 Nov rerun (94 cases, Haiku, 3 runs, no errored runs): 0.809 with vs 0.772 without; cost +17%, turns +30%. About 15% of with-skill traces wander into the plugin copy's `evals/` (the runner needs it under the plugin), which inflates the skill arm.
+- Leaf triggers (13 Nov): a leaf in the "Read on demand" menu is rarely opened (`debugging.md` 0 of 3, `security-basics.md` 0 of 3 even when the skill fired). A rule in "Never miss" worded as a condition plus "before the first edit" fixed it (2 of 3 and 3 of 3, always before the first edit). Scores did not change on those cases (both arms tie), so reading the leaf is not yet shown to help. New cases: `fix-ssrf-in-link-preview`, `first-endpoint-from-a-library` (reads `growth.md` in 2 of 3 runs because `AGENTS.md` names the growth item).
 - A 50-word cap per finding and other report-length rules did not shorten reports (about 1,000 words either way); the cap was reverted.
 
 ## Open, in order of value

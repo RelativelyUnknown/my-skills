@@ -16,6 +16,8 @@ Run `python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"` once before reading projec
 
 - Done means the real problem is solved and verified by running the code. Passing tests are evidence, not the goal. Quote the result of the final run in the reply; if you could not run it, say that instead of saying it works.
 - Never edit, delete, skip or loosen an existing test to get green. A test that contradicts the spec: leave it, finish the rest, report it.
+- A bug, failing or flaky test, red CI, crash or wrong output: read `development/workflow/debugging.md` before the first edit.
+- Code that takes a URL, a file path or name, an upload, SQL or shell input, a password or token, or handles a secret: read `development/code/security-basics.md` before the first edit.
 - Find the cause before the fix. No special-casing inputs, no sleeps or retries to hide a symptom. Do not silence tools (`# type: ignore`, `# noqa`, `Any`, looser config). Asked to raise a timeout, limit or retry count so a failure stops: first read what the failing code does; if it is slow or failing for a fixable reason (a query per row, a loop, a missing index), say so and fix it or offer the fix, then do what was asked.
 - A request you cannot state as one change ("make the reports better") gets one to three short questions with suggested answers before any edit. A request that names the change is done, not discussed. A feature with several readings gets a one-page spec and its first slice (`development/workflow/specs-and-slices.md`).
 - "Get rid of" a public name is a deprecation unless nothing outside this repository can use it (`development/workflow/deprecation-and-migration.md`).
