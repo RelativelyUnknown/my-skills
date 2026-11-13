@@ -76,6 +76,7 @@ Useful flags: `--ablation none|with-without`, `--errored` (re-run errored), `--k
 
 ## Before committing
 
+0. `make check` runs steps 2 to 3 below and the selftests, the smell-checker selftest and the C core test in one free command (`make validate` runs `claude plugin validate .`; `make eval OUT=dir CASES=a,b` runs a costed eval on a copy).
 1. `claude plugin validate .` (an `ICON_MISSING` warning is expected); then `python3 tabby-diagrams/assets/diagram/selftest.py`, `node tabby-diagrams/assets/animation/selftest-motion.mjs`, `node tabby-frontend/assets/interfaces/selftest-ui.mjs` after changing a checker or builder.
 2. Skill descriptions at most 1,024 characters.
 3. `python3 tools/linkcheck.py` reports 0 broken.
