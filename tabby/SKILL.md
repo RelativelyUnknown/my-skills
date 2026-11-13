@@ -28,20 +28,24 @@ Run `python3 "${CLAUDE_SKILL_DIR}/scripts/detect.py"` once before reading projec
 - If Bash says `Read-only file system`, the Write and Edit tools still work: make the change with them, run what you can, and say which command could not run. Never end by pasting the code into the reply.
 - Replies, comments and docs are short: what is not obvious, no filler. Never drop "not", "never", "only", "except".
 
-## Read on demand
+## Read before the first edit
 
-Open leaves with Read at the path given; do not search for them. Skip leaves for a one-line fix, a question or a command to run. For anything larger, read `development/code/smells.md` first, then only the leaf for the main thing the task does (a second only if clearly needed); the rest when you reach a situation they cover. Paths start at `development/`.
+Open leaves with Read at the path given; do not search for them. A one-line fix, a question or a command to run needs no leaf. For anything else, before the first edit read every leaf below whose condition the task meets (paths start at `development/`). A bug or a security-sensitive input is already covered by the two rules above.
 
-- new function, class, option, constant, name: `code/minimalism.md`
-- what exists for a job: `ecosystem.md`; hand-rolled utility, new package: `code/reuse.md`, `dependencies/dependencies.md` (the runner is uv: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`)
-- errors: `code/errors.md`; parsing input: `code/validation.md`; annotations: `code/typing.md`
-- files, connections, locks, subprocesses, streams: `code/resources.md`
-- feature newer than the Python target: `code/python-versions.md`; docstring, comment: `code/comments.md`
-- logging, secrets, SQL, `eval`, `pickle`: `code/logging.md`, `code/security-basics.md`; script or CLI: `code/scripts.md`
-- data frames, arrays, models, notebooks, large files: `code/data.md`; threads, processes, pools: `code/concurrency.md`
-- tests: `testing/testing.md`, `testing/smells.md` (mocks `testing/mocking.md`, fixtures `testing/fixtures.md`, property-based or release-grade `testing/rigor.md`); slow code: `performance/index.md`
-- bug, failing test, race, flaky test: `workflow/debugging.md`
-- scope: `workflow/planning.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; three or more outcomes, or "all"/"every": `workflow/gates.md` (a short list, then start); several readings: `workflow/specs-and-slices.md`; removing or replacing: `workflow/deprecation-and-migration.md`; about to report: `workflow/shipping.md`
+- changes more than a few lines: `code/smells.md`
+- a new function, class, option, constant or name: `code/minimalism.md`
+- a hand-rolled utility, a new package, or a job a library may already do: `code/reuse.md`, `ecosystem.md`, `dependencies/dependencies.md` (the runner is uv: `dependencies/uv.md`, `uv-ci.md`, `uv-docker.md`)
+- raises, catches or retries an error: `code/errors.md`; parses input: `code/validation.md`; adds annotations: `code/typing.md`
+- opens files, connections, locks, subprocesses or streams: `code/resources.md`
+- writes or changes tests: `testing/testing.md`, `testing/smells.md`; with mocks `testing/mocking.md`, fixtures `testing/fixtures.md`, property-based or release-grade `testing/rigor.md`
+- three or more outcomes, or "all"/"every": `workflow/gates.md` (a short list, then start); several readings: `workflow/specs-and-slices.md`
+- removes or replaces something: `workflow/deprecation-and-migration.md`
+
+Read these when you reach the situation, not before:
+
+- feature newer than the Python target: `code/python-versions.md`; docstring, comment: `code/comments.md`; logging: `code/logging.md`; script or CLI: `code/scripts.md`
+- data frames, arrays, models, notebooks, large files: `code/data.md`; threads, processes, pools: `code/concurrency.md`; slow code: `performance/index.md`
+- scope: `workflow/planning.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; about to report: `workflow/shipping.md`
 - pattern, layers: `architecture/design-patterns.md`; data structure or algorithm: `architecture/fit.md` (worked examples `fit-examples.md`); design under real limits, `unsafe`: `architecture/senior-engineering.md`
 
 By kind of project (`which-type.md` names it; read only the line for the kind, and `smells.md` of that kind before finishing):

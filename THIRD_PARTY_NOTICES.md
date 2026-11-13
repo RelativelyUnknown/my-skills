@@ -122,3 +122,7 @@ No text is copied and no third-party file is shipped here. The files below were 
 **joe-bell/cva** (`.agents/skills/deslop`, Apache-2.0), **pedronauck/skills** (`deslop`) and **boraoztunc/skills** (`adversarial-review`): the repositories state no licence for the second and third. Read: the three SKILL files. Their README and workflow script were not. Ideas only: the accidental-complexity list and what to keep (`tabby/development/code/minimalism.md`, `tabby-review/changes/self-review.md`); assume the change is broken, read the project's invariants, distrust tests and comments, end with what was not verified.
 
 Verification in this repository: the Python, C and Rust behaviours cited on the audit pages were run with CPython 3.13, gcc, rustc 1.97 and Hypothesis; the GitHub Actions behaviour, Semgrep's file-size skipping and Python 3.14 `pdb` attach were not run and are marked as such.
+
+## Skill-authoring guidance (13 November 2026)
+
+Ideas only, no text copied: pointers written as conditions ("before the first edit, read X when the task does Y") instead of a topic menu, and no hedged "if needed" wording. From Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) and community guides ([skills.sh load tips](https://www.skills.sh/pedronauck/skills/skill-load-tips), [mdskills](https://www.mdskills.ai/docs/skill-best-practices)). Their effect on Tabby was measured here, not assumed (HANDOVER.md).
