@@ -39,7 +39,7 @@ Judge the code, not the explanation. Criteria, each scored 1 (poor) to 5 (excell
 - errors_and_invariants: errors are handled where they can be acted on, not swallowed; what must be true is checked, not only commented; no defensive checks on data the code itself produced.
 - reuses_what_exists: uses the standard library or an existing helper instead of reimplementing it.
 - flat_control_flow: no more than three levels of nesting; the unhappy path is handled early (guard clauses) and the main logic stays at the top level; long blocks are split into well-named functions with one job each.
-- abstraction_earns_its_coupling: every base class, interface or flag is justified by three or more variants or by deferred or repeated use; a new variant lives beside the old one instead of branching through it; a little repetition is preferred to coupling unrelated code.
+- abstraction_earns_its_coupling: every base class, interface or flag is justified by three or more variants or by deferred or repeated use; a new variant lives beside the old one instead of branching through it; a little repetition is preferred to coupling unrelated code; collaborators are passed in, not built inside; subclassing only for "is a".
 - readable_and_honest_comments: clear names; magic numbers are named; a comment explaining a complex condition is replaced by a named variable or function; comments explain why, not what; no commented-out code; no filler.
 - tests_that_would_catch_a_regression: tests fail without the change and assert real behaviour; none were weakened or skipped. If the task needed no tests, score both 3.
 
