@@ -18,3 +18,13 @@ Same shape as [rust.md](rust.md) and [c.md](c.md), adapted to Zig's own tools:
 - **Errors.** Map Zig's error unions (`!T`) to Python exceptions at the module boundary; never let a Zig `error` or a `@panic` cross into Python unconverted.
 - **Safety checks.** Zig's `ReleaseSafe` build mode keeps bounds and overflow checks in a build that is still fast; use it for the extension's release build rather than `ReleaseFast`, which strips them, unless a profile shows the checks themselves are the bottleneck.
 - **Boundary review.** The checklist in `native-boundary.md` in the `tabby-review` skill (`../tabby-review/`) (reference counts, error translation, buffer lifetime, layout) applies the same way; only the per-language syntax differs.
+
+## What a large Zig codebase does
+
+Ghostty (a terminal emulator and the `libghostty-vt` C library, read at commit `cf3a8a6`) shows habits that scale, worth copying when the extension grows:
+
+- **Tests sit beside the code** as `test` blocks and run on `std.testing.allocator`, which fails a test that leaks; about 4,700 tests in 617 files, 5,000 uses of the testing allocator. Run one test while working (`zig build test -Dtest-filter=<name>`) and the full suite before reporting.
+- **`errdefer` after every acquisition**, and an arena for work with one lifetime, so an early return cannot leak.
+- **Leaks in the C libraries you link are invisible to Zig.** Run the binary under Valgrind as well.
+- **One definition of an enum for both sides:** a C-ABI `c_int` enum for the boundary and a compact Zig enum inside. The order of values never changes once they are part of an ABI or a serialized format.
+- **The C surface is small and uniform:** see the C API rules in [c.md](c.md).

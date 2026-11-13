@@ -59,7 +59,7 @@ The Tabby title image is rendered from "Pizza is my FAVORITE Font" by Kimberly G
 
 ## Second review (2026-11-10)
 
-Every source was cloned again at the commit below and read for ideas Tabby did not yet use. No text was copied; each idea is restated for Python and its native languages. The per-source findings are in `AUDIT.md`.
+Every source was cloned again at the commit below and read for ideas Tabby did not yet use. No text was copied; each idea is restated for Python and its native languages. The table below records, per source, what was found and what was adopted.
 
 | Source (commit) | Licence | Idea taken | Where it went |
 | --- | --- | --- | --- |
@@ -122,3 +122,31 @@ No text is copied and no third-party file is shipped here. The files below were 
 **joe-bell/cva** (`.agents/skills/deslop`, Apache-2.0), **pedronauck/skills** (`deslop`) and **boraoztunc/skills** (`adversarial-review`): the repositories state no licence for the second and third. Read: the three SKILL files. Their README and workflow script were not. Ideas only: the accidental-complexity list and what to keep (`tabby/development/code/minimalism.md`, `tabby-review/changes/self-review.md`); assume the change is broken, read the project's invariants, distrust tests and comments, end with what was not verified.
 
 Verification in this repository: the Python, C and Rust behaviours cited on the audit pages were run with CPython 3.13, gcc, rustc 1.97 and Hypothesis; the GitHub Actions behaviour, Semgrep's file-size skipping and Python 3.14 `pdb` attach were not run and are marked as such.
+
+## Skill-authoring guidance (13 November 2026)
+
+Ideas only, no text copied: pointers written as conditions ("before the first edit, read X when the task does Y") instead of a topic menu, and no hedged "if needed" wording. From Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) and community guides ([skills.sh load tips](https://www.skills.sh/pedronauck/skills/skill-load-tips), [mdskills](https://www.mdskills.ai/docs/skill-best-practices)).
+
+## CodeAesthetic and ArjanCodes videos (13 November 2026)
+
+Ideas only, restated in Tabby's words; no video was watched and no text was copied. Read through third-party summary pages (finechat-ai and recapio digests) and listings, so details may be off. From CodeAesthetic: "Why You Shouldn't Nest Your Code" (flatten with early returns and extraction, a depth ceiling), "Don't Write Comments" (named constants, named conditions, optional types instead of sentinels), "Abstraction Can Make Your Code Worse" (abstraction is coupling; a new variant beside the old one; abstract at three variants). ArjanCodes was consulted by title only (code smells, low coupling). Adopted in `tabby/development/code/smells.md`, the rubric in `tools/eval/judge.py` and the nesting metric in `tools/eval/quality.py`.
+
+Update, same day: one agent per video looked for non-YouTube sources (YouTube blocks transcript requests from this network, and no block-evasion was attempted). Used: the full caption transcript of "The Flaws of Inheritance" (about 85 to 90% confidence), summaries of "Dependency Injection, The Best Pattern", "Naming Things in Code" and "Premature Optimization" (about 70 to 85%), and ArjanCodes' own example repository for "7 Python Features That Make Your Code Worse" (github.com/ArjanCodes/examples, items read in code). Not usable: no source for "Stop Checking for None Everywhere", "Your Codebase Is Too Fragile", "You Think This Is Good OOP", "How to Stop Third-Party APIs", "Ditch the Dictionaries"; "7 Things AI Coding Agents Get Wrong" gave 4 of 7 items, already covered. Rules adopted are restated in `code/smells.md`.
+
+Tsoding Daily and aarthificial (13 November 2026): five streams (Reusable Undo System, Parsing XML without a Library, Issue Tracker in C; Bevy Refactor & Chill, Save System) were looked up and no transcript, summary or write-up exists on the open web, so nothing was taken from them. The C-core guidance in `library/native/c.md` and `assets/native/c_core/` is written from general C practice (overflow-checked sizes, arenas, pointer-plus-length views, status returns), with Tsoding's public projects (such as `nob.h`) noted as the prompt to look into C style, not as a source read.
+
+## ghostty-org/ghostty (13 November 2026)
+
+- Upstream: https://github.com/ghostty-org/ghostty (MIT licence), read at commit `cf3a8a6` (shallow clone, 12 November 2026). Nothing vendored and no text copied; ideas restated in Tabby's words.
+- Read: `AGENTS.md`, `HACKING.md`, `AI_POLICY.md`, `src/lib/enum.zig`, `include/ghostty/vt/` (the C API), and counts over `src/` (617 Zig files, 4,714 `test` blocks, 5,279 `testing.allocator` uses, 723 `errdefer`, 346 arena uses).
+- Adopted: a "What a large Zig codebase does" section in `library/native/zig.md`; the uniform C-API rules in `library/native/c.md` (result codes with out-parameters, NULL handles return an error, optional allocator, zero means none, enum values fixed, `_MAX_VALUE` sentinel); the targeted-test form in the `commands:` line of the project-memory template (its `AGENTS.md` says to prefer `-Dtest-filter` because the suite is slow).
+- Not adopted: its AI policy (disclosure and contributor rules are the project's own); Tabby already commits and pushes only when asked.
+
+## TigerBeetle, NumPy, pandas, Linux, and deeper Ghostty (13 November 2026)
+
+Ideas only, restated in Tabby's words; nothing vendored and no text copied. Shallow clones read at: `tigerbeetle/tigerbeetle` `a2a3c70` (Apache-2.0), `numpy/numpy` `768d7ef` (BSD-3-Clause), `pandas-dev/pandas` `e37bffd` (BSD-3-Clause), `torvalds/linux` `7e1392a` (GPL-2.0; only `Documentation/process` and `Documentation/dev-tools` were checked out), `ghostty-org/ghostty` `cf3a8a6` (MIT). Nine read-only study agents covered them; claims used here were spot-checked against the files.
+
+- TigerBeetle: `docs/TIGER_STYLE.md` (pair assertions, bounds on everything, units last in names), the simulation and fuzzing setup (`src/vopr.zig`, `src/fuzz_tests.zig`), and the C client plus generated bindings (`src/clients/`). Adopted in `testing/rigor.md` ("Determinism and fault injection"), `senior-engineering.md`, and `library/native/architecture.md` ("One core, many callers").
+- NumPy and pandas: C error paths, overflow-checked sizes, `Python.h` first, banned borrowed-reference calls, and the sanitizer and `-Werror` CI split (`.github/workflows`, `tools/ci/check_c_api_usage.py`, `tools/check_python_h_first.py`). Adopted in `library/native/c.md` and `ci-wheels.md`.
+- Linux: `coding-style.rst`, `deprecated.rst`, and the dev-tools pages (goto cleanup, return conventions, no `strcpy` or VLAs), and `coding-assistants.rst` and `generated-content.rst` (disclosure; only a human certifies sign-off). Adopted in `c.md` and `tabby-docs/commits.md`.
+- Ghostty: terminal-state, renderer and build studies informed the data-layout bullets in `architecture.md` (offsets instead of pointers, zero as a valid empty state, hard capacity, a generation number on handles).

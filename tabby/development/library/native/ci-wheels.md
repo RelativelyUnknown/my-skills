@@ -22,7 +22,7 @@ Commit `Cargo.lock` and the toolchain files (`rust-toolchain.toml`, `.clang-form
 1. **Lint:** `ruff check`, `ruff format --check`, type check; `cargo fmt --check`, `cargo clippy -- -D warnings`; `clang-format --dry-run` for C.
 2. **Tests:** Linux, macOS, Windows; oldest and newest supported Python; `cargo test` for the core crate.
 3. **Stubs:** `python -m mypy.stubtest <pkg>`.
-4. **Sanitizers (C):** ASan and UBSan build, full suite. Rust `unsafe`: Miri on the core crate.
+4. **Sanitizers (C):** ASan and UBSan build, full suite; a separate ASan plus LeakSanitizer job on a CPython built with ASan; ThreadSanitizer on a free-threaded build; strict UBSan on hand-written code only. Rust `unsafe`: Miri on the core crate.
 5. **Free-threaded:** a `python3.14t` job, only if the module claims support.
 6. **Benchmarks:** a tracked benchmark so a regression of the native path is visible.
 7. **Wheels and sdist:** build, install into a clean environment, import, run the smoke test.

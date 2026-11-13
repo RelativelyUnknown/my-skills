@@ -7,7 +7,9 @@ license: MIT
 
 # Tabby hooks (optional, off by default)
 
-Claude Code decides on its own whether to load a skill, and on short prompts it often does not (measured: the right Tabby skill loaded on 46% of unseen prompts without the reminder, 95% with it; `AUDIT.md` section 8). The reminder is a `UserPromptSubmit` hook that prints about 120 words of context before each prompt. It runs no other command, reads nothing, and writes nothing.
+This skill is for Claude Code, which has `UserPromptSubmit` hooks. On other harnesses, paste the text of [remind.txt](remind.txt) into the always-loaded instructions file instead (`AGENTS.md` for OpenCode, `.github/copilot-instructions.md` for Copilot); it costs the same 120 words on every prompt and needs no setting.
+
+Claude Code decides on its own whether to load a skill, and on short prompts it often does not (measured on 12 November 2026 with `tools/eval/triggers.py`: the right Tabby skill loaded on 46% of unseen prompts without the reminder, 95% with it). The reminder is a `UserPromptSubmit` hook that prints about 120 words of context before each prompt. It runs no other command, reads nothing, and writes nothing.
 
 ## `/tabby:hooks on`
 

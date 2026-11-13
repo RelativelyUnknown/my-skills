@@ -1,6 +1,6 @@
 # Start: the interview
 
-Run this only when the user asks for it (`/tabby:interview`, "run the Tabby interview", "set up Tabby") or accepts the one-line offer after a task. It is never a condition for doing a task.
+Run this only when the user asks for it (the interview skill, `/tabby:interview` in Claude Code, "run the Tabby interview", "set up Tabby") or accepts the one-line offer after a task. It is never a condition for doing a task.
 
 Goal: a short `## Tabby` section in AGENTS.md that every later task reads in a few hundred tokens. The interview adapts to the project's state and is grounded in its code: research first, then rounds of questions that cite what the code showed.
 
@@ -56,7 +56,7 @@ never: commit secrets, edit generated files
 kind: library/native
 modules: development, review, documentation
 docs: README, reference, ADR
-commands: one canonical check command
+commands: one canonical check command, plus the targeted form (one test or file) when the suite is slow
 open: release process
 ```
 

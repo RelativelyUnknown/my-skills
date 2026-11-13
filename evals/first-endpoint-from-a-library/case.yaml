@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: first-endpoint-from-a-library
+expected_outcome: |
+  Adds the first HTTP endpoint as a thin layer over the existing lookup function, with a response shape that leaves out the internal cost field, a 404 for an unknown SKU, tests for both, and no speculative auth, database or caching layers.
+context:
+  scaffold_script: fixture.sh

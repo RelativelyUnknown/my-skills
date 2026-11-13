@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: review-pyo3-diff
+expected_outcome: |
+  Reviews the uncommitted Rust change and reports the panic reachable from Python input (unwrap on a parse of a caller-supplied string) and the silent u64 to u32 truncation of the checksum length; does not flag the correct use of a borrowed byte slice.
+context:
+  scaffold_script: fixture.sh

@@ -25,6 +25,7 @@ A smell is a habit that looks fine and makes the next reader stop: the code runs
 - Work at import (environment or file reads, connections, `logging.basicConfig()`, background threads) → do it in a function the caller starts
 - Retries that are unbounded, catch every exception, or repeat a write that may have succeeded → bound attempts, back off, retry only what is safe to repeat (idempotency: [application/smells.md](../application/smells.md))
 - Secrets in logs, URLs or exception messages; string-built SQL or shell commands; `shell=True` with input; `random` for tokens → parameters, argument lists, `secrets`
+- `functools.cache` or `lru_cache` on data that changes (rates, settings, remote state) → a bounded cache with an expiry that matches how fast the data changes
 
 ## Signatures
 
@@ -32,6 +33,7 @@ A smell is a habit that looks fine and makes the next reader stop: the code runs
 - `**kwargs` pass-through, parameters named `id`, `type` or `format`, a closed set of strings typed `str` → name every parameter; `Literal["a", "b"]`; past two or three parameters, keyword-only
 - A flag that changes the return type, a tuple of three or more values, a bare `-> dict` → one return type; a dataclass or `NamedTuple`
 - Network or disk I/O in a constructor or property → an explicit method
+- `-1`, `""` or `0` standing for "no value", a bare `5` or `86400` in a condition → `X | None` or an exception; a named constant
 
 ## Structure
 
@@ -40,9 +42,18 @@ A smell is a habit that looks fine and makes the next reader stop: the code runs
 - Module-level mutable state; `dict[str, Any]` passed around → pass it in; a dataclass or `TypedDict`
 - Names like `data`, `result`, `info`, `manager`, `new_`, `v2`; a number that carries meaning → say what the thing is; name the constant
 - Defensive code for a case that cannot happen → delete it; search for an existing helper before writing one
+- Control flow nested more than three levels (`if` in `for` in `try` in `if`) → guard clauses that return or raise early on the unhappy path, then the main logic flat; extract an inner block (a loop body, a branch of a state machine) into a named function
+- A new variant added as a `mode` or `format` flag with branches through the old logic → its own class or function beside the old one, so the old one can be deleted later
+- A base class or interface added only to share a constructor argument or remove one repeated line → leave the repetition; every abstraction couples its users, so abstract at three variants or when the work must be deferred or repeated
+- A public mutable dataclass whose callers can set a field the rules constrain (a discount above 1) → frozen, or change it through a method that validates; `slots=True` so a stray attribute is an error
+- `match` on a plain boolean, or an `if` chain with a dead fallback branch → the simplest expression that states the rule
+- A subclass that overrides a method to raise `NotImplementedError` or do nothing, or reaches into parent attributes → composition: a small `Protocol`, the collaborator passed in
+- A class that builds its own collaborators (client, store, clock) or branches on optional config → take them in the constructor and wire once at startup; tests pass fakes, and needing `mock.patch` on a private attribute means a dependency should be injected
+- Abbreviated or single-letter names, a type in a name, a `Base` or `Abstract` prefix → full words; the general name on the parent and a specific one on the child; a name that is hard to find usually means the structure is wrong
 
 ## Comments and docs
 
+- A comment explaining a compound condition → a named variable, or move the condition into a function whose name says it
 - Narrating comments (`# Step 1`), commented-out code, a leftover `print`, `TODO` litter → delete
 - Conversation residue ("as discussed", "now uses", "previously"), inflated claims ("robust", "production-ready"), a docstring that restates the signature → say what is not obvious, or nothing
 

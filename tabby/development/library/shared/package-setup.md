@@ -10,7 +10,7 @@
 
 1. `pyproject.toml` is the only config file: no `setup.py`, `setup.cfg` or `requirements*.txt`. Start from `development/assets/pyproject.toml`; replace the `<placeholders>` and set the Python versions from the Python target. `requires-python` has a lower bound only.
 2. `src/<pkg>/__init__.py` with `__all__`, an empty `src/<pkg>/py.typed`, and `tests/` mirroring the package ([testing.md](../../testing/testing.md)).
-3. One command runs lint, type check and tests, locally and in CI: copy `development/assets/Makefile` (`make check`), or the equivalent for the project's runner.
+3. One command runs lint, type check and tests, locally and in CI: copy `development/assets/Makefile` (`make check`; `make` alone lists the targets, and `make test T=path::name` runs one test while you work). When the project must be tested on several Python versions, copy `development/assets/tox.ini` instead (`tox`; `tox -e py313 -- path::name` for one test; `dependency_groups` needs tox 4.22). Or use the equivalent for the project's runner; if the project already has a Makefile, tox or nox setup, keep it.
 4. CI: copy `development/assets/ci.yml`. It tests the Python target and the newest release, installs from the lock file, runs only `make check`, grants `contents: read`, and uses no secrets. Pin each action to its latest release tag (`git ls-remote --tags https://github.com/<owner>/<action>`).
 5. Dev tools are pinned by the lock file (`uv sync --locked`). Keep runtime dependencies minimal; heavy or niche ones go in extras.
 6. The test suite runs with no network, no secrets and no running services.

@@ -32,3 +32,8 @@ Written for the reviewer, who decides in a minute where to look:
 4. What a reviewer should look at first, and anything deliberately left for later.
 
 Follow the repository's pull request template when there is one. A new dependency, a public API change and a changed or removed test are always stated, never left for the reviewer to find.
+
+## AI assistance and sign-off
+
+Follow the project's rule on disclosing AI assistance (the Linux kernel and Ghostty both require it, stating the tool and how much it did). Never add a `Signed-off-by` for the human: only a person can certify the Developer's Certificate of Origin. Say plainly what was not tested, and send nothing to a maintainer or a tracker unless asked.
+

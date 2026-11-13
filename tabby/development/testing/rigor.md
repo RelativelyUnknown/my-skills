@@ -42,3 +42,15 @@ Coverage shows which lines ran; mutation testing shows which behaviour the tests
 ## Redesign exception
 
 Only when the task explicitly asks for a redesign: change the design first, run the tests, then classify each failure. It asserts the old internal shape: rewrite it. It asserts behaviour the spec requires: fix the code. It asserts something the spec never required: ask, or remove it and say why. No skips may remain; the end state is green.
+
+## Determinism and fault injection
+
+From TigerBeetle's simulator and fuzzers, and Ghostty's fuzz harnesses:
+
+- Take every source of nondeterminism as a parameter: a clock, a `random.Random(seed)` (never the global one), file and network access behind small interfaces. One seed reproduces a run; print it on failure and give a one-command reproducer.
+- Randomise the configuration and the fault rates per seed (swarm testing) instead of fixed knobs, and inject faults the code must survive: a failing write, a dropped message, a failed allocation at the native boundary.
+- Check liveness as well as safety: after the faults stop, the system must converge.
+- A fuzz crash becomes a named regression test. Compare a fast path against a plain reference path on the same corpus (a differential test).
+- An exhaustive integrity check that is too slow for production runs in test and debug builds, and has its own tests that corrupt the data on purpose.
+- Run a short fuzz pass in CI and a long one on a schedule, and keep a canary case that fails on purpose to prove the harness still fails.
+

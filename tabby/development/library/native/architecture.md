@@ -45,3 +45,14 @@ Four shapes occur in widely used packages. Pick the smallest that fits, and keep
 - Errors cross as Python exceptions, never as panics or unhandled C errors (details in rust.md, c.md and cpp.md).
 - Release the GIL for long native work; touch Python objects only while holding it.
 - Declare free-threaded support only after the module has no unsynchronised shared state, and test it.
+
+## One core, many callers
+
+Seen in TigerBeetle (one Zig core behind clients for six languages) and Ghostty's `libghostty-vt`:
+
+- **A thin ABI.** A handful of functions: init, submit, deinit. The caller owns the handle, so no allocation crosses the boundary; results are valid only inside the completion callback; awkward values (128-bit integers) travel as byte arrays or halves, not by value. The binding turns status codes into typed exceptions in one place.
+- **One definition generates the rest.** The C header and the Python bindings are generated from the core's types, and CI regenerates and fails if a checked-in file is stale. A parity test compares header and binding sizes, offsets and enum values.
+- **Guard the ABI.** Sized structs and reserved fields; a committed symbol list and ABI baseline that fail on any non-additive change; compile the public header as C11, C23 and C++17 with warnings as errors.
+- **Write conformance cases once** and emit tests for each language. Run the README samples in CI, test the published package (a fresh install in a clean environment), and run `mypy --strict` on the binding.
+- **Data that crosses the boundary** is one contiguous block addressed by offsets, not pointers, so it can be copied or handed over; zero is a valid empty state; capacity is fixed and the caller decides how to grow it; a generation number on each handle catches a stale one.
+

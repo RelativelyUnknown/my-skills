@@ -4,16 +4,11 @@ Read this when a request adds a layer or a choice that is hard to undo (an API, 
 
 ## 1. Read the evidence
 
-How the code reaches its data today (plain parameterised SQL, a query builder, an ORM); how many entities and relationships; the shape of the queries (joins, filters, writes); whether the driver is sync or async; who calls it and how often; the deployment. In `## Tabby`: `growth:` and `workload:` (read or write heavy, rough rates, concurrency, data size). With no section, infer from the code and ask the one question that would change the decision most ("is a second client or more than one customer coming?") in the same message as the work.
+How the code reaches its data today (plain SQL, a query builder, an ORM), the shape of the queries, sync or async, who calls it and how often, the deployment. From `## Tabby`: `growth:` and `workload:`. With no section, infer from the code and ask the one question that would change the decision most ("is a second client or more than one customer coming?") in the same message as the work.
 
 ## 2. Two or three options for each real fork
 
-Name them, the criterion that decides, and what this project's evidence says. Candidates come from [ecosystem.md](../development/ecosystem.md) and the ladder in [reuse.md](../development/code/reuse.md); check installed and current versions before recommending one. Examples of the criteria:
-
-- **Data access:** keep plain SQL when there are few tables and a handful of hot queries; a query builder when filters are built dynamically; an ORM when there are many related entities, schema change is frequent, migrations matter or several clients share the model.
-- **Sync or async:** async pays when many requests wait on I/O at once and the driver is async. A sync driver or CPU-bound work gains nothing.
-- **Caching:** when reads dominate, are expensive and may be stale for a stated time. After a measurement, not before.
-- **A queue:** when work must survive a restart or outlast a request.
+Name them, the criterion that decides, and what this project's evidence says. Candidates come from [ecosystem.md](../development/ecosystem.md) and the ladder in [reuse.md](../development/code/reuse.md); check installed and current versions first. Typical criteria: plain SQL for few tables and a handful of hot queries, a query builder when filters are built dynamically, an ORM for many related entities, frequent schema change or several clients; async only when many requests wait on I/O and the driver is async; a cache only after a measurement, when reads dominate and may be stale; a queue when work must survive a restart or outlast a request.
 
 ## 3. Choose for today, make the next one cheap
 
@@ -37,7 +32,7 @@ A seam costs about one file or one parameter and a test exercises it.
 
 ## 4. Say it once
 
-In the reply, briefly: what you found in the project, the options and why you chose this one, what you kept open, and what would make you change it. Go ahead with the recommended option when it is cheap to change because of the seams. Stop and ask first when it binds data or a public contract: a schema or ORM migration, a public API shape, a costly dependency.
+In the reply: what you found, the options and why you chose this one, what you kept open, and what would make you change it. Go ahead with the recommended option when the seams make it cheap to change; ask first when it binds data or a public contract (a schema or ORM migration, a public API shape, a costly dependency).
 
 ## When an item becomes real
 

@@ -8,6 +8,10 @@ Prefer something else first ([architecture.md](architecture.md)): Rust, Cython, 
 - Know for each API call whether it returns a new or a borrowed reference. A borrowed reference (from `PyList_GetItem`, `PyTuple_GetItem`, `PyDict_GetItem`) can dangle after any call that may run Python code. Take a strong reference at once with `Py_INCREF`, or use `PyList_GetItemRef` and `PyDict_GetItemRef` (3.13+).
 - Check every fallible call: allocations, `PyUnicode_AsUTF8AndSize`, `PyObject_GetAttr*`, item getters. After `PyLong_As*`, a result of `-1` needs `PyErr_Occurred()`.
 - One cleanup path: initialise every owned local to `NULL`, `goto error` on failure, release with `Py_XDECREF` or `Py_CLEAR`.
+- `Python.h` comes first in every file (after `#define PY_SSIZE_T_CLEAN`), before any system header. Name cleanup labels for what they do (`out_free_buf`), and set every owned local to `NULL` before the first `goto`: a shared label that frees an uninitialised pointer is the classic one-label bug. Force each allocation to fail in a test so every error path runs.
+- Grow a buffer by computing the final capacity once, checking it for overflow, and calling `realloc` into a temporary; on failure the old buffer is still yours to free. A parser that owns its buffers keeps its error text in a fixed buffer inside its own struct, so an error path never allocates.
+- A function that does something returns 0 or an error; a predicate returns a bool. Do not mix them. No `strcpy`, `strncpy` or variable-length arrays; mark deliberate fall-through; do not `abort` in a library.
+- Lint for the risky calls in CI rather than relying on review (NumPy bans the borrowed-reference getters unless the line carries a `noqa` marker, and checks `Python.h`-first with a script).
 - Sizes are `Py_ssize_t`. Reject negatives before casting to `size_t`, and check for overflow before multiplying or adding sizes that come from input.
 
 ## Types and the garbage collector
@@ -26,8 +30,20 @@ Prefer something else first ([architecture.md](architecture.md)): Rust, Cython, 
 
 See also [senior-engineering.md](../../architecture/senior-engineering.md) for how large C and Rust codebases confine unsafe memory access.
 
+## The C core behind the binding
+
+Keep the logic in plain C with no Python headers, and make the binding a thin layer over it, so the core is testable on its own. A working example with tests is in [assets/native/c_core/](../../assets/native/c_core/) (`make test` builds it under ASan and UBSan).
+
+- Every allocation has one owner and one place that frees it. Work whose results share a lifetime allocates from an arena and frees it once; a fixed-capacity arena keeps handed-out pointers valid.
+- Bytes travel as pointer plus length (a span). Never depend on a terminating NUL: input can contain one, and a view needs no copy.
+- Check a size multiplication and an alignment round-up for overflow before trusting either, and report overflow differently from out-of-memory.
+- Return a status and write results through out-parameters; a library never calls `abort` or `exit`. The binding turns the status into an exception.
+- Compile the core with `-Wall -Wextra -Werror`; run its tests under the sanitizers.
+- A public C surface stays uniform (the pattern in Ghostty's `libghostty-vt`): every fallible function returns a result code and writes through an out-parameter; a NULL handle returns an error status instead of crashing; an optional allocator argument accepts NULL for the default; the zero value of an enum means "none", so a zeroed struct is safe; enum values never change once released, and a final `_MAX_VALUE` sentinel forces `int` sizing on pre-C23 compilers.
+
 ## Testing
 
+- CI that catches what review misses (NumPy and pandas both run it): `-Werror` on every build; a strict UBSan job on hand-written C only (implicit integer truncation, sign change, local bounds), never on generated Cython output; a separate ASan plus LeakSanitizer job on a CPython built with ASan; ThreadSanitizer on a free-threaded build; leak tests with `tracemalloc`; and C helpers exercised through a small Python test module.
 - Build with ASan and UBSan (`-fsanitize=address,undefined`) and run the suite; a Python debug build (`--with-pydebug`) or `python -X dev` with `PYTHONMALLOC=debug` catches refcount and allocator misuse.
 - Leak test: call the function 10,000 times and compare memory (`tracemalloc`) or `sys.getrefcount` of an argument before and after.
 - Fuzz parsers of untrusted bytes (libFuzzer or AFL++). Test every error path, not only success.
