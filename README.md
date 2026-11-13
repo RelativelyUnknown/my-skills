@@ -7,10 +7,10 @@
 
 # Tabby
 
-Tabby is a Claude Code plugin of six skills for Python projects, and for the Rust, C, C++ and Zig code behind a Python API. It makes the agent find the cause before the fix, reuse before it writes, keep the diff small, and never edit a test to get green.
+Tabby is a set of six agent skills for Python projects, and for the Rust, C, C++ and Zig code behind a Python API. It works in OpenCode, GitHub Copilot and Claude Code. It makes the agent find the cause before the fix, reuse before it writes, keep the diff small, and never edit a test to get green.
 
 ![6 skills](https://img.shields.io/badge/skills-6-2a8f89?style=flat-square)
-![Built for Claude Code](https://img.shields.io/badge/built%20for-Claude%20Code-2a8f89?style=flat-square)
+![OpenCode, Copilot, Claude Code](https://img.shields.io/badge/works%20in-OpenCode%20%7C%20Copilot%20%7C%20Claude%20Code-2a8f89?style=flat-square)
 ![MIT licence](https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square)
 
 <p align="center">
@@ -22,7 +22,9 @@ Tabby is a Claude Code plugin of six skills for Python projects, and for the Rus
 
 ## Install
 
-Run these as two separate prompts in Claude Code:
+Tabby is plain `SKILL.md` folders in the open [Agent Skills](https://agentskills.io/specification) format, so one copy of each folder works in all three tools. Pick your tool:
+
+**Claude Code.** Run these as two separate prompts:
 
 ```
 /plugin marketplace add RelativelyUnknown/my-skills
@@ -34,7 +36,24 @@ Run these as two separate prompts in Claude Code:
 
 On Claude Code 2.1.275 or later, one command does both: `/plugin install tabby --marketplace RelativelyUnknown/my-skills`.
 
-Install Tabby only from `RelativelyUnknown/my-skills` on GitHub. Claude Code reads `CLAUDE.md`, not `AGENTS.md`: if your repository has no `CLAUDE.md`, add one line, `@AGENTS.md`.
+**OpenCode and GitHub Copilot.** Clone the repository and copy the skills into your project:
+
+```
+git clone https://github.com/RelativelyUnknown/my-skills
+cd your-project
+python3 ../my-skills/tools/install.py agents
+```
+
+`agents` installs to `.agents/skills/`, which both tools read. Add `--user` to install for every project (`~/.agents/skills/`). Other targets: `github` (`.github/skills/`, Copilot), `opencode` (`.opencode/skills/`), `claude` (`.claude/skills/`, read by all three). The installer never deletes anything and skips folders that already exist unless you pass `--force`.
+
+Install Tabby only from `RelativelyUnknown/my-skills` on GitHub.
+
+| | Claude Code | OpenCode | GitHub Copilot |
+| --- | --- | --- | --- |
+| Skills load when the request matches | yes | yes | yes |
+| Run the interview | `/tabby:interview` | `@interview` | `/interview` |
+| Project memory file | `CLAUDE.md` containing `@AGENTS.md` | `AGENTS.md` | `AGENTS.md` or `.github/copilot-instructions.md` |
+| Reminder before each prompt | optional hook (`hooks` skill) | paste [`remind.txt`](hooks/remind.txt) into `AGENTS.md` | paste [`remind.txt`](hooks/remind.txt) into `.github/copilot-instructions.md` |
 
 ## Example
 
@@ -53,9 +72,9 @@ python3 tools/eval/summarise.py results
 
 ## The six skills
 
-Claude Code keeps the six descriptions in context (about 2,400 characters, roughly 600 tokens). When a task matches one, it loads that skill's body and only the files the body names for that task.
+The harness keeps the six descriptions in context (about 2,400 characters, roughly 600 tokens). When a task matches one, it loads that skill's body and only the files the body names for that task. The skills point at each other by relative path, so keep the folders side by side.
 
-| Skill | Claude loads it when you | What it adds |
+| Skill | The agent loads it when you | What it adds |
 | --- | --- | --- |
 | [`tabby`](tabby/) | write, fix, test, speed up, package or release Python, or the Rust, C, C++ or Zig behind it | Rules the agent never skips, and files on errors, typing, dependencies and uv, CI, performance, libraries, services, design, and native layouts, PyO3, the C API and wheels |
 | [`tabby-review`](tabby-review/) | ask for a review of a diff or pull request, a repository audit or a security audit | Self-review, a security audit that separates confirmed bugs from look-alikes, and a checklist for the Python and native boundary |
@@ -64,7 +83,7 @@ Claude Code keeps the six descriptions in context (about 2,400 characters, rough
 | [`tabby-frontend`](tabby-frontend/) | build a page, dashboard, data app or docs site | A method, design tokens, a list of things it refuses to ship, and `ui-check` for contrast, focus, motion and layout |
 | [`interview`](interview/) | run `/tabby:interview` | Researches the repository read-only, asks at most three questions a round, and saves a `## Tabby` section to `AGENTS.md` |
 
-An optional hook in [`hooks/`](hooks/) prints a short reminder before each prompt so the right skill loads more often. It is off by default.
+Skills load more reliably with a short reminder before each prompt. In Claude Code an optional hook in [`hooks/`](hooks/) prints it, and it is off by default; in the other tools the reminder lives in the instructions file (see the table above).
 
 ## The rules it holds
 
@@ -77,7 +96,7 @@ An optional hook in [`hooks/`](hooks/) prints a short reminder before each promp
 
 ## Project memory
 
-Tabby does the task first and never interviews you before it. It infers the project from the repository and your request, and marks guesses `(assumed)`. `/tabby:interview` saves what the project is for and where it is going to a `## Tabby` section in `AGENTS.md`; later tasks read that section and ask before contradicting it. Tool and style defaults live in a `## Python defaults` section. Both are plain text you can edit.
+Tabby does the task first and never interviews you before it. Project memory lives in `AGENTS.md` for every tool. It infers the project from the repository and your request, and marks guesses `(assumed)`. `/tabby:interview` saves what the project is for and where it is going to a `## Tabby` section in `AGENTS.md`; later tasks read that section and ask before contradicting it. Tool and style defaults live in a `## Python defaults` section. Both are plain text you can edit.
 
 ## Measured effect
 
@@ -93,7 +112,7 @@ Tabby scored higher on 23 cases, lower on 11 and the same on 64. It helps most w
 
 On six small coding tasks (12 November 2026), hidden tests pass equally in both arms. With Tabby the agent adds fewer lint-rule violations (0.44 against 0.72 per run) and no narrating comments (0 against 1.28 per run).
 
-Limits: one model family, three runs per case, and cases written by the same author as the skills, so the gain is likely overstated. A difference under about 0.3 on one case is noise. Large repositories and multi-turn work are not measured. The cases are in [`evals/`](evals/) and the runner is in [`tools/eval/`](tools/eval/).
+Limits: measured on Claude Code only. The skills follow the same standard in OpenCode and Copilot, but those tools differ in how they load skills, in tool names and in permission prompts, and the evals have not been run there. One model family, three runs per case, and cases written by the same author as the skills, so the gain is likely overstated. A difference under about 0.3 on one case is noise. Large repositories and multi-turn work are not measured. The cases are in [`evals/`](evals/) and the runner is in [`tools/eval/`](tools/eval/).
 
 ## Links
 
