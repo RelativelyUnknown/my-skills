@@ -1,8 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.png">
-    <img src="assets/hero-light.png" width="720" alt="Tabby: a cat batting at a laptop keyboard, drawn in crayon on torn lined paper, next to the title Tabby.">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/cat-head-dark.png">
+    <img src="assets/cat-head-light.png" width="150" alt="The Tabby logo: a painted tabby cat's head, orange in light mode and grey in dark mode.">
   </picture>
 </p>
 
@@ -13,6 +12,13 @@ Tabby is a Claude Code plugin of six skills for Python projects, and for the Rus
 ![6 skills](https://img.shields.io/badge/skills-6-2a8f89?style=flat-square)
 ![Built for Claude Code](https://img.shields.io/badge/built%20for-Claude%20Code-2a8f89?style=flat-square)
 ![MIT licence](https://img.shields.io/badge/license-MIT-2a8f89?style=flat-square)
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/cat-sleeping-dark.png">
+    <img src="assets/cat-sleeping-light.png" width="560" alt="A tabby cat asleep in a curl, painted in brushstrokes: orange in light mode and grey in dark mode.">
+  </picture>
+</p>
 
 ## Install
 
