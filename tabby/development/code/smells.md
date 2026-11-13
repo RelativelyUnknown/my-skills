@@ -32,6 +32,7 @@ A smell is a habit that looks fine and makes the next reader stop: the code runs
 - `**kwargs` pass-through, parameters named `id`, `type` or `format`, a closed set of strings typed `str` → name every parameter; `Literal["a", "b"]`; past two or three parameters, keyword-only
 - A flag that changes the return type, a tuple of three or more values, a bare `-> dict` → one return type; a dataclass or `NamedTuple`
 - Network or disk I/O in a constructor or property → an explicit method
+- `-1`, `""` or `0` standing for "no value", a bare `5` or `86400` in a condition → `X | None` or an exception; a named constant
 
 ## Structure
 
@@ -40,9 +41,13 @@ A smell is a habit that looks fine and makes the next reader stop: the code runs
 - Module-level mutable state; `dict[str, Any]` passed around → pass it in; a dataclass or `TypedDict`
 - Names like `data`, `result`, `info`, `manager`, `new_`, `v2`; a number that carries meaning → say what the thing is; name the constant
 - Defensive code for a case that cannot happen → delete it; search for an existing helper before writing one
+- Control flow nested more than three levels (`if` in `for` in `try` in `if`) → guard clauses that return or raise early on the unhappy path, then the main logic flat; extract an inner block (a loop body, a branch of a state machine) into a named function
+- A new variant added as a `mode` or `format` flag with branches through the old logic → its own class or function beside the old one, so the old one can be deleted later
+- A base class or interface added only to share a constructor argument or remove one repeated line → leave the repetition; every abstraction couples its users, so abstract at three variants or when the work must be deferred or repeated
 
 ## Comments and docs
 
+- A comment explaining a compound condition → a named variable, or move the condition into a function whose name says it
 - Narrating comments (`# Step 1`), commented-out code, a leftover `print`, `TODO` litter → delete
 - Conversation residue ("as discussed", "now uses", "previously"), inflated claims ("robust", "production-ready"), a docstring that restates the signature → say what is not obvious, or nothing
 

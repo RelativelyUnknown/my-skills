@@ -126,3 +126,7 @@ Verification in this repository: the Python, C and Rust behaviours cited on the 
 ## Skill-authoring guidance (13 November 2026)
 
 Ideas only, no text copied: pointers written as conditions ("before the first edit, read X when the task does Y") instead of a topic menu, and no hedged "if needed" wording. From Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) and community guides ([skills.sh load tips](https://www.skills.sh/pedronauck/skills/skill-load-tips), [mdskills](https://www.mdskills.ai/docs/skill-best-practices)). Their effect on Tabby was measured here, not assumed (HANDOVER.md).
+
+## CodeAesthetic and ArjanCodes videos (13 November 2026)
+
+Ideas only, restated in Tabby's words; no video was watched and no text was copied. Read through third-party summary pages (finechat-ai and recapio digests) and listings, so details may be off. From CodeAesthetic: "Why You Shouldn't Nest Your Code" (flatten with early returns and extraction, a depth ceiling), "Don't Write Comments" (named constants, named conditions, optional types instead of sentinels), "Abstraction Can Make Your Code Worse" (abstraction is coupling; a new variant beside the old one; abstract at three variants). ArjanCodes was consulted by title only (code smells, low coupling). Adopted in `tabby/development/code/smells.md`, the rubric in `tools/eval/judge.py` and the nesting metric in `tools/eval/quality.py`.

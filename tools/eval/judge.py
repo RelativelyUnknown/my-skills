@@ -28,16 +28,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CASES = os.path.join(HERE, "..", "..", "evals")
 MAX_DIFF = 14000
 CRITERIA = ["solves_the_real_problem", "minimal_and_fits_the_codebase", "errors_and_invariants", "reuses_what_exists",
-            "readable_and_honest_comments", "tests_that_would_catch_a_regression"]
+            "flat_control_flow", "abstraction_earns_its_coupling", "readable_and_honest_comments",
+            "tests_that_would_catch_a_regression"]
 
 RUBRIC = """You are a senior engineer reviewing two candidate changes (A and B) for the same task. Decide which one you would rather merge.
 
-Judge the code, not the explanation. Criteria, each scored 1 (poor) to 5 (excellent) for both candidates:
+Judge the code, not the explanation. Criteria, each scored 1 (poor) to 5 (excellent) for both candidates. If a criterion does not apply to this task, score both 3:
 - solves_the_real_problem: fixes the cause, not the symptom; no special-casing of inputs, no hiding the failure.
 - minimal_and_fits_the_codebase: as small as it can be while correct; follows the style and structure already there; no speculative generality, no unrequested features or layers.
 - errors_and_invariants: errors are handled where they can be acted on, not swallowed; what must be true is checked, not only commented; no defensive checks on data the code itself produced.
 - reuses_what_exists: uses the standard library or an existing helper instead of reimplementing it.
-- readable_and_honest_comments: clear names; comments explain why, not what; no commented-out code; no filler.
+- flat_control_flow: no more than three levels of nesting; the unhappy path is handled early (guard clauses) and the main logic stays at the top level; long blocks are split into well-named functions with one job each.
+- abstraction_earns_its_coupling: every base class, interface or flag is justified by three or more variants or by deferred or repeated use; a new variant lives beside the old one instead of branching through it; a little repetition is preferred to coupling unrelated code.
+- readable_and_honest_comments: clear names; magic numbers are named; a comment explaining a complex condition is replaced by a named variable or function; comments explain why, not what; no commented-out code; no filler.
 - tests_that_would_catch_a_regression: tests fail without the change and assert real behaviour; none were weakened or skipped. If the task needed no tests, score both 3.
 
 Do not prefer a candidate for being longer, for having more comments or tests, or for sounding more careful. A smaller correct change beats a larger one.
