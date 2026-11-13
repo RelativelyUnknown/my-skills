@@ -22,7 +22,7 @@ Environment variables, settings and the project's own constants are trusted. Req
 
 ## Outbound requests
 
-A URL from outside is fetched only after: an allowlist of hosts when you can have one; scheme `http` or `https`; the host resolved with `socket.getaddrinfo`, and every returned address rejected unless `ipaddress.ip_address(addr).is_global` (this covers loopback, private, link-local, the `169.254.169.254` metadata address, carrier-grade NAT and IPv4-mapped IPv6); no automatic redirects, each hop validated again. Check the resolved address, never the string: the OS resolver accepts `2130706433`, `0x7f000001` and `127.1` as `127.0.0.1`, and `ipaddress` does not. Connect to the address you validated and keep the hostname in the URL, so TLS still verifies; putting the IP in the URL breaks certificate checks. Where you can, also filter egress outside the app.
+A URL from outside is fetched only after: an allowlist of hosts when you can have one; scheme `http` or `https`; the host resolved with `socket.getaddrinfo`, and every returned address rejected unless `ipaddress.ip_address(addr).is_global` (this covers loopback, private, link-local, the `169.254.169.254` metadata address and IPv4-mapped IPv6); no automatic redirects, each hop validated again. Check the resolved address, never the string (the OS resolver accepts `2130706433`, `0x7f000001` and `127.1` as `127.0.0.1`; `ipaddress` does not). Connect to the address you validated and keep the hostname in the URL so TLS still verifies. Filter egress outside the app where you can.
 
 ## Identity
 
@@ -47,4 +47,4 @@ A URL from outside is fetched only after: an allowlist of hosts when you can hav
 - A security check fails closed: if the permission service errors, deny. No `except Exception: return True` or `pass` around an authorization step.
 - Clients get a generic error and an id; the traceback goes to the log. Debug mode is off outside development (`app.run(debug=True)` serves a code-running debugger).
 - Never log passwords, tokens, keys or card numbers. Escape CR and LF in user values written to logs, or use structured logging.
-- Dockerfiles for services: a non-root `USER`, a pinned base image, a `.dockerignore` that excludes `.env`, keys and `.git`.
+- Dockerfiles for services: [deployment.md](../application/shared/deployment.md) (non-root `USER`, pinned base, `.dockerignore` for `.env`, keys and `.git`).
