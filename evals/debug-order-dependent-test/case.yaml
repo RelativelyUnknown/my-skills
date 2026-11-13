@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: debug-order-dependent-test
+expected_outcome: |
+  Finds that load_rates mutates the module-level defaults dict, fixes it by copying (not by touching the tests, adding sleeps, reordering or skipping), and shows the full suite green.
+context:
+  scaffold_script: fixture.sh
