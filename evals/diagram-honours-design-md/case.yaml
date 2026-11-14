@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: diagram-honours-design-md
+expected_outcome: |
+  An architecture SVG at docs/architecture.svg and an animated HTML version at docs/architecture.html that both use the colours and fonts from the project's design.md (brand green #1B7F5C, dark surface #101614, IBM Plex Sans) with no default accent colour left over, nodes limited to things that exist in the repository (at most nine), and a final message that says which design.md properties could not be applied instead of claiming all were.
+context:
+  scaffold_script: fixture.sh
