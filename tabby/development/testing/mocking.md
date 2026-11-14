@@ -1,5 +1,45 @@
 # Mocking
 
+## Mock or real?
+
+A mock checks what you believe the dependency does; only the real thing checks what it does. Default to real, and fall back one step at a time, only when a reason below forces it:
+
+1. **Real, in process:** your own code, `tmp_path` files, a pure library. Never mock code you own or the unit under test.
+2. **Real, local:** the same database engine as production (a container or a local server; SQLite standing in for Postgres hides differences in types, locking and SQL), a local message broker, a cheap subprocess.
+3. **A fake you maintain** (an in-memory repository, `respx` or `responses` at the transport): when the real service is outside your control, slow, paid, rate-limited or non-deterministic. A fake is only trusted while a **contract test** runs the same cases against the fake and the real service (a sandbox account, run on a schedule or before release) and both pass.
+4. **A stub or `autospec` mock:** only to provoke what the real thing will not do on demand: a timeout, a 500, a full disk, a dropped connection, a partial write. Script it with `side_effect` (below).
+
+Rules that follow:
+
+- **Tests of a fake alone prove nothing; they check the fake against itself.** Write one test body that takes the client as a parameter and run it against the fake and the real client class. The real leg is either the provider's sandbox, skipped when its credentials are not in the environment, or a local server that speaks the provider's protocol (`http.server` on port 0). Either way the suite needs no secrets. Say in the report which real leg ran and what the other leaves unchecked. A fake whose real leg never runs is still unverified.
+
+```python
+import pytest
+
+from notes.client import NotesClient
+from tests.fakes import InMemoryNotes
+
+@pytest.fixture(params=["fake", "real"])
+def notes(request, notes_server_url):  # notes_server_url: a local server, or a sandbox URL
+    if request.param == "fake":
+        return InMemoryNotes()
+    return NotesClient(notes_server_url)
+
+def test_a_saved_note_can_be_read_back(notes):
+    note_id = notes.save("milk")
+    assert notes.read(note_id) == "milk"
+
+def test_reading_a_missing_note_raises(notes):
+    with pytest.raises(KeyError):
+        notes.read("missing")
+```
+
+- Every integration has at least one test against the real thing (marked `integration`, skipped without credentials but run in CI or before release). All-mock suites go green while production breaks.
+- Mock at the outermost edge (the HTTP client, the clock), never in the middle of your own code. More than two patches in one test means the design needs the dependency passed in.
+- Recorded responses (`vcrpy`) go stale: re-record on a schedule and fail the build when a cassette is older than the limit.
+- A Python/native boundary is not a mock point: run the real extension in tests and compare it with the Python reference ([porting.md](../library/native/porting.md)); stub only the native import to test the fallback.
+- A bug found in production that a mock hid gets a test against the real thing, not a better mock.
+
 ## Boundaries
 
 A boundary is code you do not own or cannot run in a test: network, clock, randomness, third-party services, the process environment. Everything else runs for real.

@@ -12,6 +12,7 @@ Choose by what the work waits on, then keep the shared state small. `asyncio` ha
 ## Rules
 
 - Do not share mutable state between workers if you can pass values in and collect values out. A shared `dict` or `list` mutated from threads needs a lock, or a `queue.Queue`; a counter needs `threading.Lock` (`n += 1` is not atomic).
+- When workers must share state, shard it instead: route each key to one worker (`hash(key) % n`) that owns that state outright and takes work from its own queue. No lock is needed because nothing is shared, and ordering per key comes free. Skewed keys leave one worker saturated, so check the key distribution first.
 - Always bound the work: a pool size, a queue `maxsize` (an unbounded queue is a memory leak with a delay), and a deadline. `future.result(timeout=...)` stops waiting, not the work; a thread cannot be killed, so design the task to check a `threading.Event` or to finish in bounded time.
 - One failing task must not vanish. Call `future.result()` (or iterate `as_completed`) so the exception is raised; report which inputs failed instead of dropping them or aborting silently ([errors.md](errors.md)).
 - Do not fork a process that already holds threads or open connections (database, HTTP clients, locks); create them after the fork, in each worker's initializer. Use `multiprocessing.get_context("spawn")` when unsure.

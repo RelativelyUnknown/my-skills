@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: fake-needs-contract-test
+expected_outcome: |
+  Adds an in-memory FakePaymentGateway and uses it for the order tests, and also adds a contract test that runs the same cases against the fake and the real PaymentGateway, with the real client exercised against a sandbox (skipped without credentials) or a local server.
+context:
+  scaffold_script: fixture.sh

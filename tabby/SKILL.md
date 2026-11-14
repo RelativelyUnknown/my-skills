@@ -47,7 +47,7 @@ Read these when you reach the situation, not before:
 - feature newer than the Python target: `code/python-versions.md`; docstring, comment: `code/comments.md`; logging: `code/logging.md`; script or CLI: `code/scripts.md`
 - data frames, arrays, models, notebooks, large files: `code/data.md`; threads, processes, pools: `code/concurrency.md`; slow code: `performance/index.md`
 - scope: `workflow/planning.md`; restructuring: `workflow/refactoring.md`; unsure API: `workflow/checking-apis.md`; about to report: `workflow/shipping.md`
-- pattern, layers: `architecture/design-patterns.md`; data structure or algorithm: `architecture/fit.md` (worked examples `fit-examples.md`); design under real limits, `unsafe`: `architecture/senior-engineering.md`
+- pattern, layers: `architecture/design-patterns.md`; data structure or algorithm: `architecture/fit.md` (worked examples `fit-examples.md`); design under real limits, `unsafe`: `architecture/senior-engineering.md`; habits from systems projects (fault injection, shared-nothing, narrow ABIs, subtracting surface): `architecture/systems-lessons.md`
 
 By kind of project (`which-type.md` names it; read only the line for the kind, and `smells.md` of that kind before finishing):
 

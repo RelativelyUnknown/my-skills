@@ -49,6 +49,8 @@ From TigerBeetle's simulator and fuzzers, and Ghostty's fuzz harnesses:
 
 - Take every source of nondeterminism as a parameter: a clock, a `random.Random(seed)` (never the global one), file and network access behind small interfaces. One seed reproduces a run; print it on failure and give a one-command reproducer.
 - Randomise the configuration and the fault rates per seed (swarm testing) instead of fixed knobs, and inject faults the code must survive: a failing write, a dropped message, a failed allocation at the native boundary.
+- Fail the Nth operation: put the call that can fail (a write, a read, an allocation) behind a small interface, let a fake raise on call N, and run the whole operation for N = 1, 2, 3 ... until it succeeds. After each run check the invariant (the file still parses, no handle leaked, totals unchanged). Then repeat with every call from N on failing. This reaches recovery code that no hand-written test thinks of.
+- Test through the public surface: cases as data (input, expected output) run by one driver, so a refactor of internals changes no test.
 - Check liveness as well as safety: after the faults stop, the system must converge.
 - A fuzz crash becomes a named regression test. Compare a fast path against a plain reference path on the same corpus (a differential test).
 - An exhaustive integrity check that is too slow for production runs in test and debug builds, and has its own tests that corrupt the data on purpose.

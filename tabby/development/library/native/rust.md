@@ -52,7 +52,8 @@ See also [senior-engineering.md](../../architecture/senior-engineering.md) for t
 
 ## Unsafe and C libraries
 
-- `unsafe` only for FFI or a measured need. Every block gets `// SAFETY:` stating why the invariants hold; every `unsafe fn` gets a `# Safety` doc section. Keep it in the smallest module and expose a safe API. Run Miri over it.
+- `unsafe` only for FFI or a measured need. Every block gets `// SAFETY:` stating why the invariants hold; every `unsafe fn` gets a `# Safety` doc section. Keep it in the smallest module and expose a safe API. Run Miri over it, and loom (which tries the thread interleavings and memory orderings of a small model) over any `unsafe` that shares state between threads; Miri cannot run foreign calls, so test the FFI edge separately.
+- Graphs and cyclic structures: store nodes in a `Vec` and refer to them by integer index (or a typed id), not by pointer or `Rc` cycles. The index is checked, copyable and safe to hand across the boundary.
 - Wrapping a C library: a `-sys` crate (generated with `bindgen`) plus a safe crate. `#[repr(C)]` on shared structs, `CString`/`CStr` for strings, free on the side that allocated, an RAII type whose `Drop` releases C-owned memory, check for null.
 - No `unsafe impl Send` to silence the compiler; no `transmute` to cast enums or dodge lifetimes.
 

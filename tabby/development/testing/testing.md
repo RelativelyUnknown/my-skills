@@ -34,7 +34,7 @@ A test is evidence about behaviour. Ask of any test: if the behaviour broke, wou
 
 ## Full
 
-- Mock only external boundaries: network, clock, randomness, third-party APIs. Never mock the unit under test. Prefer the real thing: `tmp_path` for files, `monkeypatch` for env and attributes, `caplog`/`capsys` for output, `time-machine` for time, `responses` (requests) or `respx` (httpx) for HTTP. Hand-built fakes for these are worse.
+- Mock only external boundaries, and run at least one test against each real integration ([mocking.md](mocking.md), first section): network, clock, randomness, third-party APIs. Never mock the unit under test. Prefer the real thing: `tmp_path` for files, `monkeypatch` for env and attributes, `caplog`/`capsys` for output, `time-machine` for time, `responses` (requests) or `respx` (httpx) for HTTP. Hand-built fakes for these are worse.
 - Isolated and deterministic: no network (`pytest-socket`, `--disable-socket`), no sleeps (control time instead), `pytest-timeout`, `pytest-randomly` to expose order dependence. The suite must run with no secrets and no services.
 - Strict config in `pyproject.toml`: `strict = true` (pytest 9+; earlier: `--strict-markers` and `xfail_strict = true`), `filterwarnings = ["error"]`. For a new project use `--import-mode=importlib`; if `test.import_mode` is already `prepend`, leave it and mention it.
 - Docstring examples are doctests (`--doctest-modules`). The README's code block is executed by a test.
