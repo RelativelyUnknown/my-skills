@@ -108,11 +108,114 @@ The same agent with and without Tabby on Claude Haiku 5.5, 98 eval cases, 3 runs
 | Turns per run | 11.4 | 14.8 |
 | Cost per run | $0.0131 | $0.0152 |
 
-Tabby scored higher on 23 cases, lower on 11 and the same on 64. It helps most where a habit decides the answer: deprecating a public name instead of deleting it, taking a standard library instead of hand-rolling one, finding that a longer timeout is not the fix, and asking briefly when a request is vague. Where the bare agent already succeeds, Tabby only adds turns and cost.
+Tabby scored higher on 23 cases, lower on 11 and the same on 64.
 
-Two cases were added afterwards for the rule on when to mock and when to test on real systems, and are not in the numbers above (Haiku 5.5, 13 November 2026). `real-own-code-stubbed-edge` is a tie (0.810 with Tabby, 0.823 without): the bare agent already tests its own code for real and stubs only the payment call. On `fake-needs-contract-test` the first run showed the rule was too weak: with Tabby the agent tested the fake only, never the real client. The rule was rewritten, and one grader that wrongly required a credentials-skipped leg (a local server is as good) was replaced. On the corrected case, six runs each: with Tabby 4 runs compared the fake with the real client (each against a local server) and 2 tested the fake alone, mean 0.89; without Tabby 2 and 4, mean 0.78. The direction is right, but six runs per arm cannot show it is not chance, and the earlier runs used a different grader and rule, so they are not comparable.
+### What each case tests
 
-On six small coding tasks (12 November 2026), hidden tests pass equally in both arms. With Tabby the agent adds fewer lint-rule violations (0.44 against 0.72 per run) and no narrating comments (0 against 1.28 per run).
+Each case in [`evals/`](evals/) gives the agent a task in a small fixture repository and grades the result.
+
+| Case | Tests |
+| --- | --- |
+| `add-owned-resource-endpoint` | An endpoint for user-owned data filters by owner, hides internal fields and tests the other-user case |
+| `adr-runbook-troubleshooting` | An ADR, a runbook and a troubleshooting page, each with the sections its reader needs |
+| `agents-md-for-a-repo` | A short AGENTS.md with the check command, the regenerate command and the Python defaults, and no generic advice |
+| `animation-self-contained-html` | One self-contained HTML animation of a webhook flow, with a static end state and reduced-motion handling |
+| `api-on-plain-sql-growth-known` | An API on plain SQL whose design choices are grounded in the saved growth and workload |
+| `api-on-plain-sql-growth-unknown` | The same API with no saved section: it still builds, and asks the questions that would change the design |
+| `audit-ci-workflow` | A CI audit that finds the two real workflow vulnerabilities and does not flag the two look-alikes |
+| `audit-repo-bloat-and-load` | An audit that finds a query-per-item loop, a race and untested arithmetic, and changes nothing |
+| `batches-and-utc` | Standard library `batched` and `fromisoformat` instead of regexes and helper wrappers |
+| `bounded-fan-out-with-deadline` | Concurrent calls with a concurrency cap, ordered results and one deadline |
+| `bug-fix-starts-red` | A failing test first, then the fix, then the whole suite, with no existing assertion weakened |
+| `ci-job-for-a-uv-project` | A CI job using `uv sync --locked` |
+| `clean-diff-no-noise` | A clean diff gets a short "no findings" verdict, not speculative observations |
+| `clean-up-ingest-module` | A small clean-up that keeps three deliberate choices and creates no new files |
+| `clear-ask-no-interview` | A clear request is done without a first question or an unasked `## Tabby` section |
+| `cli-to-team-tool` | A personal script made usable by others: paths, entry point, errors, install notes |
+| `community-standard-over-handrolled` | The standard HTTP library for timeouts and retries instead of a hand-rolled loop |
+| `confine-unsafe-accessor` | A narrowly scoped `unsafe fn` with a documented safety precondition |
+| `contradicting-test-left-alone` | A test that contradicts the docstring is left alone and the contradiction is reported |
+| `cpp-binding-return-policy` | A C++ binding with a correct return value policy, bounds checking and no leak warnings switched off |
+| `de-rerunnable-load` | A nightly load that can be re-run for a day and backfilled without duplicating rows |
+| `debug-order-dependent-test` | Finding a mutated module-level default as the cause of an order-dependent test |
+| `dedupe-lines-script` | A CLI script with `main(argv)`, `--dry-run`, errors on stderr and an atomic rewrite |
+| `deprecate-instead-of-delete` | A public function kept as a warning alias, with a changelog entry, when asked to remove it |
+| `dev-tool-and-script-dependency` | Dev tools in the dev group and a one-off script dependency in inline metadata |
+| `diagram-honours-design-md` | An SVG and an animated HTML diagram that follow the project's `design.md` |
+| `diagram-of-a-small-service` | An architecture SVG containing only components that exist in the repository |
+| `diagram-state-machine` | A state diagram showing exactly the transitions the code allows |
+| `do-not-over-engineer-orders` | No abstract classes or patterns where a pure function and function arguments do |
+| `docs-site-brand-and-dark-mode` | A docs site with a light and dark switch and the brand colour |
+| `ecosystem-fit-ordering` | `graphlib` for dependency ordering, with clear cycle errors |
+| `ecosystem-fit-shell-words` | `shlex` for shell-style splitting instead of a regex |
+| `enqueue-after-commit` | A job enqueued only after the transaction commits |
+| `exhaustive-event-handling` | Typing that makes a new event kind a type error |
+| `existing-project-first-round` | On an existing project, at most three researched questions with recommended answers and no files written |
+| `fake-needs-contract-test` | An in-memory fake plus a contract test that runs against the fake and the real client |
+| `find-faster-json-library` | Measuring, then recommending and vetting a faster library without migrating |
+| `first-endpoint-from-a-library` | A thin first endpoint over an existing function, with no speculative layers |
+| `fix-ssrf-in-link-preview` | An SSRF fix that checks resolved addresses and redirects instead of a string blocklist |
+| `footprint-of-a-similar-change` | A new flag touches every place the previous flag touched |
+| `fresh-project-open-request` | An open request in an empty repo gets a minimal start or at most three questions |
+| `gates-multipart-missed-requirement` | A cross-cutting requirement applied to all four call sites |
+| `gates-trivial-no-ceremony` | A one-word typo fix with no checklist or ceremony |
+| `hard-problem-take-a-library` | A maintained library for date parsing instead of a hand-written parser |
+| `import-rows-some-fail` | Every row attempted, failures collected and reported together |
+| `interview-saves-after-yes` | The `## Tabby` section is saved only after an explicit yes |
+| `interview-vague-yes-does-not-save` | A vague "whatever you think" is not treated as a yes |
+| `join-existing-native-library` | Joining a native-library repo: read first, then save a short section with guesses marked assumed |
+| `learned-something-offers-a-note` | A discovered project rule is followed and offered as a note, not written unasked |
+| `literal-defaults-fetch-json` | Literal parameter defaults instead of `DEFAULT_` constants |
+| `load-settings-house-rules` | A TOML settings loader with validation, literal defaults and tests |
+| `local-development-env-file` | A committed `.env.example`, an ignored `.env` and no real-looking secrets |
+| `ml-leaky-validation` | Fixing train/validation leakage: pipeline fit, time-ordered split, grouped stores |
+| `native-free-threaded` | A PyO3 module declaring free-threaded support |
+| `native-gil-checksum` | A PyO3 function releasing the interpreter lock with current API, no panics, a stub entry and a test |
+| `native-pyclass-by-value` | A PyO3 0.30 function taking a class by value or by reference correctly |
+| `new-package-one-check-command` | A new package with strict tooling and one command that runs every check |
+| `niche-library-or-five-lines` | A few lines of standard library instead of a niche package |
+| `numpydoc-docstrings` | A numpydoc docstring with the required sections |
+| `one-settings-object` | A frozen settings object built at the program edge instead of a singleton |
+| `optional-parquet-dependency` | An optional extra imported lazily with a clear error when missing |
+| `payment-strategy` | A dict of functions instead of a strategy class hierarchy |
+| `pick-a-set-representation` | A bitset in place of a hash set of flags, sized from the enum and tested for every variant |
+| `pip-requirements-project-keeps-its-tools` | A pip and tox project keeps its tools when a dependency is added |
+| `poetry-black-unittest-keeps-its-tools` | A poetry, black and unittest project keeps its stack |
+| `port-hot-path-to-rust` | A hot path ported to Rust with identical behaviour, a stub and a Python reference |
+| `readme-for-small-package` | A landing-page README with one install command and a runnable example |
+| `real-own-code-stubbed-edge` | Real own code in tests, with only the external payment call stubbed |
+| `repo-text-addressed-to-the-agent` | Instructions found in repository text are reported, not obeyed |
+| `request-id-on-every-log-line` | A request id on every log line through a context variable and a filter |
+| `request-metrics-bounded-labels` | Metrics labelled by route template, never the raw path |
+| `retry-a-flaky-http-call` | A bounded retry with jitter for transient errors only, tested without sleeping |
+| `review-a-page-before-shipping` | A page review with located problems and fixes, without editing the page |
+| `review-pyo3-diff` | A review of a Rust change that finds a reachable panic and a silent truncation |
+| `saved-section-conflicts-with-task` | A task that contradicts the saved section is flagged before any code changes |
+| `scout-reports-what-it-noticed` | Problems noticed beside a small change are reported, not rewritten |
+| `seeded-audit` | A security report of three real vulnerabilities, excluding three look-alikes |
+| `seeded-audit-hard` | Ten defects that need several files read together, excluding eight look-alikes |
+| `seeded-audit-hard-b` | A second set of ten multi-file defects, excluding eight look-alikes |
+| `seeded-audit-python` | Twelve planted Python defects, excluding eight look-alikes |
+| `settings-loaded-at-startup` | A frozen config built at startup with all errors reported together and secrets hidden |
+| `single-source-version` | A version bumped in one place, a changelog entry and a smoke-tested wheel, with no tag or publish |
+| `speed-up-matcher` | A baseline, a set-based fix and before/after numbers |
+| `stop-calling-a-failing-dependency` | A circuit breaker with an injectable clock |
+| `stop-early-from-an-async-generator` | Early exit from an async generator with guaranteed cleanup |
+| `stream-command-output-with-limit` | Line-by-line command output with a deadline and a killed, reaped child |
+| `three-pages` | A tutorial, a how-to and a reference page, each written to its type |
+| `timeout-is-not-the-fix` | Finding a per-customer query loop behind a request to raise a timeout |
+| `tiny-fix-stays-tiny` | A one-line typo fix with no refactor and a short reply |
+| `typed-decorator-keeps-signature` | A retry decorator typed with `ParamSpec` |
+| `ui-orders-page-accessibility` | Accessibility fixes: language, labels, alt text, headings, focus, contrast |
+| `vague-ask-clarifies-briefly` | A vague request gets one to three questions and no edits |
+| `vague-feature-gets-a-short-spec` | A short spec and a first slice for a feature with several readings |
+| `vague-request-larger-repo` | Finding a CSV quoting bug from a vague report and fixing it with the `csv` module |
+| `validate-one-function-stdlib` | Plain `raise ValueError` checks, with no dependency or model class |
+| `validate-with-existing-pydantic` | The project's existing pydantic used for validation |
+| `vet-before-adding` | Checking that a package really exists before adding it |
+| `welcome-email-exactly-once` | An atomic claim so a double delivery sends one email |
+| `write-small-service-module` | Common smells avoided unprompted: encoding, timeouts, time zones, broad `except` |
+| `zig-extension-review` | A Zig function added following the project's existing extension pattern |
 
 Limits: measured on Claude Code only. The skills follow the same standard in OpenCode and Copilot, but those tools differ in how they load skills, in tool names and in permission prompts, and the evals have not been run there. One model family, three runs per case, and cases written by the same author as the skills, so the gain is likely overstated. A difference under about 0.3 on one case is noise. Large repositories and multi-turn work are not measured. The cases are in [`evals/`](evals/) and the runner is in [`tools/eval/`](tools/eval/).
 
